@@ -1,0 +1,8 @@
+version: '3'
+
+tasks:
+  generate:
+    desc: Generate the go bindings
+    cmds:
+      - go run ./gen/...
+      - go fmt ./pkg/raw/...
