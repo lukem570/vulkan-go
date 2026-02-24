@@ -1,8 +1,11 @@
 package main
 
-import "strings"
+import (
+	"strings"
+)
 
-func upperToPascal(c string) string {
+// Converts VAR_NAME -> VarName
+func caseUpper(c string) string {
 	parts := strings.Split(strings.ToLower(c), "_")
 
 	for i := range parts {
@@ -12,6 +15,7 @@ func upperToPascal(c string) string {
 	return strings.Join(parts, "")
 }
 
+// Converts varName -> VarName
 func camelToPascal(c string) string {
 	member := strings.ToUpper(string(c[0])) + c[1:]
 

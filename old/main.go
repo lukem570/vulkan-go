@@ -5,14 +5,6 @@ import (
 	"os"
 )
 
-// vk.xml structure:
-// platforms
-// types
-// enums
-// commands
-// features
-// extensions
-
 func main() {
 	in, err := os.Open("./mod/Vulkan-Headers/registry/vk.xml")
 	if err != nil {
@@ -20,12 +12,14 @@ func main() {
 	}
 	defer in.Close()
 
-	vkXml, err := ParseVkXML(in)
+	parser := &VkParser{}
+
+	err = parser.Process(in)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = Generate(vkXml)
+	err = parser.Save()
 	if err != nil {
 		log.Fatal(err)
 	}

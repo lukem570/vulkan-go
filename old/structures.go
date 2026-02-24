@@ -7,23 +7,6 @@ import (
 	"strings"
 )
 
-var goTypeMap = map[string]string{
-	"uint8_t":  "uint8",
-	"uint16_t": "uint16",
-	"uint32_t": "uint32",
-	"uint64_t": "uint64",
-
-	"int8_t":  "int8",
-	"int16_t": "int16",
-	"int32_t": "int32",
-	"int64_t": "int64",
-
-	"size_t": "uint",
-
-	"float": "float32",
-	"double": "float64",
-}
-
 type Struct struct {
 	Members []StructMember `xml:"member"`
 }
@@ -56,7 +39,7 @@ func (p *VkParser) parseStruct(name string, innerXml []byte) error {
 			conv = member.Type
 		}
 
-		goMember := fmt.Sprintf("\t%s %s\n", caseMember(member.Name), conv)
+		goMember := fmt.Sprintf("\t%s %s\n", camelToPascal(member.Name), conv)
 		members.WriteString(goMember)
 	}
 

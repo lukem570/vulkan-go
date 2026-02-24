@@ -5,88 +5,115 @@ import (
 	"strings"
 )
 
-type Enumeration struct {
-	Name     string        `xml:"name,attr"`
-	Type     string        `xml:"type,attr"`
-	Elements []EnumElement `xml:"enum"`
-}
+type EnumType int
+
+const (
+	EnumDefault EnumType = iota
+	EnumBitmask
+	EnumConst
+)
 
 type EnumElement struct {
-	Value  string `xml:"value,attr"`
-	Bitpos int    `xml:"bitpos,attr"`
-	Name   string `xml:"name,attr"`
+	Name  string 
+	Value string 
 }
 
-func (p *VkParser) parseEnum(enum Enumeration) error {
+type Enum struct {
+	Type     EnumType
+	Name     string
+	Elements []EnumElement
+}
 
-	if enum.Type != "constants" {
-		p.enums.WriteString(fmt.Sprintf(
+func (e *Enum) Generate() string {
+	var enumBuilder strings.Builder
+	enumBuilder.WriteRune('\n')
+
+	if e.Type != EnumConst {
+		enumBuilder.WriteString(fmt.Sprintf(
 			"type %s int64\n\n",
-			enum.Name,
+			e.Name,
 		))
 	}
 
-	p.enums.WriteString("var (\n")
+	enumBuilder.WriteString("var (\n")
 
-	switch enum.Type {
-	case "enum":
-		p.parseBasicEnum(enum)
-	case "bitmask":
-		p.parseBitmask(enum)
-	case "constants":
-		p.parseConstants(enum)
-	default:
-		fmt.Println("Unhandled enum:", enum.Type)
-	}
+	for _, element := range e.Elements {
+		var value string
+		name := e.Name + " "
+		switch e.Type {
+		case EnumConst:
+			name = ""
 
-	p.enums.WriteString(")\n\n")
+			value = strings.ReplaceAll(element.Value, "U", "")
+			value = strings.ReplaceAll(value, "F", "")
+			value = strings.ReplaceAll(value, "f", "")
+			value = strings.ReplaceAll(value, "LL", "")
+			value = strings.ReplaceAll(value, "(", "")
+			value = strings.ReplaceAll(value, ")", "")
+			value = strings.ReplaceAll(value, "~", "^")
 
-	return nil
-}
-
-func (p *VkParser) parseBasicEnum(enum Enumeration) {
-	for _, e := range enum.Elements {
-
-		if e.Value == "" {
-			continue
+		case EnumDefault:
+			value = element.Value
+		case EnumBitmask:
+			value = fmt.Sprintf("(1 << %s)", element.Value)
 		}
 
-		p.enums.WriteString(fmt.Sprintf(
-			"\t%s %s = %s\n",
-			caseUpper(e.Name),
-			enum.Name,
-			e.Value,
+		enumBuilder.WriteString(fmt.Sprintf(
+			"\t%s %s= %s\n",
+			upperToPascal(element.Name),
+			name,
+			value,
 		))
 	}
+
+	enumBuilder.WriteString(")\n")
+
+	return enumBuilder.String()
 }
 
-func (p *VkParser) parseBitmask(enum Enumeration) {
-	for _, e := range enum.Elements {
-
-		p.enums.WriteString(fmt.Sprintf(
-			"\t%s %s = %d\n",
-			caseUpper(e.Name),
-			enum.Name,
-			1<<e.Bitpos,
-		))
-	}
+type XmlEnumElement struct {
+	Name  string `xml:"name,attr"`
+	Value string `xml:"value,attr"`
+	Bitpos string `xml:"bitpos,attr"`
 }
 
-func (p *VkParser) parseConstants(enum Enumeration) {
-	for _, e := range enum.Elements {
+type XmlEnum struct {
+	Name     string        `xml:"name,attr"`
+	Type     string        `xml:"type,attr"`
+	Elements []XmlEnumElement `xml:"enum"`
+}
 
-		val := strings.ReplaceAll(e.Value, "U", "")
-		val = strings.ReplaceAll(val, "F", "")
-		val = strings.ReplaceAll(val, "f", "")
-		val = strings.ReplaceAll(val, "LL", "")
-		val = strings.ReplaceAll(val, "(", "")
-		val = strings.ReplaceAll(val, ")", "")
-		val = strings.ReplaceAll(val, "~", "^")
-
-		p.enums.WriteString(fmt.Sprintf(
-			"\t%s = %s\n",
-			caseUpper(e.Name),
-			val,
-		))
+func (e *XmlEnum) Parse() *Enum {
+	out := &Enum{
+		Name:     e.Name,
+		Elements: make([]EnumElement, 0),
 	}
+
+	switch e.Type {
+	case "constants":
+		out.Type = EnumConst
+	case "bitmask":
+		out.Type = EnumBitmask
+	case "enum":
+		out.Type = EnumDefault
+	}
+
+	for _, element := range e.Elements {
+		var ee EnumElement
+		ee.Name = element.Name
+
+		if out.Type == EnumBitmask {
+			ee.Value = element.Bitpos
+		} else {
+			ee.Value = element.Value
+		}
+
+		if ee.Value == "" {
+			ee.Value = "0"
+		}
+
+		out.Elements = append(out.Elements, ee)
+	}
+
+	return out
 }
