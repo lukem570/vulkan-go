@@ -1390,6 +1390,2312 @@ type VkStencilFaceFlags VkFlags
 // Target: VK_VERSION_1_0
 
 // Feature requirements
+// Target: VK_BASE_VERSION_1_1
+
+// API version macros
+// Device Initialization
+
+type VkSubgroupFeatureFlags VkFlags
+
+// Promoted from VK_KHR_bind_memory2
+
+type VkBindBufferMemoryInfo struct {
+	SType        VkStructureType
+	PNext        unsafe.Pointer
+	Buffer       VkBuffer
+	Memory       VkDeviceMemory
+	MemoryOffset VkDeviceSize
+}
+
+type VkBindImageMemoryInfo struct {
+	SType        VkStructureType
+	PNext        unsafe.Pointer
+	Image        VkImage
+	Memory       VkDeviceMemory
+	MemoryOffset VkDeviceSize
+}
+
+// Promoted from VK_KHR_dedicated_allocation
+
+type VkMemoryDedicatedRequirements struct {
+	SType                       VkStructureType
+	PNext                       unsafe.Pointer
+	PrefersDedicatedAllocation  VkBool32
+	RequiresDedicatedAllocation VkBool32
+}
+
+type VkMemoryDedicatedAllocateInfo struct {
+	SType  VkStructureType
+	PNext  unsafe.Pointer
+	Image  VkImage
+	Buffer VkBuffer
+}
+
+// Promoted from VK_KHR_device_group
+
+type VkPeerMemoryFeatureFlags VkFlags
+
+type VkMemoryAllocateFlags VkFlags
+
+type VkMemoryAllocateFlagsInfo struct {
+	SType      VkStructureType
+	PNext      unsafe.Pointer
+	Flags      VkMemoryAllocateFlags
+	DeviceMask uint32
+}
+
+type VkDeviceGroupCommandBufferBeginInfo struct {
+	SType      VkStructureType
+	PNext      unsafe.Pointer
+	DeviceMask uint32
+}
+
+type VkDeviceGroupSubmitInfo struct {
+	SType                         VkStructureType
+	PNext                         unsafe.Pointer
+	WaitSemaphoreCount            uint32
+	PWaitSemaphoreDeviceIndices   *uint32
+	CommandBufferCount            uint32
+	PCommandBufferDeviceMasks     *uint32
+	SignalSemaphoreCount          uint32
+	PSignalSemaphoreDeviceIndices *uint32
+}
+
+type VkDeviceGroupBindSparseInfo struct {
+	SType               VkStructureType
+	PNext               unsafe.Pointer
+	ResourceDeviceIndex uint32
+	MemoryDeviceIndex   uint32
+}
+
+// Promoted from VK_KHR_device_group + VK_KHR_bind_memory2
+
+type VkBindBufferMemoryDeviceGroupInfo struct {
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	DeviceIndexCount uint32
+	PDeviceIndices   *uint32
+}
+
+type VkBindImageMemoryDeviceGroupInfo struct {
+	SType                        VkStructureType
+	PNext                        unsafe.Pointer
+	DeviceIndexCount             uint32
+	PDeviceIndices               *uint32
+	SplitInstanceBindRegionCount uint32
+	PSplitInstanceBindRegions    *VkRect2D
+}
+
+// Promoted from VK_KHR_device_group_creation
+
+type VkPhysicalDeviceGroupProperties struct {
+	SType               VkStructureType
+	PNext               unsafe.Pointer
+	PhysicalDeviceCount uint32
+	PhysicalDevices     [VkMaxDeviceGroupSize]VkPhysicalDevice
+	SubsetAllocation    VkBool32
+}
+
+type VkDeviceGroupDeviceCreateInfo struct {
+	SType               VkStructureType
+	PNext               unsafe.Pointer
+	PhysicalDeviceCount uint32
+	PPhysicalDevices    *VkPhysicalDevice
+}
+
+// Promoted from VK_KHR_get_memory_requirements2
+
+type VkBufferMemoryRequirementsInfo2 struct {
+	SType  VkStructureType
+	PNext  unsafe.Pointer
+	Buffer VkBuffer
+}
+
+type VkImageMemoryRequirementsInfo2 struct {
+	SType VkStructureType
+	PNext unsafe.Pointer
+	Image VkImage
+}
+
+type VkImageSparseMemoryRequirementsInfo2 struct {
+	SType VkStructureType
+	PNext unsafe.Pointer
+	Image VkImage
+}
+
+type VkMemoryRequirements2 struct {
+	SType              VkStructureType
+	PNext              unsafe.Pointer
+	MemoryRequirements VkMemoryRequirements
+}
+
+type VkSparseImageMemoryRequirements2 struct {
+	SType              VkStructureType
+	PNext              unsafe.Pointer
+	MemoryRequirements VkSparseImageMemoryRequirements
+}
+
+// Promoted from VK_KHR_get_physical_device_properties2
+
+type VkPhysicalDeviceFeatures2 struct {
+	SType    VkStructureType
+	PNext    unsafe.Pointer
+	Features VkPhysicalDeviceFeatures
+}
+
+type VkPhysicalDeviceProperties2 struct {
+	SType      VkStructureType
+	PNext      unsafe.Pointer
+	Properties VkPhysicalDeviceProperties
+}
+
+type VkFormatProperties2 struct {
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	FormatProperties VkFormatProperties
+}
+
+type VkImageFormatProperties2 struct {
+	SType                 VkStructureType
+	PNext                 unsafe.Pointer
+	ImageFormatProperties VkImageFormatProperties
+}
+
+type VkPhysicalDeviceImageFormatInfo2 struct {
+	SType  VkStructureType
+	PNext  unsafe.Pointer
+	Format VkFormat
+	Type   VkImageType
+	Tiling VkImageTiling
+	Usage  VkImageUsageFlags
+	Flags  VkImageCreateFlags
+}
+
+type VkQueueFamilyProperties2 struct {
+	SType                 VkStructureType
+	PNext                 unsafe.Pointer
+	QueueFamilyProperties VkQueueFamilyProperties
+}
+
+type VkPhysicalDeviceMemoryProperties2 struct {
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	MemoryProperties VkPhysicalDeviceMemoryProperties
+}
+
+type VkSparseImageFormatProperties2 struct {
+	SType      VkStructureType
+	PNext      unsafe.Pointer
+	Properties VkSparseImageFormatProperties
+}
+
+type VkPhysicalDeviceSparseImageFormatInfo2 struct {
+	SType   VkStructureType
+	PNext   unsafe.Pointer
+	Format  VkFormat
+	Type    VkImageType
+	Samples VkSampleCountFlagBits
+	Usage   VkImageUsageFlags
+	Tiling  VkImageTiling
+}
+
+// Promoted from VK_KHR_maintenance1
+
+type VkCommandPoolTrimFlags VkFlags
+
+// Promoted from VK_KHR_maintenance2
+
+type VkImageViewUsageCreateInfo struct {
+	SType VkStructureType
+	PNext unsafe.Pointer
+	Usage VkImageUsageFlags
+}
+
+// Originally based on VK_KHR_protected_memory (extension 146), which was never published; thus the mystifying large value= numbers below. These are not aliased since they were not actually promoted from an extension.
+
+type VkPhysicalDeviceProtectedMemoryFeatures struct {
+	SType           VkStructureType
+	PNext           unsafe.Pointer
+	ProtectedMemory VkBool32
+}
+
+type VkPhysicalDeviceProtectedMemoryProperties struct {
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	ProtectedNoFault VkBool32
+}
+
+type VkDeviceQueueInfo2 struct {
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	Flags            VkDeviceQueueCreateFlags
+	QueueFamilyIndex uint32
+	QueueIndex       uint32
+}
+
+type VkProtectedSubmitInfo struct {
+	SType           VkStructureType
+	PNext           unsafe.Pointer
+	ProtectedSubmit VkBool32
+}
+
+// Promoted from VK_KHR_sampler_ycbcr_conversion
+
+type VkBindImagePlaneMemoryInfo struct {
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	PlaneAspect VkImageAspectFlagBits
+}
+
+type VkImagePlaneMemoryRequirementsInfo struct {
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	PlaneAspect VkImageAspectFlagBits
+}
+
+// Promoted from VK_KHR_external_memory_capabilities
+
+type VkExternalMemoryHandleTypeFlags VkFlags
+
+type VkExternalMemoryFeatureFlags VkFlags
+
+type VkExternalMemoryProperties struct {
+	ExternalMemoryFeatures        VkExternalMemoryFeatureFlags
+	ExportFromImportedHandleTypes VkExternalMemoryHandleTypeFlags
+	CompatibleHandleTypes         VkExternalMemoryHandleTypeFlags
+}
+
+type VkPhysicalDeviceExternalImageFormatInfo struct {
+	SType      VkStructureType
+	PNext      unsafe.Pointer
+	HandleType VkExternalMemoryHandleTypeFlagBits
+}
+
+type VkExternalImageFormatProperties struct {
+	SType                    VkStructureType
+	PNext                    unsafe.Pointer
+	ExternalMemoryProperties VkExternalMemoryProperties
+}
+
+type VkPhysicalDeviceExternalBufferInfo struct {
+	SType      VkStructureType
+	PNext      unsafe.Pointer
+	Flags      VkBufferCreateFlags
+	Usage      VkBufferUsageFlags
+	HandleType VkExternalMemoryHandleTypeFlagBits
+}
+
+type VkExternalBufferProperties struct {
+	SType                    VkStructureType
+	PNext                    unsafe.Pointer
+	ExternalMemoryProperties VkExternalMemoryProperties
+}
+
+type VkPhysicalDeviceIDProperties struct {
+	SType           VkStructureType
+	PNext           unsafe.Pointer
+	DeviceUUID      [VkUuidSize]uint8
+	DriverUUID      [VkUuidSize]uint8
+	DeviceLUID      [VkLuidSize]uint8
+	DeviceNodeMask  uint32
+	DeviceLUIDValid VkBool32
+}
+
+// Promoted from VK_KHR_external_memory
+
+type VkExternalMemoryImageCreateInfo struct {
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	HandleTypes VkExternalMemoryHandleTypeFlags
+}
+
+type VkExternalMemoryBufferCreateInfo struct {
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	HandleTypes VkExternalMemoryHandleTypeFlags
+}
+
+type VkExportMemoryAllocateInfo struct {
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	HandleTypes VkExternalMemoryHandleTypeFlags
+}
+
+// Promoted from VK_KHR_external_fence_capabilities
+
+type VkExternalFenceHandleTypeFlags VkFlags
+
+type VkExternalFenceFeatureFlags VkFlags
+
+type VkPhysicalDeviceExternalFenceInfo struct {
+	SType      VkStructureType
+	PNext      unsafe.Pointer
+	HandleType VkExternalFenceHandleTypeFlagBits
+}
+
+type VkExternalFenceProperties struct {
+	SType                         VkStructureType
+	PNext                         unsafe.Pointer
+	ExportFromImportedHandleTypes VkExternalFenceHandleTypeFlags
+	CompatibleHandleTypes         VkExternalFenceHandleTypeFlags
+	ExternalFenceFeatures         VkExternalFenceFeatureFlags
+}
+
+// Promoted from VK_KHR_external_fence
+
+type VkFenceImportFlags VkFlags
+
+type VkExportFenceCreateInfo struct {
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	HandleTypes VkExternalFenceHandleTypeFlags
+}
+
+// Promoted from VK_KHR_external_semaphore
+
+type VkSemaphoreImportFlags VkFlags
+
+type VkExportSemaphoreCreateInfo struct {
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	HandleTypes VkExternalSemaphoreHandleTypeFlags
+}
+
+// Promoted from VK_KHR_external_semaphore_capabilities
+
+type VkExternalSemaphoreHandleTypeFlags VkFlags
+
+type VkExternalSemaphoreFeatureFlags VkFlags
+
+type VkPhysicalDeviceExternalSemaphoreInfo struct {
+	SType      VkStructureType
+	PNext      unsafe.Pointer
+	HandleType VkExternalSemaphoreHandleTypeFlagBits
+}
+
+type VkExternalSemaphoreProperties struct {
+	SType                         VkStructureType
+	PNext                         unsafe.Pointer
+	ExportFromImportedHandleTypes VkExternalSemaphoreHandleTypeFlags
+	CompatibleHandleTypes         VkExternalSemaphoreHandleTypeFlags
+	ExternalSemaphoreFeatures     VkExternalSemaphoreFeatureFlags
+}
+
+// Target: VK_COMPUTE_VERSION_1_1
+
+// Promoted from VK_KHR_relaxed_block_layout, which has no API
+// Promoted from VK_KHR_storage_buffer_storage_class, which has no API
+// Originally based on VK_KHR_subgroup (extension 94), but the actual enum block used was, incorrectly, that of extension 95
+
+type VkPhysicalDeviceSubgroupProperties struct {
+	SType                     VkStructureType
+	PNext                     unsafe.Pointer
+	SubgroupSize              uint32
+	SupportedStages           VkShaderStageFlags
+	SupportedOperations       VkSubgroupFeatureFlags
+	QuadOperationsInAllStages VkBool32
+}
+
+// Promoted from VK_KHR_16bit_storage
+
+type VkPhysicalDevice16BitStorageFeatures struct {
+	SType                              VkStructureType
+	PNext                              unsafe.Pointer
+	StorageBuffer16BitAccess           VkBool32
+	UniformAndStorageBuffer16BitAccess VkBool32
+	StoragePushConstant16              VkBool32
+	StorageInputOutput16               VkBool32
+}
+
+// Promoted from VK_KHR_device_group
+// Promoted from VK_KHR_variable_pointers
+
+type VkPhysicalDeviceVariablePointersFeatures struct {
+	SType                         VkStructureType
+	PNext                         unsafe.Pointer
+	VariablePointersStorageBuffer VkBool32
+	VariablePointers              VkBool32
+}
+
+type VkPhysicalDeviceVariablePointerFeatures struct {
+}
+
+// Promoted from VK_KHR_descriptor_update_template
+
+type VkDescriptorUpdateTemplate unsafe.Pointer
+
+type VkDescriptorUpdateTemplateCreateFlags VkFlags
+
+type VkDescriptorUpdateTemplateEntry struct {
+	DstBinding      uint32
+	DstArrayElement uint32
+	DescriptorCount uint32
+	DescriptorType  VkDescriptorType
+	Offset          uint
+	Stride          uint
+}
+
+type VkDescriptorUpdateTemplateCreateInfo struct {
+	SType                      VkStructureType
+	PNext                      unsafe.Pointer
+	Flags                      VkDescriptorUpdateTemplateCreateFlags
+	DescriptorUpdateEntryCount uint32
+	PDescriptorUpdateEntries   *VkDescriptorUpdateTemplateEntry
+	TemplateType               VkDescriptorUpdateTemplateType
+	DescriptorSetLayout        VkDescriptorSetLayout
+	PipelineBindPoint          VkPipelineBindPoint
+	PipelineLayout             VkPipelineLayout
+	Set                        uint32
+}
+
+// Promoted from VK_KHR_maintenance3
+
+type VkPhysicalDeviceMaintenance3Properties struct {
+	SType                   VkStructureType
+	PNext                   unsafe.Pointer
+	MaxPerSetDescriptors    uint32
+	MaxMemoryAllocationSize VkDeviceSize
+}
+
+type VkDescriptorSetLayoutSupport struct {
+	SType     VkStructureType
+	PNext     unsafe.Pointer
+	Supported VkBool32
+}
+
+// Promoted from VK_KHR_sampler_ycbcr_conversion
+
+type VkSamplerYcbcrConversionCreateInfo struct {
+	SType                       VkStructureType
+	PNext                       unsafe.Pointer
+	Format                      VkFormat
+	YcbcrModel                  VkSamplerYcbcrModelConversion
+	YcbcrRange                  VkSamplerYcbcrRange
+	Components                  VkComponentMapping
+	XChromaOffset               VkChromaLocation
+	YChromaOffset               VkChromaLocation
+	ChromaFilter                VkFilter
+	ForceExplicitReconstruction VkBool32
+}
+
+type VkSamplerYcbcrConversionInfo struct {
+	SType      VkStructureType
+	PNext      unsafe.Pointer
+	Conversion VkSamplerYcbcrConversion
+}
+
+type VkPhysicalDeviceSamplerYcbcrConversionFeatures struct {
+	SType                  VkStructureType
+	PNext                  unsafe.Pointer
+	SamplerYcbcrConversion VkBool32
+}
+
+type VkSamplerYcbcrConversionImageFormatProperties struct {
+	SType                               VkStructureType
+	PNext                               unsafe.Pointer
+	CombinedImageSamplerDescriptorCount uint32
+}
+
+type VkSamplerYcbcrConversion unsafe.Pointer
+
+// Target: VK_GRAPHICS_VERSION_1_1
+
+// Promoted from VK_KHR_device_group
+
+type VkDeviceGroupRenderPassBeginInfo struct {
+	SType                 VkStructureType
+	PNext                 unsafe.Pointer
+	DeviceMask            uint32
+	DeviceRenderAreaCount uint32
+	PDeviceRenderAreas    *VkRect2D
+}
+
+// Promoted from VK_KHR_maintenance2
+
+type VkPhysicalDevicePointClippingProperties struct {
+	SType                 VkStructureType
+	PNext                 unsafe.Pointer
+	PointClippingBehavior VkPointClippingBehavior
+}
+
+type VkInputAttachmentAspectReference struct {
+	Subpass              uint32
+	InputAttachmentIndex uint32
+	AspectMask           VkImageAspectFlags
+}
+
+type VkRenderPassInputAttachmentAspectCreateInfo struct {
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	AspectReferenceCount uint32
+	PAspectReferences    *VkInputAttachmentAspectReference
+}
+
+type VkPipelineTessellationDomainOriginStateCreateInfo struct {
+	SType        VkStructureType
+	PNext        unsafe.Pointer
+	DomainOrigin VkTessellationDomainOrigin
+}
+
+// Promoted from VK_KHR_multiview
+
+type VkRenderPassMultiviewCreateInfo struct {
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	SubpassCount         uint32
+	PViewMasks           *uint32
+	DependencyCount      uint32
+	PViewOffsets         *int32
+	CorrelationMaskCount uint32
+	PCorrelationMasks    *uint32
+}
+
+type VkPhysicalDeviceMultiviewFeatures struct {
+	SType                       VkStructureType
+	PNext                       unsafe.Pointer
+	Multiview                   VkBool32
+	MultiviewGeometryShader     VkBool32
+	MultiviewTessellationShader VkBool32
+}
+
+type VkPhysicalDeviceMultiviewProperties struct {
+	SType                     VkStructureType
+	PNext                     unsafe.Pointer
+	MaxMultiviewViewCount     uint32
+	MaxMultiviewInstanceIndex uint32
+}
+
+// Promoted from VK_KHR_shader_draw_parameters, with a feature support query added
+
+type VkPhysicalDeviceShaderDrawParametersFeatures struct {
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	ShaderDrawParameters VkBool32
+}
+
+type VkPhysicalDeviceShaderDrawParameterFeatures struct {
+}
+
+// Target: VK_VERSION_1_1
+
+// Feature requirements
+// Target: VK_BASE_VERSION_1_2
+
+// API version macros
+// Promoted from VK_KHR_driver_properties (extension 197)
+
+type VkConformanceVersion struct {
+	Major    uint8
+	Minor    uint8
+	Subminor uint8
+	Patch    uint8
+}
+
+type VkPhysicalDeviceDriverProperties struct {
+	SType              VkStructureType
+	PNext              unsafe.Pointer
+	DriverID           VkDriverId
+	DriverName         [VkMaxDriverNameSize]uint8
+	DriverInfo         [VkMaxDriverInfoSize]uint8
+	ConformanceVersion VkConformanceVersion
+}
+
+type VkPhysicalDeviceVulkan11Features struct {
+	SType                              VkStructureType
+	PNext                              unsafe.Pointer
+	StorageBuffer16BitAccess           VkBool32
+	UniformAndStorageBuffer16BitAccess VkBool32
+	StoragePushConstant16              VkBool32
+	StorageInputOutput16               VkBool32
+	Multiview                          VkBool32
+	MultiviewGeometryShader            VkBool32
+	MultiviewTessellationShader        VkBool32
+	VariablePointersStorageBuffer      VkBool32
+	VariablePointers                   VkBool32
+	ProtectedMemory                    VkBool32
+	SamplerYcbcrConversion             VkBool32
+	ShaderDrawParameters               VkBool32
+}
+
+type VkPhysicalDeviceVulkan11Properties struct {
+	SType                             VkStructureType
+	PNext                             unsafe.Pointer
+	DeviceUUID                        [VkUuidSize]uint8
+	DriverUUID                        [VkUuidSize]uint8
+	DeviceLUID                        [VkLuidSize]uint8
+	DeviceNodeMask                    uint32
+	DeviceLUIDValid                   VkBool32
+	SubgroupSize                      uint32
+	SubgroupSupportedStages           VkShaderStageFlags
+	SubgroupSupportedOperations       VkSubgroupFeatureFlags
+	SubgroupQuadOperationsInAllStages VkBool32
+	PointClippingBehavior             VkPointClippingBehavior
+	MaxMultiviewViewCount             uint32
+	MaxMultiviewInstanceIndex         uint32
+	ProtectedNoFault                  VkBool32
+	MaxPerSetDescriptors              uint32
+	MaxMemoryAllocationSize           VkDeviceSize
+}
+
+type VkResolveModeFlags VkFlags
+
+type VkPhysicalDeviceVulkan12Features struct {
+	SType                                              VkStructureType
+	PNext                                              unsafe.Pointer
+	SamplerMirrorClampToEdge                           VkBool32
+	DrawIndirectCount                                  VkBool32
+	StorageBuffer8BitAccess                            VkBool32
+	UniformAndStorageBuffer8BitAccess                  VkBool32
+	StoragePushConstant8                               VkBool32
+	ShaderBufferInt64Atomics                           VkBool32
+	ShaderSharedInt64Atomics                           VkBool32
+	ShaderFloat16                                      VkBool32
+	ShaderInt8                                         VkBool32
+	DescriptorIndexing                                 VkBool32
+	ShaderInputAttachmentArrayDynamicIndexing          VkBool32
+	ShaderUniformTexelBufferArrayDynamicIndexing       VkBool32
+	ShaderStorageTexelBufferArrayDynamicIndexing       VkBool32
+	ShaderUniformBufferArrayNonUniformIndexing         VkBool32
+	ShaderSampledImageArrayNonUniformIndexing          VkBool32
+	ShaderStorageBufferArrayNonUniformIndexing         VkBool32
+	ShaderStorageImageArrayNonUniformIndexing          VkBool32
+	ShaderInputAttachmentArrayNonUniformIndexing       VkBool32
+	ShaderUniformTexelBufferArrayNonUniformIndexing    VkBool32
+	ShaderStorageTexelBufferArrayNonUniformIndexing    VkBool32
+	DescriptorBindingUniformBufferUpdateAfterBind      VkBool32
+	DescriptorBindingSampledImageUpdateAfterBind       VkBool32
+	DescriptorBindingStorageImageUpdateAfterBind       VkBool32
+	DescriptorBindingStorageBufferUpdateAfterBind      VkBool32
+	DescriptorBindingUniformTexelBufferUpdateAfterBind VkBool32
+	DescriptorBindingStorageTexelBufferUpdateAfterBind VkBool32
+	DescriptorBindingUpdateUnusedWhilePending          VkBool32
+	DescriptorBindingPartiallyBound                    VkBool32
+	DescriptorBindingVariableDescriptorCount           VkBool32
+	RuntimeDescriptorArray                             VkBool32
+	SamplerFilterMinmax                                VkBool32
+	ScalarBlockLayout                                  VkBool32
+	ImagelessFramebuffer                               VkBool32
+	UniformBufferStandardLayout                        VkBool32
+	ShaderSubgroupExtendedTypes                        VkBool32
+	SeparateDepthStencilLayouts                        VkBool32
+	HostQueryReset                                     VkBool32
+	TimelineSemaphore                                  VkBool32
+	BufferDeviceAddress                                VkBool32
+	BufferDeviceAddressCaptureReplay                   VkBool32
+	BufferDeviceAddressMultiDevice                     VkBool32
+	VulkanMemoryModel                                  VkBool32
+	VulkanMemoryModelDeviceScope                       VkBool32
+	VulkanMemoryModelAvailabilityVisibilityChains      VkBool32
+	ShaderOutputViewportIndex                          VkBool32
+	ShaderOutputLayer                                  VkBool32
+	SubgroupBroadcastDynamicId                         VkBool32
+}
+
+type VkPhysicalDeviceVulkan12Properties struct {
+	SType                                                VkStructureType
+	PNext                                                unsafe.Pointer
+	DriverID                                             VkDriverId
+	DriverName                                           [VkMaxDriverNameSize]uint8
+	DriverInfo                                           [VkMaxDriverInfoSize]uint8
+	ConformanceVersion                                   VkConformanceVersion
+	DenormBehaviorIndependence                           VkShaderFloatControlsIndependence
+	RoundingModeIndependence                             VkShaderFloatControlsIndependence
+	ShaderSignedZeroInfNanPreserveFloat16                VkBool32
+	ShaderSignedZeroInfNanPreserveFloat32                VkBool32
+	ShaderSignedZeroInfNanPreserveFloat64                VkBool32
+	ShaderDenormPreserveFloat16                          VkBool32
+	ShaderDenormPreserveFloat32                          VkBool32
+	ShaderDenormPreserveFloat64                          VkBool32
+	ShaderDenormFlushToZeroFloat16                       VkBool32
+	ShaderDenormFlushToZeroFloat32                       VkBool32
+	ShaderDenormFlushToZeroFloat64                       VkBool32
+	ShaderRoundingModeRTEFloat16                         VkBool32
+	ShaderRoundingModeRTEFloat32                         VkBool32
+	ShaderRoundingModeRTEFloat64                         VkBool32
+	ShaderRoundingModeRTZFloat16                         VkBool32
+	ShaderRoundingModeRTZFloat32                         VkBool32
+	ShaderRoundingModeRTZFloat64                         VkBool32
+	MaxUpdateAfterBindDescriptorsInAllPools              uint32
+	ShaderUniformBufferArrayNonUniformIndexingNative     VkBool32
+	ShaderSampledImageArrayNonUniformIndexingNative      VkBool32
+	ShaderStorageBufferArrayNonUniformIndexingNative     VkBool32
+	ShaderStorageImageArrayNonUniformIndexingNative      VkBool32
+	ShaderInputAttachmentArrayNonUniformIndexingNative   VkBool32
+	RobustBufferAccessUpdateAfterBind                    VkBool32
+	QuadDivergentImplicitLod                             VkBool32
+	MaxPerStageDescriptorUpdateAfterBindSamplers         uint32
+	MaxPerStageDescriptorUpdateAfterBindUniformBuffers   uint32
+	MaxPerStageDescriptorUpdateAfterBindStorageBuffers   uint32
+	MaxPerStageDescriptorUpdateAfterBindSampledImages    uint32
+	MaxPerStageDescriptorUpdateAfterBindStorageImages    uint32
+	MaxPerStageDescriptorUpdateAfterBindInputAttachments uint32
+	MaxPerStageUpdateAfterBindResources                  uint32
+	MaxDescriptorSetUpdateAfterBindSamplers              uint32
+	MaxDescriptorSetUpdateAfterBindUniformBuffers        uint32
+	MaxDescriptorSetUpdateAfterBindUniformBuffersDynamic uint32
+	MaxDescriptorSetUpdateAfterBindStorageBuffers        uint32
+	MaxDescriptorSetUpdateAfterBindStorageBuffersDynamic uint32
+	MaxDescriptorSetUpdateAfterBindSampledImages         uint32
+	MaxDescriptorSetUpdateAfterBindStorageImages         uint32
+	MaxDescriptorSetUpdateAfterBindInputAttachments      uint32
+	SupportedDepthResolveModes                           VkResolveModeFlags
+	SupportedStencilResolveModes                         VkResolveModeFlags
+	IndependentResolveNone                               VkBool32
+	IndependentResolve                                   VkBool32
+	FilterMinmaxSingleComponentFormats                   VkBool32
+	FilterMinmaxImageComponentMapping                    VkBool32
+	MaxTimelineSemaphoreValueDifference                  uint64
+	FramebufferIntegerColorSampleCounts                  VkSampleCountFlags
+}
+
+// Promoted from VK_KHR_image_format_list (extension 148)
+
+type VkImageFormatListCreateInfo struct {
+	SType           VkStructureType
+	PNext           unsafe.Pointer
+	ViewFormatCount uint32
+	PViewFormats    *VkFormat
+}
+
+// Promoted from VK_KHR_sampler_mirror_clamp_to_edge (extension 15)
+// Promoted from VK_KHR_vulkan_memory_model (extension 212)
+
+type VkPhysicalDeviceVulkanMemoryModelFeatures struct {
+	SType                                         VkStructureType
+	PNext                                         unsafe.Pointer
+	VulkanMemoryModel                             VkBool32
+	VulkanMemoryModelDeviceScope                  VkBool32
+	VulkanMemoryModelAvailabilityVisibilityChains VkBool32
+}
+
+// Promoted from VK_EXT_host_query_reset (extension 262)
+
+type VkPhysicalDeviceHostQueryResetFeatures struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	HostQueryReset VkBool32
+}
+
+// Promoted from VK_KHR_timeline_semaphore (extension 208)
+
+type VkPhysicalDeviceTimelineSemaphoreFeatures struct {
+	SType             VkStructureType
+	PNext             unsafe.Pointer
+	TimelineSemaphore VkBool32
+}
+
+type VkPhysicalDeviceTimelineSemaphoreProperties struct {
+	SType                               VkStructureType
+	PNext                               unsafe.Pointer
+	MaxTimelineSemaphoreValueDifference uint64
+}
+
+type VkSemaphoreTypeCreateInfo struct {
+	SType         VkStructureType
+	PNext         unsafe.Pointer
+	SemaphoreType VkSemaphoreType
+	InitialValue  uint64
+}
+
+type VkTimelineSemaphoreSubmitInfo struct {
+	SType                     VkStructureType
+	PNext                     unsafe.Pointer
+	WaitSemaphoreValueCount   uint32
+	PWaitSemaphoreValues      *uint64
+	SignalSemaphoreValueCount uint32
+	PSignalSemaphoreValues    *uint64
+}
+
+type VkSemaphoreWaitFlags VkFlags
+
+type VkSemaphoreWaitInfo struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	Flags          VkSemaphoreWaitFlags
+	SemaphoreCount uint32
+	PSemaphores    *VkSemaphore
+	PValues        *uint64
+}
+
+type VkSemaphoreSignalInfo struct {
+	SType     VkStructureType
+	PNext     unsafe.Pointer
+	Semaphore VkSemaphore
+	Value     uint64
+}
+
+// Promoted from VK_KHR_buffer_device_address (extension 258)
+
+type VkPhysicalDeviceBufferDeviceAddressFeatures struct {
+	SType                            VkStructureType
+	PNext                            unsafe.Pointer
+	BufferDeviceAddress              VkBool32
+	BufferDeviceAddressCaptureReplay VkBool32
+	BufferDeviceAddressMultiDevice   VkBool32
+}
+
+type VkBufferDeviceAddressInfo struct {
+	SType  VkStructureType
+	PNext  unsafe.Pointer
+	Buffer VkBuffer
+}
+
+type VkBufferOpaqueCaptureAddressCreateInfo struct {
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	OpaqueCaptureAddress uint64
+}
+
+type VkMemoryOpaqueCaptureAddressAllocateInfo struct {
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	OpaqueCaptureAddress uint64
+}
+
+type VkDeviceMemoryOpaqueCaptureAddressInfo struct {
+	SType  VkStructureType
+	PNext  unsafe.Pointer
+	Memory VkDeviceMemory
+}
+
+// Target: VK_COMPUTE_VERSION_1_2
+
+// Promoted from VK_KHR_8bit_storage (extension 178)
+
+type VkPhysicalDevice8BitStorageFeatures struct {
+	SType                             VkStructureType
+	PNext                             unsafe.Pointer
+	StorageBuffer8BitAccess           VkBool32
+	UniformAndStorageBuffer8BitAccess VkBool32
+	StoragePushConstant8              VkBool32
+}
+
+// Promoted from VK_KHR_shader_atomic_int64 (extension 181)
+
+type VkPhysicalDeviceShaderAtomicInt64Features struct {
+	SType                    VkStructureType
+	PNext                    unsafe.Pointer
+	ShaderBufferInt64Atomics VkBool32
+	ShaderSharedInt64Atomics VkBool32
+}
+
+// Promoted from VK_KHR_shader_float16_int8 (extension 83)
+
+type VkPhysicalDeviceShaderFloat16Int8Features struct {
+	SType         VkStructureType
+	PNext         unsafe.Pointer
+	ShaderFloat16 VkBool32
+	ShaderInt8    VkBool32
+}
+
+// Promoted from VK_KHR_shader_float_controls (extension 198)
+
+type VkPhysicalDeviceFloatControlsProperties struct {
+	SType                                 VkStructureType
+	PNext                                 unsafe.Pointer
+	DenormBehaviorIndependence            VkShaderFloatControlsIndependence
+	RoundingModeIndependence              VkShaderFloatControlsIndependence
+	ShaderSignedZeroInfNanPreserveFloat16 VkBool32
+	ShaderSignedZeroInfNanPreserveFloat32 VkBool32
+	ShaderSignedZeroInfNanPreserveFloat64 VkBool32
+	ShaderDenormPreserveFloat16           VkBool32
+	ShaderDenormPreserveFloat32           VkBool32
+	ShaderDenormPreserveFloat64           VkBool32
+	ShaderDenormFlushToZeroFloat16        VkBool32
+	ShaderDenormFlushToZeroFloat32        VkBool32
+	ShaderDenormFlushToZeroFloat64        VkBool32
+	ShaderRoundingModeRTEFloat16          VkBool32
+	ShaderRoundingModeRTEFloat32          VkBool32
+	ShaderRoundingModeRTEFloat64          VkBool32
+	ShaderRoundingModeRTZFloat16          VkBool32
+	ShaderRoundingModeRTZFloat32          VkBool32
+	ShaderRoundingModeRTZFloat64          VkBool32
+}
+
+// Promoted from VK_EXT_descriptor_indexing (extension 162)
+
+type VkDescriptorSetLayoutBindingFlagsCreateInfo struct {
+	SType         VkStructureType
+	PNext         unsafe.Pointer
+	BindingCount  uint32
+	PBindingFlags *VkDescriptorBindingFlags
+}
+
+type VkPhysicalDeviceDescriptorIndexingFeatures struct {
+	SType                                              VkStructureType
+	PNext                                              unsafe.Pointer
+	ShaderInputAttachmentArrayDynamicIndexing          VkBool32
+	ShaderUniformTexelBufferArrayDynamicIndexing       VkBool32
+	ShaderStorageTexelBufferArrayDynamicIndexing       VkBool32
+	ShaderUniformBufferArrayNonUniformIndexing         VkBool32
+	ShaderSampledImageArrayNonUniformIndexing          VkBool32
+	ShaderStorageBufferArrayNonUniformIndexing         VkBool32
+	ShaderStorageImageArrayNonUniformIndexing          VkBool32
+	ShaderInputAttachmentArrayNonUniformIndexing       VkBool32
+	ShaderUniformTexelBufferArrayNonUniformIndexing    VkBool32
+	ShaderStorageTexelBufferArrayNonUniformIndexing    VkBool32
+	DescriptorBindingUniformBufferUpdateAfterBind      VkBool32
+	DescriptorBindingSampledImageUpdateAfterBind       VkBool32
+	DescriptorBindingStorageImageUpdateAfterBind       VkBool32
+	DescriptorBindingStorageBufferUpdateAfterBind      VkBool32
+	DescriptorBindingUniformTexelBufferUpdateAfterBind VkBool32
+	DescriptorBindingStorageTexelBufferUpdateAfterBind VkBool32
+	DescriptorBindingUpdateUnusedWhilePending          VkBool32
+	DescriptorBindingPartiallyBound                    VkBool32
+	DescriptorBindingVariableDescriptorCount           VkBool32
+	RuntimeDescriptorArray                             VkBool32
+}
+
+type VkPhysicalDeviceDescriptorIndexingProperties struct {
+	SType                                                VkStructureType
+	PNext                                                unsafe.Pointer
+	MaxUpdateAfterBindDescriptorsInAllPools              uint32
+	ShaderUniformBufferArrayNonUniformIndexingNative     VkBool32
+	ShaderSampledImageArrayNonUniformIndexingNative      VkBool32
+	ShaderStorageBufferArrayNonUniformIndexingNative     VkBool32
+	ShaderStorageImageArrayNonUniformIndexingNative      VkBool32
+	ShaderInputAttachmentArrayNonUniformIndexingNative   VkBool32
+	RobustBufferAccessUpdateAfterBind                    VkBool32
+	QuadDivergentImplicitLod                             VkBool32
+	MaxPerStageDescriptorUpdateAfterBindSamplers         uint32
+	MaxPerStageDescriptorUpdateAfterBindUniformBuffers   uint32
+	MaxPerStageDescriptorUpdateAfterBindStorageBuffers   uint32
+	MaxPerStageDescriptorUpdateAfterBindSampledImages    uint32
+	MaxPerStageDescriptorUpdateAfterBindStorageImages    uint32
+	MaxPerStageDescriptorUpdateAfterBindInputAttachments uint32
+	MaxPerStageUpdateAfterBindResources                  uint32
+	MaxDescriptorSetUpdateAfterBindSamplers              uint32
+	MaxDescriptorSetUpdateAfterBindUniformBuffers        uint32
+	MaxDescriptorSetUpdateAfterBindUniformBuffersDynamic uint32
+	MaxDescriptorSetUpdateAfterBindStorageBuffers        uint32
+	MaxDescriptorSetUpdateAfterBindStorageBuffersDynamic uint32
+	MaxDescriptorSetUpdateAfterBindSampledImages         uint32
+	MaxDescriptorSetUpdateAfterBindStorageImages         uint32
+	MaxDescriptorSetUpdateAfterBindInputAttachments      uint32
+}
+
+type VkDescriptorSetVariableDescriptorCountAllocateInfo struct {
+	SType              VkStructureType
+	PNext              unsafe.Pointer
+	DescriptorSetCount uint32
+	PDescriptorCounts  *uint32
+}
+
+type VkDescriptorSetVariableDescriptorCountLayoutSupport struct {
+	SType                      VkStructureType
+	PNext                      unsafe.Pointer
+	MaxVariableDescriptorCount uint32
+}
+
+type VkDescriptorBindingFlags VkFlags
+
+// Promoted from VK_EXT_scalar_block_layout (extension 222))
+
+type VkPhysicalDeviceScalarBlockLayoutFeatures struct {
+	SType             VkStructureType
+	PNext             unsafe.Pointer
+	ScalarBlockLayout VkBool32
+}
+
+// Promoted from VK_EXT_sampler_filter_minmax (extension 131)
+
+type VkSamplerReductionModeCreateInfo struct {
+	SType         VkStructureType
+	PNext         unsafe.Pointer
+	ReductionMode VkSamplerReductionMode
+}
+
+type VkPhysicalDeviceSamplerFilterMinmaxProperties struct {
+	SType                              VkStructureType
+	PNext                              unsafe.Pointer
+	FilterMinmaxSingleComponentFormats VkBool32
+	FilterMinmaxImageComponentMapping  VkBool32
+}
+
+// Promoted from VK_KHR_uniform_buffer_standard_layout (extension 254)
+
+type VkPhysicalDeviceUniformBufferStandardLayoutFeatures struct {
+	SType                       VkStructureType
+	PNext                       unsafe.Pointer
+	UniformBufferStandardLayout VkBool32
+}
+
+// Promoted from VK_KHR_shader_subgroup_extended_types (extension 176)
+
+type VkPhysicalDeviceShaderSubgroupExtendedTypesFeatures struct {
+	SType                       VkStructureType
+	PNext                       unsafe.Pointer
+	ShaderSubgroupExtendedTypes VkBool32
+}
+
+// Promoted from VK_KHR_spirv_1_4 (extension 237)
+// Target: VK_GRAPHICS_VERSION_1_2
+
+// Promoted from VK_KHR_draw_indirect_count (extension 170)
+// Promoted from VK_KHR_create_renderpass2 (extension 110)
+
+type VkAttachmentDescription2 struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	Flags          VkAttachmentDescriptionFlags
+	Format         VkFormat
+	Samples        VkSampleCountFlagBits
+	LoadOp         VkAttachmentLoadOp
+	StoreOp        VkAttachmentStoreOp
+	StencilLoadOp  VkAttachmentLoadOp
+	StencilStoreOp VkAttachmentStoreOp
+	InitialLayout  VkImageLayout
+	FinalLayout    VkImageLayout
+}
+
+type VkAttachmentReference2 struct {
+	SType      VkStructureType
+	PNext      unsafe.Pointer
+	Attachment uint32
+	Layout     VkImageLayout
+	AspectMask VkImageAspectFlags
+}
+
+type VkSubpassDescription2 struct {
+	SType                   VkStructureType
+	PNext                   unsafe.Pointer
+	Flags                   VkSubpassDescriptionFlags
+	PipelineBindPoint       VkPipelineBindPoint
+	ViewMask                uint32
+	InputAttachmentCount    uint32
+	PInputAttachments       *VkAttachmentReference2
+	ColorAttachmentCount    uint32
+	PColorAttachments       *VkAttachmentReference2
+	PResolveAttachments     *VkAttachmentReference2
+	PDepthStencilAttachment *VkAttachmentReference2
+	PreserveAttachmentCount uint32
+	PPreserveAttachments    *uint32
+}
+
+type VkSubpassDependency2 struct {
+	SType           VkStructureType
+	PNext           unsafe.Pointer
+	SrcSubpass      uint32
+	DstSubpass      uint32
+	SrcStageMask    VkPipelineStageFlags
+	DstStageMask    VkPipelineStageFlags
+	SrcAccessMask   VkAccessFlags
+	DstAccessMask   VkAccessFlags
+	DependencyFlags VkDependencyFlags
+	ViewOffset      int32
+}
+
+type VkSubpassBeginInfo struct {
+	SType    VkStructureType
+	PNext    unsafe.Pointer
+	Contents VkSubpassContents
+}
+
+type VkSubpassEndInfo struct {
+	SType VkStructureType
+	PNext unsafe.Pointer
+}
+
+type VkRenderPassCreateInfo2 struct {
+	SType                   VkStructureType
+	PNext                   unsafe.Pointer
+	Flags                   VkRenderPassCreateFlags
+	AttachmentCount         uint32
+	PAttachments            *VkAttachmentDescription2
+	SubpassCount            uint32
+	PSubpasses              *VkSubpassDescription2
+	DependencyCount         uint32
+	PDependencies           *VkSubpassDependency2
+	CorrelatedViewMaskCount uint32
+	PCorrelatedViewMasks    *uint32
+}
+
+// Promoted from VK_KHR_depth_stencil_resolve (extension 200)
+
+type VkSubpassDescriptionDepthStencilResolve struct {
+	SType                          VkStructureType
+	PNext                          unsafe.Pointer
+	DepthResolveMode               VkResolveModeFlagBits
+	StencilResolveMode             VkResolveModeFlagBits
+	PDepthStencilResolveAttachment *VkAttachmentReference2
+}
+
+type VkPhysicalDeviceDepthStencilResolveProperties struct {
+	SType                        VkStructureType
+	PNext                        unsafe.Pointer
+	SupportedDepthResolveModes   VkResolveModeFlags
+	SupportedStencilResolveModes VkResolveModeFlags
+	IndependentResolveNone       VkBool32
+	IndependentResolve           VkBool32
+}
+
+// Promoted from VK_EXT_separate_stencil_usage (extension 247)
+
+type VkImageStencilUsageCreateInfo struct {
+	SType        VkStructureType
+	PNext        unsafe.Pointer
+	StencilUsage VkImageUsageFlags
+}
+
+// Promoted from VK_KHR_imageless_framebuffer (extension 109)
+
+type VkPhysicalDeviceImagelessFramebufferFeatures struct {
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	ImagelessFramebuffer VkBool32
+}
+
+type VkFramebufferAttachmentImageInfo struct {
+	SType           VkStructureType
+	PNext           unsafe.Pointer
+	Flags           VkImageCreateFlags
+	Usage           VkImageUsageFlags
+	Width           uint32
+	Height          uint32
+	LayerCount      uint32
+	ViewFormatCount uint32
+	PViewFormats    *VkFormat
+}
+
+type VkRenderPassAttachmentBeginInfo struct {
+	SType           VkStructureType
+	PNext           unsafe.Pointer
+	AttachmentCount uint32
+	PAttachments    *VkImageView
+}
+
+type VkFramebufferAttachmentsCreateInfo struct {
+	SType                    VkStructureType
+	PNext                    unsafe.Pointer
+	AttachmentImageInfoCount uint32
+	PAttachmentImageInfos    *VkFramebufferAttachmentImageInfo
+}
+
+// Promoted from VK_KHR_separate_depth_stencil_layouts (extension 242)
+
+type VkPhysicalDeviceSeparateDepthStencilLayoutsFeatures struct {
+	SType                       VkStructureType
+	PNext                       unsafe.Pointer
+	SeparateDepthStencilLayouts VkBool32
+}
+
+type VkAttachmentReferenceStencilLayout struct {
+	SType         VkStructureType
+	PNext         unsafe.Pointer
+	StencilLayout VkImageLayout
+}
+
+type VkAttachmentDescriptionStencilLayout struct {
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	StencilInitialLayout VkImageLayout
+	StencilFinalLayout   VkImageLayout
+}
+
+// Target: VK_VERSION_1_2
+
+// Feature requirements
+// Target: VK_BASE_VERSION_1_3
+
+// API version macros
+
+type VkFlags64 uint64
+
+type VkPhysicalDeviceVulkan13Features struct {
+	SType                                              VkStructureType
+	PNext                                              unsafe.Pointer
+	RobustImageAccess                                  VkBool32
+	InlineUniformBlock                                 VkBool32
+	DescriptorBindingInlineUniformBlockUpdateAfterBind VkBool32
+	PipelineCreationCacheControl                       VkBool32
+	PrivateData                                        VkBool32
+	ShaderDemoteToHelperInvocation                     VkBool32
+	ShaderTerminateInvocation                          VkBool32
+	SubgroupSizeControl                                VkBool32
+	ComputeFullSubgroups                               VkBool32
+	Synchronization2                                   VkBool32
+	TextureCompressionASTC_HDR                         VkBool32
+	ShaderZeroInitializeWorkgroupMemory                VkBool32
+	DynamicRendering                                   VkBool32
+	ShaderIntegerDotProduct                            VkBool32
+	Maintenance4                                       VkBool32
+}
+
+type VkPhysicalDeviceVulkan13Properties struct {
+	SType                                                                         VkStructureType
+	PNext                                                                         unsafe.Pointer
+	MinSubgroupSize                                                               uint32
+	MaxSubgroupSize                                                               uint32
+	MaxComputeWorkgroupSubgroups                                                  uint32
+	RequiredSubgroupSizeStages                                                    VkShaderStageFlags
+	MaxInlineUniformBlockSize                                                     uint32
+	MaxPerStageDescriptorInlineUniformBlocks                                      uint32
+	MaxPerStageDescriptorUpdateAfterBindInlineUniformBlocks                       uint32
+	MaxDescriptorSetInlineUniformBlocks                                           uint32
+	MaxDescriptorSetUpdateAfterBindInlineUniformBlocks                            uint32
+	MaxInlineUniformTotalSize                                                     uint32
+	IntegerDotProduct8BitUnsignedAccelerated                                      VkBool32
+	IntegerDotProduct8BitSignedAccelerated                                        VkBool32
+	IntegerDotProduct8BitMixedSignednessAccelerated                               VkBool32
+	IntegerDotProduct4x8BitPackedUnsignedAccelerated                              VkBool32
+	IntegerDotProduct4x8BitPackedSignedAccelerated                                VkBool32
+	IntegerDotProduct4x8BitPackedMixedSignednessAccelerated                       VkBool32
+	IntegerDotProduct16BitUnsignedAccelerated                                     VkBool32
+	IntegerDotProduct16BitSignedAccelerated                                       VkBool32
+	IntegerDotProduct16BitMixedSignednessAccelerated                              VkBool32
+	IntegerDotProduct32BitUnsignedAccelerated                                     VkBool32
+	IntegerDotProduct32BitSignedAccelerated                                       VkBool32
+	IntegerDotProduct32BitMixedSignednessAccelerated                              VkBool32
+	IntegerDotProduct64BitUnsignedAccelerated                                     VkBool32
+	IntegerDotProduct64BitSignedAccelerated                                       VkBool32
+	IntegerDotProduct64BitMixedSignednessAccelerated                              VkBool32
+	IntegerDotProductAccumulatingSaturating8BitUnsignedAccelerated                VkBool32
+	IntegerDotProductAccumulatingSaturating8BitSignedAccelerated                  VkBool32
+	IntegerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated         VkBool32
+	IntegerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated        VkBool32
+	IntegerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated          VkBool32
+	IntegerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated VkBool32
+	IntegerDotProductAccumulatingSaturating16BitUnsignedAccelerated               VkBool32
+	IntegerDotProductAccumulatingSaturating16BitSignedAccelerated                 VkBool32
+	IntegerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated        VkBool32
+	IntegerDotProductAccumulatingSaturating32BitUnsignedAccelerated               VkBool32
+	IntegerDotProductAccumulatingSaturating32BitSignedAccelerated                 VkBool32
+	IntegerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated        VkBool32
+	IntegerDotProductAccumulatingSaturating64BitUnsignedAccelerated               VkBool32
+	IntegerDotProductAccumulatingSaturating64BitSignedAccelerated                 VkBool32
+	IntegerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated        VkBool32
+	StorageTexelBufferOffsetAlignmentBytes                                        VkDeviceSize
+	StorageTexelBufferOffsetSingleTexelAlignment                                  VkBool32
+	UniformTexelBufferOffsetAlignmentBytes                                        VkDeviceSize
+	UniformTexelBufferOffsetSingleTexelAlignment                                  VkBool32
+	MaxBufferSize                                                                 VkDeviceSize
+}
+
+// Promoted from VK_EXT_tooling_info (extension 246)
+
+type VkToolPurposeFlags VkFlags
+
+type VkPhysicalDeviceToolProperties struct {
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	Name        [VkMaxExtensionNameSize]uint8
+	Version     [VkMaxExtensionNameSize]uint8
+	Purposes    VkToolPurposeFlags
+	Description [VkMaxDescriptionSize]uint8
+	Layer       [VkMaxExtensionNameSize]uint8
+}
+
+// Promoted from VK_EXT_private_data (extension 296)
+
+type VkPhysicalDevicePrivateDataFeatures struct {
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	PrivateData VkBool32
+}
+
+type VkDevicePrivateDataCreateInfo struct {
+	SType                       VkStructureType
+	PNext                       unsafe.Pointer
+	PrivateDataSlotRequestCount uint32
+}
+
+type VkPrivateDataSlotCreateInfo struct {
+	SType VkStructureType
+	PNext unsafe.Pointer
+	Flags VkPrivateDataSlotCreateFlags
+}
+
+type VkPrivateDataSlot unsafe.Pointer
+
+type VkPrivateDataSlotCreateFlags VkFlags
+
+// Promoted from VK_KHR_synchronization2 (extension 315)
+
+type VkPipelineStageFlags2 VkFlags64
+
+type VkAccessFlags2 VkFlags64
+
+type VkMemoryBarrier2 struct {
+	SType         VkStructureType
+	PNext         unsafe.Pointer
+	SrcStageMask  VkPipelineStageFlags2
+	SrcAccessMask VkAccessFlags2
+	DstStageMask  VkPipelineStageFlags2
+	DstAccessMask VkAccessFlags2
+}
+
+type VkBufferMemoryBarrier2 struct {
+	SType               VkStructureType
+	PNext               unsafe.Pointer
+	SrcStageMask        VkPipelineStageFlags2
+	SrcAccessMask       VkAccessFlags2
+	DstStageMask        VkPipelineStageFlags2
+	DstAccessMask       VkAccessFlags2
+	SrcQueueFamilyIndex uint32
+	DstQueueFamilyIndex uint32
+	Buffer              VkBuffer
+	Offset              VkDeviceSize
+	Size                VkDeviceSize
+}
+
+type VkImageMemoryBarrier2 struct {
+	SType               VkStructureType
+	PNext               unsafe.Pointer
+	SrcStageMask        VkPipelineStageFlags2
+	SrcAccessMask       VkAccessFlags2
+	DstStageMask        VkPipelineStageFlags2
+	DstAccessMask       VkAccessFlags2
+	OldLayout           VkImageLayout
+	NewLayout           VkImageLayout
+	SrcQueueFamilyIndex uint32
+	DstQueueFamilyIndex uint32
+	Image               VkImage
+	SubresourceRange    VkImageSubresourceRange
+}
+
+type VkDependencyInfo struct {
+	SType                    VkStructureType
+	PNext                    unsafe.Pointer
+	DependencyFlags          VkDependencyFlags
+	MemoryBarrierCount       uint32
+	PMemoryBarriers          *VkMemoryBarrier2
+	BufferMemoryBarrierCount uint32
+	PBufferMemoryBarriers    *VkBufferMemoryBarrier2
+	ImageMemoryBarrierCount  uint32
+	PImageMemoryBarriers     *VkImageMemoryBarrier2
+}
+
+type VkSemaphoreSubmitInfo struct {
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	Semaphore   VkSemaphore
+	Value       uint64
+	StageMask   VkPipelineStageFlags2
+	DeviceIndex uint32
+}
+
+type VkCommandBufferSubmitInfo struct {
+	SType         VkStructureType
+	PNext         unsafe.Pointer
+	CommandBuffer VkCommandBuffer
+	DeviceMask    uint32
+}
+
+type VkSubmitFlags VkFlags
+
+type VkSubmitInfo2 struct {
+	SType                    VkStructureType
+	PNext                    unsafe.Pointer
+	Flags                    VkSubmitFlags
+	WaitSemaphoreInfoCount   uint32
+	PWaitSemaphoreInfos      *VkSemaphoreSubmitInfo
+	CommandBufferInfoCount   uint32
+	PCommandBufferInfos      *VkCommandBufferSubmitInfo
+	SignalSemaphoreInfoCount uint32
+	PSignalSemaphoreInfos    *VkSemaphoreSubmitInfo
+}
+
+type VkPhysicalDeviceSynchronization2Features struct {
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	Synchronization2 VkBool32
+}
+
+// Promoted from VK_KHR_copy_commands2 (extension 338)
+
+type VkBufferCopy2 struct {
+	SType     VkStructureType
+	PNext     unsafe.Pointer
+	SrcOffset VkDeviceSize
+	DstOffset VkDeviceSize
+	Size      VkDeviceSize
+}
+
+type VkCopyBufferInfo2 struct {
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	SrcBuffer   VkBuffer
+	DstBuffer   VkBuffer
+	RegionCount uint32
+	PRegions    *VkBufferCopy2
+}
+
+type VkImageCopy2 struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	SrcSubresource VkImageSubresourceLayers
+	SrcOffset      VkOffset3D
+	DstSubresource VkImageSubresourceLayers
+	DstOffset      VkOffset3D
+	Extent         VkExtent3D
+}
+
+type VkCopyImageInfo2 struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	SrcImage       VkImage
+	SrcImageLayout VkImageLayout
+	DstImage       VkImage
+	DstImageLayout VkImageLayout
+	RegionCount    uint32
+	PRegions       *VkImageCopy2
+}
+
+type VkBufferImageCopy2 struct {
+	SType             VkStructureType
+	PNext             unsafe.Pointer
+	BufferOffset      VkDeviceSize
+	BufferRowLength   uint32
+	BufferImageHeight uint32
+	ImageSubresource  VkImageSubresourceLayers
+	ImageOffset       VkOffset3D
+	ImageExtent       VkExtent3D
+}
+
+type VkCopyBufferToImageInfo2 struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	SrcBuffer      VkBuffer
+	DstImage       VkImage
+	DstImageLayout VkImageLayout
+	RegionCount    uint32
+	PRegions       *VkBufferImageCopy2
+}
+
+type VkCopyImageToBufferInfo2 struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	SrcImage       VkImage
+	SrcImageLayout VkImageLayout
+	DstBuffer      VkBuffer
+	RegionCount    uint32
+	PRegions       *VkBufferImageCopy2
+}
+
+// Promoted from VK_EXT_ycbcr_2plane_444_formats (does not promote the Feature struct, just the formats) (extension 331)
+// Promoted from VK_EXT_4444_formats (does not promote the Feature struct, just the formats) (extension 341)
+// Promoted from VK_EXT_texture_compression_astc_hdr (Feature struct is promoted, but becomes optional) (extension 67)
+
+type VkPhysicalDeviceTextureCompressionASTCHDRFeatures struct {
+	SType                      VkStructureType
+	PNext                      unsafe.Pointer
+	TextureCompressionASTC_HDR VkBool32
+}
+
+// Promoted from VK_KHR_format_feature_flags2 (extension 361)
+
+type VkFormatFeatureFlags2 VkFlags64
+
+type VkFormatProperties3 struct {
+	SType                 VkStructureType
+	PNext                 unsafe.Pointer
+	LinearTilingFeatures  VkFormatFeatureFlags2
+	OptimalTilingFeatures VkFormatFeatureFlags2
+	BufferFeatures        VkFormatFeatureFlags2
+}
+
+// Promoted from VK_KHR_maintenance4 (extension 414)
+
+type VkPhysicalDeviceMaintenance4Features struct {
+	SType        VkStructureType
+	PNext        unsafe.Pointer
+	Maintenance4 VkBool32
+}
+
+type VkPhysicalDeviceMaintenance4Properties struct {
+	SType         VkStructureType
+	PNext         unsafe.Pointer
+	MaxBufferSize VkDeviceSize
+}
+
+type VkDeviceBufferMemoryRequirements struct {
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	PCreateInfo *VkBufferCreateInfo
+}
+
+type VkDeviceImageMemoryRequirements struct {
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	PCreateInfo *VkImageCreateInfo
+	PlaneAspect VkImageAspectFlagBits
+}
+
+// Target: VK_COMPUTE_VERSION_1_3
+
+// Promoted from VK_EXT_pipeline_creation_feedback (extension 193)
+
+type VkPipelineCreationFeedbackFlags VkFlags
+
+type VkPipelineCreationFeedback struct {
+	Flags    VkPipelineCreationFeedbackFlags
+	Duration uint64
+}
+
+type VkPipelineCreationFeedbackCreateInfo struct {
+	SType                              VkStructureType
+	PNext                              unsafe.Pointer
+	PPipelineCreationFeedback          *VkPipelineCreationFeedback
+	PipelineStageCreationFeedbackCount uint32
+	PPipelineStageCreationFeedbacks    *VkPipelineCreationFeedback
+}
+
+// Promoted from VK_KHR_shader_terminate_invocation (extension 216)
+
+type VkPhysicalDeviceShaderTerminateInvocationFeatures struct {
+	SType                     VkStructureType
+	PNext                     unsafe.Pointer
+	ShaderTerminateInvocation VkBool32
+}
+
+// Promoted from VK_EXT_shader_demote_to_helper_invocation (extension 277)
+
+type VkPhysicalDeviceShaderDemoteToHelperInvocationFeatures struct {
+	SType                          VkStructureType
+	PNext                          unsafe.Pointer
+	ShaderDemoteToHelperInvocation VkBool32
+}
+
+// Promoted from VK_KHR_shader_non_semantic_info (extension 294)
+// Promoted from VK_EXT_pipeline_creation_cache_control (extension 298)
+
+type VkPhysicalDevicePipelineCreationCacheControlFeatures struct {
+	SType                        VkStructureType
+	PNext                        unsafe.Pointer
+	PipelineCreationCacheControl VkBool32
+}
+
+// Promoted from VK_KHR_synchronization2 (extension 315)
+// Promoted from VK_KHR_zero_initialize_workgroup_memory (extension 326)
+
+type VkPhysicalDeviceZeroInitializeWorkgroupMemoryFeatures struct {
+	SType                               VkStructureType
+	PNext                               unsafe.Pointer
+	ShaderZeroInitializeWorkgroupMemory VkBool32
+}
+
+// Promoted from VK_EXT_image_robustness (extension 336)
+
+type VkPhysicalDeviceImageRobustnessFeatures struct {
+	SType             VkStructureType
+	PNext             unsafe.Pointer
+	RobustImageAccess VkBool32
+}
+
+// Promoted from VK_EXT_subgroup_size_control (STDPROMOTE/PROPLIMCHANGE) (extension 226)
+
+type VkPhysicalDeviceSubgroupSizeControlFeatures struct {
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	SubgroupSizeControl  VkBool32
+	ComputeFullSubgroups VkBool32
+}
+
+type VkPhysicalDeviceSubgroupSizeControlProperties struct {
+	SType                        VkStructureType
+	PNext                        unsafe.Pointer
+	MinSubgroupSize              uint32
+	MaxSubgroupSize              uint32
+	MaxComputeWorkgroupSubgroups uint32
+	RequiredSubgroupSizeStages   VkShaderStageFlags
+}
+
+type VkPipelineShaderStageRequiredSubgroupSizeCreateInfo struct {
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	RequiredSubgroupSize uint32
+}
+
+// Promoted from VK_EXT_inline_uniform_block (STDPROMOTE/PROPLIMCHANGE) (extension 139)
+
+type VkPhysicalDeviceInlineUniformBlockFeatures struct {
+	SType                                              VkStructureType
+	PNext                                              unsafe.Pointer
+	InlineUniformBlock                                 VkBool32
+	DescriptorBindingInlineUniformBlockUpdateAfterBind VkBool32
+}
+
+type VkPhysicalDeviceInlineUniformBlockProperties struct {
+	SType                                                   VkStructureType
+	PNext                                                   unsafe.Pointer
+	MaxInlineUniformBlockSize                               uint32
+	MaxPerStageDescriptorInlineUniformBlocks                uint32
+	MaxPerStageDescriptorUpdateAfterBindInlineUniformBlocks uint32
+	MaxDescriptorSetInlineUniformBlocks                     uint32
+	MaxDescriptorSetUpdateAfterBindInlineUniformBlocks      uint32
+}
+
+type VkWriteDescriptorSetInlineUniformBlock struct {
+	SType    VkStructureType
+	PNext    unsafe.Pointer
+	DataSize uint32
+	PData    unsafe.Pointer
+}
+
+type VkDescriptorPoolInlineUniformBlockCreateInfo struct {
+	SType                         VkStructureType
+	PNext                         unsafe.Pointer
+	MaxInlineUniformBlockBindings uint32
+}
+
+// Promoted from VK_KHR_shader_integer_dot_product (extension 281)
+
+type VkPhysicalDeviceShaderIntegerDotProductFeatures struct {
+	SType                   VkStructureType
+	PNext                   unsafe.Pointer
+	ShaderIntegerDotProduct VkBool32
+}
+
+type VkPhysicalDeviceShaderIntegerDotProductProperties struct {
+	SType                                                                         VkStructureType
+	PNext                                                                         unsafe.Pointer
+	IntegerDotProduct8BitUnsignedAccelerated                                      VkBool32
+	IntegerDotProduct8BitSignedAccelerated                                        VkBool32
+	IntegerDotProduct8BitMixedSignednessAccelerated                               VkBool32
+	IntegerDotProduct4x8BitPackedUnsignedAccelerated                              VkBool32
+	IntegerDotProduct4x8BitPackedSignedAccelerated                                VkBool32
+	IntegerDotProduct4x8BitPackedMixedSignednessAccelerated                       VkBool32
+	IntegerDotProduct16BitUnsignedAccelerated                                     VkBool32
+	IntegerDotProduct16BitSignedAccelerated                                       VkBool32
+	IntegerDotProduct16BitMixedSignednessAccelerated                              VkBool32
+	IntegerDotProduct32BitUnsignedAccelerated                                     VkBool32
+	IntegerDotProduct32BitSignedAccelerated                                       VkBool32
+	IntegerDotProduct32BitMixedSignednessAccelerated                              VkBool32
+	IntegerDotProduct64BitUnsignedAccelerated                                     VkBool32
+	IntegerDotProduct64BitSignedAccelerated                                       VkBool32
+	IntegerDotProduct64BitMixedSignednessAccelerated                              VkBool32
+	IntegerDotProductAccumulatingSaturating8BitUnsignedAccelerated                VkBool32
+	IntegerDotProductAccumulatingSaturating8BitSignedAccelerated                  VkBool32
+	IntegerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated         VkBool32
+	IntegerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated        VkBool32
+	IntegerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated          VkBool32
+	IntegerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated VkBool32
+	IntegerDotProductAccumulatingSaturating16BitUnsignedAccelerated               VkBool32
+	IntegerDotProductAccumulatingSaturating16BitSignedAccelerated                 VkBool32
+	IntegerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated        VkBool32
+	IntegerDotProductAccumulatingSaturating32BitUnsignedAccelerated               VkBool32
+	IntegerDotProductAccumulatingSaturating32BitSignedAccelerated                 VkBool32
+	IntegerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated        VkBool32
+	IntegerDotProductAccumulatingSaturating64BitUnsignedAccelerated               VkBool32
+	IntegerDotProductAccumulatingSaturating64BitSignedAccelerated                 VkBool32
+	IntegerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated        VkBool32
+}
+
+// Promoted from VK_EXT_texel_buffer_alignment (extension 282)
+
+type VkPhysicalDeviceTexelBufferAlignmentProperties struct {
+	SType                                        VkStructureType
+	PNext                                        unsafe.Pointer
+	StorageTexelBufferOffsetAlignmentBytes       VkDeviceSize
+	StorageTexelBufferOffsetSingleTexelAlignment VkBool32
+	UniformTexelBufferOffsetAlignmentBytes       VkDeviceSize
+	UniformTexelBufferOffsetSingleTexelAlignment VkBool32
+}
+
+// Target: VK_GRAPHICS_VERSION_1_3
+
+// Promoted from VK_KHR_copy_commands2 (extension 338)
+
+type VkImageBlit2 struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	SrcSubresource VkImageSubresourceLayers
+	SrcOffsets     [2]VkOffset3D
+	DstSubresource VkImageSubresourceLayers
+	DstOffsets     [2]VkOffset3D
+}
+
+type VkBlitImageInfo2 struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	SrcImage       VkImage
+	SrcImageLayout VkImageLayout
+	DstImage       VkImage
+	DstImageLayout VkImageLayout
+	RegionCount    uint32
+	PRegions       *VkImageBlit2
+	Filter         VkFilter
+}
+
+type VkImageResolve2 struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	SrcSubresource VkImageSubresourceLayers
+	SrcOffset      VkOffset3D
+	DstSubresource VkImageSubresourceLayers
+	DstOffset      VkOffset3D
+	Extent         VkExtent3D
+}
+
+type VkResolveImageInfo2 struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	SrcImage       VkImage
+	SrcImageLayout VkImageLayout
+	DstImage       VkImage
+	DstImageLayout VkImageLayout
+	RegionCount    uint32
+	PRegions       *VkImageResolve2
+}
+
+// Promoted from VK_KHR_dynamic_rendering (extension 45)
+
+type VkRenderingAttachmentInfo struct {
+	SType              VkStructureType
+	PNext              unsafe.Pointer
+	ImageView          VkImageView
+	ImageLayout        VkImageLayout
+	ResolveMode        VkResolveModeFlagBits
+	ResolveImageView   VkImageView
+	ResolveImageLayout VkImageLayout
+	LoadOp             VkAttachmentLoadOp
+	StoreOp            VkAttachmentStoreOp
+	ClearValue         VkClearValue
+}
+
+type VkRenderingInfo struct {
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	Flags                VkRenderingFlags
+	RenderArea           VkRect2D
+	LayerCount           uint32
+	ViewMask             uint32
+	ColorAttachmentCount uint32
+	PColorAttachments    *VkRenderingAttachmentInfo
+	PDepthAttachment     *VkRenderingAttachmentInfo
+	PStencilAttachment   *VkRenderingAttachmentInfo
+}
+
+type VkPipelineRenderingCreateInfo struct {
+	SType                   VkStructureType
+	PNext                   unsafe.Pointer
+	ViewMask                uint32
+	ColorAttachmentCount    uint32
+	PColorAttachmentFormats *VkFormat
+	DepthAttachmentFormat   VkFormat
+	StencilAttachmentFormat VkFormat
+}
+
+type VkPhysicalDeviceDynamicRenderingFeatures struct {
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	DynamicRendering VkBool32
+}
+
+type VkCommandBufferInheritanceRenderingInfo struct {
+	SType                   VkStructureType
+	PNext                   unsafe.Pointer
+	Flags                   VkRenderingFlags
+	ViewMask                uint32
+	ColorAttachmentCount    uint32
+	PColorAttachmentFormats *VkFormat
+	DepthAttachmentFormat   VkFormat
+	StencilAttachmentFormat VkFormat
+	RasterizationSamples    VkSampleCountFlagBits
+}
+
+type VkRenderingFlags VkFlags
+
+// Promoted from VK_EXT_extended_dynamic_state (Feature struct is not promoted) (extension 268)
+// Promoted from VK_EXT_extended_dynamic_state2 (Feature struct and optional state are not promoted) (extension 378)
+// Target: VK_VERSION_1_3
+
+// Feature requirements
+// Target: VK_BASE_VERSION_1_4
+
+// API version macros
+
+type VkPhysicalDeviceVulkan14Features struct {
+	SType                                  VkStructureType
+	PNext                                  unsafe.Pointer
+	GlobalPriorityQuery                    VkBool32
+	ShaderSubgroupRotate                   VkBool32
+	ShaderSubgroupRotateClustered          VkBool32
+	ShaderFloatControls2                   VkBool32
+	ShaderExpectAssume                     VkBool32
+	RectangularLines                       VkBool32
+	BresenhamLines                         VkBool32
+	SmoothLines                            VkBool32
+	StippledRectangularLines               VkBool32
+	StippledBresenhamLines                 VkBool32
+	StippledSmoothLines                    VkBool32
+	VertexAttributeInstanceRateDivisor     VkBool32
+	VertexAttributeInstanceRateZeroDivisor VkBool32
+	IndexTypeUint8                         VkBool32
+	DynamicRenderingLocalRead              VkBool32
+	Maintenance5                           VkBool32
+	Maintenance6                           VkBool32
+	PipelineProtectedAccess                VkBool32
+	PipelineRobustness                     VkBool32
+	HostImageCopy                          VkBool32
+	PushDescriptor                         VkBool32
+}
+
+type VkPhysicalDeviceVulkan14Properties struct {
+	SType                                               VkStructureType
+	PNext                                               unsafe.Pointer
+	LineSubPixelPrecisionBits                           uint32
+	MaxVertexAttribDivisor                              uint32
+	SupportsNonZeroFirstInstance                        VkBool32
+	MaxPushDescriptors                                  uint32
+	DynamicRenderingLocalReadDepthStencilAttachments    VkBool32
+	DynamicRenderingLocalReadMultisampledAttachments    VkBool32
+	EarlyFragmentMultisampleCoverageAfterSampleCounting VkBool32
+	EarlyFragmentSampleMaskTestBeforeSampleCounting     VkBool32
+	DepthStencilSwizzleOneSupport                       VkBool32
+	PolygonModePointSize                                VkBool32
+	NonStrictSinglePixelWideLinesUseParallelogram       VkBool32
+	NonStrictWideLinesUseParallelogram                  VkBool32
+	BlockTexelViewCompatibleMultipleLayers              VkBool32
+	MaxCombinedImageSamplerDescriptorCount              uint32
+	FragmentShadingRateClampCombinerInputs              VkBool32
+	DefaultRobustnessStorageBuffers                     VkPipelineRobustnessBufferBehavior
+	DefaultRobustnessUniformBuffers                     VkPipelineRobustnessBufferBehavior
+	DefaultRobustnessVertexInputs                       VkPipelineRobustnessBufferBehavior
+	DefaultRobustnessImages                             VkPipelineRobustnessImageBehavior
+	CopySrcLayoutCount                                  uint32
+	PCopySrcLayouts                                     *VkImageLayout
+	CopyDstLayoutCount                                  uint32
+	PCopyDstLayouts                                     *VkImageLayout
+	OptimalTilingLayoutUUID                             [VkUuidSize]uint8
+	IdenticalMemoryTypeRequirements                     VkBool32
+}
+
+// Promoted from VK_KHR_global_priority (extension 189)
+
+type VkDeviceQueueGlobalPriorityCreateInfo struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	GlobalPriority VkQueueGlobalPriority
+}
+
+type VkPhysicalDeviceGlobalPriorityQueryFeatures struct {
+	SType               VkStructureType
+	PNext               unsafe.Pointer
+	GlobalPriorityQuery VkBool32
+}
+
+type VkQueueFamilyGlobalPriorityProperties struct {
+	SType         VkStructureType
+	PNext         unsafe.Pointer
+	PriorityCount uint32
+	Priorities    [VkMaxGlobalPrioritySize]VkQueueGlobalPriority
+}
+
+// Promoted from VK_KHR_index_type_uint8 (extension 534) 'Roadmap 2024'
+
+type VkPhysicalDeviceIndexTypeUint8Features struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	IndexTypeUint8 VkBool32
+}
+
+// Promoted from VK_KHR_map_memory2 (extension 272) 'Roadmap 2024'
+
+type VkMemoryMapInfo struct {
+	SType  VkStructureType
+	PNext  unsafe.Pointer
+	Flags  VkMemoryMapFlags
+	Memory VkDeviceMemory
+	Offset VkDeviceSize
+	Size   VkDeviceSize
+}
+
+type VkMemoryUnmapInfo struct {
+	SType  VkStructureType
+	PNext  unsafe.Pointer
+	Flags  VkMemoryUnmapFlags
+	Memory VkDeviceMemory
+}
+
+type VkMemoryUnmapFlags VkFlags
+
+// Promoted from VK_KHR_maintenance5 (extension 471) 'Roadmap 2024'
+
+type VkPhysicalDeviceMaintenance5Features struct {
+	SType        VkStructureType
+	PNext        unsafe.Pointer
+	Maintenance5 VkBool32
+}
+
+type VkPhysicalDeviceMaintenance5Properties struct {
+	SType                                               VkStructureType
+	PNext                                               unsafe.Pointer
+	EarlyFragmentMultisampleCoverageAfterSampleCounting VkBool32
+	EarlyFragmentSampleMaskTestBeforeSampleCounting     VkBool32
+	DepthStencilSwizzleOneSupport                       VkBool32
+	PolygonModePointSize                                VkBool32
+	NonStrictSinglePixelWideLinesUseParallelogram       VkBool32
+	NonStrictWideLinesUseParallelogram                  VkBool32
+}
+
+type VkSubresourceLayout2 struct {
+	SType             VkStructureType
+	PNext             unsafe.Pointer
+	SubresourceLayout VkSubresourceLayout
+}
+
+type VkImageSubresource2 struct {
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	ImageSubresource VkImageSubresource
+}
+
+type VkDeviceImageSubresourceInfo struct {
+	SType        VkStructureType
+	PNext        unsafe.Pointer
+	PCreateInfo  *VkImageCreateInfo
+	PSubresource *VkImageSubresource2
+}
+
+type VkBufferUsageFlags2 VkFlags64
+
+type VkBufferUsageFlags2CreateInfo struct {
+	SType VkStructureType
+	PNext unsafe.Pointer
+	Usage VkBufferUsageFlags2
+}
+
+// Promoted from VK_KHR_maintenance6 (extension 546) 'additional functionality'
+
+type VkPhysicalDeviceMaintenance6Features struct {
+	SType        VkStructureType
+	PNext        unsafe.Pointer
+	Maintenance6 VkBool32
+}
+
+type VkPhysicalDeviceMaintenance6Properties struct {
+	SType                                  VkStructureType
+	PNext                                  unsafe.Pointer
+	BlockTexelViewCompatibleMultipleLayers VkBool32
+	MaxCombinedImageSamplerDescriptorCount uint32
+	FragmentShadingRateClampCombinerInputs VkBool32
+}
+
+type VkBindMemoryStatus struct {
+	SType   VkStructureType
+	PNext   unsafe.Pointer
+	PResult *VkResult
+}
+
+// Promoted (as optional feature) from VK_EXT_host_image_copy (extension 271) 'streaming transfers'
+
+type VkPhysicalDeviceHostImageCopyFeatures struct {
+	SType         VkStructureType
+	PNext         unsafe.Pointer
+	HostImageCopy VkBool32
+}
+
+type VkPhysicalDeviceHostImageCopyProperties struct {
+	SType                           VkStructureType
+	PNext                           unsafe.Pointer
+	CopySrcLayoutCount              uint32
+	PCopySrcLayouts                 *VkImageLayout
+	CopyDstLayoutCount              uint32
+	PCopyDstLayouts                 *VkImageLayout
+	OptimalTilingLayoutUUID         [VkUuidSize]uint8
+	IdenticalMemoryTypeRequirements VkBool32
+}
+
+type VkHostImageCopyFlags VkFlags
+
+type VkMemoryToImageCopy struct {
+	SType             VkStructureType
+	PNext             unsafe.Pointer
+	PHostPointer      unsafe.Pointer
+	MemoryRowLength   uint32
+	MemoryImageHeight uint32
+	ImageSubresource  VkImageSubresourceLayers
+	ImageOffset       VkOffset3D
+	ImageExtent       VkExtent3D
+}
+
+type VkImageToMemoryCopy struct {
+	SType             VkStructureType
+	PNext             unsafe.Pointer
+	PHostPointer      unsafe.Pointer
+	MemoryRowLength   uint32
+	MemoryImageHeight uint32
+	ImageSubresource  VkImageSubresourceLayers
+	ImageOffset       VkOffset3D
+	ImageExtent       VkExtent3D
+}
+
+type VkCopyMemoryToImageInfo struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	Flags          VkHostImageCopyFlags
+	DstImage       VkImage
+	DstImageLayout VkImageLayout
+	RegionCount    uint32
+	PRegions       *VkMemoryToImageCopy
+}
+
+type VkCopyImageToMemoryInfo struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	Flags          VkHostImageCopyFlags
+	SrcImage       VkImage
+	SrcImageLayout VkImageLayout
+	RegionCount    uint32
+	PRegions       *VkImageToMemoryCopy
+}
+
+type VkCopyImageToImageInfo struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	Flags          VkHostImageCopyFlags
+	SrcImage       VkImage
+	SrcImageLayout VkImageLayout
+	DstImage       VkImage
+	DstImageLayout VkImageLayout
+	RegionCount    uint32
+	PRegions       *VkImageCopy2
+}
+
+type VkHostImageLayoutTransitionInfo struct {
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	Image            VkImage
+	OldLayout        VkImageLayout
+	NewLayout        VkImageLayout
+	SubresourceRange VkImageSubresourceRange
+}
+
+type VkSubresourceHostMemcpySize struct {
+	SType VkStructureType
+	PNext unsafe.Pointer
+	Size  VkDeviceSize
+}
+
+type VkHostImageCopyDevicePerformanceQuery struct {
+	SType                 VkStructureType
+	PNext                 unsafe.Pointer
+	OptimalDeviceAccess   VkBool32
+	IdenticalMemoryLayout VkBool32
+}
+
+// Target: VK_COMPUTE_VERSION_1_4
+
+// Promoted from VK_KHR_shader_subgroup_rotate (extension 417) 'Roadmap 2024'
+
+type VkPhysicalDeviceShaderSubgroupRotateFeatures struct {
+	SType                         VkStructureType
+	PNext                         unsafe.Pointer
+	ShaderSubgroupRotate          VkBool32
+	ShaderSubgroupRotateClustered VkBool32
+}
+
+// Promoted from VK_KHR_shader_float_controls2 (extension 529) 'Roadmap 2024'
+
+type VkPhysicalDeviceShaderFloatControls2Features struct {
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	ShaderFloatControls2 VkBool32
+}
+
+// Promoted from VK_KHR_shader_expect_assume (extension 545) 'Roadmap 2024'
+
+type VkPhysicalDeviceShaderExpectAssumeFeatures struct {
+	SType              VkStructureType
+	PNext              unsafe.Pointer
+	ShaderExpectAssume VkBool32
+}
+
+// Promoted from VK_KHR_maintenance5 (extension 471) 'Roadmap 2024'
+
+type VkPipelineCreateFlags2 VkFlags64
+
+type VkPipelineCreateFlags2CreateInfo struct {
+	SType VkStructureType
+	PNext unsafe.Pointer
+	Flags VkPipelineCreateFlags2
+}
+
+// Promoted as an interaction between VK_KHR_maintenance5 (extension 471) 'Roadmap 2024' and VK_EXT_pipeline_protected_access (extension 467) 'additional functionality'
+// Promoted from VK_KHR_push_descriptor (extension 81) 'Roadmap 2024'
+
+type VkPhysicalDevicePushDescriptorProperties struct {
+	SType              VkStructureType
+	PNext              unsafe.Pointer
+	MaxPushDescriptors uint32
+}
+
+// Promoted from VK_KHR_maintenance6 (extension 546) 'additional functionality'
+
+type VkBindDescriptorSetsInfo struct {
+	SType              VkStructureType
+	PNext              unsafe.Pointer
+	StageFlags         VkShaderStageFlags
+	Layout             VkPipelineLayout
+	FirstSet           uint32
+	DescriptorSetCount uint32
+	PDescriptorSets    *VkDescriptorSet
+	DynamicOffsetCount uint32
+	PDynamicOffsets    *uint32
+}
+
+type VkPushConstantsInfo struct {
+	SType      VkStructureType
+	PNext      unsafe.Pointer
+	Layout     VkPipelineLayout
+	StageFlags VkShaderStageFlags
+	Offset     uint32
+	Size       uint32
+	PValues    unsafe.Pointer
+}
+
+type VkPushDescriptorSetInfo struct {
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	StageFlags           VkShaderStageFlags
+	Layout               VkPipelineLayout
+	Set                  uint32
+	DescriptorWriteCount uint32
+	PDescriptorWrites    *VkWriteDescriptorSet
+}
+
+type VkPushDescriptorSetWithTemplateInfo struct {
+	SType                    VkStructureType
+	PNext                    unsafe.Pointer
+	DescriptorUpdateTemplate VkDescriptorUpdateTemplate
+	Layout                   VkPipelineLayout
+	Set                      uint32
+	PData                    unsafe.Pointer
+}
+
+// Promoted from VK_EXT_pipeline_protected_access (extension 467) 'additional functionality'
+
+type VkPhysicalDevicePipelineProtectedAccessFeatures struct {
+	SType                   VkStructureType
+	PNext                   unsafe.Pointer
+	PipelineProtectedAccess VkBool32
+}
+
+// Promoted from VK_EXT_pipeline_robustness (extension 69) 'additional functionality'
+
+type VkPhysicalDevicePipelineRobustnessFeatures struct {
+	SType              VkStructureType
+	PNext              unsafe.Pointer
+	PipelineRobustness VkBool32
+}
+
+type VkPhysicalDevicePipelineRobustnessProperties struct {
+	SType                           VkStructureType
+	PNext                           unsafe.Pointer
+	DefaultRobustnessStorageBuffers VkPipelineRobustnessBufferBehavior
+	DefaultRobustnessUniformBuffers VkPipelineRobustnessBufferBehavior
+	DefaultRobustnessVertexInputs   VkPipelineRobustnessBufferBehavior
+	DefaultRobustnessImages         VkPipelineRobustnessImageBehavior
+}
+
+type VkPipelineRobustnessCreateInfo struct {
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	StorageBuffers VkPipelineRobustnessBufferBehavior
+	UniformBuffers VkPipelineRobustnessBufferBehavior
+	VertexInputs   VkPipelineRobustnessBufferBehavior
+	Images         VkPipelineRobustnessImageBehavior
+}
+
+// Target: VK_GRAPHICS_VERSION_1_4
+
+// Promoted from VK_KHR_load_store_op_none (extension 527) 'Roadmap 2024' (VK_ATTACHMENT_STORE_OP_NONE is defined in Vulkan 1.3)
+// Promoted from VK_KHR_line_rasterization (extension 535) 'Roadmap 2024'
+
+type VkPhysicalDeviceLineRasterizationFeatures struct {
+	SType                    VkStructureType
+	PNext                    unsafe.Pointer
+	RectangularLines         VkBool32
+	BresenhamLines           VkBool32
+	SmoothLines              VkBool32
+	StippledRectangularLines VkBool32
+	StippledBresenhamLines   VkBool32
+	StippledSmoothLines      VkBool32
+}
+
+type VkPhysicalDeviceLineRasterizationProperties struct {
+	SType                     VkStructureType
+	PNext                     unsafe.Pointer
+	LineSubPixelPrecisionBits uint32
+}
+
+type VkPipelineRasterizationLineStateCreateInfo struct {
+	SType                 VkStructureType
+	PNext                 unsafe.Pointer
+	LineRasterizationMode VkLineRasterizationMode
+	StippledLineEnable    VkBool32
+	LineStippleFactor     uint32
+	LineStipplePattern    uint16
+}
+
+// Promoted from VK_KHR_vertex_attribute_divisor (extension 526) 'Roadmap 2024'
+
+type VkPhysicalDeviceVertexAttributeDivisorProperties struct {
+	SType                        VkStructureType
+	PNext                        unsafe.Pointer
+	MaxVertexAttribDivisor       uint32
+	SupportsNonZeroFirstInstance VkBool32
+}
+
+type VkVertexInputBindingDivisorDescription struct {
+	Binding uint32
+	Divisor uint32
+}
+
+type VkPipelineVertexInputDivisorStateCreateInfo struct {
+	SType                     VkStructureType
+	PNext                     unsafe.Pointer
+	VertexBindingDivisorCount uint32
+	PVertexBindingDivisors    *VkVertexInputBindingDivisorDescription
+}
+
+type VkPhysicalDeviceVertexAttributeDivisorFeatures struct {
+	SType                                  VkStructureType
+	PNext                                  unsafe.Pointer
+	VertexAttributeInstanceRateDivisor     VkBool32
+	VertexAttributeInstanceRateZeroDivisor VkBool32
+}
+
+// Promoted from VK_KHR_maintenance5 (extension 471) 'Roadmap 2024'
+
+type VkRenderingAreaInfo struct {
+	SType                   VkStructureType
+	PNext                   unsafe.Pointer
+	ViewMask                uint32
+	ColorAttachmentCount    uint32
+	PColorAttachmentFormats *VkFormat
+	DepthAttachmentFormat   VkFormat
+	StencilAttachmentFormat VkFormat
+}
+
+// Promoted from VK_KHR_dynamic_rendering_local_read (extension 233) 'Roadmap 2024'
+
+type VkPhysicalDeviceDynamicRenderingLocalReadFeatures struct {
+	SType                     VkStructureType
+	PNext                     unsafe.Pointer
+	DynamicRenderingLocalRead VkBool32
+}
+
+type VkRenderingAttachmentLocationInfo struct {
+	SType                     VkStructureType
+	PNext                     unsafe.Pointer
+	ColorAttachmentCount      uint32
+	PColorAttachmentLocations *uint32
+}
+
+type VkRenderingInputAttachmentIndexInfo struct {
+	SType                        VkStructureType
+	PNext                        unsafe.Pointer
+	ColorAttachmentCount         uint32
+	PColorAttachmentInputIndices *uint32
+	PDepthInputAttachmentIndex   *uint32
+	PStencilInputAttachmentIndex *uint32
+}
+
+// Target: VK_VERSION_1_4
+
+// Feature requirements
 
 const (
 	VkMaxPhysicalDeviceNameSize                              = 256

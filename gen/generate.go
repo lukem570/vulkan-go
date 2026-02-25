@@ -56,7 +56,7 @@ func Generate(vkXml *VkXML, target string) error {
 	out.WriteString("import \"unsafe\"\n\n")
 
 	lookup := NewFeatureLookup(vkXml)
-	err := lookup.Generate(target, &out)
+	err := lookup.Generate(target, &out, make(map[string]struct{}))
 	if err != nil {
 		return err
 	}
@@ -65,7 +65,7 @@ func Generate(vkXml *VkXML, target string) error {
 		out.WriteString(enum.Generate())
 	}
 
-	err = os.WriteFile("./pkg/raw/structs.go", []byte(out.String()), 0644)
+	err = os.WriteFile("./pkg/raw/vulkan.go", []byte(out.String()), 0644)
 	if err != nil {
 		return err
 	}
@@ -73,10 +73,19 @@ func Generate(vkXml *VkXML, target string) error {
 	return nil
 }
 
-func (f *FeatureLookup) Generate(target string, out *strings.Builder) error {
+func (f *FeatureLookup) Generate(
+	target string,
+	out *strings.Builder,
+	seen map[string]struct{},
+) error {
 	if target == "" {
 		return nil
 	}
+
+	if _, ok := seen[target]; ok {
+		return nil
+	}
+	seen[target] = struct{}{}
 
 	feat, ok := f.Features[target]
 	if !ok {
@@ -84,7 +93,7 @@ func (f *FeatureLookup) Generate(target string, out *strings.Builder) error {
 	}
 
 	for _, depend := range feat.Depends {
-		err := f.Generate(depend, out)
+		err := f.Generate(depend, out, seen)
 		if err != nil {
 			return err
 		}

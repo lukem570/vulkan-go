@@ -6,3 +6,9 @@ tasks:
     cmds:
       - go run ./gen/...
       - go fmt ./pkg/raw/...
+
+  test:
+    desc: Test basic vulkan function
+    deps: [ 'generate' ]
+    cmds:
+      - go run ./test/test.go

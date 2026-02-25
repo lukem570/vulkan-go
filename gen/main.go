@@ -25,7 +25,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = Generate(vkXml, "VK_VERSION_1_0")
+	err = Generate(vkXml, "VK_VERSION_1_4")
 	if err != nil {
 		log.Fatal(err)
 	}
