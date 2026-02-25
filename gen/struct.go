@@ -19,7 +19,15 @@ func (s *Struct) Generate() string {
 		s.Name,
 	))
 
+	seen := make(map[string]struct{}, 0)
+
 	for _, element := range s.Elements {
+		if _, ok := seen[element.Name]; ok {
+			continue
+		}
+
+		seen[element.Name] = struct{}{}
+
 		structBuilder.WriteString(fmt.Sprintf(
 			"\t%s %s\n",
 			camelToPascal(element.Name),

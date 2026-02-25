@@ -40,6 +40,10 @@ func (e *Enum) Generate() string {
 	}
 
 	for _, element := range e.Elements {
+		if upperToPascal(element.Name) == "VkPipelineCacheHeaderVersionOne" {
+			element.Name = "VkOne"
+		}
+
 		var value string
 		name := e.Name + " "
 		switch e.Type {

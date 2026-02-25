@@ -13,14 +13,15 @@ type RawXml struct {
 
 type VkTypes struct {
 	Structs  []*Struct
-	Typedefs []Typedef
-	Handles  []Handle
-	Funcs    []FuncPointer
+	Typedefs []*Typedef
+	Handles  []*Handle
+	Funcs    []*FuncPointer
 }
 
 type VkXML struct {
-	Types *VkTypes
-	Enums []*Enum
+	Types    *VkTypes
+	Enums    []*Enum
+	Features []*Feature
 }
 
 func ParseVkXML(file *os.File) (*VkXML, error) {
@@ -55,6 +56,13 @@ func ParseVkXML(file *os.File) (*VkXML, error) {
 			}
 
 			out.Enums = append(out.Enums, enum.Parse())
+		case "feature":
+			var feat XmlFeature
+			if err := decoder.DecodeElement(&feat, &se); err != nil {
+				return nil, err
+			}
+
+			out.Features = append(out.Features, feat.Parse())
 		}
 	}
 }
@@ -94,7 +102,7 @@ func ParseTypes(decoder *xml.Decoder) (*VkTypes, error) {
 		}
 
 		switch category {
-		case "struct":
+		case "struct", "union":
 			var str XmlStruct
 			if err := decoder.DecodeElement(&str, &se); err != nil {
 				return nil, err

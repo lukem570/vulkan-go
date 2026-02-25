@@ -17,8 +17,8 @@ func (h *Handle) Generate() string {
 	)
 }
 
-func ParseHandle(v string) Handle {
-	return Handle{
+func ParseHandle(v string) *Handle {
+	return &Handle{
 		Name: getTextBetweenTags(v, "name"),
 	}
 }

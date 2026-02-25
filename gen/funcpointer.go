@@ -40,11 +40,11 @@ type XmlFuncPointer struct {
 	Params []RawXml `xml:"param"`
 }
 
-func (f *XmlFuncPointer) Parse() FuncPointer {
-	var out FuncPointer
-
-	out.Proto = ParseCVariable(f.Proto.Value)
-	out.Params = make([]CVariable, 0)
+func (f *XmlFuncPointer) Parse() *FuncPointer {
+	out := &FuncPointer{
+		Proto:  ParseCVariable(f.Proto.Value),
+		Params: make([]CVariable, 0),
+	}
 
 	for _, param := range f.Params {
 		out.Params = append(out.Params, ParseCVariable(param.Value))

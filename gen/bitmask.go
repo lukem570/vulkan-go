@@ -19,8 +19,8 @@ func (t *Typedef) Generate() string {
 	)
 }
 
-func ParseTypedef(v string) Typedef {
-	return Typedef{
+func ParseTypedef(v string) *Typedef {
+	return &Typedef{
 		Type: CType{
 			BaseType: getTextBetweenTags(v, "type"),
 		},
