@@ -2,6 +2,192 @@ package vulkan
 
 import "unsafe"
 
+type PFN_vkInternalAllocationNotification func(
+	pUserData unsafe.Pointer,
+	size uint,
+	allocationType VkInternalAllocationType,
+	allocationScope VkSystemAllocationScope,
+)
+
+type PFN_vkInternalFreeNotification func(
+	pUserData unsafe.Pointer,
+	size uint,
+	allocationType VkInternalAllocationType,
+	allocationScope VkSystemAllocationScope,
+)
+
+type PFN_vkReallocationFunction func(
+	pUserData unsafe.Pointer,
+	pOriginal unsafe.Pointer,
+	size uint,
+	alignment uint,
+	allocationScope VkSystemAllocationScope,
+) unsafe.Pointer
+
+type PFN_vkAllocationFunction func(
+	pUserData unsafe.Pointer,
+	size uint,
+	alignment uint,
+	allocationScope VkSystemAllocationScope,
+) unsafe.Pointer
+
+type PFN_vkFreeFunction func(
+	pUserData unsafe.Pointer,
+	pMemory unsafe.Pointer,
+)
+
+type PFN_vkVoidFunction func()
+
+type PFN_vkDebugReportCallbackEXT func(
+	flags VkDebugReportFlagsEXT,
+	objectType VkDebugReportObjectTypeEXT,
+	object uint64,
+	location uint,
+	messageCode int32,
+	pLayerPrefix string,
+	pMessage string,
+	pUserData unsafe.Pointer,
+) VkBool32
+
+type PFN_vkDebugUtilsMessengerCallbackEXT func(
+	messageSeverity VkDebugUtilsMessageSeverityFlagBitsEXT,
+	messageTypes VkDebugUtilsMessageTypeFlagsEXT,
+	pCallbackData *VkDebugUtilsMessengerCallbackDataEXT,
+	pUserData unsafe.Pointer,
+) VkBool32
+
+type PFN_vkFaultCallbackFunction func(
+	unrecordedFaults VkBool32,
+	faultCount uint32,
+	pFaults *VkFaultData,
+)
+
+type PFN_vkDeviceMemoryReportCallbackEXT func(
+	pCallbackData *VkDeviceMemoryReportCallbackDataEXT,
+	pUserData unsafe.Pointer,
+)
+
+type PFN_vkGetInstanceProcAddrLUNARG func(
+	instance VkInstance,
+	pName string,
+)
+
+type VkInstance unsafe.Pointer
+
+type VkPhysicalDevice unsafe.Pointer
+
+type VkDevice unsafe.Pointer
+
+type VkQueue unsafe.Pointer
+
+type VkCommandBuffer unsafe.Pointer
+
+type VkDeviceMemory unsafe.Pointer
+
+type VkCommandPool unsafe.Pointer
+
+type VkBuffer unsafe.Pointer
+
+type VkBufferView unsafe.Pointer
+
+type VkImage unsafe.Pointer
+
+type VkImageView unsafe.Pointer
+
+type VkShaderModule unsafe.Pointer
+
+type VkPipeline unsafe.Pointer
+
+type VkPipelineLayout unsafe.Pointer
+
+type VkSampler unsafe.Pointer
+
+type VkDescriptorSet unsafe.Pointer
+
+type VkDescriptorSetLayout unsafe.Pointer
+
+type VkDescriptorPool unsafe.Pointer
+
+type VkFence unsafe.Pointer
+
+type VkSemaphore unsafe.Pointer
+
+type VkEvent unsafe.Pointer
+
+type VkQueryPool unsafe.Pointer
+
+type VkFramebuffer unsafe.Pointer
+
+type VkRenderPass unsafe.Pointer
+
+type VkPipelineCache unsafe.Pointer
+
+type VkPipelineBinaryKHR unsafe.Pointer
+
+type VkIndirectCommandsLayoutNV unsafe.Pointer
+
+type VkIndirectCommandsLayoutEXT unsafe.Pointer
+
+type VkIndirectExecutionSetEXT unsafe.Pointer
+
+type VkDescriptorUpdateTemplate unsafe.Pointer
+
+type VkSamplerYcbcrConversion unsafe.Pointer
+
+type VkValidationCacheEXT unsafe.Pointer
+
+type VkAccelerationStructureKHR unsafe.Pointer
+
+type VkAccelerationStructureNV unsafe.Pointer
+
+type VkPerformanceConfigurationINTEL unsafe.Pointer
+
+type VkBufferCollectionFUCHSIA unsafe.Pointer
+
+type VkDeferredOperationKHR unsafe.Pointer
+
+type VkPrivateDataSlot unsafe.Pointer
+
+type VkCuModuleNVX unsafe.Pointer
+
+type VkCuFunctionNVX unsafe.Pointer
+
+type VkOpticalFlowSessionNV unsafe.Pointer
+
+type VkMicromapEXT unsafe.Pointer
+
+type VkShaderEXT unsafe.Pointer
+
+type VkTensorARM unsafe.Pointer
+
+type VkTensorViewARM unsafe.Pointer
+
+type VkDataGraphPipelineSessionARM unsafe.Pointer
+
+type VkDisplayKHR unsafe.Pointer
+
+type VkDisplayModeKHR unsafe.Pointer
+
+type VkSurfaceKHR unsafe.Pointer
+
+type VkSwapchainKHR unsafe.Pointer
+
+type VkDebugReportCallbackEXT unsafe.Pointer
+
+type VkDebugUtilsMessengerEXT unsafe.Pointer
+
+type VkVideoSessionKHR unsafe.Pointer
+
+type VkVideoSessionParametersKHR unsafe.Pointer
+
+type VkSemaphoreSciSyncPoolNV unsafe.Pointer
+
+type VkCudaModuleNV unsafe.Pointer
+
+type VkCudaFunctionNV unsafe.Pointer
+
+type VkExternalComputeQueueNV unsafe.Pointer
+
 type VkSampleMask uint32
 
 type VkBool32 uint32
@@ -527,22 +713,22 @@ type VkPhysicalDeviceProperties struct {
 	VendorID          uint32
 	DeviceID          uint32
 	DeviceType        VkPhysicalDeviceType
-	DeviceName        char
-	PipelineCacheUUID uint8
+	DeviceName        [VkMaxPhysicalDeviceNameSize]uint8
+	PipelineCacheUUID [VkUuidSize]uint8
 	Limits            VkPhysicalDeviceLimits
 	SparseProperties  VkPhysicalDeviceSparseProperties
 }
 
 type VkExtensionProperties struct {
-	ExtensionName char
+	ExtensionName [VkMaxExtensionNameSize]uint8
 	SpecVersion   uint32
 }
 
 type VkLayerProperties struct {
-	LayerName             char
+	LayerName             [VkMaxExtensionNameSize]uint8
 	SpecVersion           uint32
 	ImplementationVersion uint32
-	Description           char
+	Description           [VkMaxDescriptionSize]uint8
 }
 
 type VkApplicationInfo struct {
@@ -606,9 +792,9 @@ type VkQueueFamilyProperties struct {
 
 type VkPhysicalDeviceMemoryProperties struct {
 	MemoryTypeCount uint32
-	MemoryTypes     VkMemoryType
+	MemoryTypes     [VkMaxMemoryTypes]VkMemoryType
 	MemoryHeapCount uint32
-	MemoryHeaps     VkMemoryHeap
+	MemoryHeaps     [VkMaxMemoryHeaps]VkMemoryHeap
 }
 
 type VkMemoryAllocateInfo struct {
@@ -893,9 +1079,9 @@ type VkImageCopy struct {
 
 type VkImageBlit struct {
 	SrcSubresource VkImageSubresourceLayers
-	SrcOffsets     VkOffset3D
+	SrcOffsets     [2]VkOffset3D
 	DstSubresource VkImageSubresourceLayers
-	DstOffsets     VkOffset3D
+	DstOffsets     [2]VkOffset3D
 }
 
 type VkBufferImageCopy struct {
@@ -1154,7 +1340,7 @@ type VkPipelineColorBlendStateCreateInfo struct {
 	LogicOp         VkLogicOp
 	AttachmentCount uint32
 	PAttachments    *VkPipelineColorBlendAttachmentState
-	BlendConstants  float32
+	BlendConstants  [4]float32
 }
 
 type VkPipelineDynamicStateCreateInfo struct {
@@ -1227,7 +1413,7 @@ type VkPipelineCacheHeaderVersionOne struct {
 	HeaderVersion     VkPipelineCacheHeaderVersion
 	VendorID          uint32
 	DeviceID          uint32
-	PipelineCacheUUID uint8
+	PipelineCacheUUID [VkUuidSize]uint8
 }
 
 type VkPipelineCacheStageValidationIndexEntry struct {
@@ -1236,7 +1422,7 @@ type VkPipelineCacheStageValidationIndexEntry struct {
 }
 
 type VkPipelineCacheSafetyCriticalIndexEntry struct {
-	PipelineIdentifier uint8
+	PipelineIdentifier [VkUuidSize]uint8
 	PipelineMemorySize uint64
 	JsonSize           uint64
 	JsonOffset         uint64
@@ -1259,7 +1445,7 @@ type VkPipelineCacheHeaderVersionDataGraphQCOM struct {
 	HeaderVersion    VkPipelineCacheHeaderVersion
 	CacheType        VkDataGraphModelCacheTypeQCOM
 	CacheVersion     uint32
-	ToolchainVersion uint32
+	ToolchainVersion [VkDataGraphModelToolchainVersionLengthQcom]uint32
 }
 
 type VkPushConstantRange struct {
@@ -1298,7 +1484,7 @@ type VkPipelineBinaryKeyKHR struct {
 	SType   VkStructureType
 	PNext   unsafe.Pointer
 	KeySize uint32
-	Key     uint8
+	Key     [VkMaxPipelineBinaryKeySizeKhr]uint8
 }
 
 type VkPipelineBinaryInfoKHR struct {
@@ -1593,9 +1779,9 @@ type VkPhysicalDeviceLimits struct {
 	MaxFragmentDualSrcAttachments                   uint32
 	MaxFragmentCombinedOutputResources              uint32
 	MaxComputeSharedMemorySize                      uint32
-	MaxComputeWorkGroupCount                        uint32
+	MaxComputeWorkGroupCount                        [3]uint32
 	MaxComputeWorkGroupInvocations                  uint32
-	MaxComputeWorkGroupSize                         uint32
+	MaxComputeWorkGroupSize                         [3]uint32
 	SubPixelPrecisionBits                           uint32
 	SubTexelPrecisionBits                           uint32
 	MipmapPrecisionBits                             uint32
@@ -1604,8 +1790,8 @@ type VkPhysicalDeviceLimits struct {
 	MaxSamplerLodBias                               float32
 	MaxSamplerAnisotropy                            float32
 	MaxViewports                                    uint32
-	MaxViewportDimensions                           uint32
-	ViewportBoundsRange                             float32
+	MaxViewportDimensions                           [2]uint32
+	ViewportBoundsRange                             [2]float32
 	ViewportSubPixelBits                            uint32
 	MinMemoryMapAlignment                           uint
 	MinTexelBufferOffsetAlignment                   VkDeviceSize
@@ -1638,8 +1824,8 @@ type VkPhysicalDeviceLimits struct {
 	MaxCullDistances                                uint32
 	MaxCombinedClipAndCullDistances                 uint32
 	DiscreteQueuePriorities                         uint32
-	PointSizeRange                                  float32
-	LineWidthRange                                  float32
+	PointSizeRange                                  [2]float32
+	LineWidthRange                                  [2]float32
 	PointSizeGranularity                            float32
 	LineWidthGranularity                            float32
 	StrictLines                                     VkBool32
@@ -2002,7 +2188,7 @@ type VkDebugMarkerMarkerInfoEXT struct {
 	SType       VkStructureType
 	PNext       unsafe.Pointer
 	PMarkerName string
-	Color       float32
+	Color       [4]float32
 }
 
 type VkDedicatedAllocationImageCreateInfoNV struct {
@@ -2559,8 +2745,8 @@ type VkPhysicalDeviceDriverProperties struct {
 	SType              VkStructureType
 	PNext              unsafe.Pointer
 	DriverID           VkDriverId
-	DriverName         char
-	DriverInfo         char
+	DriverName         [VkMaxDriverNameSize]uint8
+	DriverInfo         [VkMaxDriverInfoSize]uint8
 	ConformanceVersion VkConformanceVersion
 }
 
@@ -2651,9 +2837,9 @@ type VkExternalBufferPropertiesKHR struct {
 type VkPhysicalDeviceIDProperties struct {
 	SType           VkStructureType
 	PNext           unsafe.Pointer
-	DeviceUUID      uint8
-	DriverUUID      uint8
-	DeviceLUID      uint8
+	DeviceUUID      [VkUuidSize]uint8
+	DriverUUID      [VkUuidSize]uint8
+	DeviceLUID      [VkLuidSize]uint8
 	DeviceNodeMask  uint32
 	DeviceLUIDValid VkBool32
 }
@@ -3119,7 +3305,7 @@ type VkPhysicalDeviceGroupProperties struct {
 	SType               VkStructureType
 	PNext               unsafe.Pointer
 	PhysicalDeviceCount uint32
-	PhysicalDevices     VkPhysicalDevice
+	PhysicalDevices     [VkMaxDeviceGroupSize]VkPhysicalDevice
 	SubsetAllocation    VkBool32
 }
 
@@ -3227,7 +3413,7 @@ type VkDeviceGroupBindSparseInfoKHR struct {
 type VkDeviceGroupPresentCapabilitiesKHR struct {
 	SType       VkStructureType
 	PNext       unsafe.Pointer
-	PresentMask uint32
+	PresentMask [VkMaxDeviceGroupSize]uint32
 	Modes       VkDeviceGroupPresentModeFlagsKHR
 }
 
@@ -3964,7 +4150,7 @@ type VkPhysicalDeviceSampleLocationsPropertiesEXT struct {
 	PNext                         unsafe.Pointer
 	SampleLocationSampleCounts    VkSampleCountFlags
 	MaxSampleLocationGridSize     VkExtent2D
-	SampleLocationCoordinateRange float32
+	SampleLocationCoordinateRange [2]float32
 	SampleLocationSubPixelBits    uint32
 	VariableSampleLocations       VkBool32
 }
@@ -4194,7 +4380,7 @@ type VkPhysicalDeviceLayeredApiPropertiesKHR struct {
 	VendorID   uint32
 	DeviceID   uint32
 	LayeredAPI VkPhysicalDeviceLayeredApiKHR
-	DeviceName char
+	DeviceName [VkMaxPhysicalDeviceNameSize]uint8
 }
 
 type VkPhysicalDeviceLayeredApiVulkanPropertiesKHR struct {
@@ -4362,7 +4548,7 @@ type VkShaderStatisticsInfoAMD struct {
 	NumPhysicalSgprs     uint32
 	NumAvailableVgprs    uint32
 	NumAvailableSgprs    uint32
-	ComputeWorkGroupSize uint32
+	ComputeWorkGroupSize [3]uint32
 }
 
 type VkDeviceQueueGlobalPriorityCreateInfo struct {
@@ -4393,7 +4579,7 @@ type VkQueueFamilyGlobalPriorityProperties struct {
 	SType         VkStructureType
 	PNext         unsafe.Pointer
 	PriorityCount uint32
-	Priorities    VkQueueGlobalPriority
+	Priorities    [VkMaxGlobalPrioritySize]VkQueueGlobalPriority
 }
 
 type VkQueueFamilyGlobalPriorityPropertiesKHR struct {
@@ -4424,7 +4610,7 @@ type VkDebugUtilsLabelEXT struct {
 	SType      VkStructureType
 	PNext      unsafe.Pointer
 	PLabelName string
-	Color      float32
+	Color      [4]float32
 }
 
 type VkDebugUtilsMessengerCreateInfoEXT struct {
@@ -5233,11 +5419,11 @@ type VkPhysicalDeviceMeshShaderPropertiesNV struct {
 	PNext                             unsafe.Pointer
 	MaxDrawMeshTasksCount             uint32
 	MaxTaskWorkGroupInvocations       uint32
-	MaxTaskWorkGroupSize              uint32
+	MaxTaskWorkGroupSize              [3]uint32
 	MaxTaskTotalMemorySize            uint32
 	MaxTaskOutputCount                uint32
 	MaxMeshWorkGroupInvocations       uint32
-	MaxMeshWorkGroupSize              uint32
+	MaxMeshWorkGroupSize              [3]uint32
 	MaxMeshTotalMemorySize            uint32
 	MaxMeshOutputVertices             uint32
 	MaxMeshOutputPrimitives           uint32
@@ -5265,16 +5451,16 @@ type VkPhysicalDeviceMeshShaderPropertiesEXT struct {
 	SType                                 VkStructureType
 	PNext                                 unsafe.Pointer
 	MaxTaskWorkGroupTotalCount            uint32
-	MaxTaskWorkGroupCount                 uint32
+	MaxTaskWorkGroupCount                 [3]uint32
 	MaxTaskWorkGroupInvocations           uint32
-	MaxTaskWorkGroupSize                  uint32
+	MaxTaskWorkGroupSize                  [3]uint32
 	MaxTaskPayloadSize                    uint32
 	MaxTaskSharedMemorySize               uint32
 	MaxTaskPayloadAndSharedMemorySize     uint32
 	MaxMeshWorkGroupTotalCount            uint32
-	MaxMeshWorkGroupCount                 uint32
+	MaxMeshWorkGroupCount                 [3]uint32
 	MaxMeshWorkGroupInvocations           uint32
-	MaxMeshWorkGroupSize                  uint32
+	MaxMeshWorkGroupSize                  [3]uint32
 	MaxMeshSharedMemorySize               uint32
 	MaxMeshPayloadAndSharedMemorySize     uint32
 	MaxMeshOutputMemorySize               uint32
@@ -5702,8 +5888,8 @@ type VkPipelineRasterizationDepthClipStateCreateInfoEXT struct {
 type VkPhysicalDeviceMemoryBudgetPropertiesEXT struct {
 	SType      VkStructureType
 	PNext      unsafe.Pointer
-	HeapBudget VkDeviceSize
-	HeapUsage  VkDeviceSize
+	HeapBudget [VkMaxMemoryHeaps]VkDeviceSize
+	HeapUsage  [VkMaxMemoryHeaps]VkDeviceSize
 }
 
 type VkPhysicalDeviceMemoryPriorityFeaturesEXT struct {
@@ -5905,7 +6091,7 @@ type VkPipelineCreationFeedbackCreateInfo struct {
 	PNext                              unsafe.Pointer
 	PPipelineCreationFeedback          *VkPipelineCreationFeedback
 	PipelineStageCreationFeedbackCount uint32
-	PPipelineStageCreationFeedbacks    **VkPipelineCreationFeedback
+	PPipelineStageCreationFeedbacks    *VkPipelineCreationFeedback
 }
 
 type VkPipelineCreationFeedbackCreateInfoEXT struct {
@@ -5966,16 +6152,16 @@ type VkPerformanceCounterKHR struct {
 	Unit    VkPerformanceCounterUnitKHR
 	Scope   VkPerformanceCounterScopeKHR
 	Storage VkPerformanceCounterStorageKHR
-	Uuid    uint8
+	Uuid    [VkUuidSize]uint8
 }
 
 type VkPerformanceCounterDescriptionKHR struct {
 	SType       VkStructureType
 	PNext       unsafe.Pointer
 	Flags       VkPerformanceCounterDescriptionFlagsKHR
-	Name        char
-	Category    char
-	Description char
+	Name        [VkMaxDescriptionSize]uint8
+	Category    [VkMaxDescriptionSize]uint8
+	Description [VkMaxDescriptionSize]uint8
 }
 
 type VkQueryPoolPerformanceCreateInfoKHR struct {
@@ -6179,8 +6365,8 @@ type VkPipelineExecutablePropertiesKHR struct {
 	SType        VkStructureType
 	PNext        unsafe.Pointer
 	Stages       VkShaderStageFlags
-	Name         char
-	Description  char
+	Name         [VkMaxDescriptionSize]uint8
+	Description  [VkMaxDescriptionSize]uint8
 	SubgroupSize uint32
 }
 
@@ -6194,8 +6380,8 @@ type VkPipelineExecutableInfoKHR struct {
 type VkPipelineExecutableStatisticKHR struct {
 	SType       VkStructureType
 	PNext       unsafe.Pointer
-	Name        char
-	Description char
+	Name        [VkMaxDescriptionSize]uint8
+	Description [VkMaxDescriptionSize]uint8
 	Format      VkPipelineExecutableStatisticFormatKHR
 	Value       VkPipelineExecutableStatisticValueKHR
 }
@@ -6203,8 +6389,8 @@ type VkPipelineExecutableStatisticKHR struct {
 type VkPipelineExecutableInternalRepresentationKHR struct {
 	SType       VkStructureType
 	PNext       unsafe.Pointer
-	Name        char
-	Description char
+	Name        [VkMaxDescriptionSize]uint8
+	Description [VkMaxDescriptionSize]uint8
 	IsText      VkBool32
 	DataSize    uint
 	PData       unsafe.Pointer
@@ -6287,8 +6473,8 @@ type VkPhysicalDeviceSubpassShadingPropertiesHUAWEI struct {
 type VkPhysicalDeviceClusterCullingShaderPropertiesHUAWEI struct {
 	SType                         VkStructureType
 	PNext                         unsafe.Pointer
-	MaxWorkGroupCount             uint32
-	MaxWorkGroupSize              uint32
+	MaxWorkGroupCount             [3]uint32
+	MaxWorkGroupSize              [3]uint32
 	MaxOutputClusterCount         uint32
 	IndirectBufferOffsetAlignment VkDeviceSize
 }
@@ -6384,9 +6570,9 @@ type VkPhysicalDeviceVulkan11Features struct {
 type VkPhysicalDeviceVulkan11Properties struct {
 	SType                             VkStructureType
 	PNext                             unsafe.Pointer
-	DeviceUUID                        uint8
-	DriverUUID                        uint8
-	DeviceLUID                        uint8
+	DeviceUUID                        [VkUuidSize]uint8
+	DriverUUID                        [VkUuidSize]uint8
+	DeviceLUID                        [VkLuidSize]uint8
 	DeviceNodeMask                    uint32
 	DeviceLUIDValid                   VkBool32
 	SubgroupSize                      uint32
@@ -6457,8 +6643,8 @@ type VkPhysicalDeviceVulkan12Properties struct {
 	SType                                                VkStructureType
 	PNext                                                unsafe.Pointer
 	DriverID                                             VkDriverId
-	DriverName                                           char
-	DriverInfo                                           char
+	DriverName                                           [VkMaxDriverNameSize]uint8
+	DriverInfo                                           [VkMaxDriverInfoSize]uint8
 	ConformanceVersion                                   VkConformanceVersion
 	DenormBehaviorIndependence                           VkShaderFloatControlsIndependence
 	RoundingModeIndependence                             VkShaderFloatControlsIndependence
@@ -6632,7 +6818,7 @@ type VkPhysicalDeviceVulkan14Properties struct {
 	PCopySrcLayouts                                     *VkImageLayout
 	CopyDstLayoutCount                                  uint32
 	PCopyDstLayouts                                     *VkImageLayout
-	OptimalTilingLayoutUUID                             uint8
+	OptimalTilingLayoutUUID                             [VkUuidSize]uint8
 	IdenticalMemoryTypeRequirements                     VkBool32
 }
 
@@ -6666,11 +6852,11 @@ type VkFaultCallbackInfo struct {
 type VkPhysicalDeviceToolProperties struct {
 	SType       VkStructureType
 	PNext       unsafe.Pointer
-	Name        char
-	Version     char
+	Name        [VkMaxExtensionNameSize]uint8
+	Version     [VkMaxExtensionNameSize]uint8
 	Purposes    VkToolPurposeFlags
-	Description char
-	Layer       char
+	Description [VkMaxDescriptionSize]uint8
+	Layer       [VkMaxExtensionNameSize]uint8
 }
 
 type VkPhysicalDeviceToolPropertiesEXT struct {
@@ -6819,7 +7005,7 @@ type VkAabbPositionsNV struct {
 }
 
 type VkTransformMatrixKHR struct {
-	Matrix float32
+	Matrix [3][4]float32
 }
 
 type VkTransformMatrixNV struct {
@@ -7018,7 +7204,7 @@ type VkPartitionedAccelerationStructureFlagsNV struct {
 
 type VkPartitionedAccelerationStructureWriteInstanceDataNV struct {
 	Transform                           VkTransformMatrixKHR
-	ExplicitAABB                        float32
+	ExplicitAABB                        [6]float32
 	InstanceID                          uint32
 	InstanceMask                        uint32
 	InstanceContributionToHitGroupIndex uint32
@@ -7036,7 +7222,7 @@ type VkPartitionedAccelerationStructureUpdateInstanceDataNV struct {
 
 type VkPartitionedAccelerationStructureWritePartitionTranslationDataNV struct {
 	PartitionIndex       uint32
-	PartitionTranslation float32
+	PartitionTranslation [3]float32
 }
 
 type VkWriteDescriptorSetPartitionedAccelerationStructureNV struct {
@@ -7082,7 +7268,7 @@ type VkDeviceDiagnosticsConfigCreateInfoNV struct {
 type VkPipelineOfflineCreateInfo struct {
 	SType              VkStructureType
 	PNext              unsafe.Pointer
-	PipelineIdentifier uint8
+	PipelineIdentifier [VkUuidSize]uint8
 	MatchControl       VkPipelineMatchControl
 	PoolEntrySize      VkDeviceSize
 }
@@ -7221,9 +7407,9 @@ type VkImageBlit2 struct {
 	SType          VkStructureType
 	PNext          unsafe.Pointer
 	SrcSubresource VkImageSubresourceLayers
-	SrcOffsets     VkOffset3D
+	SrcOffsets     [2]VkOffset3D
 	DstSubresource VkImageSubresourceLayers
-	DstOffsets     VkOffset3D
+	DstOffsets     [2]VkOffset3D
 }
 
 type VkImageBlit2KHR struct {
@@ -7355,7 +7541,7 @@ type VkPipelineFragmentShadingRateStateCreateInfoKHR struct {
 	SType        VkStructureType
 	PNext        unsafe.Pointer
 	FragmentSize VkExtent2D
-	CombinerOps  VkFragmentShadingRateCombinerOpKHR
+	CombinerOps  [2]VkFragmentShadingRateCombinerOpKHR
 }
 
 type VkPhysicalDeviceFragmentShadingRateFeaturesKHR struct {
@@ -7423,7 +7609,7 @@ type VkPipelineFragmentShadingRateEnumStateCreateInfoNV struct {
 	PNext           unsafe.Pointer
 	ShadingRateType VkFragmentShadingRateTypeNV
 	ShadingRate     VkFragmentShadingRateNV
-	CombinerOps     VkFragmentShadingRateCombinerOpKHR
+	CombinerOps     [2]VkFragmentShadingRateCombinerOpKHR
 }
 
 type VkAccelerationStructureBuildSizesInfoKHR struct {
@@ -7905,7 +8091,7 @@ type VkPhysicalDeviceHostImageCopyProperties struct {
 	PCopySrcLayouts                 *VkImageLayout
 	CopyDstLayoutCount              uint32
 	PCopyDstLayouts                 *VkImageLayout
-	OptimalTilingLayoutUUID         uint8
+	OptimalTilingLayoutUUID         [VkUuidSize]uint8
 	IdenticalMemoryTypeRequirements VkBool32
 }
 
@@ -8472,7 +8658,7 @@ type VkVideoDecodeVP9PictureInfoKHR struct {
 	SType                    VkStructureType
 	PNext                    unsafe.Pointer
 	PStdPictureInfo          *StdVideoDecodeVP9PictureInfo
-	ReferenceNameSlotIndices int32
+	ReferenceNameSlotIndices [VkMaxVideoVp9ReferencesPerFrameKhr]int32
 	UncompressedHeaderOffset uint32
 	CompressedHeaderOffset   uint32
 	TilesOffset              uint32
@@ -8507,7 +8693,7 @@ type VkVideoDecodeAV1PictureInfoKHR struct {
 	SType                    VkStructureType
 	PNext                    unsafe.Pointer
 	PStdPictureInfo          *StdVideoDecodeAV1PictureInfo
-	ReferenceNameSlotIndices int32
+	ReferenceNameSlotIndices [VkMaxVideoAv1ReferencesPerFrameKhr]int32
 	FrameHeaderOffset        uint32
 	TileCount                uint32
 	PTileOffsets             *uint32
@@ -9056,7 +9242,7 @@ type VkVideoEncodeAV1PictureInfoKHR struct {
 	RateControlGroup           VkVideoEncodeAV1RateControlGroupKHR
 	ConstantQIndex             uint32
 	PStdPictureInfo            *StdVideoEncodeAV1PictureInfo
-	ReferenceNameSlotIndices   int32
+	ReferenceNameSlotIndices   [VkMaxVideoAv1ReferencesPerFrameKhr]int32
 	PrimaryReferenceCdfOnly    VkBool32
 	GenerateObuExtensionHeader VkBool32
 }
@@ -9887,7 +10073,7 @@ type VkPhysicalDeviceShaderModuleIdentifierFeaturesEXT struct {
 type VkPhysicalDeviceShaderModuleIdentifierPropertiesEXT struct {
 	SType                               VkStructureType
 	PNext                               unsafe.Pointer
-	ShaderModuleIdentifierAlgorithmUUID uint8
+	ShaderModuleIdentifierAlgorithmUUID [VkUuidSize]uint8
 }
 
 type VkPipelineShaderStageModuleIdentifierCreateInfoEXT struct {
@@ -9901,7 +10087,7 @@ type VkShaderModuleIdentifierEXT struct {
 	SType          VkStructureType
 	PNext          unsafe.Pointer
 	IdentifierSize uint32
-	Identifier     uint8
+	Identifier     [VkMaxShaderModuleIdentifierSizeExt]uint8
 }
 
 type VkImageCompressionControlEXT struct {
@@ -9973,7 +10159,7 @@ type VkRenderPassCreationFeedbackCreateInfoEXT struct {
 
 type VkRenderPassSubpassFeedbackInfoEXT struct {
 	SubpassMergeStatus VkSubpassMergeStatusEXT
-	Description        char
+	Description        [VkMaxDescriptionSize]uint8
 	PostMergeIndex     uint32
 }
 
@@ -10130,7 +10316,7 @@ type VkAccelerationStructureTrianglesDisplacementMicromapNV struct {
 type VkPipelinePropertiesIdentifierEXT struct {
 	SType              VkStructureType
 	PNext              unsafe.Pointer
-	PipelineIdentifier uint8
+	PipelineIdentifier [VkUuidSize]uint8
 }
 
 type VkPhysicalDevicePipelinePropertiesFeaturesEXT struct {
@@ -10451,7 +10637,7 @@ type VkDeviceFaultAddressInfoEXT struct {
 }
 
 type VkDeviceFaultVendorInfoEXT struct {
-	Description     char
+	Description     [VkMaxDescriptionSize]uint8
 	VendorFaultCode uint64
 	VendorFaultData uint64
 }
@@ -10467,7 +10653,7 @@ type VkDeviceFaultCountsEXT struct {
 type VkDeviceFaultInfoEXT struct {
 	SType             VkStructureType
 	PNext             unsafe.Pointer
-	Description       char
+	Description       [VkMaxDescriptionSize]uint8
 	PAddressInfos     *VkDeviceFaultAddressInfoEXT
 	PVendorInfos      *VkDeviceFaultVendorInfoEXT
 	PVendorBinaryData unsafe.Pointer
@@ -10479,7 +10665,7 @@ type VkDeviceFaultVendorBinaryHeaderVersionOneEXT struct {
 	VendorID              uint32
 	DeviceID              uint32
 	DriverVersion         uint32
-	PipelineCacheUUID     uint8
+	PipelineCacheUUID     [VkUuidSize]uint8
 	ApplicationNameOffset uint32
 	ApplicationVersion    uint32
 	EngineNameOffset      uint32
@@ -10813,7 +10999,7 @@ type VkPhysicalDeviceShaderObjectFeaturesEXT struct {
 type VkPhysicalDeviceShaderObjectPropertiesEXT struct {
 	SType               VkStructureType
 	PNext               unsafe.Pointer
-	ShaderBinaryUUID    uint8
+	ShaderBinaryUUID    [VkUuidSize]uint8
 	ShaderBinaryVersion uint32
 }
 
@@ -10930,7 +11116,7 @@ type VkPhysicalDeviceShaderEnqueuePropertiesAMDX struct {
 	MaxExecutionGraphShaderPayloadSize     uint32
 	MaxExecutionGraphShaderPayloadCount    uint32
 	ExecutionGraphDispatchAddressAlignment uint32
-	MaxExecutionGraphWorkgroupCount        uint32
+	MaxExecutionGraphWorkgroupCount        [3]uint32
 	MaxExecutionGraphWorkgroups            uint32
 }
 
@@ -12090,7 +12276,7 @@ type VkPhysicalDeviceDataGraphProcessingEngineARM struct {
 
 type VkPhysicalDeviceDataGraphOperationSupportARM struct {
 	OperationType VkPhysicalDeviceDataGraphOperationTypeARM
-	Name          char
+	Name          [VkMaxPhysicalDeviceDataGraphOperationSetNameSizeArm]uint8
 	Version       uint32
 }
 
@@ -12270,7 +12456,7 @@ type VkPerformanceCounterDescriptionARM struct {
 	SType VkStructureType
 	PNext unsafe.Pointer
 	Flags VkPerformanceCounterDescriptionFlagsARM
-	Name  char
+	Name  [VkMaxDescriptionSize]uint8
 }
 
 type VkRenderPassPerformanceCountersByRegionBeginInfoARM struct {

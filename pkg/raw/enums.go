@@ -1,6 +1,6 @@
 package vulkan
 
-var (
+const (
 	VkMaxPhysicalDeviceNameSize                              = 256
 	VkUuidSize                                               = 16
 	VkLuidSize                                               = 8
@@ -730,10 +730,10 @@ var (
 type VkCullModeFlagBits int64
 
 var (
-	VkCullModeNone         VkCullModeFlagBits = (1 << 0)
+	VkCullModeNone         VkCullModeFlagBits = 0
 	VkCullModeFrontBit     VkCullModeFlagBits = (1 << 0)
 	VkCullModeBackBit      VkCullModeFlagBits = (1 << 1)
-	VkCullModeFrontAndBack VkCullModeFlagBits = (1 << 0)
+	VkCullModeFrontAndBack VkCullModeFlagBits = 0
 )
 
 type VkRenderPassCreateFlagBits int64
@@ -827,8 +827,8 @@ var (
 	VkShaderStageGeometryBit               VkShaderStageFlagBits = (1 << 3)
 	VkShaderStageFragmentBit               VkShaderStageFlagBits = (1 << 4)
 	VkShaderStageComputeBit                VkShaderStageFlagBits = (1 << 5)
-	VkShaderStageAllGraphics               VkShaderStageFlagBits = (1 << 0)
-	VkShaderStageAll                       VkShaderStageFlagBits = (1 << 0)
+	VkShaderStageAllGraphics               VkShaderStageFlagBits = 0
+	VkShaderStageAll                       VkShaderStageFlagBits = 0
 )
 
 type VkImageUsageFlagBits int64
@@ -1055,8 +1055,8 @@ type VkStencilFaceFlagBits int64
 var (
 	VkStencilFaceFrontBit     VkStencilFaceFlagBits = (1 << 0)
 	VkStencilFaceBackBit      VkStencilFaceFlagBits = (1 << 1)
-	VkStencilFaceFrontAndBack VkStencilFaceFlagBits = (1 << 0)
-	VkStencilFrontAndBack     VkStencilFaceFlagBits = (1 << 0)
+	VkStencilFaceFrontAndBack VkStencilFaceFlagBits = 0
+	VkStencilFrontAndBack     VkStencilFaceFlagBits = 0
 )
 
 type VkDescriptorPoolCreateFlagBits int64
@@ -1291,7 +1291,7 @@ var (
 type VkClusterAccelerationStructureAddressResolutionFlagBitsNV int64
 
 var (
-	VkClusterAccelerationStructureAddressResolutionNoneNv                         VkClusterAccelerationStructureAddressResolutionFlagBitsNV = (1 << 0)
+	VkClusterAccelerationStructureAddressResolutionNoneNv                         VkClusterAccelerationStructureAddressResolutionFlagBitsNV = 0
 	VkClusterAccelerationStructureAddressResolutionIndirectedDstImplicitDataBitNv VkClusterAccelerationStructureAddressResolutionFlagBitsNV = (1 << 0)
 	VkClusterAccelerationStructureAddressResolutionIndirectedScratchDataBitNv     VkClusterAccelerationStructureAddressResolutionFlagBitsNV = (1 << 1)
 	VkClusterAccelerationStructureAddressResolutionIndirectedDstAddressArrayBitNv VkClusterAccelerationStructureAddressResolutionFlagBitsNV = (1 << 2)
@@ -1418,7 +1418,7 @@ var (
 	VkExternalSemaphoreHandleTypeOpaqueWin32Bit    VkExternalSemaphoreHandleTypeFlagBits = (1 << 1)
 	VkExternalSemaphoreHandleTypeOpaqueWin32KmtBit VkExternalSemaphoreHandleTypeFlagBits = (1 << 2)
 	VkExternalSemaphoreHandleTypeD3d12FenceBit     VkExternalSemaphoreHandleTypeFlagBits = (1 << 3)
-	VkExternalSemaphoreHandleTypeD3d11FenceBit     VkExternalSemaphoreHandleTypeFlagBits = (1 << 0)
+	VkExternalSemaphoreHandleTypeD3d11FenceBit     VkExternalSemaphoreHandleTypeFlagBits = 0
 	VkExternalSemaphoreHandleTypeSyncFdBit         VkExternalSemaphoreHandleTypeFlagBits = (1 << 4)
 )
 
@@ -1461,7 +1461,7 @@ type VkSurfaceCounterFlagBitsEXT int64
 
 var (
 	VkSurfaceCounterVblankBitExt VkSurfaceCounterFlagBitsEXT = (1 << 0)
-	VkSurfaceCounterVblankExt    VkSurfaceCounterFlagBitsEXT = (1 << 0)
+	VkSurfaceCounterVblankExt    VkSurfaceCounterFlagBitsEXT = 0
 )
 
 type VkDisplayPowerStateEXT int64
@@ -1718,7 +1718,7 @@ var (
 type VkResolveModeFlagBits int64
 
 var (
-	VkResolveModeNone          VkResolveModeFlagBits = (1 << 0)
+	VkResolveModeNone          VkResolveModeFlagBits = 0
 	VkResolveModeSampleZeroBit VkResolveModeFlagBits = (1 << 0)
 	VkResolveModeAverageBit    VkResolveModeFlagBits = (1 << 1)
 	VkResolveModeMinBit        VkResolveModeFlagBits = (1 << 2)
@@ -1758,7 +1758,7 @@ var (
 	VkGeometryInstanceTriangleFlipFacingBitKhr            VkGeometryInstanceFlagBitsKHR = (1 << 1)
 	VkGeometryInstanceForceOpaqueBitKhr                   VkGeometryInstanceFlagBitsKHR = (1 << 2)
 	VkGeometryInstanceForceNoOpaqueBitKhr                 VkGeometryInstanceFlagBitsKHR = (1 << 3)
-	VkGeometryInstanceTriangleFrontCounterclockwiseBitKhr VkGeometryInstanceFlagBitsKHR = (1 << 0)
+	VkGeometryInstanceTriangleFrontCounterclockwiseBitKhr VkGeometryInstanceFlagBitsKHR = 0
 )
 
 type VkGeometryFlagBitsKHR int64
@@ -1911,7 +1911,7 @@ type VkMemoryDecompressionMethodFlagBitsEXT int64
 
 var (
 	VkMemoryDecompressionMethodGdeflate10BitExt VkMemoryDecompressionMethodFlagBitsEXT = (1 << 0)
-	VkMemoryDecompressionMethodGdeflate10BitNv  VkMemoryDecompressionMethodFlagBitsEXT = (1 << 0)
+	VkMemoryDecompressionMethodGdeflate10BitNv  VkMemoryDecompressionMethodFlagBitsEXT = 0
 )
 
 type VkPerformanceCounterUnitKHR int64
@@ -1945,9 +1945,9 @@ type VkPerformanceCounterDescriptionFlagBitsKHR int64
 
 var (
 	VkPerformanceCounterDescriptionPerformanceImpactingBitKhr VkPerformanceCounterDescriptionFlagBitsKHR = (1 << 0)
-	VkPerformanceCounterDescriptionPerformanceImpactingKhr    VkPerformanceCounterDescriptionFlagBitsKHR = (1 << 0)
+	VkPerformanceCounterDescriptionPerformanceImpactingKhr    VkPerformanceCounterDescriptionFlagBitsKHR = 0
 	VkPerformanceCounterDescriptionConcurrentlyImpactedBitKhr VkPerformanceCounterDescriptionFlagBitsKHR = (1 << 1)
-	VkPerformanceCounterDescriptionConcurrentlyImpactedKhr    VkPerformanceCounterDescriptionFlagBitsKHR = (1 << 0)
+	VkPerformanceCounterDescriptionConcurrentlyImpactedKhr    VkPerformanceCounterDescriptionFlagBitsKHR = 0
 )
 
 type VkAcquireProfilingLockFlagBitsKHR int64
@@ -2131,7 +2131,7 @@ var (
 type VkAccessFlagBits2 int64
 
 var (
-	VkAccess2None                           VkAccessFlagBits2 = (1 << 0)
+	VkAccess2None                           VkAccessFlagBits2 = 0
 	VkAccess2IndirectCommandReadBit         VkAccessFlagBits2 = (1 << 0)
 	VkAccess2IndexReadBit                   VkAccessFlagBits2 = (1 << 1)
 	VkAccess2VertexAttributeReadBit         VkAccessFlagBits2 = (1 << 2)
@@ -2157,7 +2157,7 @@ var (
 type VkPipelineStageFlagBits2 int64
 
 var (
-	VkPipelineStage2None                            VkPipelineStageFlagBits2 = (1 << 0)
+	VkPipelineStage2None                            VkPipelineStageFlagBits2 = 0
 	VkPipelineStage2TopOfPipeBit                    VkPipelineStageFlagBits2 = (1 << 0)
 	VkPipelineStage2DrawIndirectBit                 VkPipelineStageFlagBits2 = (1 << 1)
 	VkPipelineStage2VertexInputBit                  VkPipelineStageFlagBits2 = (1 << 2)
@@ -2171,7 +2171,7 @@ var (
 	VkPipelineStage2ColorAttachmentOutputBit        VkPipelineStageFlagBits2 = (1 << 10)
 	VkPipelineStage2ComputeShaderBit                VkPipelineStageFlagBits2 = (1 << 11)
 	VkPipelineStage2AllTransferBit                  VkPipelineStageFlagBits2 = (1 << 12)
-	VkPipelineStage2TransferBit                     VkPipelineStageFlagBits2 = (1 << 0)
+	VkPipelineStage2TransferBit                     VkPipelineStageFlagBits2 = 0
 	VkPipelineStage2BottomOfPipeBit                 VkPipelineStageFlagBits2 = (1 << 13)
 	VkPipelineStage2HostBit                         VkPipelineStageFlagBits2 = (1 << 14)
 	VkPipelineStage2AllGraphicsBit                  VkPipelineStageFlagBits2 = (1 << 15)
@@ -2283,22 +2283,22 @@ type VkPresentScalingFlagBitsKHR int64
 
 var (
 	VkPresentScalingOneToOneBitKhr           VkPresentScalingFlagBitsKHR = (1 << 0)
-	VkPresentScalingOneToOneBitExt           VkPresentScalingFlagBitsKHR = (1 << 0)
+	VkPresentScalingOneToOneBitExt           VkPresentScalingFlagBitsKHR = 0
 	VkPresentScalingAspectRatioStretchBitKhr VkPresentScalingFlagBitsKHR = (1 << 1)
-	VkPresentScalingAspectRatioStretchBitExt VkPresentScalingFlagBitsKHR = (1 << 0)
+	VkPresentScalingAspectRatioStretchBitExt VkPresentScalingFlagBitsKHR = 0
 	VkPresentScalingStretchBitKhr            VkPresentScalingFlagBitsKHR = (1 << 2)
-	VkPresentScalingStretchBitExt            VkPresentScalingFlagBitsKHR = (1 << 0)
+	VkPresentScalingStretchBitExt            VkPresentScalingFlagBitsKHR = 0
 )
 
 type VkPresentGravityFlagBitsKHR int64
 
 var (
 	VkPresentGravityMinBitKhr      VkPresentGravityFlagBitsKHR = (1 << 0)
-	VkPresentGravityMinBitExt      VkPresentGravityFlagBitsKHR = (1 << 0)
+	VkPresentGravityMinBitExt      VkPresentGravityFlagBitsKHR = 0
 	VkPresentGravityMaxBitKhr      VkPresentGravityFlagBitsKHR = (1 << 1)
-	VkPresentGravityMaxBitExt      VkPresentGravityFlagBitsKHR = (1 << 0)
+	VkPresentGravityMaxBitExt      VkPresentGravityFlagBitsKHR = 0
 	VkPresentGravityCenteredBitKhr VkPresentGravityFlagBitsKHR = (1 << 2)
-	VkPresentGravityCenteredBitExt VkPresentGravityFlagBitsKHR = (1 << 0)
+	VkPresentGravityCenteredBitExt VkPresentGravityFlagBitsKHR = 0
 )
 
 type VkPhysicalDeviceSchedulingControlsFlagBitsARM int64
@@ -2333,13 +2333,13 @@ var (
 type VkVideoCodecOperationFlagBitsKHR int64
 
 var (
-	VkVideoCodecOperationNoneKhr VkVideoCodecOperationFlagBitsKHR = (1 << 0)
+	VkVideoCodecOperationNoneKhr VkVideoCodecOperationFlagBitsKHR = 0
 )
 
 type VkVideoChromaSubsamplingFlagBitsKHR int64
 
 var (
-	VkVideoChromaSubsamplingInvalidKhr       VkVideoChromaSubsamplingFlagBitsKHR = (1 << 0)
+	VkVideoChromaSubsamplingInvalidKhr       VkVideoChromaSubsamplingFlagBitsKHR = 0
 	VkVideoChromaSubsamplingMonochromeBitKhr VkVideoChromaSubsamplingFlagBitsKHR = (1 << 0)
 	VkVideoChromaSubsampling420BitKhr        VkVideoChromaSubsamplingFlagBitsKHR = (1 << 1)
 	VkVideoChromaSubsampling422BitKhr        VkVideoChromaSubsamplingFlagBitsKHR = (1 << 2)
@@ -2349,7 +2349,7 @@ var (
 type VkVideoComponentBitDepthFlagBitsKHR int64
 
 var (
-	VkVideoComponentBitDepthInvalidKhr VkVideoComponentBitDepthFlagBitsKHR = (1 << 0)
+	VkVideoComponentBitDepthInvalidKhr VkVideoComponentBitDepthFlagBitsKHR = 0
 	VkVideoComponentBitDepth8BitKhr    VkVideoComponentBitDepthFlagBitsKHR = (1 << 0)
 	VkVideoComponentBitDepth10BitKhr   VkVideoComponentBitDepthFlagBitsKHR = (1 << 2)
 	VkVideoComponentBitDepth12BitKhr   VkVideoComponentBitDepthFlagBitsKHR = (1 << 4)
@@ -2375,7 +2375,7 @@ var ()
 type VkVideoDecodeH264PictureLayoutFlagBitsKHR int64
 
 var (
-	VkVideoDecodeH264PictureLayoutProgressiveKhr                   VkVideoDecodeH264PictureLayoutFlagBitsKHR = (1 << 0)
+	VkVideoDecodeH264PictureLayoutProgressiveKhr                   VkVideoDecodeH264PictureLayoutFlagBitsKHR = 0
 	VkVideoDecodeH264PictureLayoutInterlacedInterleavedLinesBitKhr VkVideoDecodeH264PictureLayoutFlagBitsKHR = (1 << 0)
 	VkVideoDecodeH264PictureLayoutInterlacedSeparatePlanesBitKhr   VkVideoDecodeH264PictureLayoutFlagBitsKHR = (1 << 1)
 )
@@ -2397,7 +2397,7 @@ var (
 type VkVideoDecodeUsageFlagBitsKHR int64
 
 var (
-	VkVideoDecodeUsageDefaultKhr        VkVideoDecodeUsageFlagBitsKHR = (1 << 0)
+	VkVideoDecodeUsageDefaultKhr        VkVideoDecodeUsageFlagBitsKHR = 0
 	VkVideoDecodeUsageTranscodingBitKhr VkVideoDecodeUsageFlagBitsKHR = (1 << 0)
 	VkVideoDecodeUsageOfflineBitKhr     VkVideoDecodeUsageFlagBitsKHR = (1 << 1)
 	VkVideoDecodeUsageStreamingBitKhr   VkVideoDecodeUsageFlagBitsKHR = (1 << 2)
@@ -2417,7 +2417,7 @@ var ()
 type VkVideoEncodeUsageFlagBitsKHR int64
 
 var (
-	VkVideoEncodeUsageDefaultKhr         VkVideoEncodeUsageFlagBitsKHR = (1 << 0)
+	VkVideoEncodeUsageDefaultKhr         VkVideoEncodeUsageFlagBitsKHR = 0
 	VkVideoEncodeUsageTranscodingBitKhr  VkVideoEncodeUsageFlagBitsKHR = (1 << 0)
 	VkVideoEncodeUsageStreamingBitKhr    VkVideoEncodeUsageFlagBitsKHR = (1 << 1)
 	VkVideoEncodeUsageRecordingBitKhr    VkVideoEncodeUsageFlagBitsKHR = (1 << 2)
@@ -2427,7 +2427,7 @@ var (
 type VkVideoEncodeContentFlagBitsKHR int64
 
 var (
-	VkVideoEncodeContentDefaultKhr     VkVideoEncodeContentFlagBitsKHR = (1 << 0)
+	VkVideoEncodeContentDefaultKhr     VkVideoEncodeContentFlagBitsKHR = 0
 	VkVideoEncodeContentCameraBitKhr   VkVideoEncodeContentFlagBitsKHR = (1 << 0)
 	VkVideoEncodeContentDesktopBitKhr  VkVideoEncodeContentFlagBitsKHR = (1 << 1)
 	VkVideoEncodeContentRenderedBitKhr VkVideoEncodeContentFlagBitsKHR = (1 << 2)
@@ -2461,7 +2461,7 @@ var (
 type VkVideoEncodeRateControlModeFlagBitsKHR int64
 
 var (
-	VkVideoEncodeRateControlModeDefaultKhr     VkVideoEncodeRateControlModeFlagBitsKHR = (1 << 0)
+	VkVideoEncodeRateControlModeDefaultKhr     VkVideoEncodeRateControlModeFlagBitsKHR = 0
 	VkVideoEncodeRateControlModeDisabledBitKhr VkVideoEncodeRateControlModeFlagBitsKHR = (1 << 0)
 	VkVideoEncodeRateControlModeCbrBitKhr      VkVideoEncodeRateControlModeFlagBitsKHR = (1 << 1)
 	VkVideoEncodeRateControlModeVbrBitKhr      VkVideoEncodeRateControlModeFlagBitsKHR = (1 << 2)
@@ -2470,7 +2470,7 @@ var (
 type VkVideoEncodeIntraRefreshModeFlagBitsKHR int64
 
 var (
-	VkVideoEncodeIntraRefreshModeNoneKhr                   VkVideoEncodeIntraRefreshModeFlagBitsKHR = (1 << 0)
+	VkVideoEncodeIntraRefreshModeNoneKhr                   VkVideoEncodeIntraRefreshModeFlagBitsKHR = 0
 	VkVideoEncodeIntraRefreshModePerPicturePartitionBitKhr VkVideoEncodeIntraRefreshModeFlagBitsKHR = (1 << 0)
 	VkVideoEncodeIntraRefreshModeBlockBasedBitKhr          VkVideoEncodeIntraRefreshModeFlagBitsKHR = (1 << 1)
 	VkVideoEncodeIntraRefreshModeBlockRowBasedBitKhr       VkVideoEncodeIntraRefreshModeFlagBitsKHR = (1 << 2)
@@ -2530,7 +2530,7 @@ type VkHostImageCopyFlagBits int64
 
 var (
 	VkHostImageCopyMemcpyBit VkHostImageCopyFlagBits = (1 << 0)
-	VkHostImageCopyMemcpy    VkHostImageCopyFlagBits = (1 << 0)
+	VkHostImageCopyMemcpy    VkHostImageCopyFlagBits = 0
 )
 
 type VkPartitionedAccelerationStructureOpTypeNV int64
@@ -2742,7 +2742,7 @@ var ()
 type VkImageCompressionFlagBitsEXT int64
 
 var (
-	VkImageCompressionDefaultExt           VkImageCompressionFlagBitsEXT = (1 << 0)
+	VkImageCompressionDefaultExt           VkImageCompressionFlagBitsEXT = 0
 	VkImageCompressionFixedRateDefaultExt  VkImageCompressionFlagBitsEXT = (1 << 0)
 	VkImageCompressionFixedRateExplicitExt VkImageCompressionFlagBitsEXT = (1 << 1)
 	VkImageCompressionDisabledExt          VkImageCompressionFlagBitsEXT = (1 << 2)
@@ -2751,7 +2751,7 @@ var (
 type VkImageCompressionFixedRateFlagBitsEXT int64
 
 var (
-	VkImageCompressionFixedRateNoneExt     VkImageCompressionFixedRateFlagBitsEXT = (1 << 0)
+	VkImageCompressionFixedRateNoneExt     VkImageCompressionFixedRateFlagBitsEXT = 0
 	VkImageCompressionFixedRate1bpcBitExt  VkImageCompressionFixedRateFlagBitsEXT = (1 << 0)
 	VkImageCompressionFixedRate2bpcBitExt  VkImageCompressionFixedRateFlagBitsEXT = (1 << 1)
 	VkImageCompressionFixedRate3bpcBitExt  VkImageCompressionFixedRateFlagBitsEXT = (1 << 2)
@@ -2799,7 +2799,7 @@ var (
 type VkOpticalFlowGridSizeFlagBitsNV int64
 
 var (
-	VkOpticalFlowGridSizeUnknownNv VkOpticalFlowGridSizeFlagBitsNV = (1 << 0)
+	VkOpticalFlowGridSizeUnknownNv VkOpticalFlowGridSizeFlagBitsNV = 0
 	VkOpticalFlowGridSize1x1BitNv  VkOpticalFlowGridSizeFlagBitsNV = (1 << 0)
 	VkOpticalFlowGridSize2x2BitNv  VkOpticalFlowGridSizeFlagBitsNV = (1 << 1)
 	VkOpticalFlowGridSize4x4BitNv  VkOpticalFlowGridSizeFlagBitsNV = (1 << 2)
@@ -2809,7 +2809,7 @@ var (
 type VkOpticalFlowUsageFlagBitsNV int64
 
 var (
-	VkOpticalFlowUsageUnknownNv       VkOpticalFlowUsageFlagBitsNV = (1 << 0)
+	VkOpticalFlowUsageUnknownNv       VkOpticalFlowUsageFlagBitsNV = 0
 	VkOpticalFlowUsageInputBitNv      VkOpticalFlowUsageFlagBitsNV = (1 << 0)
 	VkOpticalFlowUsageOutputBitNv     VkOpticalFlowUsageFlagBitsNV = (1 << 1)
 	VkOpticalFlowUsageHintBitNv       VkOpticalFlowUsageFlagBitsNV = (1 << 2)
@@ -3096,7 +3096,7 @@ var (
 type VkAccessFlagBits3KHR int64
 
 var (
-	VkAccess3NoneKhr VkAccessFlagBits3KHR = (1 << 0)
+	VkAccess3NoneKhr VkAccessFlagBits3KHR = 0
 )
 
 type VkTileShadingRenderPassFlagBitsQCOM int64
@@ -3250,7 +3250,7 @@ var (
 type VkSpirvResourceTypeFlagBitsEXT int64
 
 var (
-	VkSpirvResourceTypeAllExt                       VkSpirvResourceTypeFlagBitsEXT = (1 << 0)
+	VkSpirvResourceTypeAllExt                       VkSpirvResourceTypeFlagBitsEXT = 0
 	VkSpirvResourceTypeSamplerBitExt                VkSpirvResourceTypeFlagBitsEXT = (1 << 0)
 	VkSpirvResourceTypeSampledImageBitExt           VkSpirvResourceTypeFlagBitsEXT = (1 << 1)
 	VkSpirvResourceTypeReadOnlyImageBitExt          VkSpirvResourceTypeFlagBitsEXT = (1 << 2)

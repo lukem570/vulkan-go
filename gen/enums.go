@@ -33,9 +33,11 @@ func (e *Enum) Generate() string {
 			"type %s int64\n\n",
 			e.Name,
 		))
-	}
 
-	enumBuilder.WriteString("var (\n")
+		enumBuilder.WriteString("var (\n")
+	} else {
+		enumBuilder.WriteString("const (\n")
+	}
 
 	for _, element := range e.Elements {
 		var value string
@@ -53,9 +55,17 @@ func (e *Enum) Generate() string {
 			value = strings.ReplaceAll(value, "~", "^")
 
 		case EnumDefault:
-			value = element.Value
+			if element.Value == "" {
+				value = "0"
+			} else {
+				value = element.Value
+			}
 		case EnumBitmask:
-			value = fmt.Sprintf("(1 << %s)", element.Value)
+			if element.Value == "" {
+				value = "0"
+			} else {
+				value = fmt.Sprintf("(1 << %s)", element.Value)
+			}
 		}
 
 		enumBuilder.WriteString(fmt.Sprintf(
@@ -106,10 +116,6 @@ func (e *XmlEnum) Parse() *Enum {
 			ee.Value = element.Bitpos
 		} else {
 			ee.Value = element.Value
-		}
-
-		if ee.Value == "" {
-			ee.Value = "0"
 		}
 
 		out.Elements = append(out.Elements, ee)

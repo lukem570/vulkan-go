@@ -20,15 +20,10 @@ func (s *Struct) Generate() string {
 	))
 
 	for _, element := range s.Elements {
-		Type := element.Type.Generate()
-		if Type == "*void" {
-			Type = "unsafe.Pointer"
-		}
-
 		structBuilder.WriteString(fmt.Sprintf(
 			"\t%s %s\n",
 			camelToPascal(element.Name),
-			Type,
+			element.Type.Generate(),
 		))
 	}
 

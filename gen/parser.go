@@ -14,6 +14,8 @@ type RawXml struct {
 type VkTypes struct {
 	Structs  []*Struct
 	Typedefs []Typedef
+	Handles  []Handle
+	Funcs    []FuncPointer
 }
 
 type VkXML struct {
@@ -106,6 +108,20 @@ func ParseTypes(decoder *xml.Decoder) (*VkTypes, error) {
 			}
 
 			out.Typedefs = append(out.Typedefs, ParseTypedef(t.Value))
+		case "handle":
+			var h RawXml
+			if err := decoder.DecodeElement(&h, &se); err != nil {
+				return nil, err
+			}
+
+			out.Handles = append(out.Handles, ParseHandle(h.Value))
+		case "funcpointer":
+			var ptr XmlFuncPointer
+			if err := decoder.DecodeElement(&ptr, &se); err != nil {
+				return nil, err
+			}
+
+			out.Funcs = append(out.Funcs, ptr.Parse())
 		default:
 			fmt.Println("Unhandled:", category)
 		}

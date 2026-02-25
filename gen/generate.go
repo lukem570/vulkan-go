@@ -10,6 +10,14 @@ func Generate(vkXml *VkXML) error {
 	structures.WriteString("package vulkan\n\n")
 	structures.WriteString("import \"unsafe\"\n\n")
 
+	for _, ptr := range vkXml.Types.Funcs {
+		structures.WriteString(ptr.Generate())
+	}
+
+	for _, handle := range vkXml.Types.Handles {
+		structures.WriteString(handle.Generate())
+	}
+
 	for _, def := range vkXml.Types.Typedefs {
 		structures.WriteString(def.Generate())
 	}

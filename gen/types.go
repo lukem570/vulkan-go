@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -19,15 +18,17 @@ var goTypeMap = map[string]string{
 
 	"size_t": "uint",
 
-	"float": "float32",
+	"char": "uint8",
+
+	"float":  "float32",
 	"double": "float64",
 }
 
 type CType struct {
-	BaseType  string // underlying type, e.g., "int", "char"
-	PtrDepth  int    // pointer levels, e.g., 1 for int*, 2 for int**
-	IsConst   bool   // const qualifier
-	ArrayDims []int  // array dimensions, e.g., [10] for int[10], [5, 3] for int[5][3]
+	BaseType  string   // underlying type, e.g., "int", "char"
+	PtrDepth  int      // pointer levels, e.g., 1 for int*, 2 for int**
+	IsConst   bool     // const qualifier
+	ArrayDims []string // array dimensions, e.g., [10] for int[10], [5, 3] for int[5][3]
 }
 
 type CVariable struct {
@@ -40,7 +41,7 @@ func (t *CType) Generate() string {
 
 	for _, dim := range t.ArrayDims {
 		goType.WriteString(fmt.Sprintf(
-			"[%d]",
+			"[%s]",
 			dim,
 		))
 	}
@@ -66,7 +67,15 @@ func (t *CType) Generate() string {
 
 	goType.WriteString(typeName)
 
-	return goType.String()
+	Type := goType.String()
+	switch Type {
+	case "void":
+		Type = ""
+	case "*void":
+		Type = "unsafe.Pointer"
+	}
+
+	return Type
 }
 
 // converts
@@ -87,6 +96,9 @@ func (t *CType) Generate() string {
 //		}
 func ParseCVariable(v string) CVariable {
 	v = strings.TrimSpace(v)
+	v = strings.ReplaceAll(v, "<enum>", "")
+	v = strings.ReplaceAll(v, "</enum>", "")
+	v = removeTags(v, "comment")
 
 	typeText := getTextBetweenTags(v, "type")
 	nameText := getTextBetweenTags(v, "name")
@@ -98,25 +110,25 @@ func ParseCVariable(v string) CVariable {
 	ptrDepth := strings.Count(v, "*")
 	isConst := strings.Contains(v, "const")
 
-	// Handle arrays, e.g., "blendConstants[4][5]"
-	arrayDims := []int{}
-	// Look for first '[' after variable name
-	if idx := strings.Index(v, nameText+"["); idx != -1 {
-		arrayPart := v[idx+len(nameText):] // get "[4][5]" part
-		for len(arrayPart) > 0 {
-			if arrayPart[0] != '[' {
-				break
-			}
-			endIdx := strings.Index(arrayPart, "]")
-			if endIdx == -1 {
-				break
-			}
-			dimStr := arrayPart[1:endIdx]
-			if dim, err := strconv.Atoi(dimStr); err == nil {
-				arrayDims = append(arrayDims, dim)
-			}
-			arrayPart = arrayPart[endIdx+1:]
+	arrayDims := make([]string, 0)
+	idx := 0
+	for {
+		start := strings.Index(v[idx:], "[")
+		if start == -1 {
+			break
 		}
+		start += idx
+
+		end := strings.Index(v[start:], "]")
+		if end == -1 {
+			break
+		}
+		end += start
+
+		arrayDim := upperToPascal(v[start+1 : end])
+		arrayDims = append(arrayDims, arrayDim)
+
+		idx = end + 1
 	}
 
 	return CVariable{
@@ -128,6 +140,17 @@ func ParseCVariable(v string) CVariable {
 			ArrayDims: arrayDims,
 		},
 	}
+}
+
+func removeTags(input, tag string) string {
+	openTag := "<" + tag + ">"
+	closeTag := "</" + tag + ">"
+
+	text := getTextBetweenTags(input, tag)
+
+	ta := openTag + text + closeTag
+
+	return strings.ReplaceAll(input, ta, "")
 }
 
 func getTextBetweenTags(input, tag string) string {

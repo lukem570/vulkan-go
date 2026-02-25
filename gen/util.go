@@ -1,15 +1,29 @@
 package main
 
-import "strings"
+import (
+	"strings"
+	"unicode"
+)
 
 func upperToPascal(c string) string {
-	parts := strings.Split(strings.ToLower(c), "_")
-
-	for i := range parts {
-		parts[i] = strings.ToUpper(parts[i][:1]) + parts[i][1:]
+	if c == "" {
+		return ""
 	}
 
-	return strings.Join(parts, "")
+	parts := strings.Split(strings.ToLower(c), "_")
+	var b strings.Builder
+
+	for _, p := range parts {
+		if p == "" {
+			continue
+		}
+
+		runes := []rune(p)
+		runes[0] = unicode.ToUpper(runes[0])
+		b.WriteString(string(runes))
+	}
+
+	return b.String()
 }
 
 func camelToPascal(c string) string {
