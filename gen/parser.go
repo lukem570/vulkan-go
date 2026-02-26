@@ -22,6 +22,7 @@ type VkXML struct {
 	Types    *VkTypes
 	Enums    []*Enum
 	Features []*Feature
+	Commands []*Command
 }
 
 func ParseVkXML(file *os.File) (*VkXML, error) {
@@ -63,6 +64,13 @@ func ParseVkXML(file *os.File) (*VkXML, error) {
 			}
 
 			out.Features = append(out.Features, feat.Parse())
+		case "command":
+			var cmd XmlCommand
+			if err := decoder.DecodeElement(&cmd, &se); err != nil {
+				return nil, err
+			}
+
+			out.Commands = append(out.Commands, cmd.Parse())
 		}
 	}
 }

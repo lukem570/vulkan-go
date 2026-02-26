@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	vulkan "github.com/lukem570/vulkan-go/pkg/raw"
 )
@@ -11,6 +12,11 @@ func VkMakeApiVersion(variant, major, minor, patch uint32) uint32 {
 }
 
 func main() {
+
+	err := vulkan.Initialize()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	appInfo := &vulkan.VkApplicationInfo{
 		SType:              vulkan.VkStructureTypeApplicationInfo,

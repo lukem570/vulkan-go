@@ -1,6 +1,30 @@
 package vulkan
 
-import "unsafe"
+import (
+	"fmt"
+	"unsafe"
+)
+
+/*
+#cgo CFLAGS: -I./../../mod/volk -I./../../mod/Vulkan-Headers/include/vulkan
+#define VOLK_IMPLEMENTATION
+#include <stdlib.h>
+#include <volk.h>
+#include <vulkan.h>
+*/
+import "C"
+
+// Target: GO_VULKAN
+
+func Initialize() error {
+	res := C.volkInitialize()
+
+	if res != C.VK_SUCCESS {
+		return fmt.Errorf("Failed to find Vulkan library.")
+	}
+
+	return nil
+}
 
 // Target: VK_BASE_VERSION_1_0
 
@@ -57,6 +81,71 @@ type VkBaseOutStructure struct {
 
 // API version macros
 // Device initialization
+
+func CreateInstance(
+	pCreateInfo *VkInstanceCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pInstance *VkInstance,
+) VkResult {
+}
+
+func (h *VkInstance) Destroy(
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkInstance) EnumeratePhysicalDevices(
+	pPhysicalDeviceCount *uint32,
+	pPhysicalDevices *VkPhysicalDevice,
+) VkResult {
+}
+
+func (h *VkPhysicalDevice) GetFeatures(
+	pFeatures *VkPhysicalDeviceFeatures,
+) {
+}
+
+func (h *VkPhysicalDevice) GetFormatProperties(
+	format VkFormat,
+	pFormatProperties *VkFormatProperties,
+) {
+}
+
+func (h *VkPhysicalDevice) GetImageFormatProperties(
+	format VkFormat,
+	Type VkImageType,
+	tiling VkImageTiling,
+	usage VkImageUsageFlags,
+	flags VkImageCreateFlags,
+	pImageFormatProperties *VkImageFormatProperties,
+) VkResult {
+}
+
+func (h *VkPhysicalDevice) GetProperties(
+	pProperties *VkPhysicalDeviceProperties,
+) {
+}
+
+func (h *VkPhysicalDevice) GetQueueFamilyProperties(
+	pQueueFamilyPropertyCount *uint32,
+	pQueueFamilyProperties *VkQueueFamilyProperties,
+) {
+}
+
+func (h *VkPhysicalDevice) GetMemoryProperties(
+	pMemoryProperties *VkPhysicalDeviceMemoryProperties,
+) {
+}
+
+func (h *VkInstance) GetProcAddr(
+	pName string,
+) {
+}
+
+func (h *VkDevice) GetProcAddr(
+	pName string,
+) {
+}
 
 type PFN_vkAllocationFunction func(
 	pUserData unsafe.Pointer,
@@ -133,7 +222,9 @@ type VkImageFormatProperties struct {
 
 type VkImageUsageFlags VkFlags
 
-type VkInstance unsafe.Pointer
+type VkInstance struct {
+	handle unsafe.Pointer
+}
 
 type VkInstanceCreateFlags VkFlags
 
@@ -162,7 +253,9 @@ type VkMemoryType struct {
 	HeapIndex     uint32
 }
 
-type VkPhysicalDevice unsafe.Pointer
+type VkPhysicalDevice struct {
+	handle unsafe.Pointer
+}
 
 type VkPhysicalDeviceFeatures struct {
 	RobustBufferAccess                      VkBool32
@@ -373,7 +466,21 @@ type VkShaderStageFlags VkFlags
 
 // Device commands
 
-type VkDevice unsafe.Pointer
+func (h *VkPhysicalDevice) CreateDevice(
+	pCreateInfo *VkDeviceCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pDevice *VkDevice,
+) VkResult {
+}
+
+func (h *VkDevice) Destroy(
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+type VkDevice struct {
+	handle unsafe.Pointer
+}
 
 type VkDeviceCreateFlags VkFlags
 
@@ -403,12 +510,38 @@ type VkDeviceCreateInfo struct {
 
 // Extension discovery commands
 
+func EnumerateInstanceExtensionProperties(
+	pLayerName string,
+	pPropertyCount *uint32,
+	pProperties *VkExtensionProperties,
+) VkResult {
+}
+
+func (h *VkPhysicalDevice) EnumerateDeviceExtensionProperties(
+	pLayerName string,
+	pPropertyCount *uint32,
+	pProperties *VkExtensionProperties,
+) VkResult {
+}
+
 type VkExtensionProperties struct {
 	ExtensionName [VkMaxExtensionNameSize]uint8
 	SpecVersion   uint32
 }
 
 // Layer discovery commands
+
+func EnumerateInstanceLayerProperties(
+	pPropertyCount *uint32,
+	pProperties *VkLayerProperties,
+) VkResult {
+}
+
+func (h *VkPhysicalDevice) EnumerateDeviceLayerProperties(
+	pPropertyCount *uint32,
+	pProperties *VkLayerProperties,
+) VkResult {
+}
 
 type VkLayerProperties struct {
 	LayerName             [VkMaxExtensionNameSize]uint8
@@ -419,9 +552,31 @@ type VkLayerProperties struct {
 
 // Queue commands
 
+func (h *VkDevice) GetQueue(
+	queueFamilyIndex uint32,
+	queueIndex uint32,
+	pQueue *VkQueue,
+) {
+}
+
+func (h *VkQueue) Submit(
+	submitCount uint32,
+	pSubmits *VkSubmitInfo,
+	fence VkFence,
+) VkResult {
+}
+
+func (h *VkQueue) WaitIdle() VkResult {
+}
+
+func (h *VkDevice) WaitIdle() VkResult {
+}
+
 type VkPipelineStageFlags VkFlags
 
-type VkQueue unsafe.Pointer
+type VkQueue struct {
+	handle unsafe.Pointer
+}
 
 type VkSubmitInfo struct {
 	SType                VkStructureType
@@ -436,6 +591,51 @@ type VkSubmitInfo struct {
 }
 
 // Memory commands
+
+func (h *VkDevice) AllocateMemory(
+	pAllocateInfo *VkMemoryAllocateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pMemory *VkDeviceMemory,
+) VkResult {
+}
+
+func (h *VkDevice) FreeMemory(
+	memory VkDeviceMemory,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkDevice) MapMemory(
+	memory VkDeviceMemory,
+	offset VkDeviceSize,
+	size VkDeviceSize,
+	flags VkMemoryMapFlags,
+	ppData **void,
+) VkResult {
+}
+
+func (h *VkDevice) UnmapMemory(
+	memory VkDeviceMemory,
+) {
+}
+
+func (h *VkDevice) FlushMappedMemoryRanges(
+	memoryRangeCount uint32,
+	pMemoryRanges *VkMappedMemoryRange,
+) VkResult {
+}
+
+func (h *VkDevice) InvalidateMappedMemoryRanges(
+	memoryRangeCount uint32,
+	pMemoryRanges *VkMappedMemoryRange,
+) VkResult {
+}
+
+func (h *VkDevice) GetMemoryCommitment(
+	memory VkDeviceMemory,
+	pCommittedMemoryInBytes *VkDeviceSize,
+) {
+}
 
 type VkMappedMemoryRange struct {
 	SType  VkStructureType
@@ -456,7 +656,35 @@ type VkMemoryMapFlags VkFlags
 
 // Memory management API commands
 
-type VkDeviceMemory unsafe.Pointer
+func (h *VkDevice) BindBufferMemory(
+	buffer VkBuffer,
+	memory VkDeviceMemory,
+	memoryOffset VkDeviceSize,
+) VkResult {
+}
+
+func (h *VkDevice) BindImageMemory(
+	image VkImage,
+	memory VkDeviceMemory,
+	memoryOffset VkDeviceSize,
+) VkResult {
+}
+
+func (h *VkDevice) GetBufferMemoryRequirements(
+	buffer VkBuffer,
+	pMemoryRequirements *VkMemoryRequirements,
+) {
+}
+
+func (h *VkDevice) GetImageMemoryRequirements(
+	image VkImage,
+	pMemoryRequirements *VkMemoryRequirements,
+) {
+}
+
+type VkDeviceMemory struct {
+	handle unsafe.Pointer
+}
 
 type VkMemoryRequirements struct {
 	Size           VkDeviceSize
@@ -465,6 +693,31 @@ type VkMemoryRequirements struct {
 }
 
 // Sparse resource memory management API commands (optional)
+
+func (h *VkDevice) GetImageSparseMemoryRequirements(
+	image VkImage,
+	pSparseMemoryRequirementCount *uint32,
+	pSparseMemoryRequirements *VkSparseImageMemoryRequirements,
+) {
+}
+
+func (h *VkPhysicalDevice) GetSparseImageFormatProperties(
+	format VkFormat,
+	Type VkImageType,
+	samples VkSampleCountFlagBits,
+	usage VkImageUsageFlags,
+	tiling VkImageTiling,
+	pPropertyCount *uint32,
+	pProperties *VkSparseImageFormatProperties,
+) {
+}
+
+func (h *VkQueue) BindSparse(
+	bindInfoCount uint32,
+	pBindInfo *VkBindSparseInfo,
+	fence VkFence,
+) VkResult {
+}
 
 type VkImageAspectFlags VkFlags
 
@@ -544,7 +797,41 @@ type VkBindSparseInfo struct {
 
 // Fence commands
 
-type VkFence unsafe.Pointer
+func (h *VkDevice) CreateFence(
+	pCreateInfo *VkFenceCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pFence *VkFence,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyFence(
+	fence VkFence,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkDevice) ResetFences(
+	fenceCount uint32,
+	pFences *VkFence,
+) VkResult {
+}
+
+func (h *VkDevice) GetFenceStatus(
+	fence VkFence,
+) VkResult {
+}
+
+func (h *VkDevice) WaitForFences(
+	fenceCount uint32,
+	pFences *VkFence,
+	waitAll VkBool32,
+	timeout uint64,
+) VkResult {
+}
+
+type VkFence struct {
+	handle unsafe.Pointer
+}
 
 type VkFenceCreateFlags VkFlags
 
@@ -556,7 +843,22 @@ type VkFenceCreateInfo struct {
 
 // Queue semaphore commands
 
-type VkSemaphore unsafe.Pointer
+func (h *VkDevice) CreateSemaphore(
+	pCreateInfo *VkSemaphoreCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pSemaphore *VkSemaphore,
+) VkResult {
+}
+
+func (h *VkDevice) DestroySemaphore(
+	semaphore VkSemaphore,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+type VkSemaphore struct {
+	handle unsafe.Pointer
+}
 
 type VkSemaphoreCreateFlags VkFlags
 
@@ -568,7 +870,33 @@ type VkSemaphoreCreateInfo struct {
 
 // Query commands
 
-type VkQueryPool unsafe.Pointer
+func (h *VkDevice) CreateQueryPool(
+	pCreateInfo *VkQueryPoolCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pQueryPool *VkQueryPool,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyQueryPool(
+	queryPool VkQueryPool,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkDevice) GetQueryPoolResults(
+	queryPool VkQueryPool,
+	firstQuery uint32,
+	queryCount uint32,
+	dataSize uint,
+	pData unsafe.Pointer,
+	stride VkDeviceSize,
+	flags VkQueryResultFlags,
+) VkResult {
+}
+
+type VkQueryPool struct {
+	handle unsafe.Pointer
+}
 
 type VkQueryPoolCreateFlags VkFlags
 
@@ -587,7 +915,22 @@ type VkQueryResultFlags VkFlags
 
 // Buffer commands
 
-type VkBuffer unsafe.Pointer
+func (h *VkDevice) CreateBuffer(
+	pCreateInfo *VkBufferCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pBuffer *VkBuffer,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyBuffer(
+	buffer VkBuffer,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+type VkBuffer struct {
+	handle unsafe.Pointer
+}
 
 type VkBufferCreateFlags VkFlags
 
@@ -606,7 +949,29 @@ type VkBufferUsageFlags VkFlags
 
 // Image commands
 
-type VkImage unsafe.Pointer
+func (h *VkDevice) CreateImage(
+	pCreateInfo *VkImageCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pImage *VkImage,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyImage(
+	image VkImage,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkDevice) GetImageSubresourceLayout(
+	image VkImage,
+	pSubresource *VkImageSubresource,
+	pLayout *VkSubresourceLayout,
+) {
+}
+
+type VkImage struct {
+	handle unsafe.Pointer
+}
 
 type VkImageCreateInfo struct {
 	SType                 VkStructureType
@@ -636,6 +1001,19 @@ type VkSubresourceLayout struct {
 
 // Image view commands
 
+func (h *VkDevice) CreateImageView(
+	pCreateInfo *VkImageViewCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pView *VkImageView,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyImageView(
+	imageView VkImageView,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
 type VkComponentMapping struct {
 	R VkComponentSwizzle
 	G VkComponentSwizzle
@@ -651,7 +1029,9 @@ type VkImageSubresourceRange struct {
 	LayerCount     uint32
 }
 
-type VkImageView unsafe.Pointer
+type VkImageView struct {
+	handle unsafe.Pointer
+}
 
 type VkImageViewCreateFlags VkFlags
 
@@ -674,7 +1054,28 @@ type VkDependencyFlags VkFlags
 
 // Command pool commands
 
-type VkCommandPool unsafe.Pointer
+func (h *VkDevice) CreateCommandPool(
+	pCreateInfo *VkCommandPoolCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pCommandPool *VkCommandPool,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyCommandPool(
+	commandPool VkCommandPool,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkDevice) ResetCommandPool(
+	commandPool VkCommandPool,
+	flags VkCommandPoolResetFlags,
+) VkResult {
+}
+
+type VkCommandPool struct {
+	handle unsafe.Pointer
+}
 
 type VkCommandPoolCreateFlags VkFlags
 
@@ -689,7 +1090,35 @@ type VkCommandPoolResetFlags VkFlags
 
 // Command buffer commands
 
-type VkCommandBuffer unsafe.Pointer
+func (h *VkDevice) AllocateCommandBuffers(
+	pAllocateInfo *VkCommandBufferAllocateInfo,
+	pCommandBuffers *VkCommandBuffer,
+) VkResult {
+}
+
+func (h *VkDevice) FreeCommandBuffers(
+	commandPool VkCommandPool,
+	commandBufferCount uint32,
+	pCommandBuffers *VkCommandBuffer,
+) {
+}
+
+func (h *VkCommandBuffer) Begin(
+	pBeginInfo *VkCommandBufferBeginInfo,
+) VkResult {
+}
+
+func (h *VkCommandBuffer) End() VkResult {
+}
+
+func (h *VkCommandBuffer) Reset(
+	flags VkCommandBufferResetFlags,
+) VkResult {
+}
+
+type VkCommandBuffer struct {
+	handle unsafe.Pointer
+}
 
 type VkCommandBufferAllocateInfo struct {
 	SType              VkStructureType
@@ -724,6 +1153,115 @@ type VkCommandBufferUsageFlags VkFlags
 type VkQueryControlFlags VkFlags
 
 // Command buffer building commands
+
+func (h *VkCommandBuffer) CopyBuffer(
+	srcBuffer VkBuffer,
+	dstBuffer VkBuffer,
+	regionCount uint32,
+	pRegions *VkBufferCopy,
+) {
+}
+
+func (h *VkCommandBuffer) CopyImage(
+	srcImage VkImage,
+	srcImageLayout VkImageLayout,
+	dstImage VkImage,
+	dstImageLayout VkImageLayout,
+	regionCount uint32,
+	pRegions *VkImageCopy,
+) {
+}
+
+func (h *VkCommandBuffer) CopyBufferToImage(
+	srcBuffer VkBuffer,
+	dstImage VkImage,
+	dstImageLayout VkImageLayout,
+	regionCount uint32,
+	pRegions *VkBufferImageCopy,
+) {
+}
+
+func (h *VkCommandBuffer) CopyImageToBuffer(
+	srcImage VkImage,
+	srcImageLayout VkImageLayout,
+	dstBuffer VkBuffer,
+	regionCount uint32,
+	pRegions *VkBufferImageCopy,
+) {
+}
+
+func (h *VkCommandBuffer) UpdateBuffer(
+	dstBuffer VkBuffer,
+	dstOffset VkDeviceSize,
+	dataSize VkDeviceSize,
+	pData unsafe.Pointer,
+) {
+}
+
+func (h *VkCommandBuffer) FillBuffer(
+	dstBuffer VkBuffer,
+	dstOffset VkDeviceSize,
+	size VkDeviceSize,
+	data uint32,
+) {
+}
+
+func (h *VkCommandBuffer) PipelineBarrier(
+	srcStageMask VkPipelineStageFlags,
+	dstStageMask VkPipelineStageFlags,
+	dependencyFlags VkDependencyFlags,
+	memoryBarrierCount uint32,
+	pMemoryBarriers *VkMemoryBarrier,
+	bufferMemoryBarrierCount uint32,
+	pBufferMemoryBarriers *VkBufferMemoryBarrier,
+	imageMemoryBarrierCount uint32,
+	pImageMemoryBarriers *VkImageMemoryBarrier,
+) {
+}
+
+func (h *VkCommandBuffer) BeginQuery(
+	queryPool VkQueryPool,
+	query uint32,
+	flags VkQueryControlFlags,
+) {
+}
+
+func (h *VkCommandBuffer) EndQuery(
+	queryPool VkQueryPool,
+	query uint32,
+) {
+}
+
+func (h *VkCommandBuffer) ResetQueryPool(
+	queryPool VkQueryPool,
+	firstQuery uint32,
+	queryCount uint32,
+) {
+}
+
+func (h *VkCommandBuffer) WriteTimestamp(
+	pipelineStage VkPipelineStageFlagBits,
+	queryPool VkQueryPool,
+	query uint32,
+) {
+}
+
+func (h *VkCommandBuffer) CopyQueryPoolResults(
+	queryPool VkQueryPool,
+	firstQuery uint32,
+	queryCount uint32,
+	dstBuffer VkBuffer,
+	dstOffset VkDeviceSize,
+	stride VkDeviceSize,
+	flags VkQueryResultFlags,
+) {
+}
+
+func (h *VkCommandBuffer) ExecuteCommands(
+	commandBufferCount uint32,
+	pCommandBuffers *VkCommandBuffer,
+) {
+}
 
 type VkBufferCopy struct {
 	SrcOffset VkDeviceSize
@@ -808,7 +1346,37 @@ type VkPipelineCacheHeaderVersionOne struct {
 
 // Event commands
 
-type VkEvent unsafe.Pointer
+func (h *VkDevice) CreateEvent(
+	pCreateInfo *VkEventCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pEvent *VkEvent,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyEvent(
+	event VkEvent,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkDevice) GetEventStatus(
+	event VkEvent,
+) VkResult {
+}
+
+func (h *VkDevice) SetEvent(
+	event VkEvent,
+) VkResult {
+}
+
+func (h *VkDevice) ResetEvent(
+	event VkEvent,
+) VkResult {
+}
+
+type VkEvent struct {
+	handle unsafe.Pointer
+}
 
 type VkEventCreateFlags VkFlags
 
@@ -820,7 +1388,22 @@ type VkEventCreateInfo struct {
 
 // Buffer view commands
 
-type VkBufferView unsafe.Pointer
+func (h *VkDevice) CreateBufferView(
+	pCreateInfo *VkBufferViewCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pView *VkBufferView,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyBufferView(
+	bufferView VkBufferView,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+type VkBufferView struct {
+	handle unsafe.Pointer
+}
 
 type VkBufferViewCreateFlags VkFlags
 
@@ -836,7 +1419,22 @@ type VkBufferViewCreateInfo struct {
 
 // Shader commands
 
-type VkShaderModule unsafe.Pointer
+func (h *VkDevice) CreateShaderModule(
+	pCreateInfo *VkShaderModuleCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pShaderModule *VkShaderModule,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyShaderModule(
+	shaderModule VkShaderModule,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+type VkShaderModule struct {
+	handle unsafe.Pointer
+}
 
 type VkShaderModuleCreateFlags VkFlags
 
@@ -850,7 +1448,36 @@ type VkShaderModuleCreateInfo struct {
 
 // Pipeline Cache commands
 
-type VkPipelineCache unsafe.Pointer
+func (h *VkDevice) CreatePipelineCache(
+	pCreateInfo *VkPipelineCacheCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pPipelineCache *VkPipelineCache,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyPipelineCache(
+	pipelineCache VkPipelineCache,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkDevice) GetPipelineCacheData(
+	pipelineCache VkPipelineCache,
+	pDataSize *uint,
+	pData unsafe.Pointer,
+) VkResult {
+}
+
+func (h *VkDevice) MergePipelineCaches(
+	dstCache VkPipelineCache,
+	srcCacheCount uint32,
+	pSrcCaches *VkPipelineCache,
+) VkResult {
+}
+
+type VkPipelineCache struct {
+	handle unsafe.Pointer
+}
 
 type VkPipelineCacheCreateFlags VkFlags
 
@@ -864,7 +1491,24 @@ type VkPipelineCacheCreateInfo struct {
 
 // Compute Pipeline commands
 
-type VkPipeline unsafe.Pointer
+func (h *VkDevice) CreateComputePipelines(
+	pipelineCache VkPipelineCache,
+	createInfoCount uint32,
+	pCreateInfos *VkComputePipelineCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pPipelines *VkPipeline,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyPipeline(
+	pipeline VkPipeline,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+type VkPipeline struct {
+	handle unsafe.Pointer
+}
 
 type VkPipelineCreateFlags VkFlags
 
@@ -907,7 +1551,22 @@ type VkComputePipelineCreateInfo struct {
 
 // Pipeline layout commands
 
-type VkPipelineLayout unsafe.Pointer
+func (h *VkDevice) CreatePipelineLayout(
+	pCreateInfo *VkPipelineLayoutCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pPipelineLayout *VkPipelineLayout,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyPipelineLayout(
+	pipelineLayout VkPipelineLayout,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+type VkPipelineLayout struct {
+	handle unsafe.Pointer
+}
 
 type VkPushConstantRange struct {
 	StageFlags VkShaderStageFlags
@@ -927,7 +1586,22 @@ type VkPipelineLayoutCreateInfo struct {
 
 // Sampler commands
 
-type VkSampler unsafe.Pointer
+func (h *VkDevice) CreateSampler(
+	pCreateInfo *VkSamplerCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pSampler *VkSampler,
+) VkResult {
+}
+
+func (h *VkDevice) DestroySampler(
+	sampler VkSampler,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+type VkSampler struct {
+	handle unsafe.Pointer
+}
 
 type VkSamplerCreateFlags VkFlags
 
@@ -954,6 +1628,59 @@ type VkSamplerCreateInfo struct {
 
 // Descriptor set commands
 
+func (h *VkDevice) CreateDescriptorSetLayout(
+	pCreateInfo *VkDescriptorSetLayoutCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pSetLayout *VkDescriptorSetLayout,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyDescriptorSetLayout(
+	descriptorSetLayout VkDescriptorSetLayout,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkDevice) CreateDescriptorPool(
+	pCreateInfo *VkDescriptorPoolCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pDescriptorPool *VkDescriptorPool,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyDescriptorPool(
+	descriptorPool VkDescriptorPool,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkDevice) ResetDescriptorPool(
+	descriptorPool VkDescriptorPool,
+	flags VkDescriptorPoolResetFlags,
+) VkResult {
+}
+
+func (h *VkDevice) AllocateDescriptorSets(
+	pAllocateInfo *VkDescriptorSetAllocateInfo,
+	pDescriptorSets *VkDescriptorSet,
+) VkResult {
+}
+
+func (h *VkDevice) FreeDescriptorSets(
+	descriptorPool VkDescriptorPool,
+	descriptorSetCount uint32,
+	pDescriptorSets *VkDescriptorSet,
+) VkResult {
+}
+
+func (h *VkDevice) UpdateDescriptorSets(
+	descriptorWriteCount uint32,
+	pDescriptorWrites *VkWriteDescriptorSet,
+	descriptorCopyCount uint32,
+	pDescriptorCopies *VkCopyDescriptorSet,
+) {
+}
+
 type VkCopyDescriptorSet struct {
 	SType           VkStructureType
 	PNext           unsafe.Pointer
@@ -978,7 +1705,9 @@ type VkDescriptorImageInfo struct {
 	ImageLayout VkImageLayout
 }
 
-type VkDescriptorPool unsafe.Pointer
+type VkDescriptorPool struct {
+	handle unsafe.Pointer
+}
 
 type VkDescriptorPoolSize struct {
 	Type            VkDescriptorType
@@ -998,7 +1727,9 @@ type VkDescriptorPoolCreateInfo struct {
 
 type VkDescriptorPoolResetFlags VkFlags
 
-type VkDescriptorSet unsafe.Pointer
+type VkDescriptorSet struct {
+	handle unsafe.Pointer
+}
 
 type VkDescriptorSetAllocateInfo struct {
 	SType              VkStructureType
@@ -1008,7 +1739,9 @@ type VkDescriptorSetAllocateInfo struct {
 	PSetLayouts        *VkDescriptorSetLayout
 }
 
-type VkDescriptorSetLayout unsafe.Pointer
+type VkDescriptorSetLayout struct {
+	handle unsafe.Pointer
+}
 
 type VkDescriptorSetLayoutBinding struct {
 	Binding            uint32
@@ -1044,6 +1777,80 @@ type VkWriteDescriptorSet struct {
 // Pass commands
 // Command buffer building commands
 
+func (h *VkCommandBuffer) BindPipeline(
+	pipelineBindPoint VkPipelineBindPoint,
+	pipeline VkPipeline,
+) {
+}
+
+func (h *VkCommandBuffer) BindDescriptorSets(
+	pipelineBindPoint VkPipelineBindPoint,
+	layout VkPipelineLayout,
+	firstSet uint32,
+	descriptorSetCount uint32,
+	pDescriptorSets *VkDescriptorSet,
+	dynamicOffsetCount uint32,
+	pDynamicOffsets *uint32,
+) {
+}
+
+func (h *VkCommandBuffer) ClearColorImage(
+	image VkImage,
+	imageLayout VkImageLayout,
+	pColor *VkClearColorValue,
+	rangeCount uint32,
+	pRanges *VkImageSubresourceRange,
+) {
+}
+
+func (h *VkCommandBuffer) Dispatch(
+	groupCountX uint32,
+	groupCountY uint32,
+	groupCountZ uint32,
+) {
+}
+
+func (h *VkCommandBuffer) DispatchIndirect(
+	buffer VkBuffer,
+	offset VkDeviceSize,
+) {
+}
+
+func (h *VkCommandBuffer) SetEvent(
+	event VkEvent,
+	stageMask VkPipelineStageFlags,
+) {
+}
+
+func (h *VkCommandBuffer) ResetEvent(
+	event VkEvent,
+	stageMask VkPipelineStageFlags,
+) {
+}
+
+func (h *VkCommandBuffer) WaitEvents(
+	eventCount uint32,
+	pEvents *VkEvent,
+	srcStageMask VkPipelineStageFlags,
+	dstStageMask VkPipelineStageFlags,
+	memoryBarrierCount uint32,
+	pMemoryBarriers *VkMemoryBarrier,
+	bufferMemoryBarrierCount uint32,
+	pBufferMemoryBarriers *VkBufferMemoryBarrier,
+	imageMemoryBarrierCount uint32,
+	pImageMemoryBarriers *VkImageMemoryBarrier,
+) {
+}
+
+func (h *VkCommandBuffer) PushConstants(
+	layout VkPipelineLayout,
+	stageFlags VkShaderStageFlags,
+	offset uint32,
+	size uint32,
+	pValues unsafe.Pointer,
+) {
+}
+
 type VkClearColorValue struct {
 	Float32 [4]float32
 	Int32   [4]int32
@@ -1071,6 +1878,15 @@ type VkDrawIndirectCommand struct {
 }
 
 // Graphics Pipeline commands
+
+func (h *VkDevice) CreateGraphicsPipelines(
+	pipelineCache VkPipelineCache,
+	createInfoCount uint32,
+	pCreateInfos *VkGraphicsPipelineCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pPipelines *VkPipeline,
+) VkResult {
+}
 
 type VkColorComponentFlags VkFlags
 
@@ -1260,6 +2076,38 @@ type VkGraphicsPipelineCreateInfo struct {
 
 // Pass commands
 
+func (h *VkDevice) CreateFramebuffer(
+	pCreateInfo *VkFramebufferCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pFramebuffer *VkFramebuffer,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyFramebuffer(
+	framebuffer VkFramebuffer,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkDevice) CreateRenderPass(
+	pCreateInfo *VkRenderPassCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pRenderPass *VkRenderPass,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyRenderPass(
+	renderPass VkRenderPass,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkDevice) GetRenderAreaGranularity(
+	renderPass VkRenderPass,
+	pGranularity *VkExtent2D,
+) {
+}
+
 type VkAttachmentDescription struct {
 	Flags          VkAttachmentDescriptionFlags
 	Format         VkFormat
@@ -1279,7 +2127,9 @@ type VkAttachmentReference struct {
 	Layout     VkImageLayout
 }
 
-type VkFramebuffer unsafe.Pointer
+type VkFramebuffer struct {
+	handle unsafe.Pointer
+}
 
 type VkFramebufferCreateFlags VkFlags
 
@@ -1295,7 +2145,9 @@ type VkFramebufferCreateInfo struct {
 	Layers          uint32
 }
 
-type VkRenderPass unsafe.Pointer
+type VkRenderPass struct {
+	handle unsafe.Pointer
+}
 
 type VkRenderPassCreateFlags VkFlags
 
@@ -1337,6 +2189,161 @@ type VkRenderPassCreateInfo struct {
 }
 
 // Command buffer building commands
+
+func (h *VkCommandBuffer) SetViewport(
+	firstViewport uint32,
+	viewportCount uint32,
+	pViewports *VkViewport,
+) {
+}
+
+func (h *VkCommandBuffer) SetScissor(
+	firstScissor uint32,
+	scissorCount uint32,
+	pScissors *VkRect2D,
+) {
+}
+
+func (h *VkCommandBuffer) SetLineWidth(
+	lineWidth float32,
+) {
+}
+
+func (h *VkCommandBuffer) SetDepthBias(
+	depthBiasConstantFactor float32,
+	depthBiasClamp float32,
+	depthBiasSlopeFactor float32,
+) {
+}
+
+func (h *VkCommandBuffer) SetBlendConstants(
+	blendConstants [4]float32,
+) {
+}
+
+func (h *VkCommandBuffer) SetDepthBounds(
+	minDepthBounds float32,
+	maxDepthBounds float32,
+) {
+}
+
+func (h *VkCommandBuffer) SetStencilCompareMask(
+	faceMask VkStencilFaceFlags,
+	compareMask uint32,
+) {
+}
+
+func (h *VkCommandBuffer) SetStencilWriteMask(
+	faceMask VkStencilFaceFlags,
+	writeMask uint32,
+) {
+}
+
+func (h *VkCommandBuffer) SetStencilReference(
+	faceMask VkStencilFaceFlags,
+	reference uint32,
+) {
+}
+
+func (h *VkCommandBuffer) BindIndexBuffer(
+	buffer VkBuffer,
+	offset VkDeviceSize,
+	indexType VkIndexType,
+) {
+}
+
+func (h *VkCommandBuffer) BindVertexBuffers(
+	firstBinding uint32,
+	bindingCount uint32,
+	pBuffers *VkBuffer,
+	pOffsets *VkDeviceSize,
+) {
+}
+
+func (h *VkCommandBuffer) Draw(
+	vertexCount uint32,
+	instanceCount uint32,
+	firstVertex uint32,
+	firstInstance uint32,
+) {
+}
+
+func (h *VkCommandBuffer) DrawIndexed(
+	indexCount uint32,
+	instanceCount uint32,
+	firstIndex uint32,
+	vertexOffset int32,
+	firstInstance uint32,
+) {
+}
+
+func (h *VkCommandBuffer) DrawIndirect(
+	buffer VkBuffer,
+	offset VkDeviceSize,
+	drawCount uint32,
+	stride uint32,
+) {
+}
+
+func (h *VkCommandBuffer) DrawIndexedIndirect(
+	buffer VkBuffer,
+	offset VkDeviceSize,
+	drawCount uint32,
+	stride uint32,
+) {
+}
+
+func (h *VkCommandBuffer) BlitImage(
+	srcImage VkImage,
+	srcImageLayout VkImageLayout,
+	dstImage VkImage,
+	dstImageLayout VkImageLayout,
+	regionCount uint32,
+	pRegions *VkImageBlit,
+	filter VkFilter,
+) {
+}
+
+func (h *VkCommandBuffer) ClearDepthStencilImage(
+	image VkImage,
+	imageLayout VkImageLayout,
+	pDepthStencil *VkClearDepthStencilValue,
+	rangeCount uint32,
+	pRanges *VkImageSubresourceRange,
+) {
+}
+
+func (h *VkCommandBuffer) ClearAttachments(
+	attachmentCount uint32,
+	pAttachments *VkClearAttachment,
+	rectCount uint32,
+	pRects *VkClearRect,
+) {
+}
+
+func (h *VkCommandBuffer) ResolveImage(
+	srcImage VkImage,
+	srcImageLayout VkImageLayout,
+	dstImage VkImage,
+	dstImageLayout VkImageLayout,
+	regionCount uint32,
+	pRegions *VkImageResolve,
+) {
+}
+
+func (h *VkCommandBuffer) BeginRenderPass(
+	pRenderPassBegin *VkRenderPassBeginInfo,
+	contents VkSubpassContents,
+) {
+}
+
+func (h *VkCommandBuffer) NextSubpass(
+	contents VkSubpassContents,
+) {
+}
+
+func (h *VkCommandBuffer) EndRenderPass() {
+}
 
 type VkClearDepthStencilValue struct {
 	Depth   float32
@@ -1395,9 +2402,26 @@ type VkStencilFaceFlags VkFlags
 // API version macros
 // Device Initialization
 
+func EnumerateInstanceVersion(
+	pApiVersion *uint32,
+) VkResult {
+}
+
 type VkSubgroupFeatureFlags VkFlags
 
 // Promoted from VK_KHR_bind_memory2
+
+func (h *VkDevice) BindBufferMemory2(
+	bindInfoCount uint32,
+	pBindInfos *VkBindBufferMemoryInfo,
+) VkResult {
+}
+
+func (h *VkDevice) BindImageMemory2(
+	bindInfoCount uint32,
+	pBindInfos *VkBindImageMemoryInfo,
+) VkResult {
+}
 
 type VkBindBufferMemoryInfo struct {
 	SType        VkStructureType
@@ -1432,6 +2456,19 @@ type VkMemoryDedicatedAllocateInfo struct {
 }
 
 // Promoted from VK_KHR_device_group
+
+func (h *VkDevice) GetGroupPeerMemoryFeatures(
+	heapIndex uint32,
+	localDeviceIndex uint32,
+	remoteDeviceIndex uint32,
+	pPeerMemoryFeatures *VkPeerMemoryFeatureFlags,
+) {
+}
+
+func (h *VkCommandBuffer) SetDeviceMask(
+	deviceMask uint32,
+) {
+}
 
 type VkPeerMemoryFeatureFlags VkFlags
 
@@ -1488,6 +2525,12 @@ type VkBindImageMemoryDeviceGroupInfo struct {
 
 // Promoted from VK_KHR_device_group_creation
 
+func (h *VkInstance) EnumeratePhysicalDeviceGroups(
+	pPhysicalDeviceGroupCount *uint32,
+	pPhysicalDeviceGroupProperties *VkPhysicalDeviceGroupProperties,
+) VkResult {
+}
+
 type VkPhysicalDeviceGroupProperties struct {
 	SType               VkStructureType
 	PNext               unsafe.Pointer
@@ -1504,6 +2547,25 @@ type VkDeviceGroupDeviceCreateInfo struct {
 }
 
 // Promoted from VK_KHR_get_memory_requirements2
+
+func (h *VkDevice) GetImageMemoryRequirements2(
+	pInfo *VkImageMemoryRequirementsInfo2,
+	pMemoryRequirements *VkMemoryRequirements2,
+) {
+}
+
+func (h *VkDevice) GetBufferMemoryRequirements2(
+	pInfo *VkBufferMemoryRequirementsInfo2,
+	pMemoryRequirements *VkMemoryRequirements2,
+) {
+}
+
+func (h *VkDevice) GetImageSparseMemoryRequirements2(
+	pInfo *VkImageSparseMemoryRequirementsInfo2,
+	pSparseMemoryRequirementCount *uint32,
+	pSparseMemoryRequirements *VkSparseImageMemoryRequirements2,
+) {
+}
 
 type VkBufferMemoryRequirementsInfo2 struct {
 	SType  VkStructureType
@@ -1536,6 +2598,46 @@ type VkSparseImageMemoryRequirements2 struct {
 }
 
 // Promoted from VK_KHR_get_physical_device_properties2
+
+func (h *VkPhysicalDevice) GetFeatures2(
+	pFeatures *VkPhysicalDeviceFeatures2,
+) {
+}
+
+func (h *VkPhysicalDevice) GetProperties2(
+	pProperties *VkPhysicalDeviceProperties2,
+) {
+}
+
+func (h *VkPhysicalDevice) GetFormatProperties2(
+	format VkFormat,
+	pFormatProperties *VkFormatProperties2,
+) {
+}
+
+func (h *VkPhysicalDevice) GetImageFormatProperties2(
+	pImageFormatInfo *VkPhysicalDeviceImageFormatInfo2,
+	pImageFormatProperties *VkImageFormatProperties2,
+) VkResult {
+}
+
+func (h *VkPhysicalDevice) GetQueueFamilyProperties2(
+	pQueueFamilyPropertyCount *uint32,
+	pQueueFamilyProperties *VkQueueFamilyProperties2,
+) {
+}
+
+func (h *VkPhysicalDevice) GetMemoryProperties2(
+	pMemoryProperties *VkPhysicalDeviceMemoryProperties2,
+) {
+}
+
+func (h *VkPhysicalDevice) GetSparseImageFormatProperties2(
+	pFormatInfo *VkPhysicalDeviceSparseImageFormatInfo2,
+	pPropertyCount *uint32,
+	pProperties *VkSparseImageFormatProperties2,
+) {
+}
 
 type VkPhysicalDeviceFeatures2 struct {
 	SType    VkStructureType
@@ -1601,6 +2703,12 @@ type VkPhysicalDeviceSparseImageFormatInfo2 struct {
 
 // Promoted from VK_KHR_maintenance1
 
+func (h *VkDevice) TrimCommandPool(
+	commandPool VkCommandPool,
+	flags VkCommandPoolTrimFlags,
+) {
+}
+
 type VkCommandPoolTrimFlags VkFlags
 
 // Promoted from VK_KHR_maintenance2
@@ -1612,6 +2720,12 @@ type VkImageViewUsageCreateInfo struct {
 }
 
 // Originally based on VK_KHR_protected_memory (extension 146), which was never published; thus the mystifying large value= numbers below. These are not aliased since they were not actually promoted from an extension.
+
+func (h *VkDevice) GetQueue2(
+	pQueueInfo *VkDeviceQueueInfo2,
+	pQueue *VkQueue,
+) {
+}
 
 type VkPhysicalDeviceProtectedMemoryFeatures struct {
 	SType           VkStructureType
@@ -1654,6 +2768,12 @@ type VkImagePlaneMemoryRequirementsInfo struct {
 }
 
 // Promoted from VK_KHR_external_memory_capabilities
+
+func (h *VkPhysicalDevice) GetExternalBufferProperties(
+	pExternalBufferInfo *VkPhysicalDeviceExternalBufferInfo,
+	pExternalBufferProperties *VkExternalBufferProperties,
+) {
+}
 
 type VkExternalMemoryHandleTypeFlags VkFlags
 
@@ -1723,6 +2843,12 @@ type VkExportMemoryAllocateInfo struct {
 
 // Promoted from VK_KHR_external_fence_capabilities
 
+func (h *VkPhysicalDevice) GetExternalFenceProperties(
+	pExternalFenceInfo *VkPhysicalDeviceExternalFenceInfo,
+	pExternalFenceProperties *VkExternalFenceProperties,
+) {
+}
+
 type VkExternalFenceHandleTypeFlags VkFlags
 
 type VkExternalFenceFeatureFlags VkFlags
@@ -1762,6 +2888,12 @@ type VkExportSemaphoreCreateInfo struct {
 }
 
 // Promoted from VK_KHR_external_semaphore_capabilities
+
+func (h *VkPhysicalDevice) GetExternalSemaphoreProperties(
+	pExternalSemaphoreInfo *VkPhysicalDeviceExternalSemaphoreInfo,
+	pExternalSemaphoreProperties *VkExternalSemaphoreProperties,
+) {
+}
 
 type VkExternalSemaphoreHandleTypeFlags VkFlags
 
@@ -1808,6 +2940,17 @@ type VkPhysicalDevice16BitStorageFeatures struct {
 }
 
 // Promoted from VK_KHR_device_group
+
+func (h *VkCommandBuffer) DispatchBase(
+	baseGroupX uint32,
+	baseGroupY uint32,
+	baseGroupZ uint32,
+	groupCountX uint32,
+	groupCountY uint32,
+	groupCountZ uint32,
+) {
+}
+
 // Promoted from VK_KHR_variable_pointers
 
 type VkPhysicalDeviceVariablePointersFeatures struct {
@@ -1822,7 +2965,29 @@ type VkPhysicalDeviceVariablePointerFeatures struct {
 
 // Promoted from VK_KHR_descriptor_update_template
 
-type VkDescriptorUpdateTemplate unsafe.Pointer
+func (h *VkDevice) CreateDescriptorUpdateTemplate(
+	pCreateInfo *VkDescriptorUpdateTemplateCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pDescriptorUpdateTemplate *VkDescriptorUpdateTemplate,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyDescriptorUpdateTemplate(
+	descriptorUpdateTemplate VkDescriptorUpdateTemplate,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkDevice) UpdateDescriptorSetWithTemplate(
+	descriptorSet VkDescriptorSet,
+	descriptorUpdateTemplate VkDescriptorUpdateTemplate,
+	pData unsafe.Pointer,
+) {
+}
+
+type VkDescriptorUpdateTemplate struct {
+	handle unsafe.Pointer
+}
 
 type VkDescriptorUpdateTemplateCreateFlags VkFlags
 
@@ -1850,6 +3015,12 @@ type VkDescriptorUpdateTemplateCreateInfo struct {
 
 // Promoted from VK_KHR_maintenance3
 
+func (h *VkDevice) GetDescriptorSetLayoutSupport(
+	pCreateInfo *VkDescriptorSetLayoutCreateInfo,
+	pSupport *VkDescriptorSetLayoutSupport,
+) {
+}
+
 type VkPhysicalDeviceMaintenance3Properties struct {
 	SType                   VkStructureType
 	PNext                   unsafe.Pointer
@@ -1864,6 +3035,19 @@ type VkDescriptorSetLayoutSupport struct {
 }
 
 // Promoted from VK_KHR_sampler_ycbcr_conversion
+
+func (h *VkDevice) CreateSamplerYcbcrConversion(
+	pCreateInfo *VkSamplerYcbcrConversionCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pYcbcrConversion *VkSamplerYcbcrConversion,
+) VkResult {
+}
+
+func (h *VkDevice) DestroySamplerYcbcrConversion(
+	ycbcrConversion VkSamplerYcbcrConversion,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
 
 type VkSamplerYcbcrConversionCreateInfo struct {
 	SType                       VkStructureType
@@ -1896,7 +3080,9 @@ type VkSamplerYcbcrConversionImageFormatProperties struct {
 	CombinedImageSamplerDescriptorCount uint32
 }
 
-type VkSamplerYcbcrConversion unsafe.Pointer
+type VkSamplerYcbcrConversion struct {
+	handle unsafe.Pointer
+}
 
 // Target: VK_GRAPHICS_VERSION_1_1
 
@@ -2170,6 +3356,13 @@ type VkPhysicalDeviceVulkanMemoryModelFeatures struct {
 
 // Promoted from VK_EXT_host_query_reset (extension 262)
 
+func (h *VkDevice) ResetQueryPool(
+	queryPool VkQueryPool,
+	firstQuery uint32,
+	queryCount uint32,
+) {
+}
+
 type VkPhysicalDeviceHostQueryResetFeatures struct {
 	SType          VkStructureType
 	PNext          unsafe.Pointer
@@ -2177,6 +3370,23 @@ type VkPhysicalDeviceHostQueryResetFeatures struct {
 }
 
 // Promoted from VK_KHR_timeline_semaphore (extension 208)
+
+func (h *VkDevice) GetSemaphoreCounterValue(
+	semaphore VkSemaphore,
+	pValue *uint64,
+) VkResult {
+}
+
+func (h *VkDevice) WaitSemaphores(
+	pWaitInfo *VkSemaphoreWaitInfo,
+	timeout uint64,
+) VkResult {
+}
+
+func (h *VkDevice) SignalSemaphore(
+	pSignalInfo *VkSemaphoreSignalInfo,
+) VkResult {
+}
 
 type VkPhysicalDeviceTimelineSemaphoreFeatures struct {
 	SType             VkStructureType
@@ -2225,6 +3435,21 @@ type VkSemaphoreSignalInfo struct {
 }
 
 // Promoted from VK_KHR_buffer_device_address (extension 258)
+
+func (h *VkDevice) GetBufferAddress(
+	pInfo *VkBufferDeviceAddressInfo,
+) VkDeviceAddress {
+}
+
+func (h *VkDevice) GetBufferOpaqueCaptureAddress(
+	pInfo *VkBufferDeviceAddressInfo,
+) uint64 {
+}
+
+func (h *VkDevice) GetMemoryOpaqueCaptureAddress(
+	pInfo *VkDeviceMemoryOpaqueCaptureAddressInfo,
+) uint64 {
+}
 
 type VkPhysicalDeviceBufferDeviceAddressFeatures struct {
 	SType                            VkStructureType
@@ -2432,7 +3657,52 @@ type VkPhysicalDeviceShaderSubgroupExtendedTypesFeatures struct {
 // Target: VK_GRAPHICS_VERSION_1_2
 
 // Promoted from VK_KHR_draw_indirect_count (extension 170)
+
+func (h *VkCommandBuffer) DrawIndirectCount(
+	buffer VkBuffer,
+	offset VkDeviceSize,
+	countBuffer VkBuffer,
+	countBufferOffset VkDeviceSize,
+	maxDrawCount uint32,
+	stride uint32,
+) {
+}
+
+func (h *VkCommandBuffer) DrawIndexedIndirectCount(
+	buffer VkBuffer,
+	offset VkDeviceSize,
+	countBuffer VkBuffer,
+	countBufferOffset VkDeviceSize,
+	maxDrawCount uint32,
+	stride uint32,
+) {
+}
+
 // Promoted from VK_KHR_create_renderpass2 (extension 110)
+
+func (h *VkDevice) CreateRenderPass2(
+	pCreateInfo *VkRenderPassCreateInfo2,
+	pAllocator *VkAllocationCallbacks,
+	pRenderPass *VkRenderPass,
+) VkResult {
+}
+
+func (h *VkCommandBuffer) BeginRenderPass2(
+	pRenderPassBegin *VkRenderPassBeginInfo,
+	pSubpassBeginInfo *VkSubpassBeginInfo,
+) {
+}
+
+func (h *VkCommandBuffer) NextSubpass2(
+	pSubpassBeginInfo *VkSubpassBeginInfo,
+	pSubpassEndInfo *VkSubpassEndInfo,
+) {
+}
+
+func (h *VkCommandBuffer) EndRenderPass2(
+	pSubpassEndInfo *VkSubpassEndInfo,
+) {
+}
 
 type VkAttachmentDescription2 struct {
 	SType          VkStructureType
@@ -2673,6 +3943,12 @@ type VkPhysicalDeviceVulkan13Properties struct {
 
 // Promoted from VK_EXT_tooling_info (extension 246)
 
+func (h *VkPhysicalDevice) GetToolProperties(
+	pToolCount *uint32,
+	pToolProperties *VkPhysicalDeviceToolProperties,
+) VkResult {
+}
+
 type VkToolPurposeFlags VkFlags
 
 type VkPhysicalDeviceToolProperties struct {
@@ -2686,6 +3962,35 @@ type VkPhysicalDeviceToolProperties struct {
 }
 
 // Promoted from VK_EXT_private_data (extension 296)
+
+func (h *VkDevice) CreatePrivateDataSlot(
+	pCreateInfo *VkPrivateDataSlotCreateInfo,
+	pAllocator *VkAllocationCallbacks,
+	pPrivateDataSlot *VkPrivateDataSlot,
+) VkResult {
+}
+
+func (h *VkDevice) DestroyPrivateDataSlot(
+	privateDataSlot VkPrivateDataSlot,
+	pAllocator *VkAllocationCallbacks,
+) {
+}
+
+func (h *VkDevice) SetPrivateData(
+	objectType VkObjectType,
+	objectHandle uint64,
+	privateDataSlot VkPrivateDataSlot,
+	data uint64,
+) VkResult {
+}
+
+func (h *VkDevice) GetPrivateData(
+	objectType VkObjectType,
+	objectHandle uint64,
+	privateDataSlot VkPrivateDataSlot,
+	pData *uint64,
+) {
+}
 
 type VkPhysicalDevicePrivateDataFeatures struct {
 	SType       VkStructureType
@@ -2705,11 +4010,32 @@ type VkPrivateDataSlotCreateInfo struct {
 	Flags VkPrivateDataSlotCreateFlags
 }
 
-type VkPrivateDataSlot unsafe.Pointer
+type VkPrivateDataSlot struct {
+	handle unsafe.Pointer
+}
 
 type VkPrivateDataSlotCreateFlags VkFlags
 
 // Promoted from VK_KHR_synchronization2 (extension 315)
+
+func (h *VkCommandBuffer) PipelineBarrier2(
+	pDependencyInfo *VkDependencyInfo,
+) {
+}
+
+func (h *VkCommandBuffer) WriteTimestamp2(
+	stage VkPipelineStageFlags2,
+	queryPool VkQueryPool,
+	query uint32,
+) {
+}
+
+func (h *VkQueue) Submit2(
+	submitCount uint32,
+	pSubmits *VkSubmitInfo2,
+	fence VkFence,
+) VkResult {
+}
 
 type VkPipelineStageFlags2 VkFlags64
 
@@ -2802,6 +4128,26 @@ type VkPhysicalDeviceSynchronization2Features struct {
 }
 
 // Promoted from VK_KHR_copy_commands2 (extension 338)
+
+func (h *VkCommandBuffer) CopyBuffer2(
+	pCopyBufferInfo *VkCopyBufferInfo2,
+) {
+}
+
+func (h *VkCommandBuffer) CopyImage2(
+	pCopyImageInfo *VkCopyImageInfo2,
+) {
+}
+
+func (h *VkCommandBuffer) CopyBufferToImage2(
+	pCopyBufferToImageInfo *VkCopyBufferToImageInfo2,
+) {
+}
+
+func (h *VkCommandBuffer) CopyImageToBuffer2(
+	pCopyImageToBufferInfo *VkCopyImageToBufferInfo2,
+) {
+}
 
 type VkBufferCopy2 struct {
 	SType     VkStructureType
@@ -2896,6 +4242,25 @@ type VkFormatProperties3 struct {
 
 // Promoted from VK_KHR_maintenance4 (extension 414)
 
+func (h *VkDevice) GetBufferMemoryRequirements(
+	pInfo *VkDeviceBufferMemoryRequirements,
+	pMemoryRequirements *VkMemoryRequirements2,
+) {
+}
+
+func (h *VkDevice) GetImageMemoryRequirements(
+	pInfo *VkDeviceImageMemoryRequirements,
+	pMemoryRequirements *VkMemoryRequirements2,
+) {
+}
+
+func (h *VkDevice) GetImageSparseMemoryRequirements(
+	pInfo *VkDeviceImageMemoryRequirements,
+	pSparseMemoryRequirementCount *uint32,
+	pSparseMemoryRequirements *VkSparseImageMemoryRequirements2,
+) {
+}
+
 type VkPhysicalDeviceMaintenance4Features struct {
 	SType        VkStructureType
 	PNext        unsafe.Pointer
@@ -2966,6 +4331,26 @@ type VkPhysicalDevicePipelineCreationCacheControlFeatures struct {
 }
 
 // Promoted from VK_KHR_synchronization2 (extension 315)
+
+func (h *VkCommandBuffer) SetEvent2(
+	event VkEvent,
+	pDependencyInfo *VkDependencyInfo,
+) {
+}
+
+func (h *VkCommandBuffer) ResetEvent2(
+	event VkEvent,
+	stageMask VkPipelineStageFlags2,
+) {
+}
+
+func (h *VkCommandBuffer) WaitEvents2(
+	eventCount uint32,
+	pEvents *VkEvent,
+	pDependencyInfos *VkDependencyInfo,
+) {
+}
+
 // Promoted from VK_KHR_zero_initialize_workgroup_memory (extension 326)
 
 type VkPhysicalDeviceZeroInitializeWorkgroupMemoryFeatures struct {
@@ -3096,6 +4481,16 @@ type VkPhysicalDeviceTexelBufferAlignmentProperties struct {
 
 // Promoted from VK_KHR_copy_commands2 (extension 338)
 
+func (h *VkCommandBuffer) BlitImage2(
+	pBlitImageInfo *VkBlitImageInfo2,
+) {
+}
+
+func (h *VkCommandBuffer) ResolveImage2(
+	pResolveImageInfo *VkResolveImageInfo2,
+) {
+}
+
 type VkImageBlit2 struct {
 	SType          VkStructureType
 	PNext          unsafe.Pointer
@@ -3139,6 +4534,14 @@ type VkResolveImageInfo2 struct {
 }
 
 // Promoted from VK_KHR_dynamic_rendering (extension 45)
+
+func (h *VkCommandBuffer) BeginRendering(
+	pRenderingInfo *VkRenderingInfo,
+) {
+}
+
+func (h *VkCommandBuffer) EndRendering() {
+}
 
 type VkRenderingAttachmentInfo struct {
 	SType              VkStructureType
@@ -3197,7 +4600,95 @@ type VkCommandBufferInheritanceRenderingInfo struct {
 type VkRenderingFlags VkFlags
 
 // Promoted from VK_EXT_extended_dynamic_state (Feature struct is not promoted) (extension 268)
+
+func (h *VkCommandBuffer) SetCullMode(
+	cullMode VkCullModeFlags,
+) {
+}
+
+func (h *VkCommandBuffer) SetFrontFace(
+	frontFace VkFrontFace,
+) {
+}
+
+func (h *VkCommandBuffer) SetPrimitiveTopology(
+	primitiveTopology VkPrimitiveTopology,
+) {
+}
+
+func (h *VkCommandBuffer) SetViewportWithCount(
+	viewportCount uint32,
+	pViewports *VkViewport,
+) {
+}
+
+func (h *VkCommandBuffer) SetScissorWithCount(
+	scissorCount uint32,
+	pScissors *VkRect2D,
+) {
+}
+
+func (h *VkCommandBuffer) BindVertexBuffers2(
+	firstBinding uint32,
+	bindingCount uint32,
+	pBuffers *VkBuffer,
+	pOffsets *VkDeviceSize,
+	pSizes *VkDeviceSize,
+	pStrides *VkDeviceSize,
+) {
+}
+
+func (h *VkCommandBuffer) SetDepthTestEnable(
+	depthTestEnable VkBool32,
+) {
+}
+
+func (h *VkCommandBuffer) SetDepthWriteEnable(
+	depthWriteEnable VkBool32,
+) {
+}
+
+func (h *VkCommandBuffer) SetDepthCompareOp(
+	depthCompareOp VkCompareOp,
+) {
+}
+
+func (h *VkCommandBuffer) SetDepthBoundsTestEnable(
+	depthBoundsTestEnable VkBool32,
+) {
+}
+
+func (h *VkCommandBuffer) SetStencilTestEnable(
+	stencilTestEnable VkBool32,
+) {
+}
+
+func (h *VkCommandBuffer) SetStencilOp(
+	faceMask VkStencilFaceFlags,
+	failOp VkStencilOp,
+	passOp VkStencilOp,
+	depthFailOp VkStencilOp,
+	compareOp VkCompareOp,
+) {
+}
+
 // Promoted from VK_EXT_extended_dynamic_state2 (Feature struct and optional state are not promoted) (extension 378)
+
+func (h *VkCommandBuffer) SetRasterizerDiscardEnable(
+	rasterizerDiscardEnable VkBool32,
+) {
+}
+
+func (h *VkCommandBuffer) SetDepthBiasEnable(
+	depthBiasEnable VkBool32,
+) {
+}
+
+func (h *VkCommandBuffer) SetPrimitiveRestartEnable(
+	primitiveRestartEnable VkBool32,
+) {
+}
+
 // Target: VK_VERSION_1_3
 
 // Feature requirements
@@ -3292,6 +4783,17 @@ type VkPhysicalDeviceIndexTypeUint8Features struct {
 
 // Promoted from VK_KHR_map_memory2 (extension 272) 'Roadmap 2024'
 
+func (h *VkDevice) MapMemory2(
+	pMemoryMapInfo *VkMemoryMapInfo,
+	ppData **void,
+) VkResult {
+}
+
+func (h *VkDevice) UnmapMemory2(
+	pMemoryUnmapInfo *VkMemoryUnmapInfo,
+) VkResult {
+}
+
 type VkMemoryMapInfo struct {
 	SType  VkStructureType
 	PNext  unsafe.Pointer
@@ -3311,6 +4813,19 @@ type VkMemoryUnmapInfo struct {
 type VkMemoryUnmapFlags VkFlags
 
 // Promoted from VK_KHR_maintenance5 (extension 471) 'Roadmap 2024'
+
+func (h *VkDevice) GetImageSubresourceLayout(
+	pInfo *VkDeviceImageSubresourceInfo,
+	pLayout *VkSubresourceLayout2,
+) {
+}
+
+func (h *VkDevice) GetImageSubresourceLayout2(
+	image VkImage,
+	pSubresource *VkImageSubresource2,
+	pLayout *VkSubresourceLayout2,
+) {
+}
 
 type VkPhysicalDeviceMaintenance5Features struct {
 	SType        VkStructureType
@@ -3379,6 +4894,27 @@ type VkBindMemoryStatus struct {
 }
 
 // Promoted (as optional feature) from VK_EXT_host_image_copy (extension 271) 'streaming transfers'
+
+func (h *VkDevice) CopyMemoryToImage(
+	pCopyMemoryToImageInfo *VkCopyMemoryToImageInfo,
+) VkResult {
+}
+
+func (h *VkDevice) CopyImageToMemory(
+	pCopyImageToMemoryInfo *VkCopyImageToMemoryInfo,
+) VkResult {
+}
+
+func (h *VkDevice) CopyImageToImage(
+	pCopyImageToImageInfo *VkCopyImageToImageInfo,
+) VkResult {
+}
+
+func (h *VkDevice) TransitionImageLayout(
+	transitionCount uint32,
+	pTransitions *VkHostImageLayoutTransitionInfo,
+) VkResult {
+}
 
 type VkPhysicalDeviceHostImageCopyFeatures struct {
 	SType         VkStructureType
@@ -3515,6 +5051,23 @@ type VkPipelineCreateFlags2CreateInfo struct {
 // Promoted as an interaction between VK_KHR_maintenance5 (extension 471) 'Roadmap 2024' and VK_EXT_pipeline_protected_access (extension 467) 'additional functionality'
 // Promoted from VK_KHR_push_descriptor (extension 81) 'Roadmap 2024'
 
+func (h *VkCommandBuffer) PushDescriptorSet(
+	pipelineBindPoint VkPipelineBindPoint,
+	layout VkPipelineLayout,
+	set uint32,
+	descriptorWriteCount uint32,
+	pDescriptorWrites *VkWriteDescriptorSet,
+) {
+}
+
+func (h *VkCommandBuffer) PushDescriptorSetWithTemplate(
+	descriptorUpdateTemplate VkDescriptorUpdateTemplate,
+	layout VkPipelineLayout,
+	set uint32,
+	pData unsafe.Pointer,
+) {
+}
+
 type VkPhysicalDevicePushDescriptorProperties struct {
 	SType              VkStructureType
 	PNext              unsafe.Pointer
@@ -3522,6 +5075,26 @@ type VkPhysicalDevicePushDescriptorProperties struct {
 }
 
 // Promoted from VK_KHR_maintenance6 (extension 546) 'additional functionality'
+
+func (h *VkCommandBuffer) BindDescriptorSets2(
+	pBindDescriptorSetsInfo *VkBindDescriptorSetsInfo,
+) {
+}
+
+func (h *VkCommandBuffer) PushConstants2(
+	pPushConstantsInfo *VkPushConstantsInfo,
+) {
+}
+
+func (h *VkCommandBuffer) PushDescriptorSet2(
+	pPushDescriptorSetInfo *VkPushDescriptorSetInfo,
+) {
+}
+
+func (h *VkCommandBuffer) PushDescriptorSetWithTemplate2(
+	pPushDescriptorSetWithTemplateInfo *VkPushDescriptorSetWithTemplateInfo,
+) {
+}
 
 type VkBindDescriptorSetsInfo struct {
 	SType              VkStructureType
@@ -3603,6 +5176,12 @@ type VkPipelineRobustnessCreateInfo struct {
 // Promoted from VK_KHR_load_store_op_none (extension 527) 'Roadmap 2024' (VK_ATTACHMENT_STORE_OP_NONE is defined in Vulkan 1.3)
 // Promoted from VK_KHR_line_rasterization (extension 535) 'Roadmap 2024'
 
+func (h *VkCommandBuffer) SetLineStipple(
+	lineStippleFactor uint32,
+	lineStipplePattern uint16,
+) {
+}
+
 type VkPhysicalDeviceLineRasterizationFeatures struct {
 	SType                    VkStructureType
 	PNext                    unsafe.Pointer
@@ -3659,6 +5238,20 @@ type VkPhysicalDeviceVertexAttributeDivisorFeatures struct {
 
 // Promoted from VK_KHR_maintenance5 (extension 471) 'Roadmap 2024'
 
+func (h *VkCommandBuffer) BindIndexBuffer2(
+	buffer VkBuffer,
+	offset VkDeviceSize,
+	size VkDeviceSize,
+	indexType VkIndexType,
+) {
+}
+
+func (h *VkDevice) GetRenderingAreaGranularity(
+	pRenderingAreaInfo *VkRenderingAreaInfo,
+	pGranularity *VkExtent2D,
+) {
+}
+
 type VkRenderingAreaInfo struct {
 	SType                   VkStructureType
 	PNext                   unsafe.Pointer
@@ -3670,6 +5263,16 @@ type VkRenderingAreaInfo struct {
 }
 
 // Promoted from VK_KHR_dynamic_rendering_local_read (extension 233) 'Roadmap 2024'
+
+func (h *VkCommandBuffer) SetRenderingAttachmentLocations(
+	pLocationInfo *VkRenderingAttachmentLocationInfo,
+) {
+}
+
+func (h *VkCommandBuffer) SetRenderingInputAttachmentIndices(
+	pInputAttachmentIndexInfo *VkRenderingInputAttachmentIndexInfo,
+) {
+}
 
 type VkPhysicalDeviceDynamicRenderingLocalReadFeatures struct {
 	SType                     VkStructureType

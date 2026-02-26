@@ -12,7 +12,7 @@ func (h *Handle) Generate() string {
 	}
 
 	return fmt.Sprintf(
-		"\ntype %s unsafe.Pointer\n",
+		"\ntype %s struct {\n\thandle unsafe.Pointer\n}\n",
 		h.Name,
 	)
 }

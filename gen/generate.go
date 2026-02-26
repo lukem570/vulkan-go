@@ -6,6 +6,35 @@ import (
 	"strings"
 )
 
+const header = `package vulkan
+
+import (
+	"unsafe"
+	"fmt"
+)
+
+/*
+#cgo CFLAGS: -I./../../mod/volk -I./../../mod/Vulkan-Headers/include/vulkan
+#define VOLK_IMPLEMENTATION
+#include <stdlib.h>
+#include <volk.h>
+#include <vulkan.h>
+*/
+import "C" 
+
+// Target: GO_VULKAN
+
+func Initialize() error {
+	res := C.volkInitialize()
+
+	if res != C.VK_SUCCESS {
+		return fmt.Errorf("Failed to find Vulkan library.") 
+	}
+
+	return nil
+}
+`
+
 type Generatable interface {
 	Generate() string
 }
@@ -14,18 +43,26 @@ type FeatureLookup struct {
 	Features map[string]*Feature
 
 	Types    map[string]Generatable
-	Commands map[string]Generatable
+	Commands map[string]*Command
+
+	Handles map[string]*Handle
 }
 
 func NewFeatureLookup(vkXml *VkXML) *FeatureLookup {
 	out := &FeatureLookup{
 		Features: make(map[string]*Feature),
 		Types:    make(map[string]Generatable),
-		Commands: make(map[string]Generatable),
+		Commands: make(map[string]*Command),
+
+		Handles: make(map[string]*Handle),
 	}
 
 	for _, feat := range vkXml.Features {
 		out.Features[feat.Name] = feat
+	}
+
+	for _, cmd := range vkXml.Commands {
+		out.Commands[cmd.Proto.Name] = cmd
 	}
 
 	for _, str := range vkXml.Types.Structs {
@@ -37,6 +74,7 @@ func NewFeatureLookup(vkXml *VkXML) *FeatureLookup {
 	}
 
 	for _, hwd := range vkXml.Types.Handles {
+		out.Handles[hwd.Name] = hwd
 		out.Types[hwd.Name] = hwd
 	}
 
@@ -52,8 +90,7 @@ func Generate(vkXml *VkXML, target string) error {
 	fmt.Println("Generating", target)
 
 	var out strings.Builder
-	out.WriteString("package vulkan\n\n")
-	out.WriteString("import \"unsafe\"\n\n")
+	out.WriteString(header)
 
 	lookup := NewFeatureLookup(vkXml)
 	err := lookup.Generate(target, &out, make(map[string]struct{}))
@@ -124,6 +161,14 @@ func (f *FeatureLookup) Generate(
 				}
 
 				out.WriteString(typ.Generate())
+			case ElementCommand:
+				cmd, ok := f.Commands[element.Name]
+				if !ok {
+					fmt.Println("Missing command:", element.Name)
+					continue
+				}
+
+				out.WriteString(cmd.Generate(f.Handles))
 			default:
 			}
 		}
