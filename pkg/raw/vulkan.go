@@ -70,8 +70,8 @@ type VkRect2D struct {
 // These types are part of the API, though not directly used in API commands or data structures
 
 type VkBaseInStructure struct {
-	SType VkStructureType
-	PNext *VkBaseInStructure
+	sType struct{} structure
+ 	PNext *VkBaseInStructure
 }
 
 type VkBaseOutStructure struct {
@@ -228,15 +228,58 @@ type VkInstance struct {
 
 type VkInstanceCreateFlags VkFlags
 
+type Structure interface {
+	getType() VkStructureType
+	toC() *C.void
+}
+
 type VkInstanceCreateInfo struct {
-	SType                   VkStructureType
-	PNext                   unsafe.Pointer
-	Flags                   VkInstanceCreateFlags
-	PApplicationInfo        *VkApplicationInfo
-	EnabledLayerCount       uint32
-	PpEnabledLayerNames     *string
-	EnabledExtensionCount   uint32
-	PpEnabledExtensionNames *string
+	Next                   Structure
+	Flags                  VkInstanceCreateFlags
+	PApplicationInfo       *VkApplicationInfo
+	PEnabledLayerNames     []string
+	PEnabledExtensionNames []string
+}
+
+func (s *VkInstanceCreateInfo) getType() VkStructureType {
+	return VkStructureTypeInstanceCreateInfo
+}
+
+func (s *VkInstanceCreateInfo) toC() (*C.void, func()) {
+	p := (*C.VkInstanceCreateInfo)(C.malloc(
+		C.size_t(
+			unsafe.Sizeof(C.VkInstanceCreateInfo{}),
+		),
+	))
+
+	cancels = make(func(), 0)
+
+	p.sType = (*C.VkStructureType)(s.GetType())
+
+	if s.Next != nil {
+		next, c := s.Next.toC()
+		cancels = append(cancels, c)
+		p.pNext = next;
+	}
+
+	p.Flags = (*C.VkInstanceCreateFlags)(s.Flags)
+
+	if s.PApplicationInfo != nil {
+		p.PApplicationInfo = (*C.VkApplicationInfo)()
+	}
+
+	p.enabledLayerCount = len(s.PEnabledLayerNames)	
+	p.ppEnabledLayerNames
+	p.enabledExtensionCount
+	p.ppEnabledExtensionNames
+
+	return p, func() {
+		C.free(unsafe.Pointer(p))
+
+		for _, c := range cancels {
+			C.free(unsafe.Pointer(c))
+		}
+	}
 }
 
 type VkMemoryHeap struct {
@@ -491,21 +534,17 @@ type VkDeviceQueueCreateInfo struct {
 	PNext            unsafe.Pointer
 	Flags            VkDeviceQueueCreateFlags
 	QueueFamilyIndex uint32
-	QueueCount       uint32
-	PQueuePriorities *float32
+	QueuePriorities  []float32
 }
 
 type VkDeviceCreateInfo struct {
-	SType                   VkStructureType
-	PNext                   unsafe.Pointer
-	Flags                   VkDeviceCreateFlags
-	QueueCreateInfoCount    uint32
-	PQueueCreateInfos       *VkDeviceQueueCreateInfo
-	EnabledLayerCount       uint32
-	PpEnabledLayerNames     *string
-	EnabledExtensionCount   uint32
-	PpEnabledExtensionNames *string
-	PEnabledFeatures        *VkPhysicalDeviceFeatures
+	SType                  VkStructureType
+	PNext                  unsafe.Pointer
+	Flags                  VkDeviceCreateFlags
+	QueueCreateInfos       []VkDeviceQueueCreateInfo
+	PEnabledLayerNames     []string
+	PEnabledExtensionNames []string
+	PEnabledFeatures       *VkPhysicalDeviceFeatures
 }
 
 // Extension discovery commands
@@ -579,15 +618,12 @@ type VkQueue struct {
 }
 
 type VkSubmitInfo struct {
-	SType                VkStructureType
-	PNext                unsafe.Pointer
-	WaitSemaphoreCount   uint32
-	PWaitSemaphores      *VkSemaphore
-	PWaitDstStageMask    *VkPipelineStageFlags
-	CommandBufferCount   uint32
-	PCommandBuffers      *VkCommandBuffer
-	SignalSemaphoreCount uint32
-	PSignalSemaphores    *VkSemaphore
+	SType             VkStructureType
+	PNext             unsafe.Pointer
+	WaitSemaphores    []VkSemaphore
+	PWaitDstStageMask *VkPipelineStageFlags
+	CommandBuffers    []VkCommandBuffer
+	SignalSemaphores  []VkSemaphore
 }
 
 // Memory commands
@@ -745,9 +781,8 @@ type VkSparseImageMemoryBind struct {
 }
 
 type VkSparseImageMemoryBindInfo struct {
-	Image     VkImage
-	BindCount uint32
-	PBinds    *VkSparseImageMemoryBind
+	Image VkImage
+	Binds []VkSparseImageMemoryBind
 }
 
 type VkSparseImageMemoryRequirements struct {
@@ -769,30 +804,23 @@ type VkSparseMemoryBind struct {
 type VkSparseMemoryBindFlags VkFlags
 
 type VkSparseBufferMemoryBindInfo struct {
-	Buffer    VkBuffer
-	BindCount uint32
-	PBinds    *VkSparseMemoryBind
+	Buffer VkBuffer
+	Binds  []VkSparseMemoryBind
 }
 
 type VkSparseImageOpaqueMemoryBindInfo struct {
-	Image     VkImage
-	BindCount uint32
-	PBinds    *VkSparseMemoryBind
+	Image VkImage
+	Binds []VkSparseMemoryBind
 }
 
 type VkBindSparseInfo struct {
-	SType                VkStructureType
-	PNext                unsafe.Pointer
-	WaitSemaphoreCount   uint32
-	PWaitSemaphores      *VkSemaphore
-	BufferBindCount      uint32
-	PBufferBinds         *VkSparseBufferMemoryBindInfo
-	ImageOpaqueBindCount uint32
-	PImageOpaqueBinds    *VkSparseImageOpaqueMemoryBindInfo
-	ImageBindCount       uint32
-	PImageBinds          *VkSparseImageMemoryBindInfo
-	SignalSemaphoreCount uint32
-	PSignalSemaphores    *VkSemaphore
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	WaitSemaphores   []VkSemaphore
+	BufferBinds      []VkSparseBufferMemoryBindInfo
+	ImageOpaqueBinds []VkSparseImageOpaqueMemoryBindInfo
+	ImageBinds       []VkSparseImageMemoryBindInfo
+	SignalSemaphores []VkSemaphore
 }
 
 // Fence commands
@@ -903,12 +931,11 @@ type VkQueryPoolCreateFlags VkFlags
 type VkQueryPipelineStatisticFlags VkFlags
 
 type VkQueryPoolCreateInfo struct {
-	SType              VkStructureType
-	PNext              unsafe.Pointer
-	Flags              VkQueryPoolCreateFlags
-	QueryType          VkQueryType
-	QueryCount         uint32
-	PipelineStatistics VkQueryPipelineStatisticFlags
+	SType             VkStructureType
+	PNext             unsafe.Pointer
+	Flags             VkQueryPoolCreateFlags
+	QueryType         VkQueryType
+	IpelineStatistics []VkQueryPipelineStatisticFlags
 }
 
 type VkQueryResultFlags VkFlags
@@ -935,14 +962,13 @@ type VkBuffer struct {
 type VkBufferCreateFlags VkFlags
 
 type VkBufferCreateInfo struct {
-	SType                 VkStructureType
-	PNext                 unsafe.Pointer
-	Flags                 VkBufferCreateFlags
-	Size                  VkDeviceSize
-	Usage                 VkBufferUsageFlags
-	SharingMode           VkSharingMode
-	QueueFamilyIndexCount uint32
-	PQueueFamilyIndices   *uint32
+	SType              VkStructureType
+	PNext              unsafe.Pointer
+	Flags              VkBufferCreateFlags
+	Size               VkDeviceSize
+	Usage              VkBufferUsageFlags
+	SharingMode        VkSharingMode
+	QueueFamilyIndices []uint32
 }
 
 type VkBufferUsageFlags VkFlags
@@ -974,21 +1000,20 @@ type VkImage struct {
 }
 
 type VkImageCreateInfo struct {
-	SType                 VkStructureType
-	PNext                 unsafe.Pointer
-	Flags                 VkImageCreateFlags
-	ImageType             VkImageType
-	Format                VkFormat
-	Extent                VkExtent3D
-	MipLevels             uint32
-	ArrayLayers           uint32
-	Samples               VkSampleCountFlagBits
-	Tiling                VkImageTiling
-	Usage                 VkImageUsageFlags
-	SharingMode           VkSharingMode
-	QueueFamilyIndexCount uint32
-	PQueueFamilyIndices   *uint32
-	InitialLayout         VkImageLayout
+	SType              VkStructureType
+	PNext              unsafe.Pointer
+	Flags              VkImageCreateFlags
+	ImageType          VkImageType
+	Format             VkFormat
+	Extent             VkExtent3D
+	MipLevels          uint32
+	ArrayLayers        uint32
+	Samples            VkSampleCountFlagBits
+	Tiling             VkImageTiling
+	Usage              VkImageUsageFlags
+	SharingMode        VkSharingMode
+	QueueFamilyIndices []uint32
+	InitialLayout      VkImageLayout
 }
 
 type VkSubresourceLayout struct {
@@ -1523,10 +1548,9 @@ type VkSpecializationMapEntry struct {
 }
 
 type VkSpecializationInfo struct {
-	MapEntryCount uint32
-	PMapEntries   *VkSpecializationMapEntry
-	DataSize      uint
-	PData         unsafe.Pointer
+	MapEntries []VkSpecializationMapEntry
+	DataSize   uint
+	PData      unsafe.Pointer
 }
 
 type VkPipelineShaderStageCreateInfo struct {
@@ -1575,13 +1599,11 @@ type VkPushConstantRange struct {
 }
 
 type VkPipelineLayoutCreateInfo struct {
-	SType                  VkStructureType
-	PNext                  unsafe.Pointer
-	Flags                  VkPipelineLayoutCreateFlags
-	SetLayoutCount         uint32
-	PSetLayouts            *VkDescriptorSetLayout
-	PushConstantRangeCount uint32
-	PPushConstantRanges    *VkPushConstantRange
+	SType              VkStructureType
+	PNext              unsafe.Pointer
+	Flags              VkPipelineLayoutCreateFlags
+	SetLayouts         []VkDescriptorSetLayout
+	PushConstantRanges []VkPushConstantRange
 }
 
 // Sampler commands
@@ -1717,12 +1739,11 @@ type VkDescriptorPoolSize struct {
 type VkDescriptorPoolCreateFlags VkFlags
 
 type VkDescriptorPoolCreateInfo struct {
-	SType         VkStructureType
-	PNext         unsafe.Pointer
-	Flags         VkDescriptorPoolCreateFlags
-	MaxSets       uint32
-	PoolSizeCount uint32
-	PPoolSizes    *VkDescriptorPoolSize
+	SType     VkStructureType
+	PNext     unsafe.Pointer
+	Flags     VkDescriptorPoolCreateFlags
+	MaxSets   uint32
+	PoolSizes []VkDescriptorPoolSize
 }
 
 type VkDescriptorPoolResetFlags VkFlags
@@ -1732,11 +1753,10 @@ type VkDescriptorSet struct {
 }
 
 type VkDescriptorSetAllocateInfo struct {
-	SType              VkStructureType
-	PNext              unsafe.Pointer
-	DescriptorPool     VkDescriptorPool
-	DescriptorSetCount uint32
-	PSetLayouts        *VkDescriptorSetLayout
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	DescriptorPool VkDescriptorPool
+	SetLayouts     []VkDescriptorSetLayout
 }
 
 type VkDescriptorSetLayout struct {
@@ -1754,11 +1774,10 @@ type VkDescriptorSetLayoutBinding struct {
 type VkDescriptorSetLayoutCreateFlags VkFlags
 
 type VkDescriptorSetLayoutCreateInfo struct {
-	SType        VkStructureType
-	PNext        unsafe.Pointer
-	Flags        VkDescriptorSetLayoutCreateFlags
-	BindingCount uint32
-	PBindings    *VkDescriptorSetLayoutBinding
+	SType    VkStructureType
+	PNext    unsafe.Pointer
+	Flags    VkDescriptorSetLayoutCreateFlags
+	Bindings []VkDescriptorSetLayoutBinding
 }
 
 type VkWriteDescriptorSet struct {
@@ -1938,14 +1957,13 @@ type VkPipelineColorBlendAttachmentState struct {
 type VkPipelineColorBlendStateCreateFlags VkFlags
 
 type VkPipelineColorBlendStateCreateInfo struct {
-	SType           VkStructureType
-	PNext           unsafe.Pointer
-	Flags           VkPipelineColorBlendStateCreateFlags
-	LogicOpEnable   VkBool32
-	LogicOp         VkLogicOp
-	AttachmentCount uint32
-	PAttachments    *VkPipelineColorBlendAttachmentState
-	BlendConstants  [4]float32
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	Flags          VkPipelineColorBlendStateCreateFlags
+	LogicOpEnable  VkBool32
+	LogicOp        VkLogicOp
+	Attachments    []VkPipelineColorBlendAttachmentState
+	BlendConstants [4]float32
 }
 
 type VkPipelineDepthStencilStateCreateFlags VkFlags
@@ -1968,11 +1986,10 @@ type VkPipelineDepthStencilStateCreateInfo struct {
 type VkPipelineDynamicStateCreateFlags VkFlags
 
 type VkPipelineDynamicStateCreateInfo struct {
-	SType             VkStructureType
-	PNext             unsafe.Pointer
-	Flags             VkPipelineDynamicStateCreateFlags
-	DynamicStateCount uint32
-	PDynamicStates    *VkDynamicState
+	SType         VkStructureType
+	PNext         unsafe.Pointer
+	Flags         VkPipelineDynamicStateCreateFlags
+	DynamicStates []VkDynamicState
 }
 
 type VkPipelineInputAssemblyStateCreateFlags VkFlags
@@ -2029,25 +2046,21 @@ type VkPipelineTessellationStateCreateInfo struct {
 type VkPipelineVertexInputStateCreateFlags VkFlags
 
 type VkPipelineVertexInputStateCreateInfo struct {
-	SType                           VkStructureType
-	PNext                           unsafe.Pointer
-	Flags                           VkPipelineVertexInputStateCreateFlags
-	VertexBindingDescriptionCount   uint32
-	PVertexBindingDescriptions      *VkVertexInputBindingDescription
-	VertexAttributeDescriptionCount uint32
-	PVertexAttributeDescriptions    *VkVertexInputAttributeDescription
+	SType                       VkStructureType
+	PNext                       unsafe.Pointer
+	Flags                       VkPipelineVertexInputStateCreateFlags
+	VertexBindingDescriptions   []VkVertexInputBindingDescription
+	VertexAttributeDescriptions []VkVertexInputAttributeDescription
 }
 
 type VkPipelineViewportStateCreateFlags VkFlags
 
 type VkPipelineViewportStateCreateInfo struct {
-	SType         VkStructureType
-	PNext         unsafe.Pointer
-	Flags         VkPipelineViewportStateCreateFlags
-	ViewportCount uint32
-	PViewports    *VkViewport
-	ScissorCount  uint32
-	PScissors     *VkRect2D
+	SType     VkStructureType
+	PNext     unsafe.Pointer
+	Flags     VkPipelineViewportStateCreateFlags
+	Viewports []VkViewport
+	Scissors  []VkRect2D
 }
 
 type VkSampleMask uint32
@@ -2056,8 +2069,7 @@ type VkGraphicsPipelineCreateInfo struct {
 	SType               VkStructureType
 	PNext               unsafe.Pointer
 	Flags               VkPipelineCreateFlags
-	StageCount          uint32
-	PStages             *VkPipelineShaderStageCreateInfo
+	Stages              []VkPipelineShaderStageCreateInfo
 	PVertexInputState   *VkPipelineVertexInputStateCreateInfo
 	PInputAssemblyState *VkPipelineInputAssemblyStateCreateInfo
 	PTessellationState  *VkPipelineTessellationStateCreateInfo
@@ -2134,15 +2146,14 @@ type VkFramebuffer struct {
 type VkFramebufferCreateFlags VkFlags
 
 type VkFramebufferCreateInfo struct {
-	SType           VkStructureType
-	PNext           unsafe.Pointer
-	Flags           VkFramebufferCreateFlags
-	RenderPass      VkRenderPass
-	AttachmentCount uint32
-	PAttachments    *VkImageView
-	Width           uint32
-	Height          uint32
-	Layers          uint32
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	Flags       VkFramebufferCreateFlags
+	RenderPass  VkRenderPass
+	Attachments []VkImageView
+	Width       uint32
+	Height      uint32
+	Layers      uint32
 }
 
 type VkRenderPass struct {
@@ -2164,28 +2175,22 @@ type VkSubpassDependency struct {
 type VkSubpassDescription struct {
 	Flags                   VkSubpassDescriptionFlags
 	PipelineBindPoint       VkPipelineBindPoint
-	InputAttachmentCount    uint32
-	PInputAttachments       *VkAttachmentReference
-	ColorAttachmentCount    uint32
-	PColorAttachments       *VkAttachmentReference
+	InputAttachments        []VkAttachmentReference
+	ColorAttachments        []VkAttachmentReference
 	PResolveAttachments     *VkAttachmentReference
 	PDepthStencilAttachment *VkAttachmentReference
-	PreserveAttachmentCount uint32
-	PPreserveAttachments    *uint32
+	PreserveAttachments     []uint32
 }
 
 type VkSubpassDescriptionFlags VkFlags
 
 type VkRenderPassCreateInfo struct {
-	SType           VkStructureType
-	PNext           unsafe.Pointer
-	Flags           VkRenderPassCreateFlags
-	AttachmentCount uint32
-	PAttachments    *VkAttachmentDescription
-	SubpassCount    uint32
-	PSubpasses      *VkSubpassDescription
-	DependencyCount uint32
-	PDependencies   *VkSubpassDependency
+	SType        VkStructureType
+	PNext        unsafe.Pointer
+	Flags        VkRenderPassCreateFlags
+	Attachments  []VkAttachmentDescription
+	Subpasses    []VkSubpassDescription
+	Dependencies []VkSubpassDependency
 }
 
 // Command buffer building commands
@@ -2383,13 +2388,12 @@ type VkImageResolve struct {
 }
 
 type VkRenderPassBeginInfo struct {
-	SType           VkStructureType
-	PNext           unsafe.Pointer
-	RenderPass      VkRenderPass
-	Framebuffer     VkFramebuffer
-	RenderArea      VkRect2D
-	ClearValueCount uint32
-	PClearValues    *VkClearValue
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	RenderPass  VkRenderPass
+	Framebuffer VkFramebuffer
+	RenderArea  VkRect2D
+	ClearValues []VkClearValue
 }
 
 type VkStencilFaceFlags VkFlags
@@ -2488,14 +2492,11 @@ type VkDeviceGroupCommandBufferBeginInfo struct {
 }
 
 type VkDeviceGroupSubmitInfo struct {
-	SType                         VkStructureType
-	PNext                         unsafe.Pointer
-	WaitSemaphoreCount            uint32
-	PWaitSemaphoreDeviceIndices   *uint32
-	CommandBufferCount            uint32
-	PCommandBufferDeviceMasks     *uint32
-	SignalSemaphoreCount          uint32
-	PSignalSemaphoreDeviceIndices *uint32
+	SType                        VkStructureType
+	PNext                        unsafe.Pointer
+	WaitSemaphoreDeviceIndices   []uint32
+	CommandBufferDeviceMasks     []uint32
+	SignalSemaphoreDeviceIndices []uint32
 }
 
 type VkDeviceGroupBindSparseInfo struct {
@@ -2508,19 +2509,16 @@ type VkDeviceGroupBindSparseInfo struct {
 // Promoted from VK_KHR_device_group + VK_KHR_bind_memory2
 
 type VkBindBufferMemoryDeviceGroupInfo struct {
-	SType            VkStructureType
-	PNext            unsafe.Pointer
-	DeviceIndexCount uint32
-	PDeviceIndices   *uint32
+	SType         VkStructureType
+	PNext         unsafe.Pointer
+	DeviceIndices []uint32
 }
 
 type VkBindImageMemoryDeviceGroupInfo struct {
-	SType                        VkStructureType
-	PNext                        unsafe.Pointer
-	DeviceIndexCount             uint32
-	PDeviceIndices               *uint32
-	SplitInstanceBindRegionCount uint32
-	PSplitInstanceBindRegions    *VkRect2D
+	SType                    VkStructureType
+	PNext                    unsafe.Pointer
+	DeviceIndices            []uint32
+	SplitInstanceBindRegions []VkRect2D
 }
 
 // Promoted from VK_KHR_device_group_creation
@@ -2532,18 +2530,16 @@ func (h *VkInstance) EnumeratePhysicalDeviceGroups(
 }
 
 type VkPhysicalDeviceGroupProperties struct {
-	SType               VkStructureType
-	PNext               unsafe.Pointer
-	PhysicalDeviceCount uint32
-	PhysicalDevices     [VkMaxDeviceGroupSize]VkPhysicalDevice
-	SubsetAllocation    VkBool32
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	HysicalDevices   [][VkMaxDeviceGroupSize]VkPhysicalDevice
+	SubsetAllocation VkBool32
 }
 
 type VkDeviceGroupDeviceCreateInfo struct {
-	SType               VkStructureType
-	PNext               unsafe.Pointer
-	PhysicalDeviceCount uint32
-	PPhysicalDevices    *VkPhysicalDevice
+	SType           VkStructureType
+	PNext           unsafe.Pointer
+	PhysicalDevices []VkPhysicalDevice
 }
 
 // Promoted from VK_KHR_get_memory_requirements2
@@ -3001,16 +2997,15 @@ type VkDescriptorUpdateTemplateEntry struct {
 }
 
 type VkDescriptorUpdateTemplateCreateInfo struct {
-	SType                      VkStructureType
-	PNext                      unsafe.Pointer
-	Flags                      VkDescriptorUpdateTemplateCreateFlags
-	DescriptorUpdateEntryCount uint32
-	PDescriptorUpdateEntries   *VkDescriptorUpdateTemplateEntry
-	TemplateType               VkDescriptorUpdateTemplateType
-	DescriptorSetLayout        VkDescriptorSetLayout
-	PipelineBindPoint          VkPipelineBindPoint
-	PipelineLayout             VkPipelineLayout
-	Set                        uint32
+	SType                   VkStructureType
+	PNext                   unsafe.Pointer
+	Flags                   VkDescriptorUpdateTemplateCreateFlags
+	DescriptorUpdateEntries []VkDescriptorUpdateTemplateEntry
+	TemplateType            VkDescriptorUpdateTemplateType
+	DescriptorSetLayout     VkDescriptorSetLayout
+	PipelineBindPoint       VkPipelineBindPoint
+	PipelineLayout          VkPipelineLayout
+	Set                     uint32
 }
 
 // Promoted from VK_KHR_maintenance3
@@ -3089,11 +3084,10 @@ type VkSamplerYcbcrConversion struct {
 // Promoted from VK_KHR_device_group
 
 type VkDeviceGroupRenderPassBeginInfo struct {
-	SType                 VkStructureType
-	PNext                 unsafe.Pointer
-	DeviceMask            uint32
-	DeviceRenderAreaCount uint32
-	PDeviceRenderAreas    *VkRect2D
+	SType             VkStructureType
+	PNext             unsafe.Pointer
+	DeviceMask        uint32
+	DeviceRenderAreas []VkRect2D
 }
 
 // Promoted from VK_KHR_maintenance2
@@ -3111,10 +3105,9 @@ type VkInputAttachmentAspectReference struct {
 }
 
 type VkRenderPassInputAttachmentAspectCreateInfo struct {
-	SType                VkStructureType
-	PNext                unsafe.Pointer
-	AspectReferenceCount uint32
-	PAspectReferences    *VkInputAttachmentAspectReference
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	AspectReferences []VkInputAttachmentAspectReference
 }
 
 type VkPipelineTessellationDomainOriginStateCreateInfo struct {
@@ -3126,14 +3119,11 @@ type VkPipelineTessellationDomainOriginStateCreateInfo struct {
 // Promoted from VK_KHR_multiview
 
 type VkRenderPassMultiviewCreateInfo struct {
-	SType                VkStructureType
-	PNext                unsafe.Pointer
-	SubpassCount         uint32
-	PViewMasks           *uint32
-	DependencyCount      uint32
-	PViewOffsets         *int32
-	CorrelationMaskCount uint32
-	PCorrelationMasks    *uint32
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	ViewMasks        []uint32
+	ViewOffsets      []int32
+	CorrelationMasks []uint32
 }
 
 type VkPhysicalDeviceMultiviewFeatures struct {
@@ -3337,10 +3327,9 @@ type VkPhysicalDeviceVulkan12Properties struct {
 // Promoted from VK_KHR_image_format_list (extension 148)
 
 type VkImageFormatListCreateInfo struct {
-	SType           VkStructureType
-	PNext           unsafe.Pointer
-	ViewFormatCount uint32
-	PViewFormats    *VkFormat
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	ViewFormats []VkFormat
 }
 
 // Promoted from VK_KHR_sampler_mirror_clamp_to_edge (extension 15)
@@ -3408,23 +3397,20 @@ type VkSemaphoreTypeCreateInfo struct {
 }
 
 type VkTimelineSemaphoreSubmitInfo struct {
-	SType                     VkStructureType
-	PNext                     unsafe.Pointer
-	WaitSemaphoreValueCount   uint32
-	PWaitSemaphoreValues      *uint64
-	SignalSemaphoreValueCount uint32
-	PSignalSemaphoreValues    *uint64
+	SType                 VkStructureType
+	PNext                 unsafe.Pointer
+	WaitSemaphoreValues   []uint64
+	SignalSemaphoreValues []uint64
 }
 
 type VkSemaphoreWaitFlags VkFlags
 
 type VkSemaphoreWaitInfo struct {
-	SType          VkStructureType
-	PNext          unsafe.Pointer
-	Flags          VkSemaphoreWaitFlags
-	SemaphoreCount uint32
-	PSemaphores    *VkSemaphore
-	PValues        *uint64
+	SType      VkStructureType
+	PNext      unsafe.Pointer
+	Flags      VkSemaphoreWaitFlags
+	Semaphores []VkSemaphore
+	PValues    *uint64
 }
 
 type VkSemaphoreSignalInfo struct {
@@ -3540,10 +3526,9 @@ type VkPhysicalDeviceFloatControlsProperties struct {
 // Promoted from VK_EXT_descriptor_indexing (extension 162)
 
 type VkDescriptorSetLayoutBindingFlagsCreateInfo struct {
-	SType         VkStructureType
-	PNext         unsafe.Pointer
-	BindingCount  uint32
-	PBindingFlags *VkDescriptorBindingFlags
+	SType        VkStructureType
+	PNext        unsafe.Pointer
+	BindingFlags []VkDescriptorBindingFlags
 }
 
 type VkPhysicalDeviceDescriptorIndexingFeatures struct {
@@ -3600,10 +3585,9 @@ type VkPhysicalDeviceDescriptorIndexingProperties struct {
 }
 
 type VkDescriptorSetVariableDescriptorCountAllocateInfo struct {
-	SType              VkStructureType
-	PNext              unsafe.Pointer
-	DescriptorSetCount uint32
-	PDescriptorCounts  *uint32
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	DescriptorCounts []uint32
 }
 
 type VkDescriptorSetVariableDescriptorCountLayoutSupport struct {
@@ -3732,14 +3716,11 @@ type VkSubpassDescription2 struct {
 	Flags                   VkSubpassDescriptionFlags
 	PipelineBindPoint       VkPipelineBindPoint
 	ViewMask                uint32
-	InputAttachmentCount    uint32
-	PInputAttachments       *VkAttachmentReference2
-	ColorAttachmentCount    uint32
-	PColorAttachments       *VkAttachmentReference2
+	InputAttachments        []VkAttachmentReference2
+	ColorAttachments        []VkAttachmentReference2
 	PResolveAttachments     *VkAttachmentReference2
 	PDepthStencilAttachment *VkAttachmentReference2
-	PreserveAttachmentCount uint32
-	PPreserveAttachments    *uint32
+	PreserveAttachments     []uint32
 }
 
 type VkSubpassDependency2 struct {
@@ -3767,17 +3748,13 @@ type VkSubpassEndInfo struct {
 }
 
 type VkRenderPassCreateInfo2 struct {
-	SType                   VkStructureType
-	PNext                   unsafe.Pointer
-	Flags                   VkRenderPassCreateFlags
-	AttachmentCount         uint32
-	PAttachments            *VkAttachmentDescription2
-	SubpassCount            uint32
-	PSubpasses              *VkSubpassDescription2
-	DependencyCount         uint32
-	PDependencies           *VkSubpassDependency2
-	CorrelatedViewMaskCount uint32
-	PCorrelatedViewMasks    *uint32
+	SType               VkStructureType
+	PNext               unsafe.Pointer
+	Flags               VkRenderPassCreateFlags
+	Attachments         []VkAttachmentDescription2
+	Subpasses           []VkSubpassDescription2
+	Dependencies        []VkSubpassDependency2
+	CorrelatedViewMasks []uint32
 }
 
 // Promoted from VK_KHR_depth_stencil_resolve (extension 200)
@@ -3816,29 +3793,26 @@ type VkPhysicalDeviceImagelessFramebufferFeatures struct {
 }
 
 type VkFramebufferAttachmentImageInfo struct {
-	SType           VkStructureType
-	PNext           unsafe.Pointer
-	Flags           VkImageCreateFlags
-	Usage           VkImageUsageFlags
-	Width           uint32
-	Height          uint32
-	LayerCount      uint32
-	ViewFormatCount uint32
-	PViewFormats    *VkFormat
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	Flags       VkImageCreateFlags
+	Usage       VkImageUsageFlags
+	Width       uint32
+	Height      uint32
+	LayerCount  uint32
+	ViewFormats []VkFormat
 }
 
 type VkRenderPassAttachmentBeginInfo struct {
-	SType           VkStructureType
-	PNext           unsafe.Pointer
-	AttachmentCount uint32
-	PAttachments    *VkImageView
+	SType       VkStructureType
+	PNext       unsafe.Pointer
+	Attachments []VkImageView
 }
 
 type VkFramebufferAttachmentsCreateInfo struct {
-	SType                    VkStructureType
-	PNext                    unsafe.Pointer
-	AttachmentImageInfoCount uint32
-	PAttachmentImageInfos    *VkFramebufferAttachmentImageInfo
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	AttachmentImageInfos []VkFramebufferAttachmentImageInfo
 }
 
 // Promoted from VK_KHR_separate_depth_stencil_layouts (extension 242)
@@ -4080,15 +4054,12 @@ type VkImageMemoryBarrier2 struct {
 }
 
 type VkDependencyInfo struct {
-	SType                    VkStructureType
-	PNext                    unsafe.Pointer
-	DependencyFlags          VkDependencyFlags
-	MemoryBarrierCount       uint32
-	PMemoryBarriers          *VkMemoryBarrier2
-	BufferMemoryBarrierCount uint32
-	PBufferMemoryBarriers    *VkBufferMemoryBarrier2
-	ImageMemoryBarrierCount  uint32
-	PImageMemoryBarriers     *VkImageMemoryBarrier2
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	DependencyFlags      VkDependencyFlags
+	MemoryBarriers       []VkMemoryBarrier2
+	BufferMemoryBarriers []VkBufferMemoryBarrier2
+	ImageMemoryBarriers  []VkImageMemoryBarrier2
 }
 
 type VkSemaphoreSubmitInfo struct {
@@ -4110,15 +4081,12 @@ type VkCommandBufferSubmitInfo struct {
 type VkSubmitFlags VkFlags
 
 type VkSubmitInfo2 struct {
-	SType                    VkStructureType
-	PNext                    unsafe.Pointer
-	Flags                    VkSubmitFlags
-	WaitSemaphoreInfoCount   uint32
-	PWaitSemaphoreInfos      *VkSemaphoreSubmitInfo
-	CommandBufferInfoCount   uint32
-	PCommandBufferInfos      *VkCommandBufferSubmitInfo
-	SignalSemaphoreInfoCount uint32
-	PSignalSemaphoreInfos    *VkSemaphoreSubmitInfo
+	SType                VkStructureType
+	PNext                unsafe.Pointer
+	Flags                VkSubmitFlags
+	WaitSemaphoreInfos   []VkSemaphoreSubmitInfo
+	CommandBufferInfos   []VkCommandBufferSubmitInfo
+	SignalSemaphoreInfos []VkSemaphoreSubmitInfo
 }
 
 type VkPhysicalDeviceSynchronization2Features struct {
@@ -4158,12 +4126,11 @@ type VkBufferCopy2 struct {
 }
 
 type VkCopyBufferInfo2 struct {
-	SType       VkStructureType
-	PNext       unsafe.Pointer
-	SrcBuffer   VkBuffer
-	DstBuffer   VkBuffer
-	RegionCount uint32
-	PRegions    *VkBufferCopy2
+	SType     VkStructureType
+	PNext     unsafe.Pointer
+	SrcBuffer VkBuffer
+	DstBuffer VkBuffer
+	Regions   []VkBufferCopy2
 }
 
 type VkImageCopy2 struct {
@@ -4183,8 +4150,7 @@ type VkCopyImageInfo2 struct {
 	SrcImageLayout VkImageLayout
 	DstImage       VkImage
 	DstImageLayout VkImageLayout
-	RegionCount    uint32
-	PRegions       *VkImageCopy2
+	Regions        []VkImageCopy2
 }
 
 type VkBufferImageCopy2 struct {
@@ -4204,8 +4170,7 @@ type VkCopyBufferToImageInfo2 struct {
 	SrcBuffer      VkBuffer
 	DstImage       VkImage
 	DstImageLayout VkImageLayout
-	RegionCount    uint32
-	PRegions       *VkBufferImageCopy2
+	Regions        []VkBufferImageCopy2
 }
 
 type VkCopyImageToBufferInfo2 struct {
@@ -4214,8 +4179,7 @@ type VkCopyImageToBufferInfo2 struct {
 	SrcImage       VkImage
 	SrcImageLayout VkImageLayout
 	DstBuffer      VkBuffer
-	RegionCount    uint32
-	PRegions       *VkBufferImageCopy2
+	Regions        []VkBufferImageCopy2
 }
 
 // Promoted from VK_EXT_ycbcr_2plane_444_formats (does not promote the Feature struct, just the formats) (extension 331)
@@ -4298,11 +4262,10 @@ type VkPipelineCreationFeedback struct {
 }
 
 type VkPipelineCreationFeedbackCreateInfo struct {
-	SType                              VkStructureType
-	PNext                              unsafe.Pointer
-	PPipelineCreationFeedback          *VkPipelineCreationFeedback
-	PipelineStageCreationFeedbackCount uint32
-	PPipelineStageCreationFeedbacks    *VkPipelineCreationFeedback
+	SType                          VkStructureType
+	PNext                          unsafe.Pointer
+	PPipelineCreationFeedback      *VkPipelineCreationFeedback
+	PipelineStageCreationFeedbacks []VkPipelineCreationFeedback
 }
 
 // Promoted from VK_KHR_shader_terminate_invocation (extension 216)
@@ -4507,8 +4470,7 @@ type VkBlitImageInfo2 struct {
 	SrcImageLayout VkImageLayout
 	DstImage       VkImage
 	DstImageLayout VkImageLayout
-	RegionCount    uint32
-	PRegions       *VkImageBlit2
+	Regions        []VkImageBlit2
 	Filter         VkFilter
 }
 
@@ -4529,8 +4491,7 @@ type VkResolveImageInfo2 struct {
 	SrcImageLayout VkImageLayout
 	DstImage       VkImage
 	DstImageLayout VkImageLayout
-	RegionCount    uint32
-	PRegions       *VkImageResolve2
+	Regions        []VkImageResolve2
 }
 
 // Promoted from VK_KHR_dynamic_rendering (extension 45)
@@ -4557,24 +4518,22 @@ type VkRenderingAttachmentInfo struct {
 }
 
 type VkRenderingInfo struct {
-	SType                VkStructureType
-	PNext                unsafe.Pointer
-	Flags                VkRenderingFlags
-	RenderArea           VkRect2D
-	LayerCount           uint32
-	ViewMask             uint32
-	ColorAttachmentCount uint32
-	PColorAttachments    *VkRenderingAttachmentInfo
-	PDepthAttachment     *VkRenderingAttachmentInfo
-	PStencilAttachment   *VkRenderingAttachmentInfo
+	SType              VkStructureType
+	PNext              unsafe.Pointer
+	Flags              VkRenderingFlags
+	RenderArea         VkRect2D
+	LayerCount         uint32
+	ViewMask           uint32
+	ColorAttachments   []VkRenderingAttachmentInfo
+	PDepthAttachment   *VkRenderingAttachmentInfo
+	PStencilAttachment *VkRenderingAttachmentInfo
 }
 
 type VkPipelineRenderingCreateInfo struct {
 	SType                   VkStructureType
 	PNext                   unsafe.Pointer
 	ViewMask                uint32
-	ColorAttachmentCount    uint32
-	PColorAttachmentFormats *VkFormat
+	ColorAttachmentFormats  []VkFormat
 	DepthAttachmentFormat   VkFormat
 	StencilAttachmentFormat VkFormat
 }
@@ -4744,10 +4703,8 @@ type VkPhysicalDeviceVulkan14Properties struct {
 	DefaultRobustnessUniformBuffers                     VkPipelineRobustnessBufferBehavior
 	DefaultRobustnessVertexInputs                       VkPipelineRobustnessBufferBehavior
 	DefaultRobustnessImages                             VkPipelineRobustnessImageBehavior
-	CopySrcLayoutCount                                  uint32
-	PCopySrcLayouts                                     *VkImageLayout
-	CopyDstLayoutCount                                  uint32
-	PCopyDstLayouts                                     *VkImageLayout
+	CopySrcLayouts                                      []VkImageLayout
+	CopyDstLayouts                                      []VkImageLayout
 	OptimalTilingLayoutUUID                             [VkUuidSize]uint8
 	IdenticalMemoryTypeRequirements                     VkBool32
 }
@@ -4767,10 +4724,9 @@ type VkPhysicalDeviceGlobalPriorityQueryFeatures struct {
 }
 
 type VkQueueFamilyGlobalPriorityProperties struct {
-	SType         VkStructureType
-	PNext         unsafe.Pointer
-	PriorityCount uint32
-	Priorities    [VkMaxGlobalPrioritySize]VkQueueGlobalPriority
+	SType     VkStructureType
+	PNext     unsafe.Pointer
+	Riorities [][VkMaxGlobalPrioritySize]VkQueueGlobalPriority
 }
 
 // Promoted from VK_KHR_index_type_uint8 (extension 534) 'Roadmap 2024'
@@ -4925,10 +4881,8 @@ type VkPhysicalDeviceHostImageCopyFeatures struct {
 type VkPhysicalDeviceHostImageCopyProperties struct {
 	SType                           VkStructureType
 	PNext                           unsafe.Pointer
-	CopySrcLayoutCount              uint32
-	PCopySrcLayouts                 *VkImageLayout
-	CopyDstLayoutCount              uint32
-	PCopyDstLayouts                 *VkImageLayout
+	CopySrcLayouts                  []VkImageLayout
+	CopyDstLayouts                  []VkImageLayout
 	OptimalTilingLayoutUUID         [VkUuidSize]uint8
 	IdenticalMemoryTypeRequirements VkBool32
 }
@@ -4963,8 +4917,7 @@ type VkCopyMemoryToImageInfo struct {
 	Flags          VkHostImageCopyFlags
 	DstImage       VkImage
 	DstImageLayout VkImageLayout
-	RegionCount    uint32
-	PRegions       *VkMemoryToImageCopy
+	Regions        []VkMemoryToImageCopy
 }
 
 type VkCopyImageToMemoryInfo struct {
@@ -4973,8 +4926,7 @@ type VkCopyImageToMemoryInfo struct {
 	Flags          VkHostImageCopyFlags
 	SrcImage       VkImage
 	SrcImageLayout VkImageLayout
-	RegionCount    uint32
-	PRegions       *VkImageToMemoryCopy
+	Regions        []VkImageToMemoryCopy
 }
 
 type VkCopyImageToImageInfo struct {
@@ -4985,8 +4937,7 @@ type VkCopyImageToImageInfo struct {
 	SrcImageLayout VkImageLayout
 	DstImage       VkImage
 	DstImageLayout VkImageLayout
-	RegionCount    uint32
-	PRegions       *VkImageCopy2
+	Regions        []VkImageCopy2
 }
 
 type VkHostImageLayoutTransitionInfo struct {
@@ -5097,15 +5048,13 @@ func (h *VkCommandBuffer) PushDescriptorSetWithTemplate2(
 }
 
 type VkBindDescriptorSetsInfo struct {
-	SType              VkStructureType
-	PNext              unsafe.Pointer
-	StageFlags         VkShaderStageFlags
-	Layout             VkPipelineLayout
-	FirstSet           uint32
-	DescriptorSetCount uint32
-	PDescriptorSets    *VkDescriptorSet
-	DynamicOffsetCount uint32
-	PDynamicOffsets    *uint32
+	SType          VkStructureType
+	PNext          unsafe.Pointer
+	StageFlags     VkShaderStageFlags
+	Layout         VkPipelineLayout
+	FirstSet       uint32
+	DescriptorSets []VkDescriptorSet
+	DynamicOffsets []uint32
 }
 
 type VkPushConstantsInfo struct {
@@ -5119,13 +5068,12 @@ type VkPushConstantsInfo struct {
 }
 
 type VkPushDescriptorSetInfo struct {
-	SType                VkStructureType
-	PNext                unsafe.Pointer
-	StageFlags           VkShaderStageFlags
-	Layout               VkPipelineLayout
-	Set                  uint32
-	DescriptorWriteCount uint32
-	PDescriptorWrites    *VkWriteDescriptorSet
+	SType            VkStructureType
+	PNext            unsafe.Pointer
+	StageFlags       VkShaderStageFlags
+	Layout           VkPipelineLayout
+	Set              uint32
+	DescriptorWrites []VkWriteDescriptorSet
 }
 
 type VkPushDescriptorSetWithTemplateInfo struct {
@@ -5223,10 +5171,9 @@ type VkVertexInputBindingDivisorDescription struct {
 }
 
 type VkPipelineVertexInputDivisorStateCreateInfo struct {
-	SType                     VkStructureType
-	PNext                     unsafe.Pointer
-	VertexBindingDivisorCount uint32
-	PVertexBindingDivisors    *VkVertexInputBindingDivisorDescription
+	SType                 VkStructureType
+	PNext                 unsafe.Pointer
+	VertexBindingDivisors []VkVertexInputBindingDivisorDescription
 }
 
 type VkPhysicalDeviceVertexAttributeDivisorFeatures struct {
@@ -5256,8 +5203,7 @@ type VkRenderingAreaInfo struct {
 	SType                   VkStructureType
 	PNext                   unsafe.Pointer
 	ViewMask                uint32
-	ColorAttachmentCount    uint32
-	PColorAttachmentFormats *VkFormat
+	ColorAttachmentFormats  []VkFormat
 	DepthAttachmentFormat   VkFormat
 	StencilAttachmentFormat VkFormat
 }
@@ -5281,17 +5227,15 @@ type VkPhysicalDeviceDynamicRenderingLocalReadFeatures struct {
 }
 
 type VkRenderingAttachmentLocationInfo struct {
-	SType                     VkStructureType
-	PNext                     unsafe.Pointer
-	ColorAttachmentCount      uint32
-	PColorAttachmentLocations *uint32
+	SType                    VkStructureType
+	PNext                    unsafe.Pointer
+	ColorAttachmentLocations []uint32
 }
 
 type VkRenderingInputAttachmentIndexInfo struct {
 	SType                        VkStructureType
 	PNext                        unsafe.Pointer
-	ColorAttachmentCount         uint32
-	PColorAttachmentInputIndices *uint32
+	ColorAttachmentInputIndices  []uint32
 	PDepthInputAttachmentIndex   *uint32
 	PStencilInputAttachmentIndex *uint32
 }
