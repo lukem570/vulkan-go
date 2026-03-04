@@ -6,59 +6,59 @@ import (
 )
 
 type GoCommand struct {
-	name  string
+	Name  string
 
-	receiverType string // e.g. Instance
+	ReceiverType string // e.g. Instance
 
-	hasError   bool
-	returnType FieldType
+	HasError   bool
+	ReturnType FieldType
 
-	params []CommandParam
+	Params []CommandParam
 
 	// CCommand or something here
 }
 
 type CommandParam struct {
-	name string
-	typ FieldType
+	Name string
+	Type FieldType
 }
 
 func (c *GoCommand) GenerateWrapper() string {
 	var b strings.Builder
 
-	if c.receiverType != "" {
+	if c.ReceiverType != "" {
 		b.WriteString(fmt.Sprintf(
 			"func (h *%s) %s(\n",
-			c.receiverType,
-			c.name,
+			c.ReceiverType,
+			c.Name,
 		))
 	} else {
 		b.WriteString(fmt.Sprintf(
 			"func %s(\n",
-			c.name,
+			c.Name,
 		))
 	}
 
-	for _, p := range c.params {
+	for _, p := range c.Params {
 		b.WriteString(fmt.Sprintf(
 			"\t%s %s,\n",
-			p.name,
-			p.typ.GoName(),
+			p.Name,
+			p.Type.GoName(),
 		))
 	}
 
 	b.WriteString(")")
 
-	if c.returnType != nil {
-		if c.hasError {
+	if c.ReturnType != nil {
+		if c.HasError {
 			b.WriteString(fmt.Sprintf(
 				" (%s, error)",
-				c.returnType.GoName(),
+				c.ReturnType.GoName(),
 			))
 		} else {
-			b.WriteString(" " + c.returnType.GoName())
+			b.WriteString(" " + c.ReturnType.GoName())
 		}
-	} else if c.hasError {
+	} else if c.HasError {
 		b.WriteString(" error")
 	}
 

@@ -19,8 +19,6 @@ func main() {
 	}
 
 	appInfo := &vulkan.VkApplicationInfo{
-		SType:              vulkan.VkStructureTypeApplicationInfo,
-		PNext:              nil,
 		PApplicationName:   "vulkan-go-test",
 		ApplicationVersion: 1,
 		PEngineName:        "vulkan-go-test",
@@ -29,8 +27,6 @@ func main() {
 	}
 
 	create := &vulkan.VkInstanceCreateInfo{
-		SType:            vulkan.VkStructureTypeInstanceCreateInfo,
-		PNext:            nil,
 		PApplicationInfo: appInfo,
 	}
 

@@ -151,3 +151,23 @@ func (t *Primitive) CName() string {
 func (t *Primitive) GoName() string {
 	return t.goName
 }
+
+type NamedType struct {
+	Name string // e.g. "InstanceCreateInfo"
+	CTypeName string // e.g. "VkInstanceCreateInfo"
+}
+
+func (t *NamedType) GenerateToC(g *CodeGen, input string) string {
+	// For named types, assume direct cast
+	out := g.Var("val")
+	g.Line(fmt.Sprintf("%s := (C.%s)(%s)", out, t.CTypeName, input))
+	return out
+}
+
+func (t *NamedType) CName() string {
+	return "C." + t.CTypeName
+}
+
+func (t *NamedType) GoName() string {
+	return t.Name
+}
