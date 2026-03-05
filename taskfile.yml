@@ -5,8 +5,10 @@ tasks:
     desc: Generate the go bindings
     cmds:
       - go run ./cmd/gen/main.go
+      
   test:
     desc: Test basic vulkan function
     deps: [ 'generate' ]
     cmds:
       - go run ./test/test.go
+      

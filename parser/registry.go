@@ -8,36 +8,38 @@ import (
 )
 
 type XMLRegistry struct {
-    XMLName    xml.Name       `xml:"registry"`
-    Types      XMLTypes       `xml:"types"`
-    Enums      []XMLEnums     `xml:"enums"`
-    Commands   XMLCommands    `xml:"commands"`
-    Features   []XMLFeature   `xml:"feature"`
-    Extensions XMLExtensions  `xml:"extensions"`
+	XMLName    xml.Name      `xml:"registry"`
+	Types      XMLTypes      `xml:"types"`
+	Enums      []XMLEnums    `xml:"enums"`
+	Commands   XMLCommands   `xml:"commands"`
+	Features   []XMLFeature  `xml:"feature"`
+	Extensions XMLExtensions `xml:"extensions"`
 }
 
 func ParseXML(path string) (*XMLRegistry, error) {
-    data, err := os.ReadFile(path)
-    if err != nil {
-        return nil, err
-    }
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
 
-    var reg XMLRegistry
-    if err := xml.Unmarshal(data, &reg); err != nil {
-        return nil, err
-    }
+	reg := &XMLRegistry{}
+	if err := xml.Unmarshal(data, reg); err != nil {
+		return nil, err
+	}
 
-    return &reg, nil
+	return reg, nil
 }
 
 func BuildRegistry(x *XMLRegistry) *generator.Registry {
 	r := &generator.Registry{
-		Enums:      map[string]*generator.Enum{},
-		Bitmasks:   map[string]*generator.Bitmask{},
-		Structs:    map[string]*generator.Structured{},
-		Commands:   map[string]*generator.GoCommand{},
-		Features:   map[string]*generator.Feature{},
-		Extensions: map[string]*generator.Extension{},
+		Enums:        make(map[string]*generator.Enum),
+		Bitmasks:     make(map[string]*generator.Bitmask),
+		Structs:      make(map[string]*generator.Structured),
+		Handles:      make(map[string]*generator.GoHandle),
+		Commands:     make(map[string]*generator.GoCommand),
+		Features:     make(map[string]*generator.Feature),
+		Extensions:   make(map[string]*generator.Extension),
+		FuncPointers: make(map[string]*generator.GoFuncPointer),
 	}
 
 	parseEnums(x, r)
@@ -45,6 +47,7 @@ func BuildRegistry(x *XMLRegistry) *generator.Registry {
 	parseCommands(x, r)
 	parseFeatures(x, r)
 	parseExtensions(x, r)
+	applyEnumExtensions(x, r)
 
 	return r
 }

@@ -18,17 +18,19 @@ func main() {
 		log.Fatal(err)
 	}
 
-	appInfo := &vulkan.VkApplicationInfo{
-		PApplicationName:   "vulkan-go-test",
+	appInfo := &vulkan.ApplicationInfo{
+		ApplicationName:   "vulkan-go-test",
 		ApplicationVersion: 1,
-		PEngineName:        "vulkan-go-test",
+		EngineName:        "vulkan-go-test",
 		EngineVersion:      1,
 		ApiVersion:         VkMakeApiVersion(0, 1, 4, 0),
 	}
 
-	create := &vulkan.VkInstanceCreateInfo{
-		PApplicationInfo: appInfo,
+	create := &vulkan.InstanceCreateInfo{
+		ApplicationInfo: appInfo,
 	}
+
+	vulkan.CreateInstance(create)
 
 	fmt.Println(*create)
 }

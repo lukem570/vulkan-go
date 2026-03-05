@@ -10,10 +10,13 @@ import (
 func versionLE(featureName string, target string) bool {
 	var major, minor int
 
-	// featureName = "VK_VERSION_1_2"
+	// Handle both VK_VERSION_1_2 and VK_GRAPHICS_VERSION_1_2
 	_, err := fmt.Sscanf(featureName, "VK_VERSION_%d_%d", &major, &minor)
 	if err != nil {
-		return false
+		_, err = fmt.Sscanf(featureName, "VK_GRAPHICS_VERSION_%d_%d", &major, &minor)
+		if err != nil {
+			return false
+		}
 	}
 
 	var targetMajor, targetMinor int
@@ -32,17 +35,22 @@ func versionLE(featureName string, target string) bool {
 }
 
 func WriteFile(path string, contents string) error {
-	// Ensure directory exists
 	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
 		return err
 	}
 
-	// Format Go code
 	formatted, err := format.Source([]byte(contents))
 	if err != nil {
-		// If formatting fails, still write raw output
-		return os.WriteFile(path, []byte(contents), 0644)
+		_ = os.WriteFile(path+".unformatted", []byte(contents), 0644)
+		return fmt.Errorf("gofmt failed: %w\nraw output written to %s.unformatted", err, path)
 	}
 
 	return os.WriteFile(path, formatted, 0644)
+}
+
+func WriteCFile(path string, contents string) error {
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+		return err
+	}
+	return os.WriteFile(path, []byte(contents), 0644)
 }

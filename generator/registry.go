@@ -1,31 +1,64 @@
 package generator
 
-import "strings"
+import (
+	"fmt"
+	"sort"
+	"strings"
+)
 
-const header = `
-/*
-#cgo CFLAGS: -I./../../mod/Vulkan-Headers/include
-#cgo LDFLAGS: -lvulkan 
+const cgoHeader = `/*
+#cgo CFLAGS: -I./../../mod/Vulkan-Headers/include -I./../../mod/volk
+#cgo LDFLAGS: -ldl
 #include <stdlib.h>
-#include <vulkan/vulkan.h>
+#include <string.h>
+#include "volk_wrappers.h"
 */
 import "C"
-import "unsafe"
+import (
+	"fmt"
+	"unsafe"
+)
+`
 
+const runtimeHelpers = `
+// Structure is the interface implemented by all Vulkan structs that carry
+// an sType / pNext chain.
 type Structure interface {
-	getType() StructureType
-	toC() (*C.void, func())
+	GetType() StructureType
+	toC() (unsafe.Pointer, func())
+}
+
+// Initialize loads the Vulkan library via Volk.
+// Must be called before any other Vulkan function.
+func Initialize() error {
+	if result := C.volkInitialize(); result != C.VK_SUCCESS {
+		return vkError(result)
+	}
+	return nil
+}
+
+func vkError(r C.VkResult) error {
+	return fmt.Errorf("vulkan error: VkResult(%d)", int(r))
 }
 `
 
-type Registry struct {
-    Enums      map[string]*Enum
-    Bitmasks   map[string]*Bitmask
-    Structs    map[string]*Structured
-    Commands   map[string]*GoCommand
+// APIConstant is a single entry from the Vulkan API constants block.
+type APIConstant struct {
+	GoName string
+	Value  string // already translated to valid Go syntax
+	Type   string // "uint32", "uint64", "float32", "float64", or "" (untyped int)
+}
 
-    Features   map[string]*Feature
-    Extensions map[string]*Extension
+type Registry struct {
+	Enums        map[string]*Enum
+	Bitmasks     map[string]*Bitmask
+	Structs      map[string]*Structured
+	Handles      map[string]*GoHandle
+	Commands     map[string]*GoCommand
+	Features     map[string]*Feature
+	Extensions   map[string]*Extension
+	FuncPointers map[string]*GoFuncPointer
+	APIConstants []APIConstant
 }
 
 func (r *Registry) AddEnumElement(extends string, el *EnumElement) {
@@ -39,46 +72,117 @@ func (r *Registry) GeneratePackage(pkg string) string {
 	var b strings.Builder
 
 	b.WriteString("package " + pkg + "\n\n")
-	b.WriteString(header)
+	b.WriteString(cgoHeader)
+	b.WriteString(runtimeHelpers)
+
+	// API constants — grouped by type to avoid "mixed untyped constant" errors
+	if len(r.APIConstants) > 0 {
+		b.WriteString(generateAPIConstants(r.APIConstants))
+	}
+
+	// Handles
+	for _, k := range sortedKeys(r.Handles) {
+		b.WriteString(r.Handles[k].Generate())
+	}
+
+	// FuncPointers
+	for _, k := range sortedKeys(r.FuncPointers) {
+		b.WriteString(r.FuncPointers[k].Generate())
+	}
 
 	// Enums
-	for _, e := range r.Enums {
-		b.WriteString(e.Generate())
+	for _, k := range sortedKeys(r.Enums) {
+		b.WriteString(r.Enums[k].Generate())
 	}
 
 	// Bitmasks
-	for _, bmask := range r.Bitmasks {
-		b.WriteString(bmask.Generate())
+	for _, k := range sortedKeys(r.Bitmasks) {
+		b.WriteString(r.Bitmasks[k].Generate())
 	}
 
 	// Structs
-	for _, s := range r.Structs {
+	for _, k := range sortedKeys(r.Structs) {
+		s := r.Structs[k]
 		b.WriteString(s.GenerateStructure())
 		b.WriteString(s.GenerateGetType())
 		b.WriteString(s.GenerateToC())
 	}
 
 	// Commands
-	for _, c := range r.Commands {
-		b.WriteString(c.GenerateWrapper())
+	for _, k := range sortedKeys(r.Commands) {
+		b.WriteString(r.Commands[k].GenerateWrapper())
 	}
 
 	return b.String()
 }
 
+// GenerateCHeader returns the content of volk_wrappers.h.
+func (r *Registry) GenerateCHeader() string {
+	var b strings.Builder
+	b.WriteString("#ifndef VOLK_WRAPPERS_H\n#define VOLK_WRAPPERS_H\n\n")
+	b.WriteString("#include \"volk.h\"\n")
+	b.WriteString("#include <stdlib.h>\n\n")
+	b.WriteString("#include <vulkan/vulkan.h>\n\n")
+	for _, k := range sortedKeys(r.Commands) {
+		b.WriteString(r.Commands[k].GenerateCWrapperDecl())
+	}
+	b.WriteString("\n#endif\n")
+	return b.String()
+}
+
+// GenerateCSource returns the content of volk_wrappers.c.
+func (r *Registry) GenerateCSource() string {
+	var b strings.Builder
+	b.WriteString("#define VOLK_IMPLEMENTATION\n")
+	b.WriteString("#include \"volk.h\"\n")
+	b.WriteString("#include <vulkan/vulkan.h>\n")
+	b.WriteString("#include \"volk_wrappers.h\"\n\n")
+	for _, k := range sortedKeys(r.Commands) {
+		b.WriteString(r.Commands[k].GenerateCWrapperImpl())
+	}
+	return b.String()
+}
+
+// generateAPIConstants emits typed var declarations for each API constant.
+// We use var instead of const because some values (^uint32(0), etc.) are not
+// representable as Go untyped constants.
+func generateAPIConstants(consts []APIConstant) string {
+	var b strings.Builder
+	b.WriteString("// Vulkan API constants\n")
+	b.WriteString("var (\n")
+	for _, c := range consts {
+		if c.Type != "" {
+			b.WriteString(fmt.Sprintf("\t%s %s = %s\n", c.GoName, c.Type, c.Value))
+		} else {
+			b.WriteString(fmt.Sprintf("\t%s = %s\n", c.GoName, c.Value))
+		}
+	}
+	b.WriteString(")\n\n")
+	return b.String()
+}
+
+func sortedKeys[V any](m map[string]V) []string {
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	return keys
+}
+
 type Feature struct {
-    Name     string // VK_VERSION_1_2
-    Requires []RequireBlock
+	Name     string
+	Requires []RequireBlock
 }
 
 type Extension struct {
-    Name     string
-    Platform string // optional
-    Requires []RequireBlock
+	Name     string
+	Platform string
+	Requires []RequireBlock
 }
 
 type RequireBlock struct {
-    Commands []string
-    Types    []string
-    Enums    []string
+	Commands []string
+	Types    []string
+	Enums    []string
 }

@@ -2,8 +2,5 @@ api: vulkan
 version: 1.4
 
 extensions:
-  - VK_KHR_surface
-  - VK_KHR_swapchain
-  - VK_EXT_debug_utils
 
 platforms:

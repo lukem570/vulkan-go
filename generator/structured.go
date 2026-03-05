@@ -5,31 +5,12 @@ import (
 	"strings"
 )
 
-type CodeGen struct {
-	builder  strings.Builder
-	varIndex int
-}
-
-func (g *CodeGen) Var(prefix string) string {
-	name := fmt.Sprintf("%s_%d", prefix, g.varIndex)
-	g.varIndex++
-	return name
-}
-
-func (g *CodeGen) Line(s string) {
-	g.builder.WriteString(s)
-	g.builder.WriteByte('\n')
-}
-
-func (g *CodeGen) String() string {
-	return g.builder.String()
-}
-
 type StructField struct {
-	GoName string
-	CName  string
-	Count  string // optional count field for arrays
-	Type   FieldType
+	GoName    string
+	CName     string
+	CountFor  string // if non-empty, this field is the count for field CountFor (skip in Go)
+	CountCName string // C name of the count field
+	Type      FieldType
 }
 
 type Structured struct {
@@ -37,60 +18,67 @@ type Structured struct {
 	GoName string
 	Fields []StructField
 
-	// Only for structs that have sType / pNext
 	HasSType bool
 	SType    string // e.g. StructureTypeInstanceCreateInfo
+	IsUnion  bool
 }
 
-func (s *Structured) GenerateToC() string {
+func (s *Structured) GenerateStructure() string {
 	if s == nil {
 		return ""
 	}
+	if s.IsUnion {
+		return s.generateUnionType()
+	}
 
-	g := &CodeGen{}
-	g.Line(fmt.Sprintf("func (s *%s) toC() (*C.%s, func()) {", s.GoName, s.CName))
-	g.Line("\tcancels := make([]func(), 0)")
-	g.Line(fmt.Sprintf("\tp := (*C.%s)(C.malloc(C.size_t(C.sizeof_%s)))", s.CName, s.CName))
+	var b strings.Builder
+	b.WriteString(fmt.Sprintf("type %s struct {\n", s.GoName))
 
 	if s.HasSType {
-		g.Line("\tp.sType = (C.VkStructureType)(s.GetType())")
-		g.Line(`
-	if s.Next != nil {
-		next, cancel := s.Next.toC()
-		cancels = append(cancels, cancel)
-		p.pNext = unsafe.Pointer(next)
-	}
-	`)
+		b.WriteString("\tNext Structure\n")
 	}
 
 	for _, field := range s.Fields {
-		input := "s." + field.GoName
-		output := field.Type.GenerateToC(g, input)
-		g.Line(fmt.Sprintf("\tp.%s = %s", field.CName, output))
-		if field.Count != "" {
-			g.Line(fmt.Sprintf("\tp.%s = C.uint32_t(len(%s))", field.Count, input))
+		if field.CountFor != "" {
+			continue // skip count fields — collapsed into slice
 		}
+		goType := field.Type.GoName()
+		b.WriteString(fmt.Sprintf("\t%s %s\n", field.GoName, goType))
 	}
 
-	g.Line(`
-	return p, func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-		C.free(unsafe.Pointer(p))
-	}
+	b.WriteString("}\n\n")
+	return b.String()
 }
-`)
 
-	return g.String()
+func (s *Structured) generateUnionType() string {
+	var b strings.Builder
+
+	// Type definition: byte array sized to the C union
+	b.WriteString(fmt.Sprintf("type %s [C.sizeof_%s]byte\n\n", s.GoName, s.CName))
+
+	// Constructor per variant
+	for _, field := range s.Fields {
+		goType := field.Type.GoName()
+		b.WriteString(fmt.Sprintf("func New%s%s(val %s) %s {\n", s.GoName, field.GoName, goType, s.GoName))
+		b.WriteString(fmt.Sprintf("\tvar u %s\n", s.GoName))
+		b.WriteString(fmt.Sprintf("\t*(*%s)(unsafe.Pointer(&u[0])) = val\n", goType))
+		b.WriteString("\treturn u\n")
+		b.WriteString("}\n\n")
+	}
+
+	// Getter per variant
+	for _, field := range s.Fields {
+		goType := field.Type.GoName()
+		b.WriteString(fmt.Sprintf("func (u *%s) %s() %s {\n", s.GoName, field.GoName, goType))
+		b.WriteString(fmt.Sprintf("\treturn *(*%s)(unsafe.Pointer(&u[0]))\n", goType))
+		b.WriteString("}\n\n")
+	}
+
+	return b.String()
 }
 
 func (s *Structured) GenerateGetType() string {
-	if s == nil {
-		return ""
-	}
-
-	if !s.HasSType {
+	if s == nil || !s.HasSType {
 		return ""
 	}
 
@@ -101,25 +89,73 @@ func (s *Structured) GenerateGetType() string {
 	return b.String()
 }
 
-func (s *Structured) GenerateStructure() string {
+func (s *Structured) GenerateToC() string {
 	if s == nil {
 		return ""
 	}
+	if s.IsUnion {
+		return s.generateUnionToC()
+	}
 
-	var b strings.Builder
-
-	b.WriteString(fmt.Sprintf("type %s struct {\n", s.GoName))
+	g := &CodeGen{}
+	g.Line(fmt.Sprintf("func (s *%s) toC() (*C.%s, func()) {", s.GoName, s.CName))
+	g.Line("\tcancels := make([]func(), 0)")
+	g.Line(fmt.Sprintf("\tp := (*C.%s)(C.malloc(C.size_t(C.sizeof_%s)))", s.CName, s.CName))
+	g.Line(fmt.Sprintf("\t*p = C.%s{}", s.CName))
 
 	if s.HasSType {
-		b.WriteString("\tNext Structure\n")
+		g.Line("\tp.sType = C.VkStructureType(s.GetType())")
+		g.Line("\tif s.Next != nil {")
+		g.Line("\t\tnextPtr, nextCancel := s.Next.toC()")
+		g.Line("\t\tcancels = append(cancels, nextCancel)")
+		g.Line("\t\tp.pNext = unsafe.Pointer(nextPtr)")
+		g.Line("\t}")
 	}
 
 	for _, field := range s.Fields {
-		goType := field.Type.GoName()
-		goType = strings.TrimPrefix(goType, "C.") // convert C type to Go type
-		b.WriteString(fmt.Sprintf("\t%s %s\n", field.GoName, goType))
+		if field.CountFor != "" {
+			continue
+		}
+
+		input := "s." + field.GoName
+		output := field.Type.GenerateToC(g, input)
+
+		cFieldName := sanitizeCField(field.CName)
+		g.Line(fmt.Sprintf("\tp.%s = %s", cFieldName, output))
+
+		// If this is a slice field, also set the count field
+		if _, ok := field.Type.(*Slice); ok && field.CountCName != "" {
+			g.Line(fmt.Sprintf("\tp.%s = C.uint32_t(len(%s))", field.CountCName, input))
+		}
 	}
 
+	g.Line("\treturn p, func() {")
+	g.Line("\t\tfor _, cancel := range cancels { cancel() }")
+	g.Line("\t\tC.free(unsafe.Pointer(p))")
+	g.Line("\t}")
+	g.Line("}")
+	g.Line("")
+
+	return g.String()
+}
+
+func (s *Structured) generateUnionToC() string {
+	var b strings.Builder
+	b.WriteString(fmt.Sprintf("func (s *%s) toC() (*C.%s, func()) {\n", s.GoName, s.CName))
+	b.WriteString(fmt.Sprintf("\tp := (*C.%s)(C.malloc(C.size_t(C.sizeof_%s)))\n", s.CName, s.CName))
+	b.WriteString(fmt.Sprintf("\tC.memcpy(unsafe.Pointer(p), unsafe.Pointer(&s[0]), C.sizeof_%s)\n", s.CName))
+	b.WriteString("\treturn p, func() { C.free(unsafe.Pointer(p)) }\n")
 	b.WriteString("}\n\n")
 	return b.String()
+}
+
+func sanitizeCField(name string) string {
+	switch name {
+	case "type":
+		return "_type"
+	case "range":
+		return "_range"
+	default:
+		return name
+	}
 }
