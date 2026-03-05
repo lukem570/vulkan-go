@@ -9,6 +9,24 @@ import (
 
 var fixedArrayRe = regexp.MustCompile(`\[(\d+)\]`)
 
+// namedArrayConstants maps Vulkan constant names to their integer values.
+var namedArrayConstants = map[string]int{
+	"VK_MAX_PHYSICAL_DEVICE_NAME_SIZE": 256,
+	"VK_UUID_SIZE":                     16,
+	"VK_LUID_SIZE":                     8,
+	"VK_MAX_EXTENSION_NAME_SIZE":       256,
+	"VK_MAX_DESCRIPTION_SIZE":          256,
+	"VK_MAX_MEMORY_TYPES":              32,
+	"VK_MAX_MEMORY_HEAPS":              16,
+	"VK_MAX_DEVICE_GROUP_SIZE":         32,
+	"VK_MAX_DRIVER_NAME_SIZE":          256,
+	"VK_MAX_DRIVER_INFO_SIZE":          256,
+	"VK_MAX_GLOBAL_PRIORITY_SIZE_KHR":  16,
+	"VK_MAX_GLOBAL_PRIORITY_SIZE":      16,
+	"VK_MAX_SHADER_MODULE_IDENTIFIER_SIZE_EXT": 32,
+	"VK_MAX_PIPELINE_BINARY_KEY_SIZE_KHR":      32,
+}
+
 type XMLTypes struct {
 	Types []XMLType `xml:"type"`
 }
@@ -19,6 +37,7 @@ type XMLMember struct {
 	Len      string `xml:"len,attr"`
 	AltLen   string `xml:"altlen,attr"`
 	Optional string `xml:"optional,attr"`
+	Values   string `xml:"values,attr"`
 
 	InnerXML string `xml:",innerxml"`
 }
@@ -46,21 +65,34 @@ func isPointerMember(m XMLMember) bool {
 }
 
 // fixedArraySize returns the fixed array size from InnerXML (e.g. [2] after </name>), or 0 if not a fixed array.
+// Handles both numeric sizes like [4] and named constants like [<enum>VK_MAX_EXTENSION_NAME_SIZE</enum>].
 func fixedArraySize(m XMLMember) int {
 	idx := strings.Index(m.InnerXML, "</name>")
 	if idx < 0 {
 		return 0
 	}
 	after := m.InnerXML[idx+len("</name>"):]
+
+	// Try numeric first
 	match := fixedArrayRe.FindStringSubmatch(after)
-	if match == nil {
-		return 0
+	if match != nil {
+		n := 0
+		for _, ch := range match[1] {
+			n = n*10 + int(ch-'0')
+		}
+		return n
 	}
-	n := 0
-	for _, ch := range match[1] {
-		n = n*10 + int(ch-'0')
+
+	// Try named constant: [<enum>VK_MAX_FOO</enum>]
+	enumRe := regexp.MustCompile(`\[<enum>(\w+)</enum>\]`)
+	enumMatch := enumRe.FindStringSubmatch(after)
+	if enumMatch != nil {
+		if val, ok := namedArrayConstants[enumMatch[1]]; ok {
+			return val
+		}
 	}
-	return n
+
+	return 0
 }
 
 func parseTypes(x *XMLRegistry, r *generator.Registry) {
@@ -177,10 +209,8 @@ func parseStruct(t XMLType, handles map[string]*generator.GoHandle, funcPointers
 		IsUnion: t.Category == "union",
 	}
 
-	s.HasSType = hasSTypeAndPNext(t)
-	if s.HasSType {
-		s.SType = "StructureType" + stripVk(name)
-	}
+	s.HasSType, s.SType = detectSType(t)
+
 
 	// Build a map of countField → fieldItCounts so we can mark them
 	// e.g. descriptorSetCount → pDescriptorSets
@@ -212,11 +242,13 @@ func parseStruct(t XMLType, handles map[string]*generator.GoHandle, funcPointers
 		}
 
 		isPtr := isPointerMember(m)
-		isArr := m.Len != "" && m.Len != "null-terminated"
 		fixedSize := fixedArraySize(m)
-
 		// If there's a len attribute that references another member, it's a slice
-		ft := resolveFieldType(m.Type, isPtr, isArr, handles, funcPointers, structs)
+		// BUT fixed-size arrays take precedence over len-based slices
+		isArr := fixedSize == 0 && m.Len != "" && m.Len != "null-terminated"
+
+		isDblPtr := strings.Count(m.InnerXML, "*") >= 2
+		ft := resolveFieldType(m.Type, isPtr, isArr, handles, funcPointers, structs, isDblPtr)
 
 		// Wrap in FixedArray if this is a fixed-size array (e.g. [2])
 		if fixedSize > 0 {
@@ -279,15 +311,26 @@ func findCountFieldName(lenAttr string, members []XMLMember) string {
 	return ""
 }
 
-func hasSTypeAndPNext(t XMLType) bool {
-	hasSType, hasPNext := false, false
+// detectSType checks if a struct has sType+pNext and extracts the Go sType constant name.
+func detectSType(t XMLType) (bool, string) {
+	var sTypeValue string
+	hasPNext := false
 	for _, m := range t.Members {
 		switch m.Name {
 		case "sType":
-			hasSType = true
+			if m.Values != "" {
+				sTypeValue = m.Values
+			}
 		case "pNext":
 			hasPNext = true
 		}
 	}
-	return hasSType && hasPNext
+	if sTypeValue == "" || !hasPNext {
+		return false, ""
+	}
+	// Convert VK_STRUCTURE_TYPE_FOO_BAR to StructureTypeFooBar using the same
+	// naming convention as enum elements
+	goName := UpperSnakeToPascal(sTypeValue)
+	return true, goName
 }
+

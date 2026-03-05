@@ -63,11 +63,19 @@ func resolveFieldType(
 	handles map[string]*generator.GoHandle,
 	funcPointers map[string]*generator.GoFuncPointer,
 	structs map[string]*generator.Structured,
+	extraOpts ...bool,
 ) generator.FieldType {
+	isDoublePointer := len(extraOpts) > 0 && extraOpts[0]
 	if typeName == "void" && isPointer {
+		if isDoublePointer {
+			return &generator.Pointer{Child: &generator.VoidPtr{}}
+		}
 		return &generator.VoidPtr{}
 	}
 	if typeName == "char" && isPointer {
+		if isArray {
+			return &generator.Slice{Child: &generator.String{}}
+		}
 		return &generator.String{}
 	}
 	if ft := primitiveType(typeName); ft != nil {
@@ -141,6 +149,8 @@ func primitiveType(name string) generator.FieldType {
 		return generator.NewPrimitive("size_t", "uintptr")
 	case "int":
 		return generator.NewPrimitive("int", "int32")
+	case "char":
+		return generator.NewPrimitive("char", "byte")
 	case "VkBool32":
 		return &generator.Bool{}
 	case "VkDeviceSize":

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	vulkan "github.com/lukem570/vulkan-go/pkg/raw"
 )
@@ -28,9 +29,44 @@ func main() {
 
 	create := &vulkan.InstanceCreateInfo{
 		ApplicationInfo: appInfo,
+		EnabledLayerNames: []string{
+			"VK_LAYER_KHRONOS_validation",
+		},
 	}
 
-	vulkan.CreateInstance(create)
+	instance, err := vulkan.CreateInstance(create, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	fmt.Println(*create)
+	vulkan.LoadInstance(instance)
+
+	physicalDevices, err := instance.EnumeratePhysicalDevices()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var physicalDevice *vulkan.PhysicalDevice
+	for _, phy := range physicalDevices {
+		properties := phy.GetProperties()
+		name := string(properties.DeviceName[:])
+		// Trim null bytes
+		if i := strings.IndexByte(name, 0); i >= 0 {
+			name = name[:i]
+		}
+		
+		switch properties.DeviceType {
+		case vulkan.PhysicalDeviceTypeDiscreteGpu:
+			fmt.Println("using:", name)
+			physicalDevice = phy
+		}
+	}
+
+	device, err := physicalDevice.CreateDevice(&vulkan.DeviceCreateInfo{
+		
+	}, nil)
+
+	vulkan.LoadDevice(device)
+
+	fmt.Println(device)
 }

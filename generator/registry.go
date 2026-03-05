@@ -40,6 +40,18 @@ func Initialize() error {
 func vkError(r C.VkResult) error {
 	return fmt.Errorf("vulkan error: VkResult(%d)", int(r))
 }
+
+// LoadInstance loads instance-level Vulkan function pointers via Volk.
+// Must be called after creating a VkInstance.
+func LoadInstance(instance *Instance) {
+	C.volkLoadInstance(C.VkInstance(unsafe.Pointer(instance.handle)))
+}
+
+// LoadDevice loads device-level Vulkan function pointers via Volk.
+// Must be called after creating a VkDevice.
+func LoadDevice(device *Device) {
+	C.volkLoadDevice(C.VkDevice(unsafe.Pointer(device.handle)))
+}
 `
 
 // APIConstant is a single entry from the Vulkan API constants block.
@@ -90,8 +102,18 @@ func (r *Registry) GeneratePackage(pkg string) string {
 		b.WriteString(r.FuncPointers[k].Generate())
 	}
 
+	// Build reserved names set from structs/handles to detect naming collisions
+	reserved := make(map[string]bool)
+	for _, k := range sortedKeys(r.Structs) {
+		reserved[r.Structs[k].GoName] = true
+	}
+	for _, k := range sortedKeys(r.Handles) {
+		reserved[r.Handles[k].GoName] = true
+	}
+
 	// Enums
 	for _, k := range sortedKeys(r.Enums) {
+		r.Enums[k].SetReserved(reserved)
 		b.WriteString(r.Enums[k].Generate())
 	}
 
@@ -106,11 +128,20 @@ func (r *Registry) GeneratePackage(pkg string) string {
 		b.WriteString(s.GenerateStructure())
 		b.WriteString(s.GenerateGetType())
 		b.WriteString(s.GenerateToC())
+		b.WriteString(s.GenerateFromC())
 	}
 
-	// Commands
+	// Commands — deduplicate by (ReceiverType, Name) to avoid collisions
+	// from different C names mapping to the same Go method name.
+	seenMethods := make(map[string]bool)
 	for _, k := range sortedKeys(r.Commands) {
-		b.WriteString(r.Commands[k].GenerateWrapper())
+		cmd := r.Commands[k]
+		key := cmd.ReceiverType + "." + cmd.Name
+		if seenMethods[key] {
+			continue
+		}
+		seenMethods[key] = true
+		b.WriteString(cmd.GenerateWrapper())
 	}
 
 	return b.String()
@@ -172,6 +203,7 @@ func sortedKeys[V any](m map[string]V) []string {
 
 type Feature struct {
 	Name     string
+	Depends  []string // feature names this feature depends on
 	Requires []RequireBlock
 }
 

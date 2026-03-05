@@ -107,7 +107,8 @@ func (t *StructType) GenerateToC(g *CodeGen, input string) string {
 
 func (t *StructType) GenerateFromC(g *CodeGen, input string) string {
 	out := g.Var("val")
-	g.Line(fmt.Sprintf("\t%s := %s(%s)", out, t.Name, input))
+	g.Line(fmt.Sprintf("\tvar %s %s", out, t.Name))
+	g.Line(fmt.Sprintf("\t%s.fromC(&%s)", out, input))
 	return out
 }
 

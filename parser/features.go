@@ -1,9 +1,14 @@
 package parser
 
-import "github.com/lukem570/vulkan-go/generator"
+import (
+	"strings"
+
+	"github.com/lukem570/vulkan-go/generator"
+)
 
 type XMLFeature struct {
 	Name     string       `xml:"name,attr"`
+	Depends  string       `xml:"depends,attr"`
 	Requires []XMLRequire `xml:"require"`
 }
 
@@ -24,6 +29,14 @@ type XMLRequireTyp struct {
 func parseFeatures(x *XMLRegistry, r *generator.Registry) {
 	for _, f := range x.Features {
 		feat := &generator.Feature{Name: f.Name}
+		if f.Depends != "" {
+			for _, d := range strings.Split(f.Depends, ",") {
+				d = strings.TrimSpace(d)
+				if d != "" {
+					feat.Depends = append(feat.Depends, d)
+				}
+			}
+		}
 
 		for _, req := range f.Requires {
 			block := generator.RequireBlock{}

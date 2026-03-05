@@ -149,6 +149,67 @@ func (s *Structured) generateUnionToC() string {
 	return b.String()
 }
 
+func (s *Structured) GenerateFromC() string {
+	if s == nil {
+		return ""
+	}
+	if s.IsUnion {
+		return s.generateUnionFromC()
+	}
+
+	g := &CodeGen{}
+	g.Line(fmt.Sprintf("func (s *%s) fromC(p *C.%s) {", s.GoName, s.CName))
+
+	for _, field := range s.Fields {
+		if field.CountFor != "" {
+			continue
+		}
+		cFieldName := sanitizeCField(field.CName)
+		input := "p." + cFieldName
+		goField := "s." + field.GoName
+
+		switch ft := field.Type.(type) {
+		case *Primitive:
+			g.Line(fmt.Sprintf("\t%s = %s(%s)", goField, ft.GoName(), input))
+		case *Bool:
+			g.Line(fmt.Sprintf("\t%s = %s != 0", goField, input))
+		case *NamedType:
+			g.Line(fmt.Sprintf("\t%s = %s(%s)", goField, ft.Name, input))
+		case *Handle:
+			g.Line(fmt.Sprintf("\t%s = &%s{handle: unsafe.Pointer(%s)}", goField, ft.Name, input))
+		case *FixedArray:
+			switch child := ft.Child.(type) {
+			case *Primitive:
+				g.Line(fmt.Sprintf("\tfor _i := range %s {", goField))
+				g.Line(fmt.Sprintf("\t\t%s[_i] = %s(%s[_i])", goField, child.GoName(), input))
+				g.Line("\t}")
+			case *NamedType:
+				g.Line(fmt.Sprintf("\tfor _i := range %s {", goField))
+				g.Line(fmt.Sprintf("\t\t%s[_i] = %s(%s[_i])", goField, child.Name, input))
+				g.Line("\t}")
+			default:
+				g.Line(fmt.Sprintf("\t// TODO: fromC for %s (FixedArray of %T)", field.GoName, child))
+			}
+		case *StructType:
+			g.Line(fmt.Sprintf("\t%s.fromC(&%s)", goField, input))
+		default:
+			g.Line(fmt.Sprintf("\t// TODO: fromC for %s (%T)", field.GoName, ft))
+		}
+	}
+
+	g.Line("}")
+	g.Line("")
+	return g.String()
+}
+
+func (s *Structured) generateUnionFromC() string {
+	var b strings.Builder
+	b.WriteString(fmt.Sprintf("func (s *%s) fromC(p *C.%s) {\n", s.GoName, s.CName))
+	b.WriteString(fmt.Sprintf("\tC.memcpy(unsafe.Pointer(&s[0]), unsafe.Pointer(p), C.sizeof_%s)\n", s.CName))
+	b.WriteString("}\n\n")
+	return b.String()
+}
+
 func sanitizeCField(name string) string {
 	switch name {
 	case "type":

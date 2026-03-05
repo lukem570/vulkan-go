@@ -136,6 +136,40 @@ func buildCommand(cmd XMLCommand, handles map[string]*generator.GoHandle, funcPo
 		params = params[1:]
 	}
 
+	// ---- Enumerate pattern detection ----------------------------------------
+	// Detect the two-call pattern: second-to-last is uint32_t* pFooCount,
+	// last is T* pFoos with len="pFooCount".
+	enumerateDetected := false
+	if len(params) >= 2 && (returnTypeName == "VkResult" || returnTypeName == "void" || returnTypeName == "") {
+		secondLast := params[len(params)-2]
+		last := params[len(params)-1]
+
+		isCountParam := secondLast.Type == "uint32_t" &&
+			strings.Contains(secondLast.InnerXML, "*") &&
+			!strings.Contains(secondLast.InnerXML, "const")
+
+		isArrayParam := last.Len != "" &&
+			strings.Contains(last.Len, secondLast.Name) &&
+			strings.Contains(last.InnerXML, "*") &&
+			!strings.Contains(last.InnerXML, "const")
+
+		if isCountParam && isArrayParam {
+			elemType := resolveFieldType(last.Type, false, false, handles, funcPointers, structs)
+			// Only use enumerate pattern for types that have working GenerateFromC
+			// (handles, primitives). Structs need a fromC() that doesn't exist yet.
+			switch elemType.(type) {
+			case *generator.Handle, *generator.Primitive, *generator.NamedType, *generator.Bool, *generator.StructType:
+				c.EnumeratePattern = &generator.EnumerateInfo{
+					CountCParam: secondLast.Name,
+					ArrayCParam: last.Name,
+					ElementType: elemType,
+				}
+				params = params[:len(params)-2]
+				enumerateDetected = true
+			}
+		}
+	}
+
 	// ---- Output parameter detection ----------------------------------------
 	// The LAST parameter of many Vulkan commands is a pointer to an output value.
 	// Heuristics:
@@ -143,9 +177,9 @@ func buildCommand(cmd XMLCommand, handles map[string]*generator.GoHandle, funcPo
 	//   - last param is a non-const pointer
 	//   - param name starts with 'p' followed by uppercase
 	//   - optional attribute is NOT set (or is "false")
-	if len(params) > 0 {
+	if !enumerateDetected && len(params) > 0 {
 		last := params[len(params)-1]
-		if isOutputParam(last, returnTypeName) {
+		if isOutputParam(last, returnTypeName, handles, structs) {
 			ft := outParamType(last, handles, funcPointers, structs)
 			c.OutParams = append(c.OutParams, generator.OutParam{
 				Name: last.Name,
@@ -159,8 +193,14 @@ func buildCommand(cmd XMLCommand, handles map[string]*generator.GoHandle, funcPo
 	for _, p := range params {
 		isPtr := strings.Contains(p.InnerXML, "*")
 		isArr := p.Len != "" && p.Len != "null-terminated"
+		isDblPtr := strings.Contains(p.InnerXML, "**")
 
-		ft := resolveFieldType(p.Type, isPtr, isArr, handles, funcPointers, structs)
+		ft := resolveFieldType(p.Type, isPtr, isArr, handles, funcPointers, structs, isDblPtr)
+
+		// Check for fixed-size array (e.g. blendConstants[4])
+		if fixedSize := fixedArraySizeParam(p.InnerXML); fixedSize > 0 {
+			ft = &generator.FixedArray{Child: ft, Size: fixedSize}
+		}
 
 		param := generator.CommandParam{
 			Name: goParamName(p.Name),
@@ -180,7 +220,7 @@ func methodName(cName string) string {
 	return name
 }
 
-func isOutputParam(p XMLParam, retType string) bool {
+func isOutputParam(p XMLParam, retType string, handles map[string]*generator.GoHandle, structs map[string]*generator.Structured) bool {
 	if p.Name == "" {
 		return false
 	}
@@ -197,12 +237,61 @@ func isOutputParam(p XMLParam, retType string) bool {
 		return false
 	}
 	// must be result-returning or void function
-	return retType == "VkResult" || retType == "void" || retType == ""
+	if retType != "VkResult" && retType != "void" && retType != "" {
+		return false
+	}
+	goName := stripVk(p.Type)
+	if _, isHandle := handles[goName]; isHandle {
+		return true
+	}
+	// void* params are typically caller-provided buffers, not output values
+	if p.Type == "void" {
+		return false
+	}
+	// Primitives and simple types
+	if primitiveType(p.Type) != nil {
+		return true
+	}
+	// Structs as output params (for getter-style commands)
+	if structs != nil {
+		if _, isStruct := structs[goName]; isStruct {
+			return true
+		}
+	}
+	return false
 }
 
 func outParamType(p XMLParam, handles map[string]*generator.GoHandle, funcPointers map[string]*generator.GoFuncPointer, structs map[string]*generator.Structured) generator.FieldType {
 	// The output param is T* in C — the Go type is T
+	// Special case: void* output params are unsafe.Pointer
+	if p.Type == "void" {
+		return &generator.VoidPtr{}
+	}
 	return resolveFieldType(p.Type, false, false, handles, funcPointers, structs)
+}
+
+// fixedArraySizeParam returns the fixed array size from a command param's InnerXML
+// (e.g. "const <type>float</type> <name>blendConstants</name>[4]" → 4), or 0.
+func fixedArraySizeParam(innerXML string) int {
+	idx := strings.Index(innerXML, "</name>")
+	if idx < 0 {
+		return 0
+	}
+	after := innerXML[idx+len("</name>"):]
+	// Look for [N] pattern
+	start := strings.Index(after, "[")
+	end := strings.Index(after, "]")
+	if start < 0 || end < 0 || end <= start+1 {
+		return 0
+	}
+	n := 0
+	for _, ch := range after[start+1 : end] {
+		if ch < '0' || ch > '9' {
+			return 0
+		}
+		n = n*10 + int(ch-'0')
+	}
+	return n
 }
 
 func goParamName(cName string) string {

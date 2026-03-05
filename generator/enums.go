@@ -28,6 +28,18 @@ type EnumElement struct {
 	Parent *Enum
 }
 
+// SetReserved marks element names that conflict with other Go declarations
+// (e.g. struct names). Conflicting elements will be skipped during generation.
+func (e *Enum) SetReserved(reserved map[string]bool) {
+	filtered := make([]*EnumElement, 0, len(e.Elements))
+	for _, el := range e.Elements {
+		if el != nil && !reserved[el.GoName] {
+			filtered = append(filtered, el)
+		}
+	}
+	e.Elements = filtered
+}
+
 func (e *Enum) Generate() string {
 	if e == nil {
 		return ""
@@ -45,13 +57,18 @@ func (e *Enum) Generate() string {
 		deduped = append(deduped, el)
 	}
 
-	// Determine base type: upgrade to uint64 if any bitpos >= 32
+	// Determine base type
 	base := e.Base
 	if base == "" {
 		base = "uint32"
 	}
+	// Check if any element has a negative value — need int32
 	if base == "uint32" {
 		for _, el := range deduped {
+			if el.Value != "" && strings.HasPrefix(el.Value, "-") {
+				base = "int32"
+				break
+			}
 			if el.BitPos != nil && *el.BitPos >= 32 {
 				base = "uint64"
 				break

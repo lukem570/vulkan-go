@@ -1,0 +1,80 @@
+name: Update Vulkan Bindings
+
+on:
+  schedule:
+    - cron: "0 */6 * * *" # check every 6 hours
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Update submodules
+        run: |
+          git submodule update --remote --merge
+
+      - name: Check for submodule changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Go
+        if: steps.changes.outputs.changed == 'true'
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Install Task
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          go install github.com/go-task/task/v3/cmd/task@latest
+
+      - name: Run generator
+        if: steps.changes.outputs.changed == 'true'
+        run: task generate
+
+      - name: Extract Vulkan version
+        if: steps.changes.outputs.changed == 'true'
+        id: version
+        run: |
+          HEADER=external/Vulkan-Headers/include/vulkan/vulkan_core.h
+
+          MAJOR=$(grep VK_HEADER_VERSION_COMPLETE $HEADER | sed -E 's/.*\([0-9]+, ([0-9]+), ([0-9]+), ([0-9]+)\).*/\1/')
+          MINOR=$(grep VK_HEADER_VERSION_COMPLETE $HEADER | sed -E 's/.*\([0-9]+, ([0-9]+), ([0-9]+), ([0-9]+)\).*/\2/')
+          PATCH=$(grep VK_HEADER_VERSION_COMPLETE $HEADER | sed -E 's/.*\([0-9]+, ([0-9]+), ([0-9]+), ([0-9]+)\).*/\3/')
+
+          VERSION="v$MAJOR.$MINOR.$PATCH"
+
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Detected Vulkan version $VERSION"
+
+      - name: Commit generated code
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add .
+          git commit -m "Update bindings for Vulkan ${{ steps.version.outputs.version }}" || echo "No changes"
+
+      - name: Create tag
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git tag ${{ steps.version.outputs.version }} || true
+
+      - name: Push changes
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git push
+          git push --tags

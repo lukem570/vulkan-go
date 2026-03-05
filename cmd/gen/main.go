@@ -16,6 +16,7 @@ var receiverPrefixes = map[string][]string{
 	"CommandBuffer": {"Cmd"},
 }
 
+
 func main() {
 	registry, err := parser.ParseXML("mod/Vulkan-Headers/registry/vk.xml")
 	if err != nil {
@@ -45,6 +46,20 @@ func main() {
 		if strings.HasPrefix(cmd.Name, cmd.ReceiverType) {
 			if trimmed := strings.TrimPrefix(cmd.Name, cmd.ReceiverType); trimmed != "" {
 				cmd.Name = trimmed
+			}
+		}
+
+		// Strip receiver type after verb prefixes
+		// e.g. "GetPhysicalDeviceProperties" on PhysicalDevice → "GetProperties"
+		verbs := []string{"Get", "Set", "Create", "Destroy", "Allocate", "Free",
+			"Enumerate", "Reset", "Begin", "End", "Bind", "Queue", "Wait"}
+		for _, verb := range verbs {
+			prefix := verb + cmd.ReceiverType
+			if strings.HasPrefix(cmd.Name, prefix) {
+				if rest := strings.TrimPrefix(cmd.Name, prefix); rest != "" {
+					cmd.Name = verb + rest
+				}
+				break
 			}
 		}
 

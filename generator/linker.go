@@ -74,11 +74,25 @@ func (l *Linker) Link() *Registry {
 }
 
 func (l *Linker) enableCoreVersions(e *Enabled) {
+	// First, enable all VK_VERSION_* features that match the target version
 	for _, f := range l.Registry.Features {
 		if versionLE(f.Name, l.Config.Version) {
-			l.enableRequireBlocks(e, f.Requires)
+			l.enableFeatureRecursive(e, f.Name)
 		}
 	}
+}
+
+// enableFeatureRecursive enables a feature and all its dependencies.
+func (l *Linker) enableFeatureRecursive(e *Enabled, name string) {
+	f := l.Registry.Features[name]
+	if f == nil {
+		return
+	}
+	// Enable dependencies first
+	for _, dep := range f.Depends {
+		l.enableFeatureRecursive(e, dep)
+	}
+	l.enableRequireBlocks(e, f.Requires)
 }
 
 func (l *Linker) enableExtensions(e *Enabled) {
