@@ -25705,6 +25705,61 @@ func (h Device) CreateCommandPool(
 	return h8, nil
 }
 
+func (h Device) CreateComputePipelines(
+	pipelineCache *PipelineCache,
+	createInfoCount uint32,
+	createInfos []ComputePipelineCreateInfo,
+	allocator *AllocationCallbacks,
+) ([]*Pipeline, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pipelineCache
+	var h1 C.VkPipelineCache
+	if pipelineCache != nil {
+		h1 = C.VkPipelineCache(unsafe.Pointer(pipelineCache.handle))
+	}
+	// param createInfoCount
+	val3 := C.uint32_t(createInfoCount)
+	// param createInfos
+	len5 := len(createInfos)
+
+	var arr6 *C.VkComputePipelineCreateInfo
+	if len5 > 0 {
+		arr6 = (*C.VkComputePipelineCreateInfo)(C.malloc(C.size_t(len5) * C.size_t(unsafe.Sizeof(*new(C.VkComputePipelineCreateInfo)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr6)) })
+	}
+	for i7, elem8 := range createInfos {
+		val9, cancel10 := elem8.toC()
+		cancels = append(cancels, cancel10)
+		cast11 := (*C.VkComputePipelineCreateInfo)(val9)
+		(*[1 << 30]C.VkComputePipelineCreateInfo)(unsafe.Pointer(arr6))[i7] = *cast11
+	}
+	// param allocator
+	var ptr13 *C.VkAllocationCallbacks
+	if allocator != nil {
+		val14, cancel15 := allocator.toC()
+		cancels = append(cancels, cancel15)
+		ptr13 = (*C.VkAllocationCallbacks)(val14)
+	}
+	pipelinesOut := (*C.VkPipeline)(C.malloc(C.size_t(createInfoCount) * C.size_t(unsafe.Sizeof(*new(C.VkPipeline)))))
+	defer C.free(unsafe.Pointer(pipelinesOut))
+	_result := C.fn_vkCreateComputePipelines(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, arr6, ptr13, pipelinesOut)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+	out16 := make([]*Pipeline, createInfoCount)
+	for i17 := range out16 {
+		h18 := &Pipeline{handle: unsafe.Pointer((*[1 << 30]C.VkPipeline)(unsafe.Pointer(pipelinesOut))[i17])}
+		out16[i17] = h18
+	}
+	return out16, nil
+}
+
 func (h Instance) CreateDebugUtilsMessengerEXT(
 	createInfo *DebugUtilsMessengerCreateInfoEXT,
 	allocator *AllocationCallbacks,
@@ -27478,6 +27533,41 @@ func (h PhysicalDevice) EnumerateDeviceExtensionProperties(
 		var val1 ExtensionProperties
 		val1.fromC(&v)
 		out[i] = val1
+	}
+	return out, nil
+}
+
+func (h PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	var count C.uint32_t
+	_result := C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, nil)
+	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
+		return nil, vkError(_result)
+	}
+	if count == 0 {
+		return nil, nil
+	}
+
+	cArr := (*C.VkLayerProperties)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkLayerProperties)))))
+	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
+
+	_result = C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, cArr)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+
+	out := make([]LayerProperties, int(count))
+	cSlice := (*[1 << 30]C.VkLayerProperties)(unsafe.Pointer(cArr))[:count:count]
+	for i, v := range cSlice {
+		var val0 LayerProperties
+		val0.fromC(&v)
+		out[i] = val0
 	}
 	return out, nil
 }
@@ -31190,61 +31280,6 @@ func (h CommandBuffer) BeginDebugUtilsLabelEXT(
 	C.fn_vkCmdBeginDebugUtilsLabelEXT(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
 }
 
-func (h Device) CreateComputePipelines(
-	pipelineCache *PipelineCache,
-	createInfoCount uint32,
-	createInfos []ComputePipelineCreateInfo,
-	allocator *AllocationCallbacks,
-) ([]*Pipeline, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param pipelineCache
-	var h1 C.VkPipelineCache
-	if pipelineCache != nil {
-		h1 = C.VkPipelineCache(unsafe.Pointer(pipelineCache.handle))
-	}
-	// param createInfoCount
-	val3 := C.uint32_t(createInfoCount)
-	// param createInfos
-	len5 := len(createInfos)
-
-	var arr6 *C.VkComputePipelineCreateInfo
-	if len5 > 0 {
-		arr6 = (*C.VkComputePipelineCreateInfo)(C.malloc(C.size_t(len5) * C.size_t(unsafe.Sizeof(*new(C.VkComputePipelineCreateInfo)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr6)) })
-	}
-	for i7, elem8 := range createInfos {
-		val9, cancel10 := elem8.toC()
-		cancels = append(cancels, cancel10)
-		cast11 := (*C.VkComputePipelineCreateInfo)(val9)
-		(*[1 << 30]C.VkComputePipelineCreateInfo)(unsafe.Pointer(arr6))[i7] = *cast11
-	}
-	// param allocator
-	var ptr13 *C.VkAllocationCallbacks
-	if allocator != nil {
-		val14, cancel15 := allocator.toC()
-		cancels = append(cancels, cancel15)
-		ptr13 = (*C.VkAllocationCallbacks)(val14)
-	}
-	pipelinesOut := (*C.VkPipeline)(C.malloc(C.size_t(createInfoCount) * C.size_t(unsafe.Sizeof(*new(C.VkPipeline)))))
-	defer C.free(unsafe.Pointer(pipelinesOut))
-	_result := C.fn_vkCreateComputePipelines(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, arr6, ptr13, pipelinesOut)
-	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
-	}
-	out16 := make([]*Pipeline, createInfoCount)
-	for i17 := range out16 {
-		h18 := &Pipeline{handle: unsafe.Pointer((*[1 << 30]C.VkPipeline)(unsafe.Pointer(pipelinesOut))[i17])}
-		out16[i17] = h18
-	}
-	return out16, nil
-}
-
 func (h PhysicalDevice) CreateDevice(
 	createInfo *DeviceCreateInfo,
 	allocator *AllocationCallbacks,
@@ -31397,41 +31432,6 @@ func (h CommandBuffer) EndDebugUtilsLabelEXT() {
 	}()
 
 	C.fn_vkCmdEndDebugUtilsLabelEXT(C.VkCommandBuffer(unsafe.Pointer(h.handle)))
-}
-
-func (h PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	var count C.uint32_t
-	_result := C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, nil)
-	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
-	}
-	if count == 0 {
-		return nil, nil
-	}
-
-	cArr := (*C.VkLayerProperties)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkLayerProperties)))))
-	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
-
-	_result = C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, cArr)
-	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
-	}
-
-	out := make([]LayerProperties, int(count))
-	cSlice := (*[1 << 30]C.VkLayerProperties)(unsafe.Pointer(cArr))[:count:count]
-	for i, v := range cSlice {
-		var val0 LayerProperties
-		val0.fromC(&v)
-		out[i] = val0
-	}
-	return out, nil
 }
 
 func (h Instance) GetProcAddr(

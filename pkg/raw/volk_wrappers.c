@@ -189,6 +189,10 @@ VkResult fn_vkCreateCommandPool(VkDevice device, const VkCommandPoolCreateInfo* 
 	return vkCreateCommandPool(device, pCreateInfo, pAllocator, pCommandPool);
 }
 
+VkResult fn_vkCreateComputePipelines(VkDevice device, VkPipelineCache pipelineCache, uint32_t createInfoCount, const VkComputePipelineCreateInfo* pCreateInfos, const VkAllocationCallbacks* pAllocator, VkPipeline* pPipelines) {
+	return vkCreateComputePipelines(device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
+}
+
 VkResult fn_vkCreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pMessenger) {
 	return vkCreateDebugUtilsMessengerEXT(instance, pCreateInfo, pAllocator, pMessenger);
 }
@@ -431,6 +435,10 @@ void fn_vkCmdEndRendering(VkCommandBuffer commandBuffer) {
 
 VkResult fn_vkEnumerateDeviceExtensionProperties(VkPhysicalDevice physicalDevice, const char* pLayerName, uint32_t* pPropertyCount, VkExtensionProperties* pProperties) {
 	return vkEnumerateDeviceExtensionProperties(physicalDevice, pLayerName, pPropertyCount, pProperties);
+}
+
+VkResult fn_vkEnumerateDeviceLayerProperties(VkPhysicalDevice physicalDevice, uint32_t* pPropertyCount, VkLayerProperties* pProperties) {
+	return vkEnumerateDeviceLayerProperties(physicalDevice, pPropertyCount, pProperties);
 }
 
 VkResult fn_vkEnumerateInstanceExtensionProperties(const char* pLayerName, uint32_t* pPropertyCount, VkExtensionProperties* pProperties) {
@@ -985,10 +993,6 @@ void fn_vkCmdBeginDebugUtilsLabelEXT(VkCommandBuffer commandBuffer, const VkDebu
 	vkCmdBeginDebugUtilsLabelEXT(commandBuffer, pLabelInfo);
 }
 
-VkResult fn_vkCreateComputePipelines(VkDevice device, VkPipelineCache pipelineCache, uint32_t createInfoCount, const VkComputePipelineCreateInfo* pCreateInfos, const VkAllocationCallbacks* pAllocator, VkPipeline* pPipelines) {
-	return vkCreateComputePipelines(device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
-}
-
 VkResult fn_vkCreateDevice(VkPhysicalDevice physicalDevice, const VkDeviceCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDevice* pDevice) {
 	return vkCreateDevice(physicalDevice, pCreateInfo, pAllocator, pDevice);
 }
@@ -1007,10 +1011,6 @@ void fn_vkDestroyDevice(VkDevice device, const VkAllocationCallbacks* pAllocator
 
 void fn_vkCmdEndDebugUtilsLabelEXT(VkCommandBuffer commandBuffer) {
 	vkCmdEndDebugUtilsLabelEXT(commandBuffer);
-}
-
-VkResult fn_vkEnumerateDeviceLayerProperties(VkPhysicalDevice physicalDevice, uint32_t* pPropertyCount, VkLayerProperties* pProperties) {
-	return vkEnumerateDeviceLayerProperties(physicalDevice, pPropertyCount, pProperties);
 }
 
 void fn_vkGetDeviceBufferMemoryRequirements(VkDevice device, const VkDeviceBufferMemoryRequirements* pInfo, VkMemoryRequirements2* pMemoryRequirements) {
