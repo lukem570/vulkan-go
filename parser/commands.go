@@ -38,7 +38,12 @@ func parseCommands(x *XMLRegistry, r *generator.Registry) {
 		}
 		c := buildCommand(cmd, r.Handles, r.FuncPointers, r.Structs)
 		if c != nil {
-			r.Commands[c.Name] = c
+			var idx int
+			for r.Commands[string(rune(idx))+c.Name] != nil {
+				idx++
+			}
+
+			r.Commands[string(rune(idx))+c.Name] = c
 		}
 	}
 }
@@ -97,7 +102,7 @@ func buildCommand(cmd XMLCommand, handles map[string]*generator.GoHandle, funcPo
 
 	c := &generator.GoCommand{
 		CName:       rawName,
-		Name:        methodName(rawName),
+		Name:        methodName(rawName, ""),
 		CReturnType: returnTypeName,
 	}
 
@@ -143,6 +148,7 @@ func buildCommand(cmd XMLCommand, handles map[string]*generator.GoHandle, funcPo
 	if _, ok := handles[firstGoName]; ok {
 		c.ReceiverType = firstGoName
 		params = params[1:]
+		c.Name = methodName(rawName, firstGoName)
 	}
 
 	// ---- Enumerate pattern detection ----------------------------------------
@@ -238,8 +244,9 @@ func buildCommand(cmd XMLCommand, handles map[string]*generator.GoHandle, funcPo
 // methodName strips vk prefix and the handle type prefix, returning a clean Go name.
 // vkDestroyInstance → Destroy  (when receiver is Instance)
 // vkCreateInstance  → CreateInstance  (no receiver)
-func methodName(cName string) string {
+func methodName(cName string, handle string) string {
 	name := strings.TrimPrefix(cName, "vk")
+	name = strings.ReplaceAll(name, handle, "")
 	return name
 }
 

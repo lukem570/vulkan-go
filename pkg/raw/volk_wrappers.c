@@ -41,6 +41,10 @@ VkResult fn_vkBeginCommandBuffer(VkCommandBuffer commandBuffer, const VkCommandB
 	return vkBeginCommandBuffer(commandBuffer, pBeginInfo);
 }
 
+void fn_vkQueueBeginDebugUtilsLabelEXT(VkQueue queue, const VkDebugUtilsLabelEXT* pLabelInfo) {
+	vkQueueBeginDebugUtilsLabelEXT(queue, pLabelInfo);
+}
+
 VkResult fn_vkBindBufferMemory(VkDevice device, VkBuffer buffer, VkDeviceMemory memory, VkDeviceSize memoryOffset) {
 	return vkBindBufferMemory(device, buffer, memory, memoryOffset);
 }
@@ -55,6 +59,10 @@ VkResult fn_vkBindImageMemory(VkDevice device, VkImage image, VkDeviceMemory mem
 
 VkResult fn_vkBindImageMemory2(VkDevice device, uint32_t bindInfoCount, const VkBindImageMemoryInfo* pBindInfos) {
 	return vkBindImageMemory2(device, bindInfoCount, pBindInfos);
+}
+
+VkResult fn_vkQueueBindSparse(VkQueue queue, uint32_t bindInfoCount, const VkBindSparseInfo* pBindInfo, VkFence fence) {
+	return vkQueueBindSparse(queue, bindInfoCount, pBindInfo, fence);
 }
 
 void fn_vkCmdBeginDebugUtilsLabelEXT(VkCommandBuffer commandBuffer, const VkDebugUtilsLabelEXT* pLabelInfo) {
@@ -485,10 +493,6 @@ VkResult fn_vkCreateFramebuffer(VkDevice device, const VkFramebufferCreateInfo* 
 	return vkCreateFramebuffer(device, pCreateInfo, pAllocator, pFramebuffer);
 }
 
-VkResult fn_vkCreateGraphicsPipelines(VkDevice device, VkPipelineCache pipelineCache, uint32_t createInfoCount, const VkGraphicsPipelineCreateInfo* pCreateInfos, const VkAllocationCallbacks* pAllocator, VkPipeline* pPipelines) {
-	return vkCreateGraphicsPipelines(device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
-}
-
 VkResult fn_vkCreateImage(VkDevice device, const VkImageCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkImage* pImage) {
 	return vkCreateImage(device, pCreateInfo, pAllocator, pImage);
 }
@@ -499,10 +503,6 @@ VkResult fn_vkCreateImageView(VkDevice device, const VkImageViewCreateInfo* pCre
 
 VkResult fn_vkCreateInstance(const VkInstanceCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkInstance* pInstance) {
 	return vkCreateInstance(pCreateInfo, pAllocator, pInstance);
-}
-
-VkResult fn_vkCreatePipelineCache(VkDevice device, const VkPipelineCacheCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkPipelineCache* pPipelineCache) {
-	return vkCreatePipelineCache(device, pCreateInfo, pAllocator, pPipelineCache);
 }
 
 VkResult fn_vkCreatePipelineLayout(VkDevice device, const VkPipelineLayoutCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkPipelineLayout* pPipelineLayout) {
@@ -545,6 +545,10 @@ VkResult fn_vkCreateSwapchainKHR(VkDevice device, const VkSwapchainCreateInfoKHR
 	return vkCreateSwapchainKHR(device, pCreateInfo, pAllocator, pSwapchain);
 }
 
+void fn_vkDestroyInstance(VkInstance instance, const VkAllocationCallbacks* pAllocator) {
+	vkDestroyInstance(instance, pAllocator);
+}
+
 void fn_vkDestroyBuffer(VkDevice device, VkBuffer buffer, const VkAllocationCallbacks* pAllocator) {
 	vkDestroyBuffer(device, buffer, pAllocator);
 }
@@ -573,10 +577,6 @@ void fn_vkDestroyDescriptorUpdateTemplate(VkDevice device, VkDescriptorUpdateTem
 	vkDestroyDescriptorUpdateTemplate(device, descriptorUpdateTemplate, pAllocator);
 }
 
-void fn_vkDestroyDevice(VkDevice device, const VkAllocationCallbacks* pAllocator) {
-	vkDestroyDevice(device, pAllocator);
-}
-
 void fn_vkDestroyEvent(VkDevice device, VkEvent event, const VkAllocationCallbacks* pAllocator) {
 	vkDestroyEvent(device, event, pAllocator);
 }
@@ -595,10 +595,6 @@ void fn_vkDestroyImage(VkDevice device, VkImage image, const VkAllocationCallbac
 
 void fn_vkDestroyImageView(VkDevice device, VkImageView imageView, const VkAllocationCallbacks* pAllocator) {
 	vkDestroyImageView(device, imageView, pAllocator);
-}
-
-void fn_vkDestroyInstance(VkInstance instance, const VkAllocationCallbacks* pAllocator) {
-	vkDestroyInstance(instance, pAllocator);
 }
 
 void fn_vkDestroyPipeline(VkDevice device, VkPipeline pipeline, const VkAllocationCallbacks* pAllocator) {
@@ -649,20 +645,16 @@ void fn_vkDestroySwapchainKHR(VkDevice device, VkSwapchainKHR swapchain, const V
 	vkDestroySwapchainKHR(device, swapchain, pAllocator);
 }
 
-VkResult fn_vkDeviceWaitIdle(VkDevice device) {
-	return vkDeviceWaitIdle(device);
-}
-
 VkResult fn_vkEndCommandBuffer(VkCommandBuffer commandBuffer) {
 	return vkEndCommandBuffer(commandBuffer);
 }
 
-VkResult fn_vkEnumerateDeviceExtensionProperties(VkPhysicalDevice physicalDevice, const char* pLayerName, uint32_t* pPropertyCount, VkExtensionProperties* pProperties) {
-	return vkEnumerateDeviceExtensionProperties(physicalDevice, pLayerName, pPropertyCount, pProperties);
+void fn_vkQueueEndDebugUtilsLabelEXT(VkQueue queue) {
+	vkQueueEndDebugUtilsLabelEXT(queue);
 }
 
-VkResult fn_vkEnumerateDeviceLayerProperties(VkPhysicalDevice physicalDevice, uint32_t* pPropertyCount, VkLayerProperties* pProperties) {
-	return vkEnumerateDeviceLayerProperties(physicalDevice, pPropertyCount, pProperties);
+VkResult fn_vkEnumerateDeviceExtensionProperties(VkPhysicalDevice physicalDevice, const char* pLayerName, uint32_t* pPropertyCount, VkExtensionProperties* pProperties) {
+	return vkEnumerateDeviceExtensionProperties(physicalDevice, pLayerName, pPropertyCount, pProperties);
 }
 
 VkResult fn_vkEnumerateInstanceExtensionProperties(const char* pLayerName, uint32_t* pPropertyCount, VkExtensionProperties* pProperties) {
@@ -721,8 +713,40 @@ void fn_vkGetDescriptorSetLayoutSupport(VkDevice device, const VkDescriptorSetLa
 	vkGetDescriptorSetLayoutSupport(device, pCreateInfo, pSupport);
 }
 
-void fn_vkGetDeviceBufferMemoryRequirements(VkDevice device, const VkDeviceBufferMemoryRequirements* pInfo, VkMemoryRequirements2* pMemoryRequirements) {
-	vkGetDeviceBufferMemoryRequirements(device, pInfo, pMemoryRequirements);
+VkResult fn_vkGetEventStatus(VkDevice device, VkEvent event) {
+	return vkGetEventStatus(device, event);
+}
+
+void fn_vkGetPhysicalDeviceExternalBufferProperties(VkPhysicalDevice physicalDevice, const VkPhysicalDeviceExternalBufferInfo* pExternalBufferInfo, VkExternalBufferProperties* pExternalBufferProperties) {
+	vkGetPhysicalDeviceExternalBufferProperties(physicalDevice, pExternalBufferInfo, pExternalBufferProperties);
+}
+
+void fn_vkGetPhysicalDeviceExternalFenceProperties(VkPhysicalDevice physicalDevice, const VkPhysicalDeviceExternalFenceInfo* pExternalFenceInfo, VkExternalFenceProperties* pExternalFenceProperties) {
+	vkGetPhysicalDeviceExternalFenceProperties(physicalDevice, pExternalFenceInfo, pExternalFenceProperties);
+}
+
+void fn_vkGetPhysicalDeviceExternalSemaphoreProperties(VkPhysicalDevice physicalDevice, const VkPhysicalDeviceExternalSemaphoreInfo* pExternalSemaphoreInfo, VkExternalSemaphoreProperties* pExternalSemaphoreProperties) {
+	vkGetPhysicalDeviceExternalSemaphoreProperties(physicalDevice, pExternalSemaphoreInfo, pExternalSemaphoreProperties);
+}
+
+void fn_vkGetPhysicalDeviceFeatures(VkPhysicalDevice physicalDevice, VkPhysicalDeviceFeatures* pFeatures) {
+	vkGetPhysicalDeviceFeatures(physicalDevice, pFeatures);
+}
+
+void fn_vkGetPhysicalDeviceFeatures2(VkPhysicalDevice physicalDevice, VkPhysicalDeviceFeatures2* pFeatures) {
+	vkGetPhysicalDeviceFeatures2(physicalDevice, pFeatures);
+}
+
+VkResult fn_vkGetFenceStatus(VkDevice device, VkFence fence) {
+	return vkGetFenceStatus(device, fence);
+}
+
+void fn_vkGetPhysicalDeviceFormatProperties(VkPhysicalDevice physicalDevice, VkFormat format, VkFormatProperties* pFormatProperties) {
+	vkGetPhysicalDeviceFormatProperties(physicalDevice, format, pFormatProperties);
+}
+
+void fn_vkGetPhysicalDeviceFormatProperties2(VkPhysicalDevice physicalDevice, VkFormat format, VkFormatProperties2* pFormatProperties) {
+	vkGetPhysicalDeviceFormatProperties2(physicalDevice, format, pFormatProperties);
 }
 
 void fn_vkGetDeviceGroupPeerMemoryFeatures(VkDevice device, uint32_t heapIndex, uint32_t localDeviceIndex, uint32_t remoteDeviceIndex, VkPeerMemoryFeatureFlags* pPeerMemoryFeatures) {
@@ -737,44 +761,12 @@ VkResult fn_vkGetDeviceGroupSurfacePresentModesKHR(VkDevice device, VkSurfaceKHR
 	return vkGetDeviceGroupSurfacePresentModesKHR(device, surface, pModes);
 }
 
-void fn_vkGetDeviceImageMemoryRequirements(VkDevice device, const VkDeviceImageMemoryRequirements* pInfo, VkMemoryRequirements2* pMemoryRequirements) {
-	vkGetDeviceImageMemoryRequirements(device, pInfo, pMemoryRequirements);
+VkResult fn_vkGetPhysicalDeviceImageFormatProperties(VkPhysicalDevice physicalDevice, VkFormat format, VkImageType type, VkImageTiling tiling, VkImageUsageFlags usage, VkImageCreateFlags flags, VkImageFormatProperties* pImageFormatProperties) {
+	return vkGetPhysicalDeviceImageFormatProperties(physicalDevice, format, type, tiling, usage, flags, pImageFormatProperties);
 }
 
-void fn_vkGetDeviceImageSparseMemoryRequirements(VkDevice device, const VkDeviceImageMemoryRequirements* pInfo, uint32_t* pSparseMemoryRequirementCount, VkSparseImageMemoryRequirements2* pSparseMemoryRequirements) {
-	vkGetDeviceImageSparseMemoryRequirements(device, pInfo, pSparseMemoryRequirementCount, pSparseMemoryRequirements);
-}
-
-void fn_vkGetDeviceImageSubresourceLayout(VkDevice device, const VkDeviceImageSubresourceInfo* pInfo, VkSubresourceLayout2* pLayout) {
-	vkGetDeviceImageSubresourceLayout(device, pInfo, pLayout);
-}
-
-void fn_vkGetDeviceMemoryCommitment(VkDevice device, VkDeviceMemory memory, VkDeviceSize* pCommittedMemoryInBytes) {
-	vkGetDeviceMemoryCommitment(device, memory, pCommittedMemoryInBytes);
-}
-
-uint64_t fn_vkGetDeviceMemoryOpaqueCaptureAddress(VkDevice device, const VkDeviceMemoryOpaqueCaptureAddressInfo* pInfo) {
-	return vkGetDeviceMemoryOpaqueCaptureAddress(device, pInfo);
-}
-
-PFN_vkVoidFunction fn_vkGetDeviceProcAddr(VkDevice device, const char* pName) {
-	return vkGetDeviceProcAddr(device, pName);
-}
-
-void fn_vkGetDeviceQueue(VkDevice device, uint32_t queueFamilyIndex, uint32_t queueIndex, VkQueue* pQueue) {
-	vkGetDeviceQueue(device, queueFamilyIndex, queueIndex, pQueue);
-}
-
-void fn_vkGetDeviceQueue2(VkDevice device, const VkDeviceQueueInfo2* pQueueInfo, VkQueue* pQueue) {
-	vkGetDeviceQueue2(device, pQueueInfo, pQueue);
-}
-
-VkResult fn_vkGetEventStatus(VkDevice device, VkEvent event) {
-	return vkGetEventStatus(device, event);
-}
-
-VkResult fn_vkGetFenceStatus(VkDevice device, VkFence fence) {
-	return vkGetFenceStatus(device, fence);
+VkResult fn_vkGetPhysicalDeviceImageFormatProperties2(VkPhysicalDevice physicalDevice, const VkPhysicalDeviceImageFormatInfo2* pImageFormatInfo, VkImageFormatProperties2* pImageFormatProperties) {
+	return vkGetPhysicalDeviceImageFormatProperties2(physicalDevice, pImageFormatInfo, pImageFormatProperties);
 }
 
 void fn_vkGetImageMemoryRequirements(VkDevice device, VkImage image, VkMemoryRequirements* pMemoryRequirements) {
@@ -801,44 +793,12 @@ void fn_vkGetImageSubresourceLayout2(VkDevice device, VkImage image, const VkIma
 	vkGetImageSubresourceLayout2(device, image, pSubresource, pLayout);
 }
 
-PFN_vkVoidFunction fn_vkGetInstanceProcAddr(VkInstance instance, const char* pName) {
-	return vkGetInstanceProcAddr(instance, pName);
+void fn_vkGetDeviceMemoryCommitment(VkDevice device, VkDeviceMemory memory, VkDeviceSize* pCommittedMemoryInBytes) {
+	vkGetDeviceMemoryCommitment(device, memory, pCommittedMemoryInBytes);
 }
 
-void fn_vkGetPhysicalDeviceExternalBufferProperties(VkPhysicalDevice physicalDevice, const VkPhysicalDeviceExternalBufferInfo* pExternalBufferInfo, VkExternalBufferProperties* pExternalBufferProperties) {
-	vkGetPhysicalDeviceExternalBufferProperties(physicalDevice, pExternalBufferInfo, pExternalBufferProperties);
-}
-
-void fn_vkGetPhysicalDeviceExternalFenceProperties(VkPhysicalDevice physicalDevice, const VkPhysicalDeviceExternalFenceInfo* pExternalFenceInfo, VkExternalFenceProperties* pExternalFenceProperties) {
-	vkGetPhysicalDeviceExternalFenceProperties(physicalDevice, pExternalFenceInfo, pExternalFenceProperties);
-}
-
-void fn_vkGetPhysicalDeviceExternalSemaphoreProperties(VkPhysicalDevice physicalDevice, const VkPhysicalDeviceExternalSemaphoreInfo* pExternalSemaphoreInfo, VkExternalSemaphoreProperties* pExternalSemaphoreProperties) {
-	vkGetPhysicalDeviceExternalSemaphoreProperties(physicalDevice, pExternalSemaphoreInfo, pExternalSemaphoreProperties);
-}
-
-void fn_vkGetPhysicalDeviceFeatures(VkPhysicalDevice physicalDevice, VkPhysicalDeviceFeatures* pFeatures) {
-	vkGetPhysicalDeviceFeatures(physicalDevice, pFeatures);
-}
-
-void fn_vkGetPhysicalDeviceFeatures2(VkPhysicalDevice physicalDevice, VkPhysicalDeviceFeatures2* pFeatures) {
-	vkGetPhysicalDeviceFeatures2(physicalDevice, pFeatures);
-}
-
-void fn_vkGetPhysicalDeviceFormatProperties(VkPhysicalDevice physicalDevice, VkFormat format, VkFormatProperties* pFormatProperties) {
-	vkGetPhysicalDeviceFormatProperties(physicalDevice, format, pFormatProperties);
-}
-
-void fn_vkGetPhysicalDeviceFormatProperties2(VkPhysicalDevice physicalDevice, VkFormat format, VkFormatProperties2* pFormatProperties) {
-	vkGetPhysicalDeviceFormatProperties2(physicalDevice, format, pFormatProperties);
-}
-
-VkResult fn_vkGetPhysicalDeviceImageFormatProperties(VkPhysicalDevice physicalDevice, VkFormat format, VkImageType type, VkImageTiling tiling, VkImageUsageFlags usage, VkImageCreateFlags flags, VkImageFormatProperties* pImageFormatProperties) {
-	return vkGetPhysicalDeviceImageFormatProperties(physicalDevice, format, type, tiling, usage, flags, pImageFormatProperties);
-}
-
-VkResult fn_vkGetPhysicalDeviceImageFormatProperties2(VkPhysicalDevice physicalDevice, const VkPhysicalDeviceImageFormatInfo2* pImageFormatInfo, VkImageFormatProperties2* pImageFormatProperties) {
-	return vkGetPhysicalDeviceImageFormatProperties2(physicalDevice, pImageFormatInfo, pImageFormatProperties);
+uint64_t fn_vkGetDeviceMemoryOpaqueCaptureAddress(VkDevice device, const VkDeviceMemoryOpaqueCaptureAddressInfo* pInfo) {
+	return vkGetDeviceMemoryOpaqueCaptureAddress(device, pInfo);
 }
 
 void fn_vkGetPhysicalDeviceMemoryProperties(VkPhysicalDevice physicalDevice, VkPhysicalDeviceMemoryProperties* pMemoryProperties) {
@@ -849,8 +809,20 @@ void fn_vkGetPhysicalDeviceMemoryProperties2(VkPhysicalDevice physicalDevice, Vk
 	vkGetPhysicalDeviceMemoryProperties2(physicalDevice, pMemoryProperties);
 }
 
+VkResult fn_vkGetPipelineCacheData(VkDevice device, VkPipelineCache pipelineCache, size_t* pDataSize, void* pData) {
+	return vkGetPipelineCacheData(device, pipelineCache, pDataSize, pData);
+}
+
 VkResult fn_vkGetPhysicalDevicePresentRectanglesKHR(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, uint32_t* pRectCount, VkRect2D* pRects) {
 	return vkGetPhysicalDevicePresentRectanglesKHR(physicalDevice, surface, pRectCount, pRects);
+}
+
+void fn_vkGetPrivateData(VkDevice device, VkObjectType objectType, uint64_t objectHandle, VkPrivateDataSlot privateDataSlot, uint64_t* pData) {
+	vkGetPrivateData(device, objectType, objectHandle, privateDataSlot, pData);
+}
+
+PFN_vkVoidFunction fn_vkGetDeviceProcAddr(VkDevice device, const char* pName) {
+	return vkGetDeviceProcAddr(device, pName);
 }
 
 void fn_vkGetPhysicalDeviceProperties(VkPhysicalDevice physicalDevice, VkPhysicalDeviceProperties* pProperties) {
@@ -861,12 +833,36 @@ void fn_vkGetPhysicalDeviceProperties2(VkPhysicalDevice physicalDevice, VkPhysic
 	vkGetPhysicalDeviceProperties2(physicalDevice, pProperties);
 }
 
+VkResult fn_vkGetQueryPoolResults(VkDevice device, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount, size_t dataSize, void* pData, VkDeviceSize stride, VkQueryResultFlags flags) {
+	return vkGetQueryPoolResults(device, queryPool, firstQuery, queryCount, dataSize, pData, stride, flags);
+}
+
+void fn_vkGetDeviceQueue(VkDevice device, uint32_t queueFamilyIndex, uint32_t queueIndex, VkQueue* pQueue) {
+	vkGetDeviceQueue(device, queueFamilyIndex, queueIndex, pQueue);
+}
+
+void fn_vkGetDeviceQueue2(VkDevice device, const VkDeviceQueueInfo2* pQueueInfo, VkQueue* pQueue) {
+	vkGetDeviceQueue2(device, pQueueInfo, pQueue);
+}
+
 void fn_vkGetPhysicalDeviceQueueFamilyProperties(VkPhysicalDevice physicalDevice, uint32_t* pQueueFamilyPropertyCount, VkQueueFamilyProperties* pQueueFamilyProperties) {
 	vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, pQueueFamilyPropertyCount, pQueueFamilyProperties);
 }
 
 void fn_vkGetPhysicalDeviceQueueFamilyProperties2(VkPhysicalDevice physicalDevice, uint32_t* pQueueFamilyPropertyCount, VkQueueFamilyProperties2* pQueueFamilyProperties) {
 	vkGetPhysicalDeviceQueueFamilyProperties2(physicalDevice, pQueueFamilyPropertyCount, pQueueFamilyProperties);
+}
+
+void fn_vkGetRenderAreaGranularity(VkDevice device, VkRenderPass renderPass, VkExtent2D* pGranularity) {
+	vkGetRenderAreaGranularity(device, renderPass, pGranularity);
+}
+
+void fn_vkGetRenderingAreaGranularity(VkDevice device, const VkRenderingAreaInfo* pRenderingAreaInfo, VkExtent2D* pGranularity) {
+	vkGetRenderingAreaGranularity(device, pRenderingAreaInfo, pGranularity);
+}
+
+VkResult fn_vkGetSemaphoreCounterValue(VkDevice device, VkSemaphore semaphore, uint64_t* pValue) {
+	return vkGetSemaphoreCounterValue(device, semaphore, pValue);
 }
 
 void fn_vkGetPhysicalDeviceSparseImageFormatProperties(VkPhysicalDevice physicalDevice, VkFormat format, VkImageType type, VkSampleCountFlagBits samples, VkImageUsageFlags usage, VkImageTiling tiling, uint32_t* pPropertyCount, VkSparseImageFormatProperties* pProperties) {
@@ -893,36 +889,16 @@ VkResult fn_vkGetPhysicalDeviceSurfaceSupportKHR(VkPhysicalDevice physicalDevice
 	return vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, queueFamilyIndex, surface, pSupported);
 }
 
+VkResult fn_vkGetSwapchainImagesKHR(VkDevice device, VkSwapchainKHR swapchain, uint32_t* pSwapchainImageCount, VkImage* pSwapchainImages) {
+	return vkGetSwapchainImagesKHR(device, swapchain, pSwapchainImageCount, pSwapchainImages);
+}
+
 VkResult fn_vkGetPhysicalDeviceToolProperties(VkPhysicalDevice physicalDevice, uint32_t* pToolCount, VkPhysicalDeviceToolProperties* pToolProperties) {
 	return vkGetPhysicalDeviceToolProperties(physicalDevice, pToolCount, pToolProperties);
 }
 
-VkResult fn_vkGetPipelineCacheData(VkDevice device, VkPipelineCache pipelineCache, size_t* pDataSize, void* pData) {
-	return vkGetPipelineCacheData(device, pipelineCache, pDataSize, pData);
-}
-
-void fn_vkGetPrivateData(VkDevice device, VkObjectType objectType, uint64_t objectHandle, VkPrivateDataSlot privateDataSlot, uint64_t* pData) {
-	vkGetPrivateData(device, objectType, objectHandle, privateDataSlot, pData);
-}
-
-VkResult fn_vkGetQueryPoolResults(VkDevice device, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount, size_t dataSize, void* pData, VkDeviceSize stride, VkQueryResultFlags flags) {
-	return vkGetQueryPoolResults(device, queryPool, firstQuery, queryCount, dataSize, pData, stride, flags);
-}
-
-void fn_vkGetRenderAreaGranularity(VkDevice device, VkRenderPass renderPass, VkExtent2D* pGranularity) {
-	vkGetRenderAreaGranularity(device, renderPass, pGranularity);
-}
-
-void fn_vkGetRenderingAreaGranularity(VkDevice device, const VkRenderingAreaInfo* pRenderingAreaInfo, VkExtent2D* pGranularity) {
-	vkGetRenderingAreaGranularity(device, pRenderingAreaInfo, pGranularity);
-}
-
-VkResult fn_vkGetSemaphoreCounterValue(VkDevice device, VkSemaphore semaphore, uint64_t* pValue) {
-	return vkGetSemaphoreCounterValue(device, semaphore, pValue);
-}
-
-VkResult fn_vkGetSwapchainImagesKHR(VkDevice device, VkSwapchainKHR swapchain, uint32_t* pSwapchainImageCount, VkImage* pSwapchainImages) {
-	return vkGetSwapchainImagesKHR(device, swapchain, pSwapchainImageCount, pSwapchainImages);
+void fn_vkQueueInsertDebugUtilsLabelEXT(VkQueue queue, const VkDebugUtilsLabelEXT* pLabelInfo) {
+	vkQueueInsertDebugUtilsLabelEXT(queue, pLabelInfo);
 }
 
 VkResult fn_vkInvalidateMappedMemoryRanges(VkDevice device, uint32_t memoryRangeCount, const VkMappedMemoryRange* pMemoryRanges) {
@@ -941,36 +917,8 @@ VkResult fn_vkMergePipelineCaches(VkDevice device, VkPipelineCache dstCache, uin
 	return vkMergePipelineCaches(device, dstCache, srcCacheCount, pSrcCaches);
 }
 
-void fn_vkQueueBeginDebugUtilsLabelEXT(VkQueue queue, const VkDebugUtilsLabelEXT* pLabelInfo) {
-	vkQueueBeginDebugUtilsLabelEXT(queue, pLabelInfo);
-}
-
-VkResult fn_vkQueueBindSparse(VkQueue queue, uint32_t bindInfoCount, const VkBindSparseInfo* pBindInfo, VkFence fence) {
-	return vkQueueBindSparse(queue, bindInfoCount, pBindInfo, fence);
-}
-
-void fn_vkQueueEndDebugUtilsLabelEXT(VkQueue queue) {
-	vkQueueEndDebugUtilsLabelEXT(queue);
-}
-
-void fn_vkQueueInsertDebugUtilsLabelEXT(VkQueue queue, const VkDebugUtilsLabelEXT* pLabelInfo) {
-	vkQueueInsertDebugUtilsLabelEXT(queue, pLabelInfo);
-}
-
 VkResult fn_vkQueuePresentKHR(VkQueue queue, const VkPresentInfoKHR* pPresentInfo) {
 	return vkQueuePresentKHR(queue, pPresentInfo);
-}
-
-VkResult fn_vkQueueSubmit(VkQueue queue, uint32_t submitCount, const VkSubmitInfo* pSubmits, VkFence fence) {
-	return vkQueueSubmit(queue, submitCount, pSubmits, fence);
-}
-
-VkResult fn_vkQueueSubmit2(VkQueue queue, uint32_t submitCount, const VkSubmitInfo2* pSubmits, VkFence fence) {
-	return vkQueueSubmit2(queue, submitCount, pSubmits, fence);
-}
-
-VkResult fn_vkQueueWaitIdle(VkQueue queue) {
-	return vkQueueWaitIdle(queue);
 }
 
 VkResult fn_vkResetCommandBuffer(VkCommandBuffer commandBuffer, VkCommandBufferResetFlags flags) {
@@ -1017,6 +965,14 @@ VkResult fn_vkSignalSemaphore(VkDevice device, const VkSemaphoreSignalInfo* pSig
 	return vkSignalSemaphore(device, pSignalInfo);
 }
 
+VkResult fn_vkQueueSubmit(VkQueue queue, uint32_t submitCount, const VkSubmitInfo* pSubmits, VkFence fence) {
+	return vkQueueSubmit(queue, submitCount, pSubmits, fence);
+}
+
+VkResult fn_vkQueueSubmit2(VkQueue queue, uint32_t submitCount, const VkSubmitInfo2* pSubmits, VkFence fence) {
+	return vkQueueSubmit2(queue, submitCount, pSubmits, fence);
+}
+
 void fn_vkSubmitDebugUtilsMessageEXT(VkInstance instance, VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageTypes, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData) {
 	vkSubmitDebugUtilsMessageEXT(instance, messageSeverity, messageTypes, pCallbackData);
 }
@@ -1049,8 +1005,52 @@ VkResult fn_vkWaitForFences(VkDevice device, uint32_t fenceCount, const VkFence*
 	return vkWaitForFences(device, fenceCount, pFences, waitAll, timeout);
 }
 
+VkResult fn_vkQueueWaitIdle(VkQueue queue) {
+	return vkQueueWaitIdle(queue);
+}
+
 VkResult fn_vkWaitSemaphores(VkDevice device, const VkSemaphoreWaitInfo* pWaitInfo, uint64_t timeout) {
 	return vkWaitSemaphores(device, pWaitInfo, timeout);
+}
+
+VkResult fn_vkCreateGraphicsPipelines(VkDevice device, VkPipelineCache pipelineCache, uint32_t createInfoCount, const VkGraphicsPipelineCreateInfo* pCreateInfos, const VkAllocationCallbacks* pAllocator, VkPipeline* pPipelines) {
+	return vkCreateGraphicsPipelines(device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
+}
+
+VkResult fn_vkCreatePipelineCache(VkDevice device, const VkPipelineCacheCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkPipelineCache* pPipelineCache) {
+	return vkCreatePipelineCache(device, pCreateInfo, pAllocator, pPipelineCache);
+}
+
+void fn_vkDestroyDevice(VkDevice device, const VkAllocationCallbacks* pAllocator) {
+	vkDestroyDevice(device, pAllocator);
+}
+
+VkResult fn_vkEnumerateDeviceLayerProperties(VkPhysicalDevice physicalDevice, uint32_t* pPropertyCount, VkLayerProperties* pProperties) {
+	return vkEnumerateDeviceLayerProperties(physicalDevice, pPropertyCount, pProperties);
+}
+
+void fn_vkGetDeviceBufferMemoryRequirements(VkDevice device, const VkDeviceBufferMemoryRequirements* pInfo, VkMemoryRequirements2* pMemoryRequirements) {
+	vkGetDeviceBufferMemoryRequirements(device, pInfo, pMemoryRequirements);
+}
+
+void fn_vkGetDeviceImageMemoryRequirements(VkDevice device, const VkDeviceImageMemoryRequirements* pInfo, VkMemoryRequirements2* pMemoryRequirements) {
+	vkGetDeviceImageMemoryRequirements(device, pInfo, pMemoryRequirements);
+}
+
+void fn_vkGetDeviceImageSparseMemoryRequirements(VkDevice device, const VkDeviceImageMemoryRequirements* pInfo, uint32_t* pSparseMemoryRequirementCount, VkSparseImageMemoryRequirements2* pSparseMemoryRequirements) {
+	vkGetDeviceImageSparseMemoryRequirements(device, pInfo, pSparseMemoryRequirementCount, pSparseMemoryRequirements);
+}
+
+void fn_vkGetDeviceImageSubresourceLayout(VkDevice device, const VkDeviceImageSubresourceInfo* pInfo, VkSubresourceLayout2* pLayout) {
+	vkGetDeviceImageSubresourceLayout(device, pInfo, pLayout);
+}
+
+PFN_vkVoidFunction fn_vkGetInstanceProcAddr(VkInstance instance, const char* pName) {
+	return vkGetInstanceProcAddr(instance, pName);
+}
+
+VkResult fn_vkDeviceWaitIdle(VkDevice device) {
+	return vkDeviceWaitIdle(device);
 }
 
 

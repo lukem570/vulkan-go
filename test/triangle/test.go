@@ -75,7 +75,7 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create instance: %w", err)
 	}
-	defer instance.DestroyInstance(nil)
+	defer instance.Destroy(nil)
 
 	vk.LoadInstance(instance)
 	fmt.Println("instance created")
@@ -135,7 +135,7 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create device: %w", err)
 	}
-	defer device.DestroyDevice(nil)
+	defer device.Destroy(nil)
 	vk.LoadDevice(device)
 
 	queue := device.GetQueue(uint32(graphicsFamily), 0)
@@ -454,9 +454,9 @@ func run() error {
 
 		// Record command buffer
 		cmdBuf := cmdBufs[currentFrame]
-		cmdBuf.ResetCommandBuffer(0)
+		cmdBuf.Reset(0)
 
-		if err := cmdBuf.BeginCommandBuffer(&vk.CommandBufferBeginInfo{}); err != nil {
+		if err := cmdBuf.Begin(&vk.CommandBufferBeginInfo{}); err != nil {
 			return fmt.Errorf("begin command buffer: %w", err)
 		}
 
@@ -496,7 +496,7 @@ func run() error {
 
 		cmdBuf.EndRenderPass()
 
-		if err := cmdBuf.EndCommandBuffer(); err != nil {
+		if err := cmdBuf.End(); err != nil {
 			return fmt.Errorf("end command buffer: %w", err)
 		}
 
