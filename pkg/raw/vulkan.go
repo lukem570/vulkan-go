@@ -26511,60 +26511,6 @@ func (h Device) CreateCommandPool(
 	return h8, nil
 }
 
-func (h Device) CreateComputePipelines(
-	pipelineCache *PipelineCache,
-	createInfoCount uint32,
-	createInfos []ComputePipelineCreateInfo,
-	allocator *AllocationCallbacks,
-) ([]*Pipeline, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param pipelineCache
-	var h1 C.VkPipelineCache
-	if pipelineCache != nil {
-		h1 = C.VkPipelineCache(unsafe.Pointer(pipelineCache.handle))
-	}
-	// param createInfoCount
-	val3 := C.uint32_t(createInfoCount)
-	// param createInfos
-	len5 := len(createInfos)
-
-	var arr6 *C.VkComputePipelineCreateInfo
-	if len5 > 0 {
-		arr6 = (*C.VkComputePipelineCreateInfo)(C.malloc(C.size_t(len5) * C.size_t(unsafe.Sizeof(*new(C.VkComputePipelineCreateInfo)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr6)) })
-	}
-	for i7, elem8 := range createInfos {
-		val9, cancel10 := elem8.toC()
-		cancels = append(cancels, cancel10)
-		(*[1 << 30]C.VkComputePipelineCreateInfo)(unsafe.Pointer(arr6))[i7] = *val9
-	}
-	// param allocator
-	var ptr12 *C.VkAllocationCallbacks
-	if allocator != nil {
-		val13, cancel14 := allocator.toC()
-		cancels = append(cancels, cancel14)
-		ptr12 = val13
-	}
-	pipelinesOut := (*C.VkPipeline)(C.malloc(C.size_t(createInfoCount) * C.size_t(unsafe.Sizeof(*new(C.VkPipeline)))))
-	defer C.free(unsafe.Pointer(pipelinesOut))
-	_result := C.fn_vkCreateComputePipelines(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, arr6, ptr12, pipelinesOut)
-	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
-	}
-	out15 := make([]*Pipeline, createInfoCount)
-	for i16 := range out15 {
-		h17 := &Pipeline{handle: unsafe.Pointer((*[1 << 30]C.VkPipeline)(unsafe.Pointer(pipelinesOut))[i16])}
-		out15[i16] = h17
-	}
-	return out15, nil
-}
-
 func (h Instance) CreateDebugUtilsMessengerEXT(
 	createInfo *DebugUtilsMessengerCreateInfoEXT,
 	allocator *AllocationCallbacks,
@@ -30438,6 +30384,60 @@ func (h Device) WaitSemaphores(
 		return vkError(_result)
 	}
 	return nil
+}
+
+func (h Device) CreateComputePipelines(
+	pipelineCache *PipelineCache,
+	createInfoCount uint32,
+	createInfos []ComputePipelineCreateInfo,
+	allocator *AllocationCallbacks,
+) ([]*Pipeline, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pipelineCache
+	var h1 C.VkPipelineCache
+	if pipelineCache != nil {
+		h1 = C.VkPipelineCache(unsafe.Pointer(pipelineCache.handle))
+	}
+	// param createInfoCount
+	val3 := C.uint32_t(createInfoCount)
+	// param createInfos
+	len5 := len(createInfos)
+
+	var arr6 *C.VkComputePipelineCreateInfo
+	if len5 > 0 {
+		arr6 = (*C.VkComputePipelineCreateInfo)(C.malloc(C.size_t(len5) * C.size_t(unsafe.Sizeof(*new(C.VkComputePipelineCreateInfo)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr6)) })
+	}
+	for i7, elem8 := range createInfos {
+		val9, cancel10 := elem8.toC()
+		cancels = append(cancels, cancel10)
+		(*[1 << 30]C.VkComputePipelineCreateInfo)(unsafe.Pointer(arr6))[i7] = *val9
+	}
+	// param allocator
+	var ptr12 *C.VkAllocationCallbacks
+	if allocator != nil {
+		val13, cancel14 := allocator.toC()
+		cancels = append(cancels, cancel14)
+		ptr12 = val13
+	}
+	pipelinesOut := (*C.VkPipeline)(C.malloc(C.size_t(createInfoCount) * C.size_t(unsafe.Sizeof(*new(C.VkPipeline)))))
+	defer C.free(unsafe.Pointer(pipelinesOut))
+	_result := C.fn_vkCreateComputePipelines(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, arr6, ptr12, pipelinesOut)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+	out15 := make([]*Pipeline, createInfoCount)
+	for i16 := range out15 {
+		h17 := &Pipeline{handle: unsafe.Pointer((*[1 << 30]C.VkPipeline)(unsafe.Pointer(pipelinesOut))[i16])}
+		out15[i16] = h17
+	}
+	return out15, nil
 }
 
 func (h Device) CreateGraphicsPipelines(
