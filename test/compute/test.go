@@ -65,7 +65,7 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create instance: %w", err)
 	}
-	defer instance.DestroyInstance(nil)
+	defer instance.Destroy(nil)
 
 	vk.LoadInstance(instance)
 	fmt.Println("instance created with validation layers")
@@ -114,7 +114,7 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create device: %w", err)
 	}
-	defer device.DestroyDevice(nil)
+	defer device.Destroy(nil)
 
 	vk.LoadDevice(device)
 	fmt.Println("device created")
@@ -284,7 +284,7 @@ func run() error {
 	cmdBuf := cmdBufs[0]
 
 	// Record command buffer
-	if err := cmdBuf.BeginCommandBuffer(&vk.CommandBufferBeginInfo{
+	if err := cmdBuf.Begin(&vk.CommandBufferBeginInfo{
 		Flags: vk.CommandBufferUsageFlags(vk.CommandBufferUsageOneTimeSubmitBit),
 	}); err != nil {
 		return fmt.Errorf("begin command buffer: %w", err)
@@ -300,7 +300,7 @@ func run() error {
 	)
 	cmdBuf.Dispatch(1, 1, 1) // 1 workgroup of 64 invocations
 
-	if err := cmdBuf.EndCommandBuffer(); err != nil {
+	if err := cmdBuf.End(); err != nil {
 		return fmt.Errorf("end command buffer: %w", err)
 	}
 

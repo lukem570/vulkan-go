@@ -61,7 +61,7 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create instance: %w", err)
 	}
-	defer instance.DestroyInstance(nil)
+	defer instance.Destroy(nil)
 
 	vk.LoadInstance(instance)
 	fmt.Println("instance created with validation layers")
@@ -151,7 +151,7 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create device: %w", err)
 	}
-	defer device.DestroyDevice(nil)
+	defer device.Destroy(nil)
 	vk.LoadDevice(device)
 	fmt.Println("device created")
 
