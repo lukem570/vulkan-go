@@ -1838,6 +1838,7 @@ const (
 	ObjectTypeExternalComputeQueueNV        ObjectType = 1000556000
 	ObjectTypeIndirectCommandsLayoutEXT     ObjectType = 1000572000
 	ObjectTypeIndirectExecutionSetEXT       ObjectType = 1000572001
+	ObjectTypeShaderInstrumentationARM      ObjectType = 1000608000
 )
 
 type PeerMemoryFeatureFlagBits uint32
@@ -1989,10 +1990,10 @@ const (
 	PipelineCreate2RayTracingDisplacementMicromapBitNV              PipelineCreateFlagBits2 = 1 << 28
 	PipelineCreate2DescriptorBufferBitEXT                           PipelineCreateFlagBits2 = 1 << 29
 	PipelineCreate2DisallowOpacityMicromapBitARM                    PipelineCreateFlagBits2 = 1 << 37
+	PipelineCreate2InstrumentShadersBitARM                          PipelineCreateFlagBits2 = 1 << 39
 	PipelineCreate2CaptureDataBitKHR                                PipelineCreateFlagBits2 = 1 << 31
 	PipelineCreate2IndirectBindableBitEXT                           PipelineCreateFlagBits2 = 1 << 38
 	PipelineCreate2Reserved35BitKHR                                 PipelineCreateFlagBits2 = 1 << 35
-	PipelineCreate2Reserved39BitARM                                 PipelineCreateFlagBits2 = 1 << 39
 	PipelineCreate2PerLayerFragmentDensityBitVALVE                  PipelineCreateFlagBits2 = 1 << 40
 	PipelineCreate2Reserved41BitKHR                                 PipelineCreateFlagBits2 = 1 << 41
 	PipelineCreate264BitIndexingBitEXT                              PipelineCreateFlagBits2 = 1 << 43
@@ -4031,6 +4032,10 @@ const (
 	StructureTypePerformanceCounterARM                                        StructureType = 1000606002
 	StructureTypePerformanceCounterDescriptionARM                             StructureType = 1000606003
 	StructureTypeRenderPassPerformanceCountersByRegionBeginInfoARM            StructureType = 1000606004
+	StructureTypePhysicalDeviceShaderInstrumentationFeaturesARM               StructureType = 1000608000
+	StructureTypePhysicalDeviceShaderInstrumentationPropertiesARM             StructureType = 1000608001
+	StructureTypeShaderInstrumentationCreateInfoARM                           StructureType = 1000608002
+	StructureTypeShaderInstrumentationMetricDescriptionARM                    StructureType = 1000608003
 	StructureTypePhysicalDeviceVertexAttributeRobustnessFeaturesEXT           StructureType = 1000609000
 	StructureTypePhysicalDeviceFormatPackFeaturesARM                          StructureType = 1000610000
 	StructureTypePhysicalDeviceFragmentDensityMapLayeredFeaturesVALVE         StructureType = 1000612000
