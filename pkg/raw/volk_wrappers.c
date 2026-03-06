@@ -35,6 +35,10 @@ VkResult fn_vkBindImageMemory2(VkDevice device, uint32_t bindInfoCount, const Vk
 	return vkBindImageMemory2(device, bindInfoCount, pBindInfos);
 }
 
+void fn_vkCmdBeginDebugUtilsLabelEXT(VkCommandBuffer commandBuffer, const VkDebugUtilsLabelEXT* pLabelInfo) {
+	vkCmdBeginDebugUtilsLabelEXT(commandBuffer, pLabelInfo);
+}
+
 void fn_vkCmdBeginQuery(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t query, VkQueryControlFlags flags) {
 	vkCmdBeginQuery(commandBuffer, queryPool, query, flags);
 }
@@ -171,6 +175,10 @@ void fn_vkCmdDrawIndirectCount(VkCommandBuffer commandBuffer, VkBuffer buffer, V
 	vkCmdDrawIndirectCount(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
 }
 
+void fn_vkCmdEndDebugUtilsLabelEXT(VkCommandBuffer commandBuffer) {
+	vkCmdEndDebugUtilsLabelEXT(commandBuffer);
+}
+
 void fn_vkCmdEndQuery(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t query) {
 	vkCmdEndQuery(commandBuffer, queryPool, query);
 }
@@ -193,6 +201,10 @@ void fn_vkCmdExecuteCommands(VkCommandBuffer commandBuffer, uint32_t commandBuff
 
 void fn_vkCmdFillBuffer(VkCommandBuffer commandBuffer, VkBuffer dstBuffer, VkDeviceSize dstOffset, VkDeviceSize size, uint32_t data) {
 	vkCmdFillBuffer(commandBuffer, dstBuffer, dstOffset, size, data);
+}
+
+void fn_vkCmdInsertDebugUtilsLabelEXT(VkCommandBuffer commandBuffer, const VkDebugUtilsLabelEXT* pLabelInfo) {
+	vkCmdInsertDebugUtilsLabelEXT(commandBuffer, pLabelInfo);
 }
 
 void fn_vkCmdNextSubpass(VkCommandBuffer commandBuffer, VkSubpassContents contents) {
@@ -419,6 +431,10 @@ VkResult fn_vkCreateComputePipelines(VkDevice device, VkPipelineCache pipelineCa
 	return vkCreateComputePipelines(device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
 }
 
+VkResult fn_vkCreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pMessenger) {
+	return vkCreateDebugUtilsMessengerEXT(instance, pCreateInfo, pAllocator, pMessenger);
+}
+
 VkResult fn_vkCreateDescriptorPool(VkDevice device, const VkDescriptorPoolCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDescriptorPool* pDescriptorPool) {
 	return vkCreateDescriptorPool(device, pCreateInfo, pAllocator, pDescriptorPool);
 }
@@ -513,6 +529,10 @@ void fn_vkDestroyBufferView(VkDevice device, VkBufferView bufferView, const VkAl
 
 void fn_vkDestroyCommandPool(VkDevice device, VkCommandPool commandPool, const VkAllocationCallbacks* pAllocator) {
 	vkDestroyCommandPool(device, commandPool, pAllocator);
+}
+
+void fn_vkDestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT messenger, const VkAllocationCallbacks* pAllocator) {
+	vkDestroyDebugUtilsMessengerEXT(instance, messenger, pAllocator);
 }
 
 void fn_vkDestroyDescriptorPool(VkDevice device, VkDescriptorPool descriptorPool, const VkAllocationCallbacks* pAllocator) {
@@ -855,8 +875,20 @@ VkResult fn_vkMergePipelineCaches(VkDevice device, VkPipelineCache dstCache, uin
 	return vkMergePipelineCaches(device, dstCache, srcCacheCount, pSrcCaches);
 }
 
+void fn_vkQueueBeginDebugUtilsLabelEXT(VkQueue queue, const VkDebugUtilsLabelEXT* pLabelInfo) {
+	vkQueueBeginDebugUtilsLabelEXT(queue, pLabelInfo);
+}
+
 VkResult fn_vkQueueBindSparse(VkQueue queue, uint32_t bindInfoCount, const VkBindSparseInfo* pBindInfo, VkFence fence) {
 	return vkQueueBindSparse(queue, bindInfoCount, pBindInfo, fence);
+}
+
+void fn_vkQueueEndDebugUtilsLabelEXT(VkQueue queue) {
+	vkQueueEndDebugUtilsLabelEXT(queue);
+}
+
+void fn_vkQueueInsertDebugUtilsLabelEXT(VkQueue queue, const VkDebugUtilsLabelEXT* pLabelInfo) {
+	vkQueueInsertDebugUtilsLabelEXT(queue, pLabelInfo);
 }
 
 VkResult fn_vkQueueSubmit(VkQueue queue, uint32_t submitCount, const VkSubmitInfo* pSubmits, VkFence fence) {
@@ -895,6 +927,14 @@ void fn_vkResetQueryPool(VkDevice device, VkQueryPool queryPool, uint32_t firstQ
 	vkResetQueryPool(device, queryPool, firstQuery, queryCount);
 }
 
+VkResult fn_vkSetDebugUtilsObjectNameEXT(VkDevice device, const VkDebugUtilsObjectNameInfoEXT* pNameInfo) {
+	return vkSetDebugUtilsObjectNameEXT(device, pNameInfo);
+}
+
+VkResult fn_vkSetDebugUtilsObjectTagEXT(VkDevice device, const VkDebugUtilsObjectTagInfoEXT* pTagInfo) {
+	return vkSetDebugUtilsObjectTagEXT(device, pTagInfo);
+}
+
 VkResult fn_vkSetEvent(VkDevice device, VkEvent event) {
 	return vkSetEvent(device, event);
 }
@@ -905,6 +945,10 @@ VkResult fn_vkSetPrivateData(VkDevice device, VkObjectType objectType, uint64_t 
 
 VkResult fn_vkSignalSemaphore(VkDevice device, const VkSemaphoreSignalInfo* pSignalInfo) {
 	return vkSignalSemaphore(device, pSignalInfo);
+}
+
+void fn_vkSubmitDebugUtilsMessageEXT(VkInstance instance, VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageTypes, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData) {
+	vkSubmitDebugUtilsMessageEXT(instance, messageSeverity, messageTypes, pCallbackData);
 }
 
 VkResult fn_vkTransitionImageLayout(VkDevice device, uint32_t transitionCount, const VkHostImageLayoutTransitionInfo* pTransitions) {

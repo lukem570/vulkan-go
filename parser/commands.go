@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/lukem570/vulkan-go/generator"
@@ -181,10 +182,16 @@ func buildCommand(cmd XMLCommand, handles map[string]*generator.GoHandle, funcPo
 		last := params[len(params)-1]
 		if isOutputParam(last, returnTypeName, handles, structs) {
 			ft := outParamType(last, handles, funcPointers, structs)
-			c.OutParams = append(c.OutParams, generator.OutParam{
+			op := generator.OutParam{
 				Name: last.Name,
 				Type: ft,
-			})
+			}
+			// Detect array output params (e.g. pPipelines with len="createInfoCount")
+			if last.Len != "" && !strings.Contains(last.Len, "null-terminated") {
+				op.IsArray = true
+				op.CountGoParam = resolveCountExpr(last.Len, params, structs)
+			}
+			c.OutParams = append(c.OutParams, op)
 			params = params[:len(params)-1]
 		}
 	}
@@ -292,6 +299,49 @@ func fixedArraySizeParam(innerXML string) int {
 		n = n*10 + int(ch-'0')
 	}
 	return n
+}
+
+// resolveCountExpr converts a C len expression to a Go expression.
+// For simple params like "createInfoCount" it returns the Go param name.
+// For struct member access like "pAllocateInfo->descriptorSetCount", it checks
+// if the field was collapsed into a slice (CountFor != "") and returns
+// len(param.SliceField) if so, otherwise param.Field.
+func resolveCountExpr(lenExpr string, params []XMLParam, structs map[string]*generator.Structured) string {
+	parts := strings.SplitN(lenExpr, "->", 2)
+	if len(parts) != 2 {
+		return goParamName(lenExpr)
+	}
+
+	paramCName := parts[0]
+	fieldCName := parts[1]
+	paramGoName := goParamName(paramCName)
+
+	// Find the struct type of the parameter
+	var structTypeName string
+	for _, p := range params {
+		if p.Name == paramCName {
+			structTypeName = stripVk(p.Type)
+			break
+		}
+	}
+
+	// Check if the field was collapsed (it's a count for a slice)
+	if structTypeName != "" && structs != nil {
+		if s, ok := structs[structTypeName]; ok {
+			for _, f := range s.Fields {
+				if f.CName == fieldCName && f.CountFor != "" {
+					// Find the Go name of the slice field it counts
+					for _, sf := range s.Fields {
+						if sf.GoName == f.CountFor {
+							return fmt.Sprintf("uint32(len(%s.%s))", paramGoName, sf.GoName)
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return paramGoName + "." + toPublic(fieldCName)
 }
 
 func goParamName(cName string) string {

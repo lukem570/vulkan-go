@@ -24,3 +24,5 @@ go.work
 .vscode
 *.unformatted
 .claude
+todo.txt
+*.spv

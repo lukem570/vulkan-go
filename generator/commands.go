@@ -37,8 +37,10 @@ type CParam struct {
 // OutParam describes a parameter that is an output pointer in C but a return
 // value in Go.
 type OutParam struct {
-	Name string
-	Type FieldType
+	Name       string
+	Type       FieldType
+	IsArray      bool   // true when the output is an array (e.g. pPipelines with len=createInfoCount)
+	CountGoParam string // Go param name that holds the count (e.g. "createInfoCount")
 }
 
 type CommandParam struct {
@@ -72,7 +74,11 @@ func (c *GoCommand) GenerateWrapper() string {
 	// ---- Return types -------------------------------------------------------
 	var returns []string
 	for _, op := range c.OutParams {
-		returns = append(returns, op.Type.GoName())
+		if op.IsArray {
+			returns = append(returns, "[]"+op.Type.GoName())
+		} else {
+			returns = append(returns, op.Type.GoName())
+		}
 	}
 	if c.ReturnType != nil {
 		returns = append(returns, c.ReturnType.GoName())
@@ -117,8 +123,16 @@ func (c *GoCommand) GenerateWrapper() string {
 	// Allocate output param slots
 	for _, op := range c.OutParams {
 		varName := sanitizeIdent(op.Name) + "Out"
-		b.WriteString(fmt.Sprintf("\tvar %s %s\n", varName, op.Type.CName()))
-		cArgs = append(cArgs, "&"+varName)
+		if op.IsArray {
+			// Allocate a C array sized by the count param
+			b.WriteString(fmt.Sprintf("\t%s := (*%s)(C.malloc(C.size_t(%s) * C.size_t(unsafe.Sizeof(*new(%s)))))\n",
+				varName, op.Type.CName(), op.CountGoParam, op.Type.CName()))
+			b.WriteString(fmt.Sprintf("\tdefer C.free(unsafe.Pointer(%s))\n", varName))
+			cArgs = append(cArgs, varName)
+		} else {
+			b.WriteString(fmt.Sprintf("\tvar %s %s\n", varName, op.Type.CName()))
+			cArgs = append(cArgs, "&"+varName)
+		}
 	}
 
 	// Call C function
@@ -135,7 +149,11 @@ func (c *GoCommand) GenerateWrapper() string {
 		b.WriteString("\tif _result != C.VK_SUCCESS {\n")
 		b.WriteString("\t\treturn ")
 		for _, op := range c.OutParams {
-			b.WriteString(zeroValue(op.Type) + ", ")
+			if op.IsArray {
+				b.WriteString("nil, ")
+			} else {
+				b.WriteString(zeroValue(op.Type) + ", ")
+			}
 		}
 		if c.ReturnType != nil {
 			b.WriteString(zeroValue(c.ReturnType) + ", ")
@@ -147,11 +165,27 @@ func (c *GoCommand) GenerateWrapper() string {
 	var retVars []string
 	for _, op := range c.OutParams {
 		varName := sanitizeIdent(op.Name) + "Out"
-		outG := &CodeGen{varIndex: g.varIndex}
-		goVal := op.Type.GenerateFromC(outG, varName)
-		b.WriteString(outG.String())
-		g.varIndex = outG.varIndex
-		retVars = append(retVars, goVal)
+		if op.IsArray {
+			// Convert C array to Go slice
+			sliceVar := g.Var("out")
+			b.WriteString(fmt.Sprintf("\t%s := make([]%s, %s)\n", sliceVar, op.Type.GoName(), op.CountGoParam))
+			idxVar := g.Var("i")
+			b.WriteString(fmt.Sprintf("\tfor %s := range %s {\n", idxVar, sliceVar))
+			elemExpr := fmt.Sprintf("(*[1<<30]%s)(unsafe.Pointer(%s))[%s]", op.Type.CName(), varName, idxVar)
+			outG := &CodeGen{varIndex: g.varIndex}
+			goVal := op.Type.GenerateFromC(outG, elemExpr)
+			b.WriteString(outG.String())
+			g.varIndex = outG.varIndex
+			b.WriteString(fmt.Sprintf("\t\t%s[%s] = %s\n", sliceVar, idxVar, goVal))
+			b.WriteString("\t}\n")
+			retVars = append(retVars, sliceVar)
+		} else {
+			outG := &CodeGen{varIndex: g.varIndex}
+			goVal := op.Type.GenerateFromC(outG, varName)
+			b.WriteString(outG.String())
+			g.varIndex = outG.varIndex
+			retVars = append(retVars, goVal)
+		}
 	}
 
 	// Convert non-VkResult return value

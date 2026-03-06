@@ -276,19 +276,36 @@ func parseStruct(t XMLType, handles map[string]*generator.GoHandle, funcPointers
 
 // buildCountMap returns a map from count-field-name → the array field it counts.
 // For example: "descriptorSetCount" → "pDescriptorSets"
+// A count field is only collapsed when exactly one array references it.
 func buildCountMap(members []XMLMember) map[string]string {
-	result := map[string]string{}
+	// Count how many arrays reference each count field
+	type arrayRef struct {
+		name     string
+		optional bool
+	}
+	refs := map[string][]arrayRef{}
 	for _, m := range members {
 		if m.Len == "" || m.Len == "null-terminated" {
 			continue
 		}
-		// len might be "descriptorSetCount,null-terminated" or just "descriptorSetCount"
 		parts := strings.Split(m.Len, ",")
 		for _, part := range parts {
 			part = strings.TrimSpace(part)
 			if part != "" && part != "null-terminated" {
-				result[part] = m.Name
+				refs[part] = append(refs[part], arrayRef{
+					name:     m.Name,
+					optional: m.Optional == "true",
+				})
 			}
+		}
+	}
+	// Only collapse when exactly one array uses the count.
+	// Don't collapse when the array is purely optional (optional="true"),
+	// as the count has independent meaning. But optional="false,true" is fine.
+	result := map[string]string{}
+	for countField, arrayFields := range refs {
+		if len(arrayFields) == 1 && !arrayFields[0].optional {
+			result[countField] = arrayFields[0].name
 		}
 	}
 	return result

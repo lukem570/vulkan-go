@@ -123,9 +123,19 @@ func (s *Structured) GenerateToC() string {
 		cFieldName := sanitizeCField(field.CName)
 		g.Line(fmt.Sprintf("\tp.%s = %s", cFieldName, output))
 
-		// If this is a slice field, also set the count field
+		// If this is a slice field and the count field was collapsed, auto-set it
 		if _, ok := field.Type.(*Slice); ok && field.CountCName != "" {
-			g.Line(fmt.Sprintf("\tp.%s = C.uint32_t(len(%s))", field.CountCName, input))
+			// Only auto-set the count if it was collapsed (CountFor is set)
+			collapsed := false
+			for _, f := range s.Fields {
+				if f.CName == field.CountCName && f.CountFor != "" {
+					collapsed = true
+					break
+				}
+			}
+			if collapsed {
+				g.Line(fmt.Sprintf("\tp.%s = C.uint32_t(len(%s))", field.CountCName, input))
+			}
 		}
 	}
 
@@ -186,6 +196,14 @@ func (s *Structured) GenerateFromC() string {
 			case *NamedType:
 				g.Line(fmt.Sprintf("\tfor _i := range %s {", goField))
 				g.Line(fmt.Sprintf("\t\t%s[_i] = %s(%s[_i])", goField, child.Name, input))
+				g.Line("\t}")
+			case *StructType:
+				g.Line(fmt.Sprintf("\tfor _i := range %s {", goField))
+				g.Line(fmt.Sprintf("\t\t%s[_i].fromC(&%s[_i])", goField, input))
+				g.Line("\t}")
+			case *Handle:
+				g.Line(fmt.Sprintf("\tfor _i := range %s {", goField))
+				g.Line(fmt.Sprintf("\t\t%s[_i] = &%s{handle: unsafe.Pointer(%s[_i])}", goField, child.Name, input))
 				g.Line("\t}")
 			default:
 				g.Line(fmt.Sprintf("\t// TODO: fromC for %s (FixedArray of %T)", field.GoName, child))

@@ -126,7 +126,8 @@ type Handle struct {
 
 func (t *Handle) GenerateToC(g *CodeGen, input string) string {
 	out := g.Var("h")
-	g.Line(fmt.Sprintf("\t%s := C.%s(unsafe.Pointer(%s.handle))", out, t.CTypeName, input))
+	g.Line(fmt.Sprintf("\tvar %s C.%s", out, t.CTypeName))
+	g.Line(fmt.Sprintf("\tif %s != nil { %s = C.%s(unsafe.Pointer(%s.handle)) }", input, out, t.CTypeName, input))
 	return out
 }
 
