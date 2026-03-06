@@ -59,7 +59,32 @@ func run() error {
 
 	enabledExts := append(glfwExts, "VK_EXT_debug_utils")
 
+	messengerCreateInfo := &vk.DebugUtilsMessengerCreateInfoEXT{
+		MessageSeverity: vk.DebugUtilsMessageSeverityFlagsEXT(
+			vk.DebugUtilsMessageSeverityErrorBitEXT |
+				vk.DebugUtilsMessageSeverityWarningBitEXT,
+		),
+		MessageType: vk.DebugUtilsMessageTypeFlagsEXT(
+			vk.DebugUtilsMessageTypeValidationBitEXT |
+				vk.DebugUtilsMessageTypePerformanceBitEXT,
+		),
+		PfnUserCallback: func(messageSeverity vk.DebugUtilsMessageSeverityFlagBitsEXT, messageTypes vk.DebugUtilsMessageTypeFlagsEXT, callbackData *vk.DebugUtilsMessengerCallbackDataEXT, userData unsafe.Pointer) bool {
+			fmt.Println("vulkan:", callbackData.Message)
+			return false
+		},
+	}
+
+	instNext := &vk.ValidationFeaturesEXT{
+		Next: messengerCreateInfo,
+		EnabledValidationFeatures: []vk.ValidationFeatureEnableEXT{
+			vk.ValidationFeatureEnableBestPracticesEXT,
+			vk.ValidationFeatureEnableSynchronizationValidationEXT,
+			vk.ValidationFeatureEnableGpuAssistedEXT,
+		},
+	}
+
 	instance, err := vk.CreateInstance(&vk.InstanceCreateInfo{
+		Next: instNext,
 		ApplicationInfo: &vk.ApplicationInfo{
 			ApplicationName:    "vulkan-go-triangle-test",
 			ApplicationVersion: 1,
@@ -78,6 +103,13 @@ func run() error {
 	defer instance.Destroy(nil)
 
 	vk.LoadInstance(instance)
+
+	messenger, err := instance.CreateDebugUtilsMessengerEXT(messengerCreateInfo, nil)
+	if err != nil {
+		return fmt.Errorf("create debug messenger: %w", err)
+	}
+	defer instance.DestroyDebugUtilsMessengerEXT(messenger, nil)
+
 	fmt.Println("instance created")
 
 	window, err := glfw.CreateWindow(800, 600, "Vulkan go triangle", nil, nil)

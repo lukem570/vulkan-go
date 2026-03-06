@@ -45,30 +45,6 @@ void fn_vkQueueBeginDebugUtilsLabelEXT(VkQueue queue, const VkDebugUtilsLabelEXT
 	vkQueueBeginDebugUtilsLabelEXT(queue, pLabelInfo);
 }
 
-VkResult fn_vkBindBufferMemory(VkDevice device, VkBuffer buffer, VkDeviceMemory memory, VkDeviceSize memoryOffset) {
-	return vkBindBufferMemory(device, buffer, memory, memoryOffset);
-}
-
-VkResult fn_vkBindBufferMemory2(VkDevice device, uint32_t bindInfoCount, const VkBindBufferMemoryInfo* pBindInfos) {
-	return vkBindBufferMemory2(device, bindInfoCount, pBindInfos);
-}
-
-VkResult fn_vkBindImageMemory(VkDevice device, VkImage image, VkDeviceMemory memory, VkDeviceSize memoryOffset) {
-	return vkBindImageMemory(device, image, memory, memoryOffset);
-}
-
-VkResult fn_vkBindImageMemory2(VkDevice device, uint32_t bindInfoCount, const VkBindImageMemoryInfo* pBindInfos) {
-	return vkBindImageMemory2(device, bindInfoCount, pBindInfos);
-}
-
-VkResult fn_vkQueueBindSparse(VkQueue queue, uint32_t bindInfoCount, const VkBindSparseInfo* pBindInfo, VkFence fence) {
-	return vkQueueBindSparse(queue, bindInfoCount, pBindInfo, fence);
-}
-
-void fn_vkCmdBeginDebugUtilsLabelEXT(VkCommandBuffer commandBuffer, const VkDebugUtilsLabelEXT* pLabelInfo) {
-	vkCmdBeginDebugUtilsLabelEXT(commandBuffer, pLabelInfo);
-}
-
 void fn_vkCmdBeginQuery(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t query, VkQueryControlFlags flags) {
 	vkCmdBeginQuery(commandBuffer, queryPool, query, flags);
 }
@@ -85,12 +61,28 @@ void fn_vkCmdBeginRendering(VkCommandBuffer commandBuffer, const VkRenderingInfo
 	vkCmdBeginRendering(commandBuffer, pRenderingInfo);
 }
 
+VkResult fn_vkBindBufferMemory(VkDevice device, VkBuffer buffer, VkDeviceMemory memory, VkDeviceSize memoryOffset) {
+	return vkBindBufferMemory(device, buffer, memory, memoryOffset);
+}
+
+VkResult fn_vkBindBufferMemory2(VkDevice device, uint32_t bindInfoCount, const VkBindBufferMemoryInfo* pBindInfos) {
+	return vkBindBufferMemory2(device, bindInfoCount, pBindInfos);
+}
+
 void fn_vkCmdBindDescriptorSets(VkCommandBuffer commandBuffer, VkPipelineBindPoint pipelineBindPoint, VkPipelineLayout layout, uint32_t firstSet, uint32_t descriptorSetCount, const VkDescriptorSet* pDescriptorSets, uint32_t dynamicOffsetCount, const uint32_t* pDynamicOffsets) {
 	vkCmdBindDescriptorSets(commandBuffer, pipelineBindPoint, layout, firstSet, descriptorSetCount, pDescriptorSets, dynamicOffsetCount, pDynamicOffsets);
 }
 
 void fn_vkCmdBindDescriptorSets2(VkCommandBuffer commandBuffer, const VkBindDescriptorSetsInfo* pBindDescriptorSetsInfo) {
 	vkCmdBindDescriptorSets2(commandBuffer, pBindDescriptorSetsInfo);
+}
+
+VkResult fn_vkBindImageMemory(VkDevice device, VkImage image, VkDeviceMemory memory, VkDeviceSize memoryOffset) {
+	return vkBindImageMemory(device, image, memory, memoryOffset);
+}
+
+VkResult fn_vkBindImageMemory2(VkDevice device, uint32_t bindInfoCount, const VkBindImageMemoryInfo* pBindInfos) {
+	return vkBindImageMemory2(device, bindInfoCount, pBindInfos);
 }
 
 void fn_vkCmdBindIndexBuffer(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType) {
@@ -103,6 +95,10 @@ void fn_vkCmdBindIndexBuffer2(VkCommandBuffer commandBuffer, VkBuffer buffer, Vk
 
 void fn_vkCmdBindPipeline(VkCommandBuffer commandBuffer, VkPipelineBindPoint pipelineBindPoint, VkPipeline pipeline) {
 	vkCmdBindPipeline(commandBuffer, pipelineBindPoint, pipeline);
+}
+
+VkResult fn_vkQueueBindSparse(VkQueue queue, uint32_t bindInfoCount, const VkBindSparseInfo* pBindInfo, VkFence fence) {
+	return vkQueueBindSparse(queue, bindInfoCount, pBindInfo, fence);
 }
 
 void fn_vkCmdBindVertexBuffers(VkCommandBuffer commandBuffer, uint32_t firstBinding, uint32_t bindingCount, const VkBuffer* pBuffers, const VkDeviceSize* pOffsets) {
@@ -165,274 +161,6 @@ void fn_vkCmdCopyImageToBuffer2(VkCommandBuffer commandBuffer, const VkCopyImage
 	vkCmdCopyImageToBuffer2(commandBuffer, pCopyImageToBufferInfo);
 }
 
-void fn_vkCmdCopyQueryPoolResults(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount, VkBuffer dstBuffer, VkDeviceSize dstOffset, VkDeviceSize stride, VkQueryResultFlags flags) {
-	vkCmdCopyQueryPoolResults(commandBuffer, queryPool, firstQuery, queryCount, dstBuffer, dstOffset, stride, flags);
-}
-
-void fn_vkCmdDispatch(VkCommandBuffer commandBuffer, uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) {
-	vkCmdDispatch(commandBuffer, groupCountX, groupCountY, groupCountZ);
-}
-
-void fn_vkCmdDispatchBase(VkCommandBuffer commandBuffer, uint32_t baseGroupX, uint32_t baseGroupY, uint32_t baseGroupZ, uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) {
-	vkCmdDispatchBase(commandBuffer, baseGroupX, baseGroupY, baseGroupZ, groupCountX, groupCountY, groupCountZ);
-}
-
-void fn_vkCmdDispatchIndirect(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset) {
-	vkCmdDispatchIndirect(commandBuffer, buffer, offset);
-}
-
-void fn_vkCmdDraw(VkCommandBuffer commandBuffer, uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) {
-	vkCmdDraw(commandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
-}
-
-void fn_vkCmdDrawIndexed(VkCommandBuffer commandBuffer, uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) {
-	vkCmdDrawIndexed(commandBuffer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
-}
-
-void fn_vkCmdDrawIndexedIndirect(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride) {
-	vkCmdDrawIndexedIndirect(commandBuffer, buffer, offset, drawCount, stride);
-}
-
-void fn_vkCmdDrawIndexedIndirectCount(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) {
-	vkCmdDrawIndexedIndirectCount(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
-}
-
-void fn_vkCmdDrawIndirect(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride) {
-	vkCmdDrawIndirect(commandBuffer, buffer, offset, drawCount, stride);
-}
-
-void fn_vkCmdDrawIndirectCount(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) {
-	vkCmdDrawIndirectCount(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
-}
-
-void fn_vkCmdEndDebugUtilsLabelEXT(VkCommandBuffer commandBuffer) {
-	vkCmdEndDebugUtilsLabelEXT(commandBuffer);
-}
-
-void fn_vkCmdEndQuery(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t query) {
-	vkCmdEndQuery(commandBuffer, queryPool, query);
-}
-
-void fn_vkCmdEndRenderPass(VkCommandBuffer commandBuffer) {
-	vkCmdEndRenderPass(commandBuffer);
-}
-
-void fn_vkCmdEndRenderPass2(VkCommandBuffer commandBuffer, const VkSubpassEndInfo* pSubpassEndInfo) {
-	vkCmdEndRenderPass2(commandBuffer, pSubpassEndInfo);
-}
-
-void fn_vkCmdEndRendering(VkCommandBuffer commandBuffer) {
-	vkCmdEndRendering(commandBuffer);
-}
-
-void fn_vkCmdExecuteCommands(VkCommandBuffer commandBuffer, uint32_t commandBufferCount, const VkCommandBuffer* pCommandBuffers) {
-	vkCmdExecuteCommands(commandBuffer, commandBufferCount, pCommandBuffers);
-}
-
-void fn_vkCmdFillBuffer(VkCommandBuffer commandBuffer, VkBuffer dstBuffer, VkDeviceSize dstOffset, VkDeviceSize size, uint32_t data) {
-	vkCmdFillBuffer(commandBuffer, dstBuffer, dstOffset, size, data);
-}
-
-void fn_vkCmdInsertDebugUtilsLabelEXT(VkCommandBuffer commandBuffer, const VkDebugUtilsLabelEXT* pLabelInfo) {
-	vkCmdInsertDebugUtilsLabelEXT(commandBuffer, pLabelInfo);
-}
-
-void fn_vkCmdNextSubpass(VkCommandBuffer commandBuffer, VkSubpassContents contents) {
-	vkCmdNextSubpass(commandBuffer, contents);
-}
-
-void fn_vkCmdNextSubpass2(VkCommandBuffer commandBuffer, const VkSubpassBeginInfo* pSubpassBeginInfo, const VkSubpassEndInfo* pSubpassEndInfo) {
-	vkCmdNextSubpass2(commandBuffer, pSubpassBeginInfo, pSubpassEndInfo);
-}
-
-void fn_vkCmdPipelineBarrier(VkCommandBuffer commandBuffer, VkPipelineStageFlags srcStageMask, VkPipelineStageFlags dstStageMask, VkDependencyFlags dependencyFlags, uint32_t memoryBarrierCount, const VkMemoryBarrier* pMemoryBarriers, uint32_t bufferMemoryBarrierCount, const VkBufferMemoryBarrier* pBufferMemoryBarriers, uint32_t imageMemoryBarrierCount, const VkImageMemoryBarrier* pImageMemoryBarriers) {
-	vkCmdPipelineBarrier(commandBuffer, srcStageMask, dstStageMask, dependencyFlags, memoryBarrierCount, pMemoryBarriers, bufferMemoryBarrierCount, pBufferMemoryBarriers, imageMemoryBarrierCount, pImageMemoryBarriers);
-}
-
-void fn_vkCmdPipelineBarrier2(VkCommandBuffer commandBuffer, const VkDependencyInfo* pDependencyInfo) {
-	vkCmdPipelineBarrier2(commandBuffer, pDependencyInfo);
-}
-
-void fn_vkCmdPushConstants(VkCommandBuffer commandBuffer, VkPipelineLayout layout, VkShaderStageFlags stageFlags, uint32_t offset, uint32_t size, const void* pValues) {
-	vkCmdPushConstants(commandBuffer, layout, stageFlags, offset, size, pValues);
-}
-
-void fn_vkCmdPushConstants2(VkCommandBuffer commandBuffer, const VkPushConstantsInfo* pPushConstantsInfo) {
-	vkCmdPushConstants2(commandBuffer, pPushConstantsInfo);
-}
-
-void fn_vkCmdPushDescriptorSet(VkCommandBuffer commandBuffer, VkPipelineBindPoint pipelineBindPoint, VkPipelineLayout layout, uint32_t set, uint32_t descriptorWriteCount, const VkWriteDescriptorSet* pDescriptorWrites) {
-	vkCmdPushDescriptorSet(commandBuffer, pipelineBindPoint, layout, set, descriptorWriteCount, pDescriptorWrites);
-}
-
-void fn_vkCmdPushDescriptorSet2(VkCommandBuffer commandBuffer, const VkPushDescriptorSetInfo* pPushDescriptorSetInfo) {
-	vkCmdPushDescriptorSet2(commandBuffer, pPushDescriptorSetInfo);
-}
-
-void fn_vkCmdPushDescriptorSetWithTemplate(VkCommandBuffer commandBuffer, VkDescriptorUpdateTemplate descriptorUpdateTemplate, VkPipelineLayout layout, uint32_t set, const void* pData) {
-	vkCmdPushDescriptorSetWithTemplate(commandBuffer, descriptorUpdateTemplate, layout, set, pData);
-}
-
-void fn_vkCmdPushDescriptorSetWithTemplate2(VkCommandBuffer commandBuffer, const VkPushDescriptorSetWithTemplateInfo* pPushDescriptorSetWithTemplateInfo) {
-	vkCmdPushDescriptorSetWithTemplate2(commandBuffer, pPushDescriptorSetWithTemplateInfo);
-}
-
-void fn_vkCmdResetEvent(VkCommandBuffer commandBuffer, VkEvent event, VkPipelineStageFlags stageMask) {
-	vkCmdResetEvent(commandBuffer, event, stageMask);
-}
-
-void fn_vkCmdResetEvent2(VkCommandBuffer commandBuffer, VkEvent event, VkPipelineStageFlags2 stageMask) {
-	vkCmdResetEvent2(commandBuffer, event, stageMask);
-}
-
-void fn_vkCmdResetQueryPool(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount) {
-	vkCmdResetQueryPool(commandBuffer, queryPool, firstQuery, queryCount);
-}
-
-void fn_vkCmdResolveImage(VkCommandBuffer commandBuffer, VkImage srcImage, VkImageLayout srcImageLayout, VkImage dstImage, VkImageLayout dstImageLayout, uint32_t regionCount, const VkImageResolve* pRegions) {
-	vkCmdResolveImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions);
-}
-
-void fn_vkCmdResolveImage2(VkCommandBuffer commandBuffer, const VkResolveImageInfo2* pResolveImageInfo) {
-	vkCmdResolveImage2(commandBuffer, pResolveImageInfo);
-}
-
-void fn_vkCmdSetBlendConstants(VkCommandBuffer commandBuffer, const float* blendConstants) {
-	vkCmdSetBlendConstants(commandBuffer, blendConstants);
-}
-
-void fn_vkCmdSetCullMode(VkCommandBuffer commandBuffer, VkCullModeFlags cullMode) {
-	vkCmdSetCullMode(commandBuffer, cullMode);
-}
-
-void fn_vkCmdSetDepthBias(VkCommandBuffer commandBuffer, float depthBiasConstantFactor, float depthBiasClamp, float depthBiasSlopeFactor) {
-	vkCmdSetDepthBias(commandBuffer, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor);
-}
-
-void fn_vkCmdSetDepthBiasEnable(VkCommandBuffer commandBuffer, VkBool32 depthBiasEnable) {
-	vkCmdSetDepthBiasEnable(commandBuffer, depthBiasEnable);
-}
-
-void fn_vkCmdSetDepthBounds(VkCommandBuffer commandBuffer, float minDepthBounds, float maxDepthBounds) {
-	vkCmdSetDepthBounds(commandBuffer, minDepthBounds, maxDepthBounds);
-}
-
-void fn_vkCmdSetDepthBoundsTestEnable(VkCommandBuffer commandBuffer, VkBool32 depthBoundsTestEnable) {
-	vkCmdSetDepthBoundsTestEnable(commandBuffer, depthBoundsTestEnable);
-}
-
-void fn_vkCmdSetDepthCompareOp(VkCommandBuffer commandBuffer, VkCompareOp depthCompareOp) {
-	vkCmdSetDepthCompareOp(commandBuffer, depthCompareOp);
-}
-
-void fn_vkCmdSetDepthTestEnable(VkCommandBuffer commandBuffer, VkBool32 depthTestEnable) {
-	vkCmdSetDepthTestEnable(commandBuffer, depthTestEnable);
-}
-
-void fn_vkCmdSetDepthWriteEnable(VkCommandBuffer commandBuffer, VkBool32 depthWriteEnable) {
-	vkCmdSetDepthWriteEnable(commandBuffer, depthWriteEnable);
-}
-
-void fn_vkCmdSetDeviceMask(VkCommandBuffer commandBuffer, uint32_t deviceMask) {
-	vkCmdSetDeviceMask(commandBuffer, deviceMask);
-}
-
-void fn_vkCmdSetEvent(VkCommandBuffer commandBuffer, VkEvent event, VkPipelineStageFlags stageMask) {
-	vkCmdSetEvent(commandBuffer, event, stageMask);
-}
-
-void fn_vkCmdSetEvent2(VkCommandBuffer commandBuffer, VkEvent event, const VkDependencyInfo* pDependencyInfo) {
-	vkCmdSetEvent2(commandBuffer, event, pDependencyInfo);
-}
-
-void fn_vkCmdSetFrontFace(VkCommandBuffer commandBuffer, VkFrontFace frontFace) {
-	vkCmdSetFrontFace(commandBuffer, frontFace);
-}
-
-void fn_vkCmdSetLineStipple(VkCommandBuffer commandBuffer, uint32_t lineStippleFactor, uint16_t lineStipplePattern) {
-	vkCmdSetLineStipple(commandBuffer, lineStippleFactor, lineStipplePattern);
-}
-
-void fn_vkCmdSetLineWidth(VkCommandBuffer commandBuffer, float lineWidth) {
-	vkCmdSetLineWidth(commandBuffer, lineWidth);
-}
-
-void fn_vkCmdSetPrimitiveRestartEnable(VkCommandBuffer commandBuffer, VkBool32 primitiveRestartEnable) {
-	vkCmdSetPrimitiveRestartEnable(commandBuffer, primitiveRestartEnable);
-}
-
-void fn_vkCmdSetPrimitiveTopology(VkCommandBuffer commandBuffer, VkPrimitiveTopology primitiveTopology) {
-	vkCmdSetPrimitiveTopology(commandBuffer, primitiveTopology);
-}
-
-void fn_vkCmdSetRasterizerDiscardEnable(VkCommandBuffer commandBuffer, VkBool32 rasterizerDiscardEnable) {
-	vkCmdSetRasterizerDiscardEnable(commandBuffer, rasterizerDiscardEnable);
-}
-
-void fn_vkCmdSetRenderingAttachmentLocations(VkCommandBuffer commandBuffer, const VkRenderingAttachmentLocationInfo* pLocationInfo) {
-	vkCmdSetRenderingAttachmentLocations(commandBuffer, pLocationInfo);
-}
-
-void fn_vkCmdSetRenderingInputAttachmentIndices(VkCommandBuffer commandBuffer, const VkRenderingInputAttachmentIndexInfo* pInputAttachmentIndexInfo) {
-	vkCmdSetRenderingInputAttachmentIndices(commandBuffer, pInputAttachmentIndexInfo);
-}
-
-void fn_vkCmdSetScissor(VkCommandBuffer commandBuffer, uint32_t firstScissor, uint32_t scissorCount, const VkRect2D* pScissors) {
-	vkCmdSetScissor(commandBuffer, firstScissor, scissorCount, pScissors);
-}
-
-void fn_vkCmdSetScissorWithCount(VkCommandBuffer commandBuffer, uint32_t scissorCount, const VkRect2D* pScissors) {
-	vkCmdSetScissorWithCount(commandBuffer, scissorCount, pScissors);
-}
-
-void fn_vkCmdSetStencilCompareMask(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, uint32_t compareMask) {
-	vkCmdSetStencilCompareMask(commandBuffer, faceMask, compareMask);
-}
-
-void fn_vkCmdSetStencilOp(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, VkStencilOp failOp, VkStencilOp passOp, VkStencilOp depthFailOp, VkCompareOp compareOp) {
-	vkCmdSetStencilOp(commandBuffer, faceMask, failOp, passOp, depthFailOp, compareOp);
-}
-
-void fn_vkCmdSetStencilReference(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, uint32_t reference) {
-	vkCmdSetStencilReference(commandBuffer, faceMask, reference);
-}
-
-void fn_vkCmdSetStencilTestEnable(VkCommandBuffer commandBuffer, VkBool32 stencilTestEnable) {
-	vkCmdSetStencilTestEnable(commandBuffer, stencilTestEnable);
-}
-
-void fn_vkCmdSetStencilWriteMask(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, uint32_t writeMask) {
-	vkCmdSetStencilWriteMask(commandBuffer, faceMask, writeMask);
-}
-
-void fn_vkCmdSetViewport(VkCommandBuffer commandBuffer, uint32_t firstViewport, uint32_t viewportCount, const VkViewport* pViewports) {
-	vkCmdSetViewport(commandBuffer, firstViewport, viewportCount, pViewports);
-}
-
-void fn_vkCmdSetViewportWithCount(VkCommandBuffer commandBuffer, uint32_t viewportCount, const VkViewport* pViewports) {
-	vkCmdSetViewportWithCount(commandBuffer, viewportCount, pViewports);
-}
-
-void fn_vkCmdUpdateBuffer(VkCommandBuffer commandBuffer, VkBuffer dstBuffer, VkDeviceSize dstOffset, VkDeviceSize dataSize, const void* pData) {
-	vkCmdUpdateBuffer(commandBuffer, dstBuffer, dstOffset, dataSize, pData);
-}
-
-void fn_vkCmdWaitEvents(VkCommandBuffer commandBuffer, uint32_t eventCount, const VkEvent* pEvents, VkPipelineStageFlags srcStageMask, VkPipelineStageFlags dstStageMask, uint32_t memoryBarrierCount, const VkMemoryBarrier* pMemoryBarriers, uint32_t bufferMemoryBarrierCount, const VkBufferMemoryBarrier* pBufferMemoryBarriers, uint32_t imageMemoryBarrierCount, const VkImageMemoryBarrier* pImageMemoryBarriers) {
-	vkCmdWaitEvents(commandBuffer, eventCount, pEvents, srcStageMask, dstStageMask, memoryBarrierCount, pMemoryBarriers, bufferMemoryBarrierCount, pBufferMemoryBarriers, imageMemoryBarrierCount, pImageMemoryBarriers);
-}
-
-void fn_vkCmdWaitEvents2(VkCommandBuffer commandBuffer, uint32_t eventCount, const VkEvent* pEvents, const VkDependencyInfo* pDependencyInfos) {
-	vkCmdWaitEvents2(commandBuffer, eventCount, pEvents, pDependencyInfos);
-}
-
-void fn_vkCmdWriteTimestamp(VkCommandBuffer commandBuffer, VkPipelineStageFlagBits pipelineStage, VkQueryPool queryPool, uint32_t query) {
-	vkCmdWriteTimestamp(commandBuffer, pipelineStage, queryPool, query);
-}
-
-void fn_vkCmdWriteTimestamp2(VkCommandBuffer commandBuffer, VkPipelineStageFlags2 stage, VkQueryPool queryPool, uint32_t query) {
-	vkCmdWriteTimestamp2(commandBuffer, stage, queryPool, query);
-}
-
 VkResult fn_vkCopyImageToImage(VkDevice device, const VkCopyImageToImageInfo* pCopyImageToImageInfo) {
 	return vkCopyImageToImage(device, pCopyImageToImageInfo);
 }
@@ -445,6 +173,10 @@ VkResult fn_vkCopyMemoryToImage(VkDevice device, const VkCopyMemoryToImageInfo* 
 	return vkCopyMemoryToImage(device, pCopyMemoryToImageInfo);
 }
 
+void fn_vkCmdCopyQueryPoolResults(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount, VkBuffer dstBuffer, VkDeviceSize dstOffset, VkDeviceSize stride, VkQueryResultFlags flags) {
+	vkCmdCopyQueryPoolResults(commandBuffer, queryPool, firstQuery, queryCount, dstBuffer, dstOffset, stride, flags);
+}
+
 VkResult fn_vkCreateBuffer(VkDevice device, const VkBufferCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkBuffer* pBuffer) {
 	return vkCreateBuffer(device, pCreateInfo, pAllocator, pBuffer);
 }
@@ -455,10 +187,6 @@ VkResult fn_vkCreateBufferView(VkDevice device, const VkBufferViewCreateInfo* pC
 
 VkResult fn_vkCreateCommandPool(VkDevice device, const VkCommandPoolCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkCommandPool* pCommandPool) {
 	return vkCreateCommandPool(device, pCreateInfo, pAllocator, pCommandPool);
-}
-
-VkResult fn_vkCreateComputePipelines(VkDevice device, VkPipelineCache pipelineCache, uint32_t createInfoCount, const VkComputePipelineCreateInfo* pCreateInfos, const VkAllocationCallbacks* pAllocator, VkPipeline* pPipelines) {
-	return vkCreateComputePipelines(device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
 }
 
 VkResult fn_vkCreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pMessenger) {
@@ -475,10 +203,6 @@ VkResult fn_vkCreateDescriptorSetLayout(VkDevice device, const VkDescriptorSetLa
 
 VkResult fn_vkCreateDescriptorUpdateTemplate(VkDevice device, const VkDescriptorUpdateTemplateCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDescriptorUpdateTemplate* pDescriptorUpdateTemplate) {
 	return vkCreateDescriptorUpdateTemplate(device, pCreateInfo, pAllocator, pDescriptorUpdateTemplate);
-}
-
-VkResult fn_vkCreateDevice(VkPhysicalDevice physicalDevice, const VkDeviceCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDevice* pDevice) {
-	return vkCreateDevice(physicalDevice, pCreateInfo, pAllocator, pDevice);
 }
 
 VkResult fn_vkCreateEvent(VkDevice device, const VkEventCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkEvent* pEvent) {
@@ -645,12 +369,64 @@ void fn_vkDestroySwapchainKHR(VkDevice device, VkSwapchainKHR swapchain, const V
 	vkDestroySwapchainKHR(device, swapchain, pAllocator);
 }
 
+void fn_vkCmdDispatch(VkCommandBuffer commandBuffer, uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) {
+	vkCmdDispatch(commandBuffer, groupCountX, groupCountY, groupCountZ);
+}
+
+void fn_vkCmdDispatchBase(VkCommandBuffer commandBuffer, uint32_t baseGroupX, uint32_t baseGroupY, uint32_t baseGroupZ, uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) {
+	vkCmdDispatchBase(commandBuffer, baseGroupX, baseGroupY, baseGroupZ, groupCountX, groupCountY, groupCountZ);
+}
+
+void fn_vkCmdDispatchIndirect(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset) {
+	vkCmdDispatchIndirect(commandBuffer, buffer, offset);
+}
+
+void fn_vkCmdDraw(VkCommandBuffer commandBuffer, uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) {
+	vkCmdDraw(commandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
+}
+
+void fn_vkCmdDrawIndexed(VkCommandBuffer commandBuffer, uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) {
+	vkCmdDrawIndexed(commandBuffer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+}
+
+void fn_vkCmdDrawIndexedIndirect(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride) {
+	vkCmdDrawIndexedIndirect(commandBuffer, buffer, offset, drawCount, stride);
+}
+
+void fn_vkCmdDrawIndexedIndirectCount(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) {
+	vkCmdDrawIndexedIndirectCount(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
+}
+
+void fn_vkCmdDrawIndirect(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride) {
+	vkCmdDrawIndirect(commandBuffer, buffer, offset, drawCount, stride);
+}
+
+void fn_vkCmdDrawIndirectCount(VkCommandBuffer commandBuffer, VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) {
+	vkCmdDrawIndirectCount(commandBuffer, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
+}
+
 VkResult fn_vkEndCommandBuffer(VkCommandBuffer commandBuffer) {
 	return vkEndCommandBuffer(commandBuffer);
 }
 
 void fn_vkQueueEndDebugUtilsLabelEXT(VkQueue queue) {
 	vkQueueEndDebugUtilsLabelEXT(queue);
+}
+
+void fn_vkCmdEndQuery(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t query) {
+	vkCmdEndQuery(commandBuffer, queryPool, query);
+}
+
+void fn_vkCmdEndRenderPass(VkCommandBuffer commandBuffer) {
+	vkCmdEndRenderPass(commandBuffer);
+}
+
+void fn_vkCmdEndRenderPass2(VkCommandBuffer commandBuffer, const VkSubpassEndInfo* pSubpassEndInfo) {
+	vkCmdEndRenderPass2(commandBuffer, pSubpassEndInfo);
+}
+
+void fn_vkCmdEndRendering(VkCommandBuffer commandBuffer) {
+	vkCmdEndRendering(commandBuffer);
 }
 
 VkResult fn_vkEnumerateDeviceExtensionProperties(VkPhysicalDevice physicalDevice, const char* pLayerName, uint32_t* pPropertyCount, VkExtensionProperties* pProperties) {
@@ -675,6 +451,14 @@ VkResult fn_vkEnumeratePhysicalDeviceGroups(VkInstance instance, uint32_t* pPhys
 
 VkResult fn_vkEnumeratePhysicalDevices(VkInstance instance, uint32_t* pPhysicalDeviceCount, VkPhysicalDevice* pPhysicalDevices) {
 	return vkEnumeratePhysicalDevices(instance, pPhysicalDeviceCount, pPhysicalDevices);
+}
+
+void fn_vkCmdExecuteCommands(VkCommandBuffer commandBuffer, uint32_t commandBufferCount, const VkCommandBuffer* pCommandBuffers) {
+	vkCmdExecuteCommands(commandBuffer, commandBufferCount, pCommandBuffers);
+}
+
+void fn_vkCmdFillBuffer(VkCommandBuffer commandBuffer, VkBuffer dstBuffer, VkDeviceSize dstOffset, VkDeviceSize size, uint32_t data) {
+	vkCmdFillBuffer(commandBuffer, dstBuffer, dstOffset, size, data);
 }
 
 VkResult fn_vkFlushMappedMemoryRanges(VkDevice device, uint32_t memoryRangeCount, const VkMappedMemoryRange* pMemoryRanges) {
@@ -917,8 +701,48 @@ VkResult fn_vkMergePipelineCaches(VkDevice device, VkPipelineCache dstCache, uin
 	return vkMergePipelineCaches(device, dstCache, srcCacheCount, pSrcCaches);
 }
 
+void fn_vkCmdNextSubpass(VkCommandBuffer commandBuffer, VkSubpassContents contents) {
+	vkCmdNextSubpass(commandBuffer, contents);
+}
+
+void fn_vkCmdNextSubpass2(VkCommandBuffer commandBuffer, const VkSubpassBeginInfo* pSubpassBeginInfo, const VkSubpassEndInfo* pSubpassEndInfo) {
+	vkCmdNextSubpass2(commandBuffer, pSubpassBeginInfo, pSubpassEndInfo);
+}
+
+void fn_vkCmdPipelineBarrier(VkCommandBuffer commandBuffer, VkPipelineStageFlags srcStageMask, VkPipelineStageFlags dstStageMask, VkDependencyFlags dependencyFlags, uint32_t memoryBarrierCount, const VkMemoryBarrier* pMemoryBarriers, uint32_t bufferMemoryBarrierCount, const VkBufferMemoryBarrier* pBufferMemoryBarriers, uint32_t imageMemoryBarrierCount, const VkImageMemoryBarrier* pImageMemoryBarriers) {
+	vkCmdPipelineBarrier(commandBuffer, srcStageMask, dstStageMask, dependencyFlags, memoryBarrierCount, pMemoryBarriers, bufferMemoryBarrierCount, pBufferMemoryBarriers, imageMemoryBarrierCount, pImageMemoryBarriers);
+}
+
+void fn_vkCmdPipelineBarrier2(VkCommandBuffer commandBuffer, const VkDependencyInfo* pDependencyInfo) {
+	vkCmdPipelineBarrier2(commandBuffer, pDependencyInfo);
+}
+
 VkResult fn_vkQueuePresentKHR(VkQueue queue, const VkPresentInfoKHR* pPresentInfo) {
 	return vkQueuePresentKHR(queue, pPresentInfo);
+}
+
+void fn_vkCmdPushConstants(VkCommandBuffer commandBuffer, VkPipelineLayout layout, VkShaderStageFlags stageFlags, uint32_t offset, uint32_t size, const void* pValues) {
+	vkCmdPushConstants(commandBuffer, layout, stageFlags, offset, size, pValues);
+}
+
+void fn_vkCmdPushConstants2(VkCommandBuffer commandBuffer, const VkPushConstantsInfo* pPushConstantsInfo) {
+	vkCmdPushConstants2(commandBuffer, pPushConstantsInfo);
+}
+
+void fn_vkCmdPushDescriptorSet(VkCommandBuffer commandBuffer, VkPipelineBindPoint pipelineBindPoint, VkPipelineLayout layout, uint32_t set, uint32_t descriptorWriteCount, const VkWriteDescriptorSet* pDescriptorWrites) {
+	vkCmdPushDescriptorSet(commandBuffer, pipelineBindPoint, layout, set, descriptorWriteCount, pDescriptorWrites);
+}
+
+void fn_vkCmdPushDescriptorSet2(VkCommandBuffer commandBuffer, const VkPushDescriptorSetInfo* pPushDescriptorSetInfo) {
+	vkCmdPushDescriptorSet2(commandBuffer, pPushDescriptorSetInfo);
+}
+
+void fn_vkCmdPushDescriptorSetWithTemplate(VkCommandBuffer commandBuffer, VkDescriptorUpdateTemplate descriptorUpdateTemplate, VkPipelineLayout layout, uint32_t set, const void* pData) {
+	vkCmdPushDescriptorSetWithTemplate(commandBuffer, descriptorUpdateTemplate, layout, set, pData);
+}
+
+void fn_vkCmdPushDescriptorSetWithTemplate2(VkCommandBuffer commandBuffer, const VkPushDescriptorSetWithTemplateInfo* pPushDescriptorSetWithTemplateInfo) {
+	vkCmdPushDescriptorSetWithTemplate2(commandBuffer, pPushDescriptorSetWithTemplateInfo);
 }
 
 VkResult fn_vkResetCommandBuffer(VkCommandBuffer commandBuffer, VkCommandBufferResetFlags flags) {
@@ -937,12 +761,32 @@ VkResult fn_vkResetEvent(VkDevice device, VkEvent event) {
 	return vkResetEvent(device, event);
 }
 
+void fn_vkCmdResetEvent2(VkCommandBuffer commandBuffer, VkEvent event, VkPipelineStageFlags2 stageMask) {
+	vkCmdResetEvent2(commandBuffer, event, stageMask);
+}
+
 VkResult fn_vkResetFences(VkDevice device, uint32_t fenceCount, const VkFence* pFences) {
 	return vkResetFences(device, fenceCount, pFences);
 }
 
 void fn_vkResetQueryPool(VkDevice device, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount) {
 	vkResetQueryPool(device, queryPool, firstQuery, queryCount);
+}
+
+void fn_vkCmdResolveImage(VkCommandBuffer commandBuffer, VkImage srcImage, VkImageLayout srcImageLayout, VkImage dstImage, VkImageLayout dstImageLayout, uint32_t regionCount, const VkImageResolve* pRegions) {
+	vkCmdResolveImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionCount, pRegions);
+}
+
+void fn_vkCmdResolveImage2(VkCommandBuffer commandBuffer, const VkResolveImageInfo2* pResolveImageInfo) {
+	vkCmdResolveImage2(commandBuffer, pResolveImageInfo);
+}
+
+void fn_vkCmdSetBlendConstants(VkCommandBuffer commandBuffer, const float* blendConstants) {
+	vkCmdSetBlendConstants(commandBuffer, blendConstants);
+}
+
+void fn_vkCmdSetCullMode(VkCommandBuffer commandBuffer, VkCullModeFlags cullMode) {
+	vkCmdSetCullMode(commandBuffer, cullMode);
 }
 
 VkResult fn_vkSetDebugUtilsObjectNameEXT(VkDevice device, const VkDebugUtilsObjectNameInfoEXT* pNameInfo) {
@@ -953,12 +797,116 @@ VkResult fn_vkSetDebugUtilsObjectTagEXT(VkDevice device, const VkDebugUtilsObjec
 	return vkSetDebugUtilsObjectTagEXT(device, pTagInfo);
 }
 
+void fn_vkCmdSetDepthBias(VkCommandBuffer commandBuffer, float depthBiasConstantFactor, float depthBiasClamp, float depthBiasSlopeFactor) {
+	vkCmdSetDepthBias(commandBuffer, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor);
+}
+
+void fn_vkCmdSetDepthBiasEnable(VkCommandBuffer commandBuffer, VkBool32 depthBiasEnable) {
+	vkCmdSetDepthBiasEnable(commandBuffer, depthBiasEnable);
+}
+
+void fn_vkCmdSetDepthBounds(VkCommandBuffer commandBuffer, float minDepthBounds, float maxDepthBounds) {
+	vkCmdSetDepthBounds(commandBuffer, minDepthBounds, maxDepthBounds);
+}
+
+void fn_vkCmdSetDepthBoundsTestEnable(VkCommandBuffer commandBuffer, VkBool32 depthBoundsTestEnable) {
+	vkCmdSetDepthBoundsTestEnable(commandBuffer, depthBoundsTestEnable);
+}
+
+void fn_vkCmdSetDepthCompareOp(VkCommandBuffer commandBuffer, VkCompareOp depthCompareOp) {
+	vkCmdSetDepthCompareOp(commandBuffer, depthCompareOp);
+}
+
+void fn_vkCmdSetDepthTestEnable(VkCommandBuffer commandBuffer, VkBool32 depthTestEnable) {
+	vkCmdSetDepthTestEnable(commandBuffer, depthTestEnable);
+}
+
+void fn_vkCmdSetDepthWriteEnable(VkCommandBuffer commandBuffer, VkBool32 depthWriteEnable) {
+	vkCmdSetDepthWriteEnable(commandBuffer, depthWriteEnable);
+}
+
+void fn_vkCmdSetDeviceMask(VkCommandBuffer commandBuffer, uint32_t deviceMask) {
+	vkCmdSetDeviceMask(commandBuffer, deviceMask);
+}
+
 VkResult fn_vkSetEvent(VkDevice device, VkEvent event) {
 	return vkSetEvent(device, event);
 }
 
+void fn_vkCmdSetEvent2(VkCommandBuffer commandBuffer, VkEvent event, const VkDependencyInfo* pDependencyInfo) {
+	vkCmdSetEvent2(commandBuffer, event, pDependencyInfo);
+}
+
+void fn_vkCmdSetFrontFace(VkCommandBuffer commandBuffer, VkFrontFace frontFace) {
+	vkCmdSetFrontFace(commandBuffer, frontFace);
+}
+
+void fn_vkCmdSetLineStipple(VkCommandBuffer commandBuffer, uint32_t lineStippleFactor, uint16_t lineStipplePattern) {
+	vkCmdSetLineStipple(commandBuffer, lineStippleFactor, lineStipplePattern);
+}
+
+void fn_vkCmdSetLineWidth(VkCommandBuffer commandBuffer, float lineWidth) {
+	vkCmdSetLineWidth(commandBuffer, lineWidth);
+}
+
+void fn_vkCmdSetPrimitiveRestartEnable(VkCommandBuffer commandBuffer, VkBool32 primitiveRestartEnable) {
+	vkCmdSetPrimitiveRestartEnable(commandBuffer, primitiveRestartEnable);
+}
+
+void fn_vkCmdSetPrimitiveTopology(VkCommandBuffer commandBuffer, VkPrimitiveTopology primitiveTopology) {
+	vkCmdSetPrimitiveTopology(commandBuffer, primitiveTopology);
+}
+
 VkResult fn_vkSetPrivateData(VkDevice device, VkObjectType objectType, uint64_t objectHandle, VkPrivateDataSlot privateDataSlot, uint64_t data) {
 	return vkSetPrivateData(device, objectType, objectHandle, privateDataSlot, data);
+}
+
+void fn_vkCmdSetRasterizerDiscardEnable(VkCommandBuffer commandBuffer, VkBool32 rasterizerDiscardEnable) {
+	vkCmdSetRasterizerDiscardEnable(commandBuffer, rasterizerDiscardEnable);
+}
+
+void fn_vkCmdSetRenderingAttachmentLocations(VkCommandBuffer commandBuffer, const VkRenderingAttachmentLocationInfo* pLocationInfo) {
+	vkCmdSetRenderingAttachmentLocations(commandBuffer, pLocationInfo);
+}
+
+void fn_vkCmdSetRenderingInputAttachmentIndices(VkCommandBuffer commandBuffer, const VkRenderingInputAttachmentIndexInfo* pInputAttachmentIndexInfo) {
+	vkCmdSetRenderingInputAttachmentIndices(commandBuffer, pInputAttachmentIndexInfo);
+}
+
+void fn_vkCmdSetScissor(VkCommandBuffer commandBuffer, uint32_t firstScissor, uint32_t scissorCount, const VkRect2D* pScissors) {
+	vkCmdSetScissor(commandBuffer, firstScissor, scissorCount, pScissors);
+}
+
+void fn_vkCmdSetScissorWithCount(VkCommandBuffer commandBuffer, uint32_t scissorCount, const VkRect2D* pScissors) {
+	vkCmdSetScissorWithCount(commandBuffer, scissorCount, pScissors);
+}
+
+void fn_vkCmdSetStencilCompareMask(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, uint32_t compareMask) {
+	vkCmdSetStencilCompareMask(commandBuffer, faceMask, compareMask);
+}
+
+void fn_vkCmdSetStencilOp(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, VkStencilOp failOp, VkStencilOp passOp, VkStencilOp depthFailOp, VkCompareOp compareOp) {
+	vkCmdSetStencilOp(commandBuffer, faceMask, failOp, passOp, depthFailOp, compareOp);
+}
+
+void fn_vkCmdSetStencilReference(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, uint32_t reference) {
+	vkCmdSetStencilReference(commandBuffer, faceMask, reference);
+}
+
+void fn_vkCmdSetStencilTestEnable(VkCommandBuffer commandBuffer, VkBool32 stencilTestEnable) {
+	vkCmdSetStencilTestEnable(commandBuffer, stencilTestEnable);
+}
+
+void fn_vkCmdSetStencilWriteMask(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, uint32_t writeMask) {
+	vkCmdSetStencilWriteMask(commandBuffer, faceMask, writeMask);
+}
+
+void fn_vkCmdSetViewport(VkCommandBuffer commandBuffer, uint32_t firstViewport, uint32_t viewportCount, const VkViewport* pViewports) {
+	vkCmdSetViewport(commandBuffer, firstViewport, viewportCount, pViewports);
+}
+
+void fn_vkCmdSetViewportWithCount(VkCommandBuffer commandBuffer, uint32_t viewportCount, const VkViewport* pViewports) {
+	vkCmdSetViewportWithCount(commandBuffer, viewportCount, pViewports);
 }
 
 VkResult fn_vkSignalSemaphore(VkDevice device, const VkSemaphoreSignalInfo* pSignalInfo) {
@@ -993,12 +941,24 @@ VkResult fn_vkUnmapMemory2(VkDevice device, const VkMemoryUnmapInfo* pMemoryUnma
 	return vkUnmapMemory2(device, pMemoryUnmapInfo);
 }
 
+void fn_vkCmdUpdateBuffer(VkCommandBuffer commandBuffer, VkBuffer dstBuffer, VkDeviceSize dstOffset, VkDeviceSize dataSize, const void* pData) {
+	vkCmdUpdateBuffer(commandBuffer, dstBuffer, dstOffset, dataSize, pData);
+}
+
 void fn_vkUpdateDescriptorSetWithTemplate(VkDevice device, VkDescriptorSet descriptorSet, VkDescriptorUpdateTemplate descriptorUpdateTemplate, const void* pData) {
 	vkUpdateDescriptorSetWithTemplate(device, descriptorSet, descriptorUpdateTemplate, pData);
 }
 
 void fn_vkUpdateDescriptorSets(VkDevice device, uint32_t descriptorWriteCount, const VkWriteDescriptorSet* pDescriptorWrites, uint32_t descriptorCopyCount, const VkCopyDescriptorSet* pDescriptorCopies) {
 	vkUpdateDescriptorSets(device, descriptorWriteCount, pDescriptorWrites, descriptorCopyCount, pDescriptorCopies);
+}
+
+void fn_vkCmdWaitEvents(VkCommandBuffer commandBuffer, uint32_t eventCount, const VkEvent* pEvents, VkPipelineStageFlags srcStageMask, VkPipelineStageFlags dstStageMask, uint32_t memoryBarrierCount, const VkMemoryBarrier* pMemoryBarriers, uint32_t bufferMemoryBarrierCount, const VkBufferMemoryBarrier* pBufferMemoryBarriers, uint32_t imageMemoryBarrierCount, const VkImageMemoryBarrier* pImageMemoryBarriers) {
+	vkCmdWaitEvents(commandBuffer, eventCount, pEvents, srcStageMask, dstStageMask, memoryBarrierCount, pMemoryBarriers, bufferMemoryBarrierCount, pBufferMemoryBarriers, imageMemoryBarrierCount, pImageMemoryBarriers);
+}
+
+void fn_vkCmdWaitEvents2(VkCommandBuffer commandBuffer, uint32_t eventCount, const VkEvent* pEvents, const VkDependencyInfo* pDependencyInfos) {
+	vkCmdWaitEvents2(commandBuffer, eventCount, pEvents, pDependencyInfos);
 }
 
 VkResult fn_vkWaitForFences(VkDevice device, uint32_t fenceCount, const VkFence* pFences, VkBool32 waitAll, uint64_t timeout) {
@@ -1013,6 +973,26 @@ VkResult fn_vkWaitSemaphores(VkDevice device, const VkSemaphoreWaitInfo* pWaitIn
 	return vkWaitSemaphores(device, pWaitInfo, timeout);
 }
 
+void fn_vkCmdWriteTimestamp(VkCommandBuffer commandBuffer, VkPipelineStageFlagBits pipelineStage, VkQueryPool queryPool, uint32_t query) {
+	vkCmdWriteTimestamp(commandBuffer, pipelineStage, queryPool, query);
+}
+
+void fn_vkCmdWriteTimestamp2(VkCommandBuffer commandBuffer, VkPipelineStageFlags2 stage, VkQueryPool queryPool, uint32_t query) {
+	vkCmdWriteTimestamp2(commandBuffer, stage, queryPool, query);
+}
+
+void fn_vkCmdBeginDebugUtilsLabelEXT(VkCommandBuffer commandBuffer, const VkDebugUtilsLabelEXT* pLabelInfo) {
+	vkCmdBeginDebugUtilsLabelEXT(commandBuffer, pLabelInfo);
+}
+
+VkResult fn_vkCreateComputePipelines(VkDevice device, VkPipelineCache pipelineCache, uint32_t createInfoCount, const VkComputePipelineCreateInfo* pCreateInfos, const VkAllocationCallbacks* pAllocator, VkPipeline* pPipelines) {
+	return vkCreateComputePipelines(device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
+}
+
+VkResult fn_vkCreateDevice(VkPhysicalDevice physicalDevice, const VkDeviceCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDevice* pDevice) {
+	return vkCreateDevice(physicalDevice, pCreateInfo, pAllocator, pDevice);
+}
+
 VkResult fn_vkCreateGraphicsPipelines(VkDevice device, VkPipelineCache pipelineCache, uint32_t createInfoCount, const VkGraphicsPipelineCreateInfo* pCreateInfos, const VkAllocationCallbacks* pAllocator, VkPipeline* pPipelines) {
 	return vkCreateGraphicsPipelines(device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
 }
@@ -1023,6 +1003,10 @@ VkResult fn_vkCreatePipelineCache(VkDevice device, const VkPipelineCacheCreateIn
 
 void fn_vkDestroyDevice(VkDevice device, const VkAllocationCallbacks* pAllocator) {
 	vkDestroyDevice(device, pAllocator);
+}
+
+void fn_vkCmdEndDebugUtilsLabelEXT(VkCommandBuffer commandBuffer) {
+	vkCmdEndDebugUtilsLabelEXT(commandBuffer);
 }
 
 VkResult fn_vkEnumerateDeviceLayerProperties(VkPhysicalDevice physicalDevice, uint32_t* pPropertyCount, VkLayerProperties* pProperties) {
@@ -1047,6 +1031,22 @@ void fn_vkGetDeviceImageSubresourceLayout(VkDevice device, const VkDeviceImageSu
 
 PFN_vkVoidFunction fn_vkGetInstanceProcAddr(VkInstance instance, const char* pName) {
 	return vkGetInstanceProcAddr(instance, pName);
+}
+
+void fn_vkCmdInsertDebugUtilsLabelEXT(VkCommandBuffer commandBuffer, const VkDebugUtilsLabelEXT* pLabelInfo) {
+	vkCmdInsertDebugUtilsLabelEXT(commandBuffer, pLabelInfo);
+}
+
+void fn_vkCmdResetEvent(VkCommandBuffer commandBuffer, VkEvent event, VkPipelineStageFlags stageMask) {
+	vkCmdResetEvent(commandBuffer, event, stageMask);
+}
+
+void fn_vkCmdResetQueryPool(VkCommandBuffer commandBuffer, VkQueryPool queryPool, uint32_t firstQuery, uint32_t queryCount) {
+	vkCmdResetQueryPool(commandBuffer, queryPool, firstQuery, queryCount);
+}
+
+void fn_vkCmdSetEvent(VkCommandBuffer commandBuffer, VkEvent event, VkPipelineStageFlags stageMask) {
+	vkCmdSetEvent(commandBuffer, event, stageMask);
 }
 
 VkResult fn_vkDeviceWaitIdle(VkDevice device) {
@@ -1097,3 +1097,21 @@ VkBool32 fn_vkGetPhysicalDeviceXlibPresentationSupportKHR(VkPhysicalDevice physi
 }
 
 #endif // VK_USE_PLATFORM_XLIB_KHR
+void* trampoline_AllocationCallbacks_PfnAllocation(void* p0, size_t p1, size_t p2, VkSystemAllocationScope p3) {
+	return go_bridge_AllocationCallbacks_PfnAllocation(p0, p1, p2, p3);
+}
+void* trampoline_AllocationCallbacks_PfnReallocation(void* p0, void* p1, size_t p2, size_t p3, VkSystemAllocationScope p4) {
+	return go_bridge_AllocationCallbacks_PfnReallocation(p0, p1, p2, p3, p4);
+}
+void trampoline_AllocationCallbacks_PfnFree(void* p0, void* p1) {
+	go_bridge_AllocationCallbacks_PfnFree(p0, p1);
+}
+void trampoline_AllocationCallbacks_PfnInternalAllocation(void* p0, size_t p1, VkInternalAllocationType p2, VkSystemAllocationScope p3) {
+	go_bridge_AllocationCallbacks_PfnInternalAllocation(p0, p1, p2, p3);
+}
+void trampoline_AllocationCallbacks_PfnInternalFree(void* p0, size_t p1, VkInternalAllocationType p2, VkSystemAllocationScope p3) {
+	go_bridge_AllocationCallbacks_PfnInternalFree(p0, p1, p2, p3);
+}
+VkBool32 trampoline_DebugUtilsMessengerCreateInfoEXT_PfnUserCallback(VkDebugUtilsMessageSeverityFlagBitsEXT p0, VkDebugUtilsMessageTypeFlagsEXT p1, VkDebugUtilsMessengerCallbackDataEXT* p2, void* p3) {
+	return go_bridge_DebugUtilsMessengerCreateInfoEXT_PfnUserCallback(p0, p1, p2, p3);
+}

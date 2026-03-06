@@ -9,6 +9,7 @@ extensions:
   - VK_KHR_wayland_surface
   - VK_KHR_win32_surface
   - VK_EXT_debug_utils
+  - VK_EXT_validation_features
 
 platforms:
   - xlib

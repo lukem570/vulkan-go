@@ -23,7 +23,7 @@ func (s *WaylandSurfaceCreateInfoKHR) GetType() StructureType {
 	return StructureTypeWaylandSurfaceCreateInfoKHR
 }
 
-func (s *WaylandSurfaceCreateInfoKHR) toC() (*C.VkWaylandSurfaceCreateInfoKHR, func()) {
+func (s *WaylandSurfaceCreateInfoKHR) toC() (unsafe.Pointer, func()) {
 	cancels := make([]func(), 0)
 	p := (*C.VkWaylandSurfaceCreateInfoKHR)(C.malloc(C.size_t(C.sizeof_VkWaylandSurfaceCreateInfoKHR)))
 	*p = C.VkWaylandSurfaceCreateInfoKHR{}
@@ -31,7 +31,7 @@ func (s *WaylandSurfaceCreateInfoKHR) toC() (*C.VkWaylandSurfaceCreateInfoKHR, f
 	if s.Next != nil {
 		nextPtr, nextCancel := s.Next.toC()
 		cancels = append(cancels, nextCancel)
-		p.pNext = unsafe.Pointer(nextPtr)
+		p.pNext = nextPtr
 	}
 	val0 := C.VkWaylandSurfaceCreateFlagsKHR(s.Flags)
 	p.flags = val0
@@ -39,7 +39,7 @@ func (s *WaylandSurfaceCreateInfoKHR) toC() (*C.VkWaylandSurfaceCreateInfoKHR, f
 	p.display = ext1
 	ext2 := (*C.struct_wl_surface)(s.Surface)
 	p.surface = ext2
-	return p, func() {
+	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
 		}
@@ -64,7 +64,7 @@ func (s *XcbSurfaceCreateInfoKHR) GetType() StructureType {
 	return StructureTypeXcbSurfaceCreateInfoKHR
 }
 
-func (s *XcbSurfaceCreateInfoKHR) toC() (*C.VkXcbSurfaceCreateInfoKHR, func()) {
+func (s *XcbSurfaceCreateInfoKHR) toC() (unsafe.Pointer, func()) {
 	cancels := make([]func(), 0)
 	p := (*C.VkXcbSurfaceCreateInfoKHR)(C.malloc(C.size_t(C.sizeof_VkXcbSurfaceCreateInfoKHR)))
 	*p = C.VkXcbSurfaceCreateInfoKHR{}
@@ -72,7 +72,7 @@ func (s *XcbSurfaceCreateInfoKHR) toC() (*C.VkXcbSurfaceCreateInfoKHR, func()) {
 	if s.Next != nil {
 		nextPtr, nextCancel := s.Next.toC()
 		cancels = append(cancels, nextCancel)
-		p.pNext = unsafe.Pointer(nextPtr)
+		p.pNext = nextPtr
 	}
 	val0 := C.VkXcbSurfaceCreateFlagsKHR(s.Flags)
 	p.flags = val0
@@ -80,7 +80,7 @@ func (s *XcbSurfaceCreateInfoKHR) toC() (*C.VkXcbSurfaceCreateInfoKHR, func()) {
 	p.connection = ext1
 	ext2 := C.xcb_window_t(s.Window)
 	p.window = ext2
-	return p, func() {
+	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
 		}
@@ -105,7 +105,7 @@ func (s *XlibSurfaceCreateInfoKHR) GetType() StructureType {
 	return StructureTypeXlibSurfaceCreateInfoKHR
 }
 
-func (s *XlibSurfaceCreateInfoKHR) toC() (*C.VkXlibSurfaceCreateInfoKHR, func()) {
+func (s *XlibSurfaceCreateInfoKHR) toC() (unsafe.Pointer, func()) {
 	cancels := make([]func(), 0)
 	p := (*C.VkXlibSurfaceCreateInfoKHR)(C.malloc(C.size_t(C.sizeof_VkXlibSurfaceCreateInfoKHR)))
 	*p = C.VkXlibSurfaceCreateInfoKHR{}
@@ -113,7 +113,7 @@ func (s *XlibSurfaceCreateInfoKHR) toC() (*C.VkXlibSurfaceCreateInfoKHR, func())
 	if s.Next != nil {
 		nextPtr, nextCancel := s.Next.toC()
 		cancels = append(cancels, nextCancel)
-		p.pNext = unsafe.Pointer(nextPtr)
+		p.pNext = nextPtr
 	}
 	val0 := C.VkXlibSurfaceCreateFlagsKHR(s.Flags)
 	p.flags = val0
@@ -121,7 +121,7 @@ func (s *XlibSurfaceCreateInfoKHR) toC() (*C.VkXlibSurfaceCreateInfoKHR, func())
 	p.dpy = ext1
 	ext2 := C.Window(s.Window)
 	p.window = ext2
-	return p, func() {
+	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
 		}
@@ -151,14 +151,14 @@ func (h Instance) CreateWaylandSurfaceKHR(
 	if createInfo != nil {
 		val2, cancel3 := createInfo.toC()
 		cancels = append(cancels, cancel3)
-		ptr1 = val2
+		ptr1 = (*C.VkWaylandSurfaceCreateInfoKHR)(val2)
 	}
 	// param allocator
 	var ptr5 *C.VkAllocationCallbacks
 	if allocator != nil {
 		val6, cancel7 := allocator.toC()
 		cancels = append(cancels, cancel7)
-		ptr5 = val6
+		ptr5 = (*C.VkAllocationCallbacks)(val6)
 	}
 	var surfaceOut C.VkSurfaceKHR
 	_result := C.fn_vkCreateWaylandSurfaceKHR(C.VkInstance(unsafe.Pointer(h.handle)), ptr1, ptr5, &surfaceOut)
@@ -185,14 +185,14 @@ func (h Instance) CreateXcbSurfaceKHR(
 	if createInfo != nil {
 		val2, cancel3 := createInfo.toC()
 		cancels = append(cancels, cancel3)
-		ptr1 = val2
+		ptr1 = (*C.VkXcbSurfaceCreateInfoKHR)(val2)
 	}
 	// param allocator
 	var ptr5 *C.VkAllocationCallbacks
 	if allocator != nil {
 		val6, cancel7 := allocator.toC()
 		cancels = append(cancels, cancel7)
-		ptr5 = val6
+		ptr5 = (*C.VkAllocationCallbacks)(val6)
 	}
 	var surfaceOut C.VkSurfaceKHR
 	_result := C.fn_vkCreateXcbSurfaceKHR(C.VkInstance(unsafe.Pointer(h.handle)), ptr1, ptr5, &surfaceOut)
@@ -219,14 +219,14 @@ func (h Instance) CreateXlibSurfaceKHR(
 	if createInfo != nil {
 		val2, cancel3 := createInfo.toC()
 		cancels = append(cancels, cancel3)
-		ptr1 = val2
+		ptr1 = (*C.VkXlibSurfaceCreateInfoKHR)(val2)
 	}
 	// param allocator
 	var ptr5 *C.VkAllocationCallbacks
 	if allocator != nil {
 		val6, cancel7 := allocator.toC()
 		cancels = append(cancels, cancel7)
-		ptr5 = val6
+		ptr5 = (*C.VkAllocationCallbacks)(val6)
 	}
 	var surfaceOut C.VkSurfaceKHR
 	_result := C.fn_vkCreateXlibSurfaceKHR(C.VkInstance(unsafe.Pointer(h.handle)), ptr1, ptr5, &surfaceOut)

@@ -20,6 +20,11 @@ type GoCommand struct {
 	// EnumeratePattern, when non-nil, indicates the two-call Vulkan
 	// enumerate pattern (call once for count, then again with array).
 	EnumeratePattern *EnumerateInfo
+
+	// CallbackStructParamName, when non-empty, names the input param whose
+	// callbackCleanupFn should be attached to the returned handle after a
+	// successful create call.
+	CallbackStructParamName string
 }
 
 // EnumerateInfo describes a Vulkan two-call enumerate pattern.
@@ -136,6 +141,16 @@ func (c *GoCommand) GenerateWrapper() string {
 		}
 	}
 
+	// For Destroy/Free commands: run handle cleanup before the C call
+	isDestroy := strings.HasPrefix(c.Name, "Destroy") || strings.HasPrefix(c.Name, "Free")
+	if isDestroy {
+		for _, p := range c.Params {
+			if _, ok := p.Type.(*Handle); ok {
+				b.WriteString(fmt.Sprintf("\tif %s != nil && %s.cleanup != nil { %s.cleanup() }\n", p.Name, p.Name, p.Name))
+			}
+		}
+	}
+
 	// Call C function
 	var callLine string
 	if c.HasError || c.ReturnType != nil {
@@ -164,6 +179,7 @@ func (c *GoCommand) GenerateWrapper() string {
 
 	// Convert out params from C → Go
 	var retVars []string
+	var handleRetVar string // tracks the var name of a Handle out param, for callback cleanup attachment
 	for _, op := range c.OutParams {
 		varName := sanitizeIdent(op.Name) + "Out"
 		if op.IsArray {
@@ -186,7 +202,16 @@ func (c *GoCommand) GenerateWrapper() string {
 			b.WriteString(outG.String())
 			g.varIndex = outG.varIndex
 			retVars = append(retVars, goVal)
+			if _, ok := op.Type.(*Handle); ok {
+				handleRetVar = goVal
+			}
 		}
+	}
+
+	// For Create commands: attach callback cleanup to the returned handle
+	if c.CallbackStructParamName != "" && handleRetVar != "" {
+		b.WriteString(fmt.Sprintf("\tif %s.callbackCleanupFn != nil { %s.cleanup = %s.callbackCleanupFn }\n",
+			c.CallbackStructParamName, handleRetVar, c.CallbackStructParamName))
 	}
 
 	// Convert non-VkResult return value

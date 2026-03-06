@@ -8,8 +8,9 @@ All functions are generated using
 as new Vulkan updates are released
 
 This adds overhead as all go structs are
-deep copied to the c structs. If you have
-issues with that it's your problem. 
+deep copied to the c structs.
+
+Examples are in the [test](./test) directory.
 
 ## Changes made
 

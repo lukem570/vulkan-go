@@ -23,7 +23,7 @@ func (s *Win32SurfaceCreateInfoKHR) GetType() StructureType {
 	return StructureTypeWin32SurfaceCreateInfoKHR
 }
 
-func (s *Win32SurfaceCreateInfoKHR) toC() (*C.VkWin32SurfaceCreateInfoKHR, func()) {
+func (s *Win32SurfaceCreateInfoKHR) toC() (unsafe.Pointer, func()) {
 	cancels := make([]func(), 0)
 	p := (*C.VkWin32SurfaceCreateInfoKHR)(C.malloc(C.size_t(C.sizeof_VkWin32SurfaceCreateInfoKHR)))
 	*p = C.VkWin32SurfaceCreateInfoKHR{}
@@ -31,7 +31,7 @@ func (s *Win32SurfaceCreateInfoKHR) toC() (*C.VkWin32SurfaceCreateInfoKHR, func(
 	if s.Next != nil {
 		nextPtr, nextCancel := s.Next.toC()
 		cancels = append(cancels, nextCancel)
-		p.pNext = unsafe.Pointer(nextPtr)
+		p.pNext = nextPtr
 	}
 	val0 := C.VkWin32SurfaceCreateFlagsKHR(s.Flags)
 	p.flags = val0
@@ -39,7 +39,7 @@ func (s *Win32SurfaceCreateInfoKHR) toC() (*C.VkWin32SurfaceCreateInfoKHR, func(
 	p.hinstance = ext1
 	ext2 := (C.HWND)(s.Hwnd)
 	p.hwnd = ext2
-	return p, func() {
+	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
 		}
@@ -69,14 +69,14 @@ func (h Instance) CreateWin32SurfaceKHR(
 	if createInfo != nil {
 		val2, cancel3 := createInfo.toC()
 		cancels = append(cancels, cancel3)
-		ptr1 = val2
+		ptr1 = (*C.VkWin32SurfaceCreateInfoKHR)(val2)
 	}
 	// param allocator
 	var ptr5 *C.VkAllocationCallbacks
 	if allocator != nil {
 		val6, cancel7 := allocator.toC()
 		cancels = append(cancels, cancel7)
-		ptr5 = val6
+		ptr5 = (*C.VkAllocationCallbacks)(val6)
 	}
 	var surfaceOut C.VkSurfaceKHR
 	_result := C.fn_vkCreateWin32SurfaceKHR(C.VkInstance(unsafe.Pointer(h.handle)), ptr1, ptr5, &surfaceOut)

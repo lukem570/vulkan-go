@@ -14,7 +14,7 @@ func (h *GoHandle) Generate() string {
 		return ""
 	}
 	return fmt.Sprintf(
-		"type %s struct{ handle unsafe.Pointer }\n\n"+
+		"type %s struct {\n\thandle  unsafe.Pointer\n\tcleanup func()\n}\n\n"+
 			"func (h *%s) Handle() unsafe.Pointer { return h.handle }\n\n",
 		h.GoName, h.GoName,
 	)

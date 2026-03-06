@@ -4,6 +4,8 @@ tasks:
   generate:
     desc: Generate the go bindings
     cmds:
+      - rm -rf ./pkg/raw
+      - mkdir -p ./pkg/raw
       - go run ./cmd/gen/main.go
       
   test:

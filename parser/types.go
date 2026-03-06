@@ -111,7 +111,7 @@ func parseTypes(x *XMLRegistry, r *generator.Registry) {
 		}
 	}
 
-	// Second pass (sub-pass 1): register funcpointer names so they can reference each other
+	// Second pass: register funcpointer names so they can reference each other
 	for _, t := range x.Types.Types {
 		if t.Category == "funcpointer" && t.Proto.Name != "" {
 			fp := &generator.GoFuncPointer{
@@ -119,13 +119,6 @@ func parseTypes(x *XMLRegistry, r *generator.Registry) {
 				GoTypeName: stripPFNvk(t.Proto.Name),
 			}
 			r.FuncPointers[fp.GoTypeName] = fp
-		}
-	}
-
-	// Second pass (sub-pass 2): resolve param/return types (all names now registered)
-	for _, t := range x.Types.Types {
-		if t.Category == "funcpointer" && t.Proto.Name != "" {
-			resolveFuncPointerTypes(t, r.Handles, r.FuncPointers)
 		}
 	}
 
@@ -155,7 +148,14 @@ func parseTypes(x *XMLRegistry, r *generator.Registry) {
 		}
 	}
 
-	// Fourth pass: fully parse struct fields (all struct names now registered)
+	// Fourth pass: resolve funcpointer param/return types now that struct names are registered
+	for _, t := range x.Types.Types {
+		if t.Category == "funcpointer" && t.Proto.Name != "" {
+			resolveFuncPointerTypes(t, r.Handles, r.FuncPointers, r.Structs)
+		}
+	}
+
+	// Fifth pass: fully parse struct fields (all struct names now registered)
 	for _, t := range x.Types.Types {
 		switch t.Category {
 		case "struct", "union":
@@ -169,7 +169,7 @@ func parseTypes(x *XMLRegistry, r *generator.Registry) {
 
 // resolveFuncPointerTypes populates the Params and Return fields of an already-registered
 // GoFuncPointer by parsing the XMLType proto/param elements.
-func resolveFuncPointerTypes(t XMLType, handles map[string]*generator.GoHandle, funcPointers map[string]*generator.GoFuncPointer) {
+func resolveFuncPointerTypes(t XMLType, handles map[string]*generator.GoHandle, funcPointers map[string]*generator.GoFuncPointer, structs map[string]*generator.Structured) {
 	fp, ok := funcPointers[stripPFNvk(t.Proto.Name)]
 	if !ok {
 		return
@@ -180,14 +180,14 @@ func resolveFuncPointerTypes(t XMLType, handles map[string]*generator.GoHandle, 
 	if t.Proto.Type == "void" && protoIsPtr {
 		fp.Return = &generator.VoidPtr{}
 	} else if t.Proto.Type != "void" {
-		fp.Return = resolveFieldType(t.Proto.Type, protoIsPtr, false, handles, funcPointers, nil)
+		fp.Return = resolveFieldType(t.Proto.Type, protoIsPtr, false, handles, funcPointers, structs)
 	}
 	// else: void return, fp.Return stays nil
 
 	// Resolve param types
 	for _, p := range t.FuncParams {
 		isPtr := strings.Contains(p.InnerXML, "*")
-		ft := resolveFieldType(p.Type, isPtr, false, handles, funcPointers, nil)
+		ft := resolveFieldType(p.Type, isPtr, false, handles, funcPointers, structs)
 		fp.Params = append(fp.Params, generator.FuncPointerParam{
 			Name: goParamName(p.Name),
 			Type: ft,

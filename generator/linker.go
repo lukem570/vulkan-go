@@ -322,6 +322,33 @@ func (l *Linker) buildReducedRegistry(e *Enabled) *Registry {
 	for name := range e.Commands {
 		if v, ok := l.Registry.Commands[name]; ok {
 			out.Commands[name] = v
+			// Detect commands that create a handle from a callback-bearing struct.
+			// For such commands, the param's callbackCleanupFn must be attached to
+			// the returned handle so the holder outlives the create call.
+			if v.CallbackStructParamName == "" {
+				for _, p := range v.Params {
+					ptr, ok := p.Type.(*Pointer)
+					if !ok {
+						continue
+					}
+					st, ok := ptr.Child.(*StructType)
+					if !ok {
+						continue
+					}
+					s := l.Registry.Structs[st.Name]
+					if s == nil {
+						continue
+					}
+					// Only match sType-bearing structs (real CreateInfo types, not AllocationCallbacks).
+					if s.HasSType && len(s.pfnFields()) > 0 {
+						_, udCName := s.userDataField()
+						if udCName != "" {
+							v.CallbackStructParamName = p.Name
+							break
+						}
+					}
+				}
+			}
 		}
 	}
 	for name := range e.FuncPointers {

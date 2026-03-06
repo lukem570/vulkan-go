@@ -100,9 +100,11 @@ type StructType struct {
 func (t *StructType) GenerateToC(g *CodeGen, input string) string {
 	out := g.Var("val")
 	cancelVar := g.Var("cancel")
+	castVar := g.Var("cast")
 	g.Line(fmt.Sprintf("\t%s, %s := %s.toC()", out, cancelVar, input))
 	g.Line(fmt.Sprintf("\tcancels = append(cancels, %s)", cancelVar))
-	return "*" + out
+	g.Line(fmt.Sprintf("\t%s := (*C.%s)(%s)", castVar, t.CTypeName, out))
+	return "*" + castVar
 }
 
 func (t *StructType) GenerateFromC(g *CodeGen, input string) string {
@@ -152,14 +154,13 @@ func (t *Pointer) GenerateToC(g *CodeGen, input string) string {
 	ptrVar := g.Var("ptr")
 	g.Line(fmt.Sprintf("\tvar %s %s", ptrVar, t.CName()))
 	g.Line(fmt.Sprintf("\tif %s != nil {", input))
-	// StructType.toC() takes a pointer receiver and returns a *C.VkFoo directly,
-	// so pass input as-is and use the result without wrapping in &.
-	if _, ok := t.Child.(*StructType); ok {
+	// StructType.toC() returns (unsafe.Pointer, func()); cast to the specific type.
+	if st, ok := t.Child.(*StructType); ok {
 		out := g.Var("val")
 		cancelVar := g.Var("cancel")
 		g.Line(fmt.Sprintf("\t\t%s, %s := %s.toC()", out, cancelVar, input))
 		g.Line(fmt.Sprintf("\t\tcancels = append(cancels, %s)", cancelVar))
-		g.Line(fmt.Sprintf("\t\t%s = %s", ptrVar, out))
+		g.Line(fmt.Sprintf("\t\t%s = (*C.%s)(%s)", ptrVar, st.CTypeName, out))
 	} else {
 		childOut := t.Child.GenerateToC(g, "*"+input)
 		g.Line(fmt.Sprintf("\t\t%s = &%s", ptrVar, childOut))
@@ -409,3 +410,38 @@ func (fp *GoFuncPointer) GenerateFromC(g *CodeGen, input string) string {
 
 func (fp *GoFuncPointer) CName() string  { return "C." + fp.CTypeName }
 func (fp *GoFuncPointer) GoName() string { return fp.GoTypeName }
+
+// ---------------------------------------------------------------------------
+// C type name helpers (bare C type string without "C." prefix)
+// ---------------------------------------------------------------------------
+
+// ToCTypeName returns the bare C type string suitable for use in C source/header
+// generation (no "C." prefix, unsafe.Pointer → void*).
+func ToCTypeName(ft FieldType) string {
+	switch t := ft.(type) {
+	case *Primitive:
+		return t.cName
+	case *Bool:
+		return "VkBool32"
+	case *NamedType:
+		return t.CTypeName
+	case *Handle:
+		return t.CTypeName
+	case *StructType:
+		return t.CTypeName
+	case *Pointer:
+		return ToCTypeName(t.Child) + "*"
+	case *VoidPtr:
+		return "void*"
+	case *String:
+		return "const char*"
+	case *ExternalType:
+		if t.PtrInVulkan {
+			return t.CTypeName + "*"
+		}
+		return t.CTypeName
+	case *GoFuncPointer:
+		return t.CTypeName
+	}
+	return "void*"
+}

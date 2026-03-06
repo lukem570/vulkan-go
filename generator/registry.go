@@ -313,6 +313,37 @@ func (r *Registry) GeneratePlatformFiles(pkg string) []PlatformFile {
 	return files
 }
 
+const callbacksFileHeader = `/*
+#cgo CFLAGS: -I./../../mod/Vulkan-Headers/include -I./../../mod/volk
+#cgo LDFLAGS: -ldl
+#include <stdlib.h>
+#include "volk_wrappers.h"
+*/
+import "C"
+import (
+	"sync"
+	"unsafe"
+)
+`
+
+// GenerateCallbacksFile generates pkg/raw/callbacks.go containing the
+// per-struct callback holder types, sync.Map registries, and //export bridge
+// functions needed by the C trampolines.
+func (r *Registry) GenerateCallbacksFile(pkg string) string {
+	var b strings.Builder
+	b.WriteString("package " + pkg + "\n\n")
+	b.WriteString(callbacksFileHeader)
+
+	for _, k := range sortedKeys(r.Structs) {
+		s := r.Structs[k]
+		if s.Platform != "" {
+			continue // only non-platform structs for now
+		}
+		b.WriteString(s.GenerateCallbacksSupport())
+	}
+	return b.String()
+}
+
 // GenerateCHeader returns the content of volk_wrappers.h.
 func (r *Registry) GenerateCHeader() string {
 	var b strings.Builder
@@ -337,6 +368,23 @@ func (r *Registry) GenerateCHeader() string {
 	r.writePlatformCBlocks(&b, func(cmd *GoCommand) string {
 		return cmd.GenerateCWrapperDecl()
 	})
+
+	// Callback trampolines
+	hasTrampolines := false
+	for _, k := range sortedKeys(r.Structs) {
+		s := r.Structs[k]
+		if s.Platform != "" {
+			continue
+		}
+		decls := s.GenerateCCallbackDecls()
+		if decls != "" {
+			if !hasTrampolines {
+				b.WriteString("\n/* Callback trampolines */\n")
+				hasTrampolines = true
+			}
+			b.WriteString(decls)
+		}
+	}
 
 	b.WriteString("\n#endif\n")
 	return b.String()
@@ -366,6 +414,15 @@ func (r *Registry) GenerateCSource() string {
 	r.writePlatformCBlocks(&b, func(cmd *GoCommand) string {
 		return cmd.GenerateCWrapperImpl()
 	})
+
+	// Callback trampolines
+	for _, k := range sortedKeys(r.Structs) {
+		s := r.Structs[k]
+		if s.Platform != "" {
+			continue
+		}
+		b.WriteString(s.GenerateCCallbackImpls())
+	}
 
 	return b.String()
 }

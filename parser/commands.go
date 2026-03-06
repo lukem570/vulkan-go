@@ -7,6 +7,10 @@ import (
 	"github.com/lukem570/vulkan-go/generator"
 )
 
+var receiverPrefixes = map[string][]string{
+	"CommandBuffer": {"Cmd"},
+}
+
 type XMLCommands struct {
 	Commands []XMLCommand `xml:"command"`
 }
@@ -247,6 +251,13 @@ func buildCommand(cmd XMLCommand, handles map[string]*generator.GoHandle, funcPo
 func methodName(cName string, handle string) string {
 	name := strings.TrimPrefix(cName, "vk")
 	name = strings.ReplaceAll(name, handle, "")
+
+	if prefixes, ok := receiverPrefixes[handle]; ok {
+		for _, prefix := range prefixes  {
+			name = strings.TrimPrefix(name, prefix)
+		}
+	}
+
 	return name
 }
 
