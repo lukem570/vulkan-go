@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"strings"
 
@@ -78,6 +79,17 @@ func main() {
 	err = generator.WriteFile("pkg/raw/vulkan.go", output)
 	if err != nil {
 		log.Fatalf("WriteFile: %v", err)
+	}
+
+	// Generate platform-specific Go files
+	platformFiles := reduced.GeneratePlatformFiles("vulkan")
+	for _, pf := range platformFiles {
+		path := fmt.Sprintf("pkg/raw/vulkan_%s.go", pf.BuildTag)
+		err = generator.WriteFile(path, pf.Content)
+		if err != nil {
+			log.Fatalf("WriteFile (%s): %v", path, err)
+		}
+		log.Printf("Generated %s", path)
 	}
 
 	err = generator.WriteCFile("pkg/raw/volk_wrappers.h", reduced.GenerateCHeader())

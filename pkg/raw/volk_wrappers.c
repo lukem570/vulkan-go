@@ -1,7 +1,29 @@
 #define VOLK_IMPLEMENTATION
+#if defined(__linux__) || defined(__unix__)
+#include <wayland-client.h>
+#define VK_USE_PLATFORM_WAYLAND_KHR
+#include <xcb/xcb.h>
+#define VK_USE_PLATFORM_XCB_KHR
+#include <X11/Xlib.h>
+#define VK_USE_PLATFORM_XLIB_KHR
+#endif
+
+#if defined(_WIN32)
+#include <windows.h>
+#define VK_USE_PLATFORM_WIN32_KHR
+#endif
+
 #include "volk.h"
 #include <vulkan/vulkan.h>
 #include "volk_wrappers.h"
+
+VkResult fn_vkAcquireNextImage2KHR(VkDevice device, const VkAcquireNextImageInfoKHR* pAcquireInfo, uint32_t* pImageIndex) {
+	return vkAcquireNextImage2KHR(device, pAcquireInfo, pImageIndex);
+}
+
+VkResult fn_vkAcquireNextImageKHR(VkDevice device, VkSwapchainKHR swapchain, uint64_t timeout, VkSemaphore semaphore, VkFence fence, uint32_t* pImageIndex) {
+	return vkAcquireNextImageKHR(device, swapchain, timeout, semaphore, fence, pImageIndex);
+}
 
 VkResult fn_vkAllocateCommandBuffers(VkDevice device, const VkCommandBufferAllocateInfo* pAllocateInfo, VkCommandBuffer* pCommandBuffers) {
 	return vkAllocateCommandBuffers(device, pAllocateInfo, pCommandBuffers);
@@ -519,6 +541,10 @@ VkResult fn_vkCreateShaderModule(VkDevice device, const VkShaderModuleCreateInfo
 	return vkCreateShaderModule(device, pCreateInfo, pAllocator, pShaderModule);
 }
 
+VkResult fn_vkCreateSwapchainKHR(VkDevice device, const VkSwapchainCreateInfoKHR* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSwapchainKHR* pSwapchain) {
+	return vkCreateSwapchainKHR(device, pCreateInfo, pAllocator, pSwapchain);
+}
+
 void fn_vkDestroyBuffer(VkDevice device, VkBuffer buffer, const VkAllocationCallbacks* pAllocator) {
 	vkDestroyBuffer(device, buffer, pAllocator);
 }
@@ -615,6 +641,14 @@ void fn_vkDestroyShaderModule(VkDevice device, VkShaderModule shaderModule, cons
 	vkDestroyShaderModule(device, shaderModule, pAllocator);
 }
 
+void fn_vkDestroySurfaceKHR(VkInstance instance, VkSurfaceKHR surface, const VkAllocationCallbacks* pAllocator) {
+	vkDestroySurfaceKHR(instance, surface, pAllocator);
+}
+
+void fn_vkDestroySwapchainKHR(VkDevice device, VkSwapchainKHR swapchain, const VkAllocationCallbacks* pAllocator) {
+	vkDestroySwapchainKHR(device, swapchain, pAllocator);
+}
+
 VkResult fn_vkDeviceWaitIdle(VkDevice device) {
 	return vkDeviceWaitIdle(device);
 }
@@ -693,6 +727,14 @@ void fn_vkGetDeviceBufferMemoryRequirements(VkDevice device, const VkDeviceBuffe
 
 void fn_vkGetDeviceGroupPeerMemoryFeatures(VkDevice device, uint32_t heapIndex, uint32_t localDeviceIndex, uint32_t remoteDeviceIndex, VkPeerMemoryFeatureFlags* pPeerMemoryFeatures) {
 	vkGetDeviceGroupPeerMemoryFeatures(device, heapIndex, localDeviceIndex, remoteDeviceIndex, pPeerMemoryFeatures);
+}
+
+VkResult fn_vkGetDeviceGroupPresentCapabilitiesKHR(VkDevice device, VkDeviceGroupPresentCapabilitiesKHR* pDeviceGroupPresentCapabilities) {
+	return vkGetDeviceGroupPresentCapabilitiesKHR(device, pDeviceGroupPresentCapabilities);
+}
+
+VkResult fn_vkGetDeviceGroupSurfacePresentModesKHR(VkDevice device, VkSurfaceKHR surface, VkDeviceGroupPresentModeFlagsKHR* pModes) {
+	return vkGetDeviceGroupSurfacePresentModesKHR(device, surface, pModes);
 }
 
 void fn_vkGetDeviceImageMemoryRequirements(VkDevice device, const VkDeviceImageMemoryRequirements* pInfo, VkMemoryRequirements2* pMemoryRequirements) {
@@ -807,6 +849,10 @@ void fn_vkGetPhysicalDeviceMemoryProperties2(VkPhysicalDevice physicalDevice, Vk
 	vkGetPhysicalDeviceMemoryProperties2(physicalDevice, pMemoryProperties);
 }
 
+VkResult fn_vkGetPhysicalDevicePresentRectanglesKHR(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, uint32_t* pRectCount, VkRect2D* pRects) {
+	return vkGetPhysicalDevicePresentRectanglesKHR(physicalDevice, surface, pRectCount, pRects);
+}
+
 void fn_vkGetPhysicalDeviceProperties(VkPhysicalDevice physicalDevice, VkPhysicalDeviceProperties* pProperties) {
 	vkGetPhysicalDeviceProperties(physicalDevice, pProperties);
 }
@@ -829,6 +875,22 @@ void fn_vkGetPhysicalDeviceSparseImageFormatProperties(VkPhysicalDevice physical
 
 void fn_vkGetPhysicalDeviceSparseImageFormatProperties2(VkPhysicalDevice physicalDevice, const VkPhysicalDeviceSparseImageFormatInfo2* pFormatInfo, uint32_t* pPropertyCount, VkSparseImageFormatProperties2* pProperties) {
 	vkGetPhysicalDeviceSparseImageFormatProperties2(physicalDevice, pFormatInfo, pPropertyCount, pProperties);
+}
+
+VkResult fn_vkGetPhysicalDeviceSurfaceCapabilitiesKHR(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, VkSurfaceCapabilitiesKHR* pSurfaceCapabilities) {
+	return vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, pSurfaceCapabilities);
+}
+
+VkResult fn_vkGetPhysicalDeviceSurfaceFormatsKHR(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, uint32_t* pSurfaceFormatCount, VkSurfaceFormatKHR* pSurfaceFormats) {
+	return vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, surface, pSurfaceFormatCount, pSurfaceFormats);
+}
+
+VkResult fn_vkGetPhysicalDeviceSurfacePresentModesKHR(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, uint32_t* pPresentModeCount, VkPresentModeKHR* pPresentModes) {
+	return vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, pPresentModeCount, pPresentModes);
+}
+
+VkResult fn_vkGetPhysicalDeviceSurfaceSupportKHR(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, VkSurfaceKHR surface, VkBool32* pSupported) {
+	return vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, queueFamilyIndex, surface, pSupported);
 }
 
 VkResult fn_vkGetPhysicalDeviceToolProperties(VkPhysicalDevice physicalDevice, uint32_t* pToolCount, VkPhysicalDeviceToolProperties* pToolProperties) {
@@ -857,6 +919,10 @@ void fn_vkGetRenderingAreaGranularity(VkDevice device, const VkRenderingAreaInfo
 
 VkResult fn_vkGetSemaphoreCounterValue(VkDevice device, VkSemaphore semaphore, uint64_t* pValue) {
 	return vkGetSemaphoreCounterValue(device, semaphore, pValue);
+}
+
+VkResult fn_vkGetSwapchainImagesKHR(VkDevice device, VkSwapchainKHR swapchain, uint32_t* pSwapchainImageCount, VkImage* pSwapchainImages) {
+	return vkGetSwapchainImagesKHR(device, swapchain, pSwapchainImageCount, pSwapchainImages);
 }
 
 VkResult fn_vkInvalidateMappedMemoryRanges(VkDevice device, uint32_t memoryRangeCount, const VkMappedMemoryRange* pMemoryRanges) {
@@ -889,6 +955,10 @@ void fn_vkQueueEndDebugUtilsLabelEXT(VkQueue queue) {
 
 void fn_vkQueueInsertDebugUtilsLabelEXT(VkQueue queue, const VkDebugUtilsLabelEXT* pLabelInfo) {
 	vkQueueInsertDebugUtilsLabelEXT(queue, pLabelInfo);
+}
+
+VkResult fn_vkQueuePresentKHR(VkQueue queue, const VkPresentInfoKHR* pPresentInfo) {
+	return vkQueuePresentKHR(queue, pPresentInfo);
 }
 
 VkResult fn_vkQueueSubmit(VkQueue queue, uint32_t submitCount, const VkSubmitInfo* pSubmits, VkFence fence) {
@@ -983,3 +1053,47 @@ VkResult fn_vkWaitSemaphores(VkDevice device, const VkSemaphoreWaitInfo* pWaitIn
 	return vkWaitSemaphores(device, pWaitInfo, timeout);
 }
 
+
+#ifdef VK_USE_PLATFORM_WAYLAND_KHR
+VkResult fn_vkCreateWaylandSurfaceKHR(VkInstance instance, const VkWaylandSurfaceCreateInfoKHR* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface) {
+	return vkCreateWaylandSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
+}
+
+VkBool32 fn_vkGetPhysicalDeviceWaylandPresentationSupportKHR(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, struct wl_display* display) {
+	return vkGetPhysicalDeviceWaylandPresentationSupportKHR(physicalDevice, queueFamilyIndex, display);
+}
+
+#endif // VK_USE_PLATFORM_WAYLAND_KHR
+
+#ifdef VK_USE_PLATFORM_WIN32_KHR
+VkResult fn_vkCreateWin32SurfaceKHR(VkInstance instance, const VkWin32SurfaceCreateInfoKHR* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface) {
+	return vkCreateWin32SurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
+}
+
+VkBool32 fn_vkGetPhysicalDeviceWin32PresentationSupportKHR(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex) {
+	return vkGetPhysicalDeviceWin32PresentationSupportKHR(physicalDevice, queueFamilyIndex);
+}
+
+#endif // VK_USE_PLATFORM_WIN32_KHR
+
+#ifdef VK_USE_PLATFORM_XCB_KHR
+VkResult fn_vkCreateXcbSurfaceKHR(VkInstance instance, const VkXcbSurfaceCreateInfoKHR* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface) {
+	return vkCreateXcbSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
+}
+
+VkBool32 fn_vkGetPhysicalDeviceXcbPresentationSupportKHR(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, xcb_connection_t* connection, xcb_visualid_t visual_id) {
+	return vkGetPhysicalDeviceXcbPresentationSupportKHR(physicalDevice, queueFamilyIndex, connection, visual_id);
+}
+
+#endif // VK_USE_PLATFORM_XCB_KHR
+
+#ifdef VK_USE_PLATFORM_XLIB_KHR
+VkResult fn_vkCreateXlibSurfaceKHR(VkInstance instance, const VkXlibSurfaceCreateInfoKHR* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface) {
+	return vkCreateXlibSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
+}
+
+VkBool32 fn_vkGetPhysicalDeviceXlibPresentationSupportKHR(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, Display* dpy, VisualID visualID) {
+	return vkGetPhysicalDeviceXlibPresentationSupportKHR(physicalDevice, queueFamilyIndex, dpy, visualID);
+}
+
+#endif // VK_USE_PLATFORM_XLIB_KHR

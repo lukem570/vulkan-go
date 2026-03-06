@@ -7,8 +7,18 @@ import (
 	"github.com/lukem570/vulkan-go/generator"
 )
 
+type XMLPlatforms struct {
+	Platforms []XMLPlatform `xml:"platform"`
+}
+
+type XMLPlatform struct {
+	Name    string `xml:"name,attr"`
+	Protect string `xml:"protect,attr"`
+}
+
 type XMLRegistry struct {
 	XMLName    xml.Name      `xml:"registry"`
+	Platforms  XMLPlatforms  `xml:"platforms"`
 	Types      XMLTypes      `xml:"types"`
 	Enums      []XMLEnums    `xml:"enums"`
 	Commands   XMLCommands   `xml:"commands"`
@@ -40,6 +50,12 @@ func BuildRegistry(x *XMLRegistry) *generator.Registry {
 		Features:     make(map[string]*generator.Feature),
 		Extensions:   make(map[string]*generator.Extension),
 		FuncPointers: make(map[string]*generator.GoFuncPointer),
+		Platforms:    make(map[string]string),
+	}
+
+	// Parse platform name → protect macro mapping
+	for _, p := range x.Platforms.Platforms {
+		r.Platforms[p.Name] = p.Protect
 	}
 
 	parseEnums(x, r)

@@ -15,6 +15,7 @@ type GoCommand struct {
 	Params       []CommandParam
 	CReturnType  string   // C return type e.g. "VkResult", "void"
 	CParams      []CParam // full C prototype params for wrapper generation
+	Platform     string   // non-empty for platform-specific commands (e.g. "xlib")
 
 	// EnumeratePattern, when non-nil, indicates the two-call Vulkan
 	// enumerate pattern (call once for count, then again with array).
@@ -266,7 +267,7 @@ func (c *GoCommand) generateEnumerateWrapper() string {
 	if c.HasError {
 		b.WriteString(fmt.Sprintf("\t_result := C.fn_%s(%s)\n", c.CName, strings.Join(firstCallArgs, ", ")))
 		b.WriteString("\tif _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {\n")
-		b.WriteString(fmt.Sprintf("\t\treturn nil, vkError(_result)\n"))
+		b.WriteString("\t\treturn nil, vkError(_result)\n")
 		b.WriteString("\t}\n")
 	} else {
 		b.WriteString(fmt.Sprintf("\tC.fn_%s(%s)\n", c.CName, strings.Join(firstCallArgs, ", ")))

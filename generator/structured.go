@@ -14,9 +14,10 @@ type StructField struct {
 }
 
 type Structured struct {
-	CName  string
-	GoName string
-	Fields []StructField
+	CName    string
+	GoName   string
+	Fields   []StructField
+	Platform string // non-empty for platform-specific structs
 
 	HasSType bool
 	SType    string // e.g. StructureTypeInstanceCreateInfo
@@ -210,6 +211,14 @@ func (s *Structured) GenerateFromC() string {
 			}
 		case *StructType:
 			g.Line(fmt.Sprintf("\t%s.fromC(&%s)", goField, input))
+		case *ExternalType:
+			if ft.PtrInVulkan || ft.GoTypeName == "unsafe.Pointer" {
+				g.Line(fmt.Sprintf("\t%s = unsafe.Pointer(%s)", goField, input))
+			} else {
+				g.Line(fmt.Sprintf("\t%s = %s(%s)", goField, ft.GoTypeName, input))
+			}
+		case *VoidPtr:
+			g.Line(fmt.Sprintf("\t%s = unsafe.Pointer(%s)", goField, input))
 		default:
 			g.Line(fmt.Sprintf("\t// TODO: fromC for %s (%T)", field.GoName, ft))
 		}

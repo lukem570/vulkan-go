@@ -10,6 +10,7 @@ tasks:
     desc: Test basic vulkan function
     deps: [ 'generate' ]
     cmds:
-      - glslc -o ./test/test.spv ./test/test.comp
-      - go run ./test/test.go
+      - glslc -o ./test/compute/test.spv ./test/compute/test.comp
+      - go run ./test/compute/test.go
+      - go run ./test/surface/test.go
       

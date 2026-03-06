@@ -56,6 +56,35 @@ func UpperSnakeToPascal(vk string) string {
 	return strings.Join(parts, "")
 }
 
+// externalTypes maps C type names from platform headers to their Go representations.
+// These types are not part of the Vulkan type system but appear in platform-specific
+// extensions (e.g. VK_KHR_xlib_surface uses Display* and Window from X11).
+var externalTypes = map[string]*generator.ExternalType{
+	// X11 / Xlib
+	"Display":  {CTypeName: "Display", GoTypeName: "unsafe.Pointer", PtrInVulkan: true},
+	"VisualID": {CTypeName: "VisualID", GoTypeName: "uintptr"},
+	"Window":   {CTypeName: "Window", GoTypeName: "uintptr"},
+	// XCB
+	"xcb_connection_t": {CTypeName: "xcb_connection_t", GoTypeName: "unsafe.Pointer", PtrInVulkan: true},
+	"xcb_window_t":     {CTypeName: "xcb_window_t", GoTypeName: "uint32"},
+	"xcb_visualid_t":   {CTypeName: "xcb_visualid_t", GoTypeName: "uint32"},
+	// Wayland (cgo uses struct_ prefix for C structs)
+	"wl_display": {CTypeName: "struct_wl_display", GoTypeName: "unsafe.Pointer", PtrInVulkan: true},
+	"wl_surface":  {CTypeName: "struct_wl_surface", GoTypeName: "unsafe.Pointer", PtrInVulkan: true},
+	// Win32
+	"HINSTANCE": {CTypeName: "HINSTANCE", GoTypeName: "unsafe.Pointer"},
+	"HWND":      {CTypeName: "HWND", GoTypeName: "unsafe.Pointer"},
+	"HMONITOR":  {CTypeName: "HMONITOR", GoTypeName: "unsafe.Pointer"},
+	"DWORD":     {CTypeName: "DWORD", GoTypeName: "uint32"},
+	"LPCWSTR":   {CTypeName: "LPCWSTR", GoTypeName: "unsafe.Pointer"},
+	"HANDLE":    {CTypeName: "HANDLE", GoTypeName: "unsafe.Pointer"},
+	"SECURITY_ATTRIBUTES": {CTypeName: "SECURITY_ATTRIBUTES", GoTypeName: "unsafe.Pointer", PtrInVulkan: true},
+	// Metal / macOS
+	"CAMetalLayer": {CTypeName: "CAMetalLayer", GoTypeName: "unsafe.Pointer", PtrInVulkan: true},
+	// Android
+	"ANativeWindow": {CTypeName: "ANativeWindow", GoTypeName: "unsafe.Pointer", PtrInVulkan: true},
+}
+
 func resolveFieldType(
 	typeName string,
 	isPointer bool,
@@ -90,6 +119,17 @@ func resolveFieldType(
 	// Check function pointers (PFN_vk* types)
 	if fp, ok := funcPointers[stripPFNvk(typeName)]; ok {
 		return fp
+	}
+	// Check external platform types (Display, HWND, xcb_connection_t, etc.)
+	if ext, ok := externalTypes[typeName]; ok {
+		if isPointer && ext.PtrInVulkan {
+			// The pointer is consumed by the ExternalType (e.g. Display* → unsafe.Pointer)
+			return ext
+		}
+		if isPointer {
+			return &generator.Pointer{Child: ext}
+		}
+		return ext
 	}
 	goName := stripVk(typeName)
 	if _, ok := handles[goName]; ok {

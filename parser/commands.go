@@ -101,8 +101,16 @@ func buildCommand(cmd XMLCommand, handles map[string]*generator.GoHandle, funcPo
 		CReturnType: returnTypeName,
 	}
 
+	seen := map[string]bool{}
+
 	// Build CParams from all XML params
 	for _, p := range cmd.Params {
+
+		if seen[p.Name] {
+			continue
+		}
+		seen[p.Name] = true
+
 		c.CParams = append(c.CParams, generator.CParam{
 			Type: extractCType(p.InnerXML),
 			Name: p.Name,
@@ -196,8 +204,16 @@ func buildCommand(cmd XMLCommand, handles map[string]*generator.GoHandle, funcPo
 		}
 	}
 
+	seen = map[string]bool{}
+
 	// ---- Regular input params -----------------------------------------------
 	for _, p := range params {
+
+		if seen[p.Name] {
+			continue
+		}
+		seen[p.Name] = true
+
 		isPtr := strings.Contains(p.InnerXML, "*")
 		isArr := p.Len != "" && p.Len != "null-terminated"
 		isDblPtr := strings.Contains(p.InnerXML, "**")

@@ -7,17 +7,19 @@ type XMLExtensions struct {
 }
 
 type XMLExtension struct {
-	Name     string       `xml:"name,attr"`
-	Number   int          `xml:"number,attr"`
-	Platform string       `xml:"platform,attr"`
-	Requires []XMLRequire `xml:"require"`
+	Name      string       `xml:"name,attr"`
+	Number    int          `xml:"number,attr"`
+	Platform  string       `xml:"platform,attr"`
+	Supported string       `xml:"supported,attr"`
+	Requires  []XMLRequire `xml:"require"`
 }
 
 func parseExtensions(x *XMLRegistry, r *generator.Registry) {
 	for _, ext := range x.Extensions.Extensions {
 		e := &generator.Extension{
-			Name:     ext.Name,
-			Platform: ext.Platform,
+			Name:      ext.Name,
+			Platform:  ext.Platform,
+			Supported: ext.Supported,
 		}
 
 		for _, req := range ext.Requires {

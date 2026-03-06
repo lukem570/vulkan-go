@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unsafe"
 
-	vulkan "github.com/lukem570/vulkan-go/pkg/raw"
+	vk "github.com/lukem570/vulkan-go/pkg/raw"
 )
 
 var _ embed.FS
@@ -35,7 +35,6 @@ const elementCount = 64
 const bufferSize = elementCount * 4 // 64 uint32s = 256 bytes
 
 func main() {
-
 	if err := run(); err != nil {
 		log.Fatal(err)
 	}
@@ -43,13 +42,13 @@ func main() {
 
 func run() error {
 	// Initialize Vulkan via volk
-	if err := vulkan.Initialize(); err != nil {
+	if err := vk.Initialize(); err != nil {
 		return fmt.Errorf("initialize: %w", err)
 	}
 
 	// Create instance with validation layer and debug utils extension
-	instance, err := vulkan.CreateInstance(&vulkan.InstanceCreateInfo{
-		ApplicationInfo: &vulkan.ApplicationInfo{
+	instance, err := vk.CreateInstance(&vk.InstanceCreateInfo{
+		ApplicationInfo: &vk.ApplicationInfo{
 			ApplicationName:    "vulkan-go-compute-test",
 			ApplicationVersion: 1,
 			EngineName:         "vulkan-go",
@@ -68,7 +67,7 @@ func run() error {
 	}
 	defer instance.DestroyInstance(nil)
 
-	vulkan.LoadInstance(instance)
+	vk.LoadInstance(instance)
 	fmt.Println("instance created with validation layers")
 
 	// Find a physical device with a compute queue
@@ -77,7 +76,7 @@ func run() error {
 		return fmt.Errorf("enumerate physical devices: %w", err)
 	}
 
-	var physicalDevice *vulkan.PhysicalDevice
+	var physicalDevice *vk.PhysicalDevice
 	var computeQueueFamily uint32
 	found := false
 
@@ -87,7 +86,7 @@ func run() error {
 
 		queueFamilies := phy.GetQueueFamilyProperties()
 		for i, qf := range queueFamilies {
-			if qf.QueueFlags&vulkan.QueueFlags(vulkan.QueueComputeBit) != 0 {
+			if qf.QueueFlags&vk.QueueFlags(vk.QueueComputeBit) != 0 {
 				fmt.Printf("using: %s (queue family %d)\n", name, i)
 				physicalDevice = phy
 				computeQueueFamily = uint32(i)
@@ -104,8 +103,8 @@ func run() error {
 	}
 
 	// Create logical device with one compute queue
-	device, err := physicalDevice.CreateDevice(&vulkan.DeviceCreateInfo{
-		QueueCreateInfos: []vulkan.DeviceQueueCreateInfo{
+	device, err := physicalDevice.CreateDevice(&vk.DeviceCreateInfo{
+		QueueCreateInfos: []vk.DeviceQueueCreateInfo{
 			{
 				QueueFamilyIndex: computeQueueFamily,
 				QueuePriorities:  []float32{1.0},
@@ -117,16 +116,16 @@ func run() error {
 	}
 	defer device.DestroyDevice(nil)
 
-	vulkan.LoadDevice(device)
+	vk.LoadDevice(device)
 	fmt.Println("device created")
 
 	queue := device.GetQueue(computeQueueFamily, 0)
 
 	// Create storage buffer (host-visible, host-coherent)
-	buffer, err := device.CreateBuffer(&vulkan.BufferCreateInfo{
+	buffer, err := device.CreateBuffer(&vk.BufferCreateInfo{
 		Size:        bufferSize,
-		Usage:       vulkan.BufferUsageFlags(vulkan.BufferUsageStorageBufferBit),
-		SharingMode: vulkan.SharingModeExclusive,
+		Usage:       vk.BufferUsageFlags(vk.BufferUsageStorageBufferBit),
+		SharingMode: vk.SharingModeExclusive,
 	}, nil)
 	if err != nil {
 		return fmt.Errorf("create buffer: %w", err)
@@ -138,7 +137,7 @@ func run() error {
 	// Find host-visible, host-coherent memory type
 	memProps := physicalDevice.GetMemoryProperties()
 	memTypeIdx := uint32(0xFFFFFFFF)
-	required := vulkan.MemoryPropertyFlags(vulkan.MemoryPropertyHostVisibleBit | vulkan.MemoryPropertyHostCoherentBit)
+	required := vk.MemoryPropertyFlags(vk.MemoryPropertyHostVisibleBit | vk.MemoryPropertyHostCoherentBit)
 	for i := uint32(0); i < 32; i++ {
 		if memReqs.MemoryTypeBits&(1<<i) == 0 {
 			continue
@@ -152,7 +151,7 @@ func run() error {
 		return fmt.Errorf("no suitable memory type found")
 	}
 
-	memory, err := device.AllocateMemory(&vulkan.MemoryAllocateInfo{
+	memory, err := device.AllocateMemory(&vk.MemoryAllocateInfo{
 		AllocationSize:  memReqs.Size,
 		MemoryTypeIndex: memTypeIdx,
 	}, nil)
@@ -179,13 +178,13 @@ func run() error {
 	fmt.Println("buffer initialized with [1..64]")
 
 	// Create descriptor set layout
-	descSetLayout, err := device.CreateDescriptorSetLayout(&vulkan.DescriptorSetLayoutCreateInfo{
-		Bindings: []vulkan.DescriptorSetLayoutBinding{
+	descSetLayout, err := device.CreateDescriptorSetLayout(&vk.DescriptorSetLayoutCreateInfo{
+		Bindings: []vk.DescriptorSetLayoutBinding{
 			{
 				Binding:         0,
-				DescriptorType:  vulkan.DescriptorTypeStorageBuffer,
+				DescriptorType:  vk.DescriptorTypeStorageBuffer,
 				DescriptorCount: 1,
-				StageFlags:      vulkan.ShaderStageFlags(vulkan.ShaderStageComputeBit),
+				StageFlags:      vk.ShaderStageFlags(vk.ShaderStageComputeBit),
 			},
 		},
 	}, nil)
@@ -195,8 +194,8 @@ func run() error {
 	defer device.DestroyDescriptorSetLayout(descSetLayout, nil)
 
 	// Create pipeline layout
-	pipelineLayout, err := device.CreatePipelineLayout(&vulkan.PipelineLayoutCreateInfo{
-		SetLayouts: []*vulkan.DescriptorSetLayout{descSetLayout},
+	pipelineLayout, err := device.CreatePipelineLayout(&vk.PipelineLayoutCreateInfo{
+		SetLayouts: []*vk.DescriptorSetLayout{descSetLayout},
 	}, nil)
 	if err != nil {
 		return fmt.Errorf("create pipeline layout: %w", err)
@@ -204,7 +203,7 @@ func run() error {
 	defer device.DestroyPipelineLayout(pipelineLayout, nil)
 
 	// Create shader module
-	shaderModule, err := device.CreateShaderModule(&vulkan.ShaderModuleCreateInfo{
+	shaderModule, err := device.CreateShaderModule(&vk.ShaderModuleCreateInfo{
 		CodeSize: uintptr(len(computeShaderSPV)),
 		Code:     bytesToUint32(computeShaderSPV),
 	}, nil)
@@ -214,10 +213,10 @@ func run() error {
 	defer device.DestroyShaderModule(shaderModule, nil)
 
 	// Create compute pipeline
-	pipelines, err := device.CreateComputePipelines(nil, 1, []vulkan.ComputePipelineCreateInfo{
+	pipelines, err := device.CreateComputePipelines(nil, 1, []vk.ComputePipelineCreateInfo{
 		{
-			Stage: vulkan.PipelineShaderStageCreateInfo{
-				Stage:  vulkan.ShaderStageComputeBit,
+			Stage: vk.PipelineShaderStageCreateInfo{
+				Stage:  vk.ShaderStageComputeBit,
 				Module: shaderModule,
 				Name:   "main",
 			},
@@ -232,10 +231,10 @@ func run() error {
 	fmt.Println("compute pipeline created")
 
 	// Create descriptor pool and allocate descriptor set
-	descPool, err := device.CreateDescriptorPool(&vulkan.DescriptorPoolCreateInfo{
+	descPool, err := device.CreateDescriptorPool(&vk.DescriptorPoolCreateInfo{
 		MaxSets: 1,
-		PoolSizes: []vulkan.DescriptorPoolSize{
-			{Type: vulkan.DescriptorTypeStorageBuffer, DescriptorCount: 1},
+		PoolSizes: []vk.DescriptorPoolSize{
+			{Type: vk.DescriptorTypeStorageBuffer, DescriptorCount: 1},
 		},
 	}, nil)
 	if err != nil {
@@ -243,9 +242,9 @@ func run() error {
 	}
 	defer device.DestroyDescriptorPool(descPool, nil)
 
-	descSets, err := device.AllocateDescriptorSets(&vulkan.DescriptorSetAllocateInfo{
+	descSets, err := device.AllocateDescriptorSets(&vk.DescriptorSetAllocateInfo{
 		DescriptorPool: descPool,
-		SetLayouts:     []*vulkan.DescriptorSetLayout{descSetLayout},
+		SetLayouts:     []*vk.DescriptorSetLayout{descSetLayout},
 	})
 	if err != nil {
 		return fmt.Errorf("allocate descriptor sets: %w", err)
@@ -253,20 +252,20 @@ func run() error {
 	descSet := descSets[0]
 
 	// Update descriptor set to point to our buffer
-	device.UpdateDescriptorSets(1, []vulkan.WriteDescriptorSet{
+	device.UpdateDescriptorSets(1, []vk.WriteDescriptorSet{
 		{
 			DstSet:          descSet,
 			DstBinding:      0,
 			DescriptorCount: 1,
-			DescriptorType:  vulkan.DescriptorTypeStorageBuffer,
-			BufferInfo: []vulkan.DescriptorBufferInfo{
+			DescriptorType:  vk.DescriptorTypeStorageBuffer,
+			BufferInfo: []vk.DescriptorBufferInfo{
 				{Buffer: buffer, Offset: 0, Range: bufferSize},
 			},
 		},
 	}, 0, nil)
 
 	// Create command pool and command buffer
-	cmdPool, err := device.CreateCommandPool(&vulkan.CommandPoolCreateInfo{
+	cmdPool, err := device.CreateCommandPool(&vk.CommandPoolCreateInfo{
 		QueueFamilyIndex: computeQueueFamily,
 	}, nil)
 	if err != nil {
@@ -274,9 +273,9 @@ func run() error {
 	}
 	defer device.DestroyCommandPool(cmdPool, nil)
 
-	cmdBufs, err := device.AllocateCommandBuffers(&vulkan.CommandBufferAllocateInfo{
+	cmdBufs, err := device.AllocateCommandBuffers(&vk.CommandBufferAllocateInfo{
 		CommandPool:        cmdPool,
-		Level:              vulkan.CommandBufferLevelPrimary,
+		Level:              vk.CommandBufferLevelPrimary,
 		CommandBufferCount: 1,
 	})
 	if err != nil {
@@ -285,18 +284,18 @@ func run() error {
 	cmdBuf := cmdBufs[0]
 
 	// Record command buffer
-	if err := cmdBuf.BeginCommandBuffer(&vulkan.CommandBufferBeginInfo{
-		Flags: vulkan.CommandBufferUsageFlags(vulkan.CommandBufferUsageOneTimeSubmitBit),
+	if err := cmdBuf.BeginCommandBuffer(&vk.CommandBufferBeginInfo{
+		Flags: vk.CommandBufferUsageFlags(vk.CommandBufferUsageOneTimeSubmitBit),
 	}); err != nil {
 		return fmt.Errorf("begin command buffer: %w", err)
 	}
 
-	cmdBuf.BindPipeline(vulkan.PipelineBindPointCompute, pipeline)
+	cmdBuf.BindPipeline(vk.PipelineBindPointCompute, pipeline)
 	cmdBuf.BindDescriptorSets(
-		vulkan.PipelineBindPointCompute,
+		vk.PipelineBindPointCompute,
 		pipelineLayout,
 		0, 1,
-		[]*vulkan.DescriptorSet{descSet},
+		[]*vk.DescriptorSet{descSet},
 		0, nil,
 	)
 	cmdBuf.Dispatch(1, 1, 1) // 1 workgroup of 64 invocations
@@ -306,21 +305,21 @@ func run() error {
 	}
 
 	// Create fence and submit
-	fence, err := device.CreateFence(&vulkan.FenceCreateInfo{}, nil)
+	fence, err := device.CreateFence(&vk.FenceCreateInfo{}, nil)
 	if err != nil {
 		return fmt.Errorf("create fence: %w", err)
 	}
 	defer device.DestroyFence(fence, nil)
 
-	if err := queue.Submit(1, []vulkan.SubmitInfo{
+	if err := queue.Submit(1, []vk.SubmitInfo{
 		{
-			CommandBuffers: []*vulkan.CommandBuffer{cmdBuf},
+			CommandBuffers: []*vk.CommandBuffer{cmdBuf},
 		},
 	}, fence); err != nil {
 		return fmt.Errorf("queue submit: %w", err)
 	}
 
-	if err := device.WaitForFences(1, []*vulkan.Fence{fence}, true, ^uint64(0)); err != nil {
+	if err := device.WaitForFences(1, []*vk.Fence{fence}, true, ^uint64(0)); err != nil {
 		return fmt.Errorf("wait for fences: %w", err)
 	}
 	fmt.Println("compute shader executed")

@@ -45,6 +45,27 @@ func LoadDevice(device *Device) {
 	C.volkLoadDevice(C.VkDevice(unsafe.Pointer(device.handle)))
 }
 
+// SurfaceKHRFromHandle wraps a raw VkSurfaceKHR handle value into a
+// *SurfaceKHR. Use this when you have the actual handle value (e.g. from
+// platform-specific surface creation).
+func SurfaceKHRFromHandle(handle uintptr) *SurfaceKHR {
+	return &SurfaceKHR{handle: unsafe.Pointer(handle)}
+}
+
+// SurfaceKHRFromGLFW wraps the uintptr returned by go-gl/glfw's
+// Window.CreateWindowSurface into a *SurfaceKHR. GLFW returns a pointer to
+// the VkSurfaceKHR, so this function dereferences it to get the actual handle.
+// Must be called immediately after CreateWindowSurface in the same goroutine.
+//
+// Usage with go-gl/glfw:
+//
+//	surfPtr, err := window.CreateWindowSurface((*byte)(instance.Handle()), nil)
+//	surface := vk.SurfaceKHRFromGLFW(surfPtr)
+func SurfaceKHRFromGLFW(glfwSurface uintptr) *SurfaceKHR {
+	handle := *(*uintptr)(unsafe.Pointer(glfwSurface))
+	return &SurfaceKHR{handle: unsafe.Pointer(handle)}
+}
+
 // Vulkan API constants
 var (
 	MaxPhysicalDeviceNameSize                                      = 256
@@ -88,61 +109,127 @@ var (
 
 type Buffer struct{ handle unsafe.Pointer }
 
+func (h *Buffer) Handle() unsafe.Pointer { return h.handle }
+
 type BufferView struct{ handle unsafe.Pointer }
+
+func (h *BufferView) Handle() unsafe.Pointer { return h.handle }
 
 type CommandBuffer struct{ handle unsafe.Pointer }
 
+func (h *CommandBuffer) Handle() unsafe.Pointer { return h.handle }
+
 type CommandPool struct{ handle unsafe.Pointer }
+
+func (h *CommandPool) Handle() unsafe.Pointer { return h.handle }
 
 type DebugUtilsMessengerEXT struct{ handle unsafe.Pointer }
 
+func (h *DebugUtilsMessengerEXT) Handle() unsafe.Pointer { return h.handle }
+
 type DescriptorPool struct{ handle unsafe.Pointer }
+
+func (h *DescriptorPool) Handle() unsafe.Pointer { return h.handle }
 
 type DescriptorSet struct{ handle unsafe.Pointer }
 
+func (h *DescriptorSet) Handle() unsafe.Pointer { return h.handle }
+
 type DescriptorSetLayout struct{ handle unsafe.Pointer }
+
+func (h *DescriptorSetLayout) Handle() unsafe.Pointer { return h.handle }
 
 type DescriptorUpdateTemplate struct{ handle unsafe.Pointer }
 
+func (h *DescriptorUpdateTemplate) Handle() unsafe.Pointer { return h.handle }
+
 type Device struct{ handle unsafe.Pointer }
+
+func (h *Device) Handle() unsafe.Pointer { return h.handle }
 
 type DeviceMemory struct{ handle unsafe.Pointer }
 
+func (h *DeviceMemory) Handle() unsafe.Pointer { return h.handle }
+
 type Event struct{ handle unsafe.Pointer }
+
+func (h *Event) Handle() unsafe.Pointer { return h.handle }
 
 type Fence struct{ handle unsafe.Pointer }
 
+func (h *Fence) Handle() unsafe.Pointer { return h.handle }
+
 type Framebuffer struct{ handle unsafe.Pointer }
+
+func (h *Framebuffer) Handle() unsafe.Pointer { return h.handle }
 
 type Image struct{ handle unsafe.Pointer }
 
+func (h *Image) Handle() unsafe.Pointer { return h.handle }
+
 type ImageView struct{ handle unsafe.Pointer }
+
+func (h *ImageView) Handle() unsafe.Pointer { return h.handle }
 
 type Instance struct{ handle unsafe.Pointer }
 
+func (h *Instance) Handle() unsafe.Pointer { return h.handle }
+
 type PhysicalDevice struct{ handle unsafe.Pointer }
+
+func (h *PhysicalDevice) Handle() unsafe.Pointer { return h.handle }
 
 type Pipeline struct{ handle unsafe.Pointer }
 
+func (h *Pipeline) Handle() unsafe.Pointer { return h.handle }
+
 type PipelineCache struct{ handle unsafe.Pointer }
+
+func (h *PipelineCache) Handle() unsafe.Pointer { return h.handle }
 
 type PipelineLayout struct{ handle unsafe.Pointer }
 
+func (h *PipelineLayout) Handle() unsafe.Pointer { return h.handle }
+
 type PrivateDataSlot struct{ handle unsafe.Pointer }
+
+func (h *PrivateDataSlot) Handle() unsafe.Pointer { return h.handle }
 
 type QueryPool struct{ handle unsafe.Pointer }
 
+func (h *QueryPool) Handle() unsafe.Pointer { return h.handle }
+
 type Queue struct{ handle unsafe.Pointer }
+
+func (h *Queue) Handle() unsafe.Pointer { return h.handle }
 
 type RenderPass struct{ handle unsafe.Pointer }
 
+func (h *RenderPass) Handle() unsafe.Pointer { return h.handle }
+
 type Sampler struct{ handle unsafe.Pointer }
+
+func (h *Sampler) Handle() unsafe.Pointer { return h.handle }
 
 type SamplerYcbcrConversion struct{ handle unsafe.Pointer }
 
+func (h *SamplerYcbcrConversion) Handle() unsafe.Pointer { return h.handle }
+
 type Semaphore struct{ handle unsafe.Pointer }
 
+func (h *Semaphore) Handle() unsafe.Pointer { return h.handle }
+
 type ShaderModule struct{ handle unsafe.Pointer }
+
+func (h *ShaderModule) Handle() unsafe.Pointer { return h.handle }
+
+type SurfaceKHR struct{ handle unsafe.Pointer }
+
+func (h *SurfaceKHR) Handle() unsafe.Pointer { return h.handle }
+
+type SwapchainKHR struct{ handle unsafe.Pointer }
+
+func (h *SwapchainKHR) Handle() unsafe.Pointer { return h.handle }
 
 type AllocationFunction func(userData unsafe.Pointer, size uintptr, alignment uintptr, allocationScope SystemAllocationScope) unsafe.Pointer
 
@@ -531,6 +618,29 @@ const (
 	ColorComponentABit ColorComponentFlagBits = 1 << 3
 )
 
+type ColorSpaceKHR uint32
+
+const (
+	ColorSpaceSrgbNonlinearKHR         ColorSpaceKHR = 0
+	ColorspaceSrgbNonlinearKHR         ColorSpaceKHR = 0 // TODO: unknown value
+	ColorSpaceDisplayP3NonlinearEXT    ColorSpaceKHR = 1000104001
+	ColorSpaceExtendedSrgbLinearEXT    ColorSpaceKHR = 1000104002
+	ColorSpaceDisplayP3LinearEXT       ColorSpaceKHR = 1000104003
+	ColorSpaceDciP3NonlinearEXT        ColorSpaceKHR = 1000104004
+	ColorSpaceBt709LinearEXT           ColorSpaceKHR = 1000104005
+	ColorSpaceBt709NonlinearEXT        ColorSpaceKHR = 1000104006
+	ColorSpaceBt2020LinearEXT          ColorSpaceKHR = 1000104007
+	ColorSpaceHdr10St2084EXT           ColorSpaceKHR = 1000104008
+	ColorSpaceDolbyvisionEXT           ColorSpaceKHR = 1000104009
+	ColorSpaceHdr10HlgEXT              ColorSpaceKHR = 1000104010
+	ColorSpaceAdobergbLinearEXT        ColorSpaceKHR = 1000104011
+	ColorSpaceAdobergbNonlinearEXT     ColorSpaceKHR = 1000104012
+	ColorSpacePassThroughEXT           ColorSpaceKHR = 1000104013
+	ColorSpaceExtendedSrgbNonlinearEXT ColorSpaceKHR = 1000104014
+	ColorSpaceDciP3LinearEXT           ColorSpaceKHR = ColorSpaceDisplayP3LinearEXT
+	ColorSpaceDisplayNativeAMD         ColorSpaceKHR = 1000215000
+)
+
 type CommandBufferLevel uint32
 
 const (
@@ -592,6 +702,15 @@ const (
 	ComponentSwizzleG        ComponentSwizzle = 4
 	ComponentSwizzleB        ComponentSwizzle = 5
 	ComponentSwizzleA        ComponentSwizzle = 6
+)
+
+type CompositeAlphaFlagBitsKHR uint32
+
+const (
+	CompositeAlphaOpaqueBitKHR         CompositeAlphaFlagBitsKHR = 1 << 0
+	CompositeAlphaPreMultipliedBitKHR  CompositeAlphaFlagBitsKHR = 1 << 1
+	CompositeAlphaPostMultipliedBitKHR CompositeAlphaFlagBitsKHR = 1 << 2
+	CompositeAlphaInheritBitKHR        CompositeAlphaFlagBitsKHR = 1 << 3
 )
 
 type CullModeFlagBits uint32
@@ -710,6 +829,15 @@ const (
 	DescriptorUpdateTemplateTypePushDescriptors    DescriptorUpdateTemplateType = 1
 	DescriptorUpdateTemplateTypePushDescriptorsKHR DescriptorUpdateTemplateType = DescriptorUpdateTemplateTypePushDescriptors
 	DescriptorUpdateTemplateTypeDescriptorSetKHR   DescriptorUpdateTemplateType = DescriptorUpdateTemplateTypeDescriptorSet
+)
+
+type DeviceGroupPresentModeFlagBitsKHR uint32
+
+const (
+	DeviceGroupPresentModeLocalBitKHR            DeviceGroupPresentModeFlagBitsKHR = 1 << 0
+	DeviceGroupPresentModeRemoteBitKHR           DeviceGroupPresentModeFlagBitsKHR = 1 << 1
+	DeviceGroupPresentModeSumBitKHR              DeviceGroupPresentModeFlagBitsKHR = 1 << 2
+	DeviceGroupPresentModeLocalMultiDeviceBitKHR DeviceGroupPresentModeFlagBitsKHR = 1 << 3
 )
 
 type DeviceQueueCreateFlagBits uint32
@@ -2215,6 +2343,19 @@ const (
 	PolygonModeLine            PolygonMode = 1
 	PolygonModePoint           PolygonMode = 2
 	PolygonModeFillRectangleNV PolygonMode = 1000155000
+)
+
+type PresentModeKHR uint32
+
+const (
+	PresentModeImmediateKHR               PresentModeKHR = 0
+	PresentModeMailboxKHR                 PresentModeKHR = 1
+	PresentModeFifoKHR                    PresentModeKHR = 2
+	PresentModeFifoRelaxedKHR             PresentModeKHR = 3
+	PresentModeSharedDemandRefreshKHR     PresentModeKHR = 1000111000
+	PresentModeSharedContinuousRefreshKHR PresentModeKHR = 1000111001
+	PresentModeFifoLatestReadyEXT         PresentModeKHR = PresentModeFifoLatestReadyKHR
+	PresentModeFifoLatestReadyKHR         PresentModeKHR = 1000361000
 )
 
 type PrimitiveTopology uint32
@@ -4149,6 +4290,36 @@ const (
 	SubpassDescriptionCustomResolveBitEXT                             SubpassDescriptionFlagBits = 1 << 3
 )
 
+type SurfaceTransformFlagBitsKHR uint32
+
+const (
+	SurfaceTransformIdentityBitKHR                  SurfaceTransformFlagBitsKHR = 1 << 0
+	SurfaceTransformRotate90BitKHR                  SurfaceTransformFlagBitsKHR = 1 << 1
+	SurfaceTransformRotate180BitKHR                 SurfaceTransformFlagBitsKHR = 1 << 2
+	SurfaceTransformRotate270BitKHR                 SurfaceTransformFlagBitsKHR = 1 << 3
+	SurfaceTransformHorizontalMirrorBitKHR          SurfaceTransformFlagBitsKHR = 1 << 4
+	SurfaceTransformHorizontalMirrorRotate90BitKHR  SurfaceTransformFlagBitsKHR = 1 << 5
+	SurfaceTransformHorizontalMirrorRotate180BitKHR SurfaceTransformFlagBitsKHR = 1 << 6
+	SurfaceTransformHorizontalMirrorRotate270BitKHR SurfaceTransformFlagBitsKHR = 1 << 7
+	SurfaceTransformInheritBitKHR                   SurfaceTransformFlagBitsKHR = 1 << 8
+)
+
+type SwapchainCreateFlagBitsKHR uint32
+
+const (
+	SwapchainCreateSplitInstanceBindRegionsBitKHR SwapchainCreateFlagBitsKHR = 1 << 0
+	SwapchainCreateProtectedBitKHR                SwapchainCreateFlagBitsKHR = 1 << 1
+	SwapchainCreateMutableFormatBitKHR            SwapchainCreateFlagBitsKHR = 1 << 2
+	SwapchainCreatePresentTimingBitEXT            SwapchainCreateFlagBitsKHR = 1 << 9
+	SwapchainCreateDeferredMemoryAllocationBitEXT SwapchainCreateFlagBitsKHR = SwapchainCreateDeferredMemoryAllocationBitKHR
+	SwapchainCreateReserved5BitEXT                SwapchainCreateFlagBitsKHR = 1 << 5
+	SwapchainCreateReserved4BitEXT                SwapchainCreateFlagBitsKHR = 1 << 4
+	SwapchainCreatePresentId2BitKHR               SwapchainCreateFlagBitsKHR = 1 << 6
+	SwapchainCreatePresentWait2BitKHR             SwapchainCreateFlagBitsKHR = 1 << 7
+	SwapchainCreateDeferredMemoryAllocationBitKHR SwapchainCreateFlagBitsKHR = 1 << 3
+	SwapchainCreateReserved8BitEXT                SwapchainCreateFlagBitsKHR = 1 << 8
+)
+
 type SystemAllocationScope uint32
 
 const (
@@ -4231,6 +4402,8 @@ type CommandPoolResetFlags uint32
 
 type CommandPoolTrimFlags uint32
 
+type CompositeAlphaFlagsKHR uint32
+
 type CullModeFlags uint32
 
 type DebugUtilsMessageSeverityFlagsEXT uint32
@@ -4254,6 +4427,8 @@ type DescriptorSetLayoutCreateFlags uint32
 type DescriptorUpdateTemplateCreateFlags uint32
 
 type DeviceCreateFlags uint32
+
+type DeviceGroupPresentModeFlagsKHR uint32
 
 type DeviceQueueCreateFlags uint32
 
@@ -4383,7 +4558,77 @@ type SubmitFlags uint32
 
 type SubpassDescriptionFlags uint32
 
+type SurfaceTransformFlagsKHR uint32
+
+type SwapchainCreateFlagsKHR uint32
+
 type ToolPurposeFlags uint32
+
+type WaylandSurfaceCreateFlagsKHR uint32
+
+type Win32SurfaceCreateFlagsKHR uint32
+
+type XcbSurfaceCreateFlagsKHR uint32
+
+type XlibSurfaceCreateFlagsKHR uint32
+
+type AcquireNextImageInfoKHR struct {
+	Next       Structure
+	Swapchain  *SwapchainKHR
+	Timeout    uint64
+	Semaphore  *Semaphore
+	Fence      *Fence
+	DeviceMask uint32
+}
+
+func (s *AcquireNextImageInfoKHR) GetType() StructureType {
+	return StructureTypeAcquireNextImageInfoKHR
+}
+
+func (s *AcquireNextImageInfoKHR) toC() (*C.VkAcquireNextImageInfoKHR, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkAcquireNextImageInfoKHR)(C.malloc(C.size_t(C.sizeof_VkAcquireNextImageInfoKHR)))
+	*p = C.VkAcquireNextImageInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = unsafe.Pointer(nextPtr)
+	}
+	var h0 C.VkSwapchainKHR
+	if s.Swapchain != nil {
+		h0 = C.VkSwapchainKHR(unsafe.Pointer(s.Swapchain.handle))
+	}
+	p.swapchain = h0
+	val1 := C.uint64_t(s.Timeout)
+	p.timeout = val1
+	var h2 C.VkSemaphore
+	if s.Semaphore != nil {
+		h2 = C.VkSemaphore(unsafe.Pointer(s.Semaphore.handle))
+	}
+	p.semaphore = h2
+	var h3 C.VkFence
+	if s.Fence != nil {
+		h3 = C.VkFence(unsafe.Pointer(s.Fence.handle))
+	}
+	p.fence = h3
+	val4 := C.uint32_t(s.DeviceMask)
+	p.deviceMask = val4
+	return p, func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *AcquireNextImageInfoKHR) fromC(p *C.VkAcquireNextImageInfoKHR) {
+	s.Swapchain = &SwapchainKHR{handle: unsafe.Pointer(p.swapchain)}
+	s.Timeout = uint64(p.timeout)
+	s.Semaphore = &Semaphore{handle: unsafe.Pointer(p.semaphore)}
+	s.Fence = &Fence{handle: unsafe.Pointer(p.fence)}
+	s.DeviceMask = uint32(p.deviceMask)
+}
 
 type AllocationCallbacks struct {
 	UserData              unsafe.Pointer
@@ -4433,7 +4678,7 @@ func (s *AllocationCallbacks) toC() (*C.VkAllocationCallbacks, func()) {
 }
 
 func (s *AllocationCallbacks) fromC(p *C.VkAllocationCallbacks) {
-	// TODO: fromC for UserData (*generator.VoidPtr)
+	s.UserData = unsafe.Pointer(p.pUserData)
 	// TODO: fromC for PfnAllocation (*generator.GoFuncPointer)
 	// TODO: fromC for PfnReallocation (*generator.GoFuncPointer)
 	// TODO: fromC for PfnFree (*generator.GoFuncPointer)
@@ -5057,6 +5302,46 @@ func (s *BindImageMemoryInfo) fromC(p *C.VkBindImageMemoryInfo) {
 	s.Image = &Image{handle: unsafe.Pointer(p.image)}
 	s.Memory = &DeviceMemory{handle: unsafe.Pointer(p.memory)}
 	s.MemoryOffset = uint64(p.memoryOffset)
+}
+
+type BindImageMemorySwapchainInfoKHR struct {
+	Next       Structure
+	Swapchain  *SwapchainKHR
+	ImageIndex uint32
+}
+
+func (s *BindImageMemorySwapchainInfoKHR) GetType() StructureType {
+	return StructureTypeBindImageMemorySwapchainInfoKHR
+}
+
+func (s *BindImageMemorySwapchainInfoKHR) toC() (*C.VkBindImageMemorySwapchainInfoKHR, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkBindImageMemorySwapchainInfoKHR)(C.malloc(C.size_t(C.sizeof_VkBindImageMemorySwapchainInfoKHR)))
+	*p = C.VkBindImageMemorySwapchainInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = unsafe.Pointer(nextPtr)
+	}
+	var h0 C.VkSwapchainKHR
+	if s.Swapchain != nil {
+		h0 = C.VkSwapchainKHR(unsafe.Pointer(s.Swapchain.handle))
+	}
+	p.swapchain = h0
+	val1 := C.uint32_t(s.ImageIndex)
+	p.imageIndex = val1
+	return p, func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *BindImageMemorySwapchainInfoKHR) fromC(p *C.VkBindImageMemorySwapchainInfoKHR) {
+	s.Swapchain = &SwapchainKHR{handle: unsafe.Pointer(p.swapchain)}
+	s.ImageIndex = uint32(p.imageIndex)
 }
 
 type BindImagePlaneMemoryInfo struct {
@@ -7131,7 +7416,7 @@ func (s *DebugUtilsMessengerCreateInfoEXT) fromC(p *C.VkDebugUtilsMessengerCreat
 	s.MessageSeverity = DebugUtilsMessageSeverityFlagsEXT(p.messageSeverity)
 	s.MessageType = DebugUtilsMessageTypeFlagsEXT(p.messageType)
 	// TODO: fromC for PfnUserCallback (*generator.GoFuncPointer)
-	// TODO: fromC for UserData (*generator.VoidPtr)
+	s.UserData = unsafe.Pointer(p.pUserData)
 }
 
 type DebugUtilsObjectNameInfoEXT struct {
@@ -7217,7 +7502,7 @@ func (s *DebugUtilsObjectTagInfoEXT) fromC(p *C.VkDebugUtilsObjectTagInfoEXT) {
 	s.ObjectType = ObjectType(p.objectType)
 	s.ObjectHandle = uint64(p.objectHandle)
 	s.TagName = uint64(p.tagName)
-	// TODO: fromC for Tag (*generator.VoidPtr)
+	s.Tag = unsafe.Pointer(p.pTag)
 }
 
 type DependencyInfo struct {
@@ -8155,6 +8440,97 @@ func (s *DeviceGroupDeviceCreateInfo) fromC(p *C.VkDeviceGroupDeviceCreateInfo) 
 	// TODO: fromC for PhysicalDevices (*generator.Slice)
 }
 
+type DeviceGroupPresentCapabilitiesKHR struct {
+	Next        Structure
+	PresentMask [32]uint32
+	Modes       DeviceGroupPresentModeFlagsKHR
+}
+
+func (s *DeviceGroupPresentCapabilitiesKHR) GetType() StructureType {
+	return StructureTypeDeviceGroupPresentCapabilitiesKHR
+}
+
+func (s *DeviceGroupPresentCapabilitiesKHR) toC() (*C.VkDeviceGroupPresentCapabilitiesKHR, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkDeviceGroupPresentCapabilitiesKHR)(C.malloc(C.size_t(C.sizeof_VkDeviceGroupPresentCapabilitiesKHR)))
+	*p = C.VkDeviceGroupPresentCapabilitiesKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = unsafe.Pointer(nextPtr)
+	}
+	var arr0 [32]C.uint32_t
+	for i1, elem2 := range s.PresentMask {
+		val3 := C.uint32_t(elem2)
+		arr0[i1] = val3
+	}
+	p.presentMask = arr0
+	val4 := C.VkDeviceGroupPresentModeFlagsKHR(s.Modes)
+	p.modes = val4
+	return p, func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *DeviceGroupPresentCapabilitiesKHR) fromC(p *C.VkDeviceGroupPresentCapabilitiesKHR) {
+	for _i := range s.PresentMask {
+		s.PresentMask[_i] = uint32(p.presentMask[_i])
+	}
+	s.Modes = DeviceGroupPresentModeFlagsKHR(p.modes)
+}
+
+type DeviceGroupPresentInfoKHR struct {
+	Next        Structure
+	DeviceMasks []uint32
+	Mode        DeviceGroupPresentModeFlagBitsKHR
+}
+
+func (s *DeviceGroupPresentInfoKHR) GetType() StructureType {
+	return StructureTypeDeviceGroupPresentInfoKHR
+}
+
+func (s *DeviceGroupPresentInfoKHR) toC() (*C.VkDeviceGroupPresentInfoKHR, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkDeviceGroupPresentInfoKHR)(C.malloc(C.size_t(C.sizeof_VkDeviceGroupPresentInfoKHR)))
+	*p = C.VkDeviceGroupPresentInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = unsafe.Pointer(nextPtr)
+	}
+	len0 := len(s.DeviceMasks)
+
+	var arr1 *C.uint32_t
+	if len0 > 0 {
+		arr1 = (*C.uint32_t)(C.malloc(C.size_t(len0) * C.size_t(unsafe.Sizeof(*new(C.uint32_t)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr1)) })
+	}
+	for i2, elem3 := range s.DeviceMasks {
+		val4 := C.uint32_t(elem3)
+		(*[1 << 30]C.uint32_t)(unsafe.Pointer(arr1))[i2] = val4
+	}
+	p.pDeviceMasks = arr1
+	p.swapchainCount = C.uint32_t(len(s.DeviceMasks))
+	val5 := C.VkDeviceGroupPresentModeFlagBitsKHR(s.Mode)
+	p.mode = val5
+	return p, func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *DeviceGroupPresentInfoKHR) fromC(p *C.VkDeviceGroupPresentInfoKHR) {
+	// TODO: fromC for DeviceMasks (*generator.Slice)
+	s.Mode = DeviceGroupPresentModeFlagBitsKHR(p.mode)
+}
+
 type DeviceGroupRenderPassBeginInfo struct {
 	Next              Structure
 	DeviceMask        uint32
@@ -8276,6 +8652,39 @@ func (s *DeviceGroupSubmitInfo) fromC(p *C.VkDeviceGroupSubmitInfo) {
 	// TODO: fromC for WaitSemaphoreDeviceIndices (*generator.Slice)
 	// TODO: fromC for CommandBufferDeviceMasks (*generator.Slice)
 	// TODO: fromC for SignalSemaphoreDeviceIndices (*generator.Slice)
+}
+
+type DeviceGroupSwapchainCreateInfoKHR struct {
+	Next  Structure
+	Modes DeviceGroupPresentModeFlagsKHR
+}
+
+func (s *DeviceGroupSwapchainCreateInfoKHR) GetType() StructureType {
+	return StructureTypeDeviceGroupSwapchainCreateInfoKHR
+}
+
+func (s *DeviceGroupSwapchainCreateInfoKHR) toC() (*C.VkDeviceGroupSwapchainCreateInfoKHR, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkDeviceGroupSwapchainCreateInfoKHR)(C.malloc(C.size_t(C.sizeof_VkDeviceGroupSwapchainCreateInfoKHR)))
+	*p = C.VkDeviceGroupSwapchainCreateInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = unsafe.Pointer(nextPtr)
+	}
+	val0 := C.VkDeviceGroupPresentModeFlagsKHR(s.Modes)
+	p.modes = val0
+	return p, func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *DeviceGroupSwapchainCreateInfoKHR) fromC(p *C.VkDeviceGroupSwapchainCreateInfoKHR) {
+	s.Modes = DeviceGroupPresentModeFlagsKHR(p.modes)
 }
 
 type DeviceImageMemoryRequirements struct {
@@ -10624,6 +11033,42 @@ func (s *ImageSubresourceRange) fromC(p *C.VkImageSubresourceRange) {
 	s.LayerCount = uint32(p.layerCount)
 }
 
+type ImageSwapchainCreateInfoKHR struct {
+	Next      Structure
+	Swapchain *SwapchainKHR
+}
+
+func (s *ImageSwapchainCreateInfoKHR) GetType() StructureType {
+	return StructureTypeImageSwapchainCreateInfoKHR
+}
+
+func (s *ImageSwapchainCreateInfoKHR) toC() (*C.VkImageSwapchainCreateInfoKHR, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkImageSwapchainCreateInfoKHR)(C.malloc(C.size_t(C.sizeof_VkImageSwapchainCreateInfoKHR)))
+	*p = C.VkImageSwapchainCreateInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = unsafe.Pointer(nextPtr)
+	}
+	var h0 C.VkSwapchainKHR
+	if s.Swapchain != nil {
+		h0 = C.VkSwapchainKHR(unsafe.Pointer(s.Swapchain.handle))
+	}
+	p.swapchain = h0
+	return p, func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *ImageSwapchainCreateInfoKHR) fromC(p *C.VkImageSwapchainCreateInfoKHR) {
+	s.Swapchain = &SwapchainKHR{handle: unsafe.Pointer(p.swapchain)}
+}
+
 type ImageToMemoryCopy struct {
 	Next              Structure
 	HostPointer       unsafe.Pointer
@@ -10671,7 +11116,7 @@ func (s *ImageToMemoryCopy) toC() (*C.VkImageToMemoryCopy, func()) {
 }
 
 func (s *ImageToMemoryCopy) fromC(p *C.VkImageToMemoryCopy) {
-	// TODO: fromC for HostPointer (*generator.VoidPtr)
+	s.HostPointer = unsafe.Pointer(p.pHostPointer)
 	s.MemoryRowLength = uint32(p.memoryRowLength)
 	s.MemoryImageHeight = uint32(p.memoryImageHeight)
 	s.ImageSubresource.fromC(&p.imageSubresource)
@@ -11424,7 +11869,7 @@ func (s *MemoryToImageCopy) toC() (*C.VkMemoryToImageCopy, func()) {
 }
 
 func (s *MemoryToImageCopy) fromC(p *C.VkMemoryToImageCopy) {
-	// TODO: fromC for HostPointer (*generator.VoidPtr)
+	s.HostPointer = unsafe.Pointer(p.pHostPointer)
 	s.MemoryRowLength = uint32(p.memoryRowLength)
 	s.MemoryImageHeight = uint32(p.memoryImageHeight)
 	s.ImageSubresource.fromC(&p.imageSubresource)
@@ -18269,7 +18714,7 @@ func (s *PipelineCacheCreateInfo) toC() (*C.VkPipelineCacheCreateInfo, func()) {
 
 func (s *PipelineCacheCreateInfo) fromC(p *C.VkPipelineCacheCreateInfo) {
 	s.Flags = PipelineCacheCreateFlags(p.flags)
-	// TODO: fromC for InitialData (*generator.VoidPtr)
+	s.InitialData = unsafe.Pointer(p.pInitialData)
 }
 
 type PipelineCacheHeaderVersionOne struct {
@@ -19446,6 +19891,102 @@ func (s *PipelineViewportStateCreateInfo) fromC(p *C.VkPipelineViewportStateCrea
 	// TODO: fromC for Scissors (*generator.Slice)
 }
 
+type PresentInfoKHR struct {
+	Next           Structure
+	WaitSemaphores []*Semaphore
+	SwapchainCount uint32
+	Swapchains     []*SwapchainKHR
+	ImageIndices   []uint32
+	Results        []Result
+}
+
+func (s *PresentInfoKHR) GetType() StructureType {
+	return StructureTypePresentInfoKHR
+}
+
+func (s *PresentInfoKHR) toC() (*C.VkPresentInfoKHR, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPresentInfoKHR)(C.malloc(C.size_t(C.sizeof_VkPresentInfoKHR)))
+	*p = C.VkPresentInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = unsafe.Pointer(nextPtr)
+	}
+	len0 := len(s.WaitSemaphores)
+
+	var arr1 *C.VkSemaphore
+	if len0 > 0 {
+		arr1 = (*C.VkSemaphore)(C.malloc(C.size_t(len0) * C.size_t(unsafe.Sizeof(*new(C.VkSemaphore)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr1)) })
+	}
+	for i2, elem3 := range s.WaitSemaphores {
+		var h4 C.VkSemaphore
+		if elem3 != nil {
+			h4 = C.VkSemaphore(unsafe.Pointer(elem3.handle))
+		}
+		(*[1 << 30]C.VkSemaphore)(unsafe.Pointer(arr1))[i2] = h4
+	}
+	p.pWaitSemaphores = arr1
+	p.waitSemaphoreCount = C.uint32_t(len(s.WaitSemaphores))
+	val5 := C.uint32_t(s.SwapchainCount)
+	p.swapchainCount = val5
+	len6 := len(s.Swapchains)
+
+	var arr7 *C.VkSwapchainKHR
+	if len6 > 0 {
+		arr7 = (*C.VkSwapchainKHR)(C.malloc(C.size_t(len6) * C.size_t(unsafe.Sizeof(*new(C.VkSwapchainKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr7)) })
+	}
+	for i8, elem9 := range s.Swapchains {
+		var h10 C.VkSwapchainKHR
+		if elem9 != nil {
+			h10 = C.VkSwapchainKHR(unsafe.Pointer(elem9.handle))
+		}
+		(*[1 << 30]C.VkSwapchainKHR)(unsafe.Pointer(arr7))[i8] = h10
+	}
+	p.pSwapchains = arr7
+	len11 := len(s.ImageIndices)
+
+	var arr12 *C.uint32_t
+	if len11 > 0 {
+		arr12 = (*C.uint32_t)(C.malloc(C.size_t(len11) * C.size_t(unsafe.Sizeof(*new(C.uint32_t)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr12)) })
+	}
+	for i13, elem14 := range s.ImageIndices {
+		val15 := C.uint32_t(elem14)
+		(*[1 << 30]C.uint32_t)(unsafe.Pointer(arr12))[i13] = val15
+	}
+	p.pImageIndices = arr12
+	len16 := len(s.Results)
+
+	var arr17 *C.VkResult
+	if len16 > 0 {
+		arr17 = (*C.VkResult)(C.malloc(C.size_t(len16) * C.size_t(unsafe.Sizeof(*new(C.VkResult)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr17)) })
+	}
+	for i18, elem19 := range s.Results {
+		val20 := C.VkResult(elem19)
+		(*[1 << 30]C.VkResult)(unsafe.Pointer(arr17))[i18] = val20
+	}
+	p.pResults = arr17
+	return p, func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PresentInfoKHR) fromC(p *C.VkPresentInfoKHR) {
+	// TODO: fromC for WaitSemaphores (*generator.Slice)
+	s.SwapchainCount = uint32(p.swapchainCount)
+	// TODO: fromC for Swapchains (*generator.Slice)
+	// TODO: fromC for ImageIndices (*generator.Slice)
+	// TODO: fromC for Results (*generator.Slice)
+}
+
 type PrivateDataSlotCreateInfo struct {
 	Next  Structure
 	Flags PrivateDataSlotCreateFlags
@@ -19589,7 +20130,7 @@ func (s *PushConstantsInfo) fromC(p *C.VkPushConstantsInfo) {
 	s.Layout = &PipelineLayout{handle: unsafe.Pointer(p.layout)}
 	s.StageFlags = ShaderStageFlags(p.stageFlags)
 	s.Offset = uint32(p.offset)
-	// TODO: fromC for Values (*generator.VoidPtr)
+	s.Values = unsafe.Pointer(p.pValues)
 }
 
 type PushDescriptorSetInfo struct {
@@ -19699,7 +20240,7 @@ func (s *PushDescriptorSetWithTemplateInfo) fromC(p *C.VkPushDescriptorSetWithTe
 	s.DescriptorUpdateTemplate = &DescriptorUpdateTemplate{handle: unsafe.Pointer(p.descriptorUpdateTemplate)}
 	s.Layout = &PipelineLayout{handle: unsafe.Pointer(p.layout)}
 	s.Set = uint32(p.set)
-	// TODO: fromC for Data (*generator.VoidPtr)
+	s.Data = unsafe.Pointer(p.pData)
 }
 
 type QueryPoolCreateInfo struct {
@@ -21598,7 +22139,7 @@ func (s *SpecializationInfo) toC() (*C.VkSpecializationInfo, func()) {
 
 func (s *SpecializationInfo) fromC(p *C.VkSpecializationInfo) {
 	// TODO: fromC for MapEntries (*generator.Slice)
-	// TODO: fromC for Data (*generator.VoidPtr)
+	s.Data = unsafe.Pointer(p.pData)
 }
 
 type SpecializationMapEntry struct {
@@ -22393,6 +22934,203 @@ func (s *SubresourceLayout2) fromC(p *C.VkSubresourceLayout2) {
 	s.SubresourceLayout.fromC(&p.subresourceLayout)
 }
 
+type SurfaceCapabilitiesKHR struct {
+	MinImageCount           uint32
+	MaxImageCount           uint32
+	CurrentExtent           Extent2D
+	MinImageExtent          Extent2D
+	MaxImageExtent          Extent2D
+	MaxImageArrayLayers     uint32
+	SupportedTransforms     SurfaceTransformFlagsKHR
+	CurrentTransform        SurfaceTransformFlagBitsKHR
+	SupportedCompositeAlpha CompositeAlphaFlagsKHR
+	SupportedUsageFlags     ImageUsageFlags
+}
+
+func (s *SurfaceCapabilitiesKHR) toC() (*C.VkSurfaceCapabilitiesKHR, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkSurfaceCapabilitiesKHR)(C.malloc(C.size_t(C.sizeof_VkSurfaceCapabilitiesKHR)))
+	*p = C.VkSurfaceCapabilitiesKHR{}
+	val0 := C.uint32_t(s.MinImageCount)
+	p.minImageCount = val0
+	val1 := C.uint32_t(s.MaxImageCount)
+	p.maxImageCount = val1
+	val2, cancel3 := s.CurrentExtent.toC()
+	cancels = append(cancels, cancel3)
+	p.currentExtent = *val2
+	val4, cancel5 := s.MinImageExtent.toC()
+	cancels = append(cancels, cancel5)
+	p.minImageExtent = *val4
+	val6, cancel7 := s.MaxImageExtent.toC()
+	cancels = append(cancels, cancel7)
+	p.maxImageExtent = *val6
+	val8 := C.uint32_t(s.MaxImageArrayLayers)
+	p.maxImageArrayLayers = val8
+	val9 := C.VkSurfaceTransformFlagsKHR(s.SupportedTransforms)
+	p.supportedTransforms = val9
+	val10 := C.VkSurfaceTransformFlagBitsKHR(s.CurrentTransform)
+	p.currentTransform = val10
+	val11 := C.VkCompositeAlphaFlagsKHR(s.SupportedCompositeAlpha)
+	p.supportedCompositeAlpha = val11
+	val12 := C.VkImageUsageFlags(s.SupportedUsageFlags)
+	p.supportedUsageFlags = val12
+	return p, func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *SurfaceCapabilitiesKHR) fromC(p *C.VkSurfaceCapabilitiesKHR) {
+	s.MinImageCount = uint32(p.minImageCount)
+	s.MaxImageCount = uint32(p.maxImageCount)
+	s.CurrentExtent.fromC(&p.currentExtent)
+	s.MinImageExtent.fromC(&p.minImageExtent)
+	s.MaxImageExtent.fromC(&p.maxImageExtent)
+	s.MaxImageArrayLayers = uint32(p.maxImageArrayLayers)
+	s.SupportedTransforms = SurfaceTransformFlagsKHR(p.supportedTransforms)
+	s.CurrentTransform = SurfaceTransformFlagBitsKHR(p.currentTransform)
+	s.SupportedCompositeAlpha = CompositeAlphaFlagsKHR(p.supportedCompositeAlpha)
+	s.SupportedUsageFlags = ImageUsageFlags(p.supportedUsageFlags)
+}
+
+type SurfaceFormatKHR struct {
+	Format     Format
+	ColorSpace ColorSpaceKHR
+}
+
+func (s *SurfaceFormatKHR) toC() (*C.VkSurfaceFormatKHR, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkSurfaceFormatKHR)(C.malloc(C.size_t(C.sizeof_VkSurfaceFormatKHR)))
+	*p = C.VkSurfaceFormatKHR{}
+	val0 := C.VkFormat(s.Format)
+	p.format = val0
+	val1 := C.VkColorSpaceKHR(s.ColorSpace)
+	p.colorSpace = val1
+	return p, func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *SurfaceFormatKHR) fromC(p *C.VkSurfaceFormatKHR) {
+	s.Format = Format(p.format)
+	s.ColorSpace = ColorSpaceKHR(p.colorSpace)
+}
+
+type SwapchainCreateInfoKHR struct {
+	Next               Structure
+	Flags              SwapchainCreateFlagsKHR
+	Surface            *SurfaceKHR
+	MinImageCount      uint32
+	ImageFormat        Format
+	ImageColorSpace    ColorSpaceKHR
+	ImageExtent        Extent2D
+	ImageArrayLayers   uint32
+	ImageUsage         ImageUsageFlags
+	ImageSharingMode   SharingMode
+	QueueFamilyIndices []uint32
+	PreTransform       SurfaceTransformFlagBitsKHR
+	CompositeAlpha     CompositeAlphaFlagBitsKHR
+	PresentMode        PresentModeKHR
+	Clipped            bool
+	OldSwapchain       *SwapchainKHR
+}
+
+func (s *SwapchainCreateInfoKHR) GetType() StructureType {
+	return StructureTypeSwapchainCreateInfoKHR
+}
+
+func (s *SwapchainCreateInfoKHR) toC() (*C.VkSwapchainCreateInfoKHR, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkSwapchainCreateInfoKHR)(C.malloc(C.size_t(C.sizeof_VkSwapchainCreateInfoKHR)))
+	*p = C.VkSwapchainCreateInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = unsafe.Pointer(nextPtr)
+	}
+	val0 := C.VkSwapchainCreateFlagsKHR(s.Flags)
+	p.flags = val0
+	var h1 C.VkSurfaceKHR
+	if s.Surface != nil {
+		h1 = C.VkSurfaceKHR(unsafe.Pointer(s.Surface.handle))
+	}
+	p.surface = h1
+	val2 := C.uint32_t(s.MinImageCount)
+	p.minImageCount = val2
+	val3 := C.VkFormat(s.ImageFormat)
+	p.imageFormat = val3
+	val4 := C.VkColorSpaceKHR(s.ImageColorSpace)
+	p.imageColorSpace = val4
+	val5, cancel6 := s.ImageExtent.toC()
+	cancels = append(cancels, cancel6)
+	p.imageExtent = *val5
+	val7 := C.uint32_t(s.ImageArrayLayers)
+	p.imageArrayLayers = val7
+	val8 := C.VkImageUsageFlags(s.ImageUsage)
+	p.imageUsage = val8
+	val9 := C.VkSharingMode(s.ImageSharingMode)
+	p.imageSharingMode = val9
+	len10 := len(s.QueueFamilyIndices)
+
+	var arr11 *C.uint32_t
+	if len10 > 0 {
+		arr11 = (*C.uint32_t)(C.malloc(C.size_t(len10) * C.size_t(unsafe.Sizeof(*new(C.uint32_t)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr11)) })
+	}
+	for i12, elem13 := range s.QueueFamilyIndices {
+		val14 := C.uint32_t(elem13)
+		(*[1 << 30]C.uint32_t)(unsafe.Pointer(arr11))[i12] = val14
+	}
+	p.pQueueFamilyIndices = arr11
+	p.queueFamilyIndexCount = C.uint32_t(len(s.QueueFamilyIndices))
+	val15 := C.VkSurfaceTransformFlagBitsKHR(s.PreTransform)
+	p.preTransform = val15
+	val16 := C.VkCompositeAlphaFlagBitsKHR(s.CompositeAlpha)
+	p.compositeAlpha = val16
+	val17 := C.VkPresentModeKHR(s.PresentMode)
+	p.presentMode = val17
+	val18 := C.VkBool32(0)
+	if s.Clipped {
+		val18 = C.VkBool32(1)
+	}
+	p.clipped = val18
+	var h19 C.VkSwapchainKHR
+	if s.OldSwapchain != nil {
+		h19 = C.VkSwapchainKHR(unsafe.Pointer(s.OldSwapchain.handle))
+	}
+	p.oldSwapchain = h19
+	return p, func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *SwapchainCreateInfoKHR) fromC(p *C.VkSwapchainCreateInfoKHR) {
+	s.Flags = SwapchainCreateFlagsKHR(p.flags)
+	s.Surface = &SurfaceKHR{handle: unsafe.Pointer(p.surface)}
+	s.MinImageCount = uint32(p.minImageCount)
+	s.ImageFormat = Format(p.imageFormat)
+	s.ImageColorSpace = ColorSpaceKHR(p.imageColorSpace)
+	s.ImageExtent.fromC(&p.imageExtent)
+	s.ImageArrayLayers = uint32(p.imageArrayLayers)
+	s.ImageUsage = ImageUsageFlags(p.imageUsage)
+	s.ImageSharingMode = SharingMode(p.imageSharingMode)
+	// TODO: fromC for QueueFamilyIndices (*generator.Slice)
+	s.PreTransform = SurfaceTransformFlagBitsKHR(p.preTransform)
+	s.CompositeAlpha = CompositeAlphaFlagBitsKHR(p.compositeAlpha)
+	s.PresentMode = PresentModeKHR(p.presentMode)
+	s.Clipped = p.clipped != 0
+	s.OldSwapchain = &SwapchainKHR{handle: unsafe.Pointer(p.oldSwapchain)}
+}
+
 type TimelineSemaphoreSubmitInfo struct {
 	Next                      Structure
 	WaitSemaphoreValueCount   uint32
@@ -22718,7 +23456,72 @@ func (s *WriteDescriptorSetInlineUniformBlock) toC() (*C.VkWriteDescriptorSetInl
 }
 
 func (s *WriteDescriptorSetInlineUniformBlock) fromC(p *C.VkWriteDescriptorSetInlineUniformBlock) {
-	// TODO: fromC for Data (*generator.VoidPtr)
+	s.Data = unsafe.Pointer(p.pData)
+}
+
+func (h Device) AcquireNextImage2KHR(
+	acquireInfo *AcquireNextImageInfoKHR,
+) (uint32, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param acquireInfo
+	var ptr1 *C.VkAcquireNextImageInfoKHR
+	if acquireInfo != nil {
+		val2, cancel3 := acquireInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = val2
+	}
+	var imageIndexOut C.uint32_t
+	_result := C.fn_vkAcquireNextImage2KHR(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &imageIndexOut)
+	if _result != C.VK_SUCCESS {
+		return 0, vkError(_result)
+	}
+	val4 := uint32(imageIndexOut)
+	return val4, nil
+}
+
+func (h Device) AcquireNextImageKHR(
+	swapchain *SwapchainKHR,
+	timeout uint64,
+	semaphore *Semaphore,
+	fence *Fence,
+) (uint32, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param swapchain
+	var h1 C.VkSwapchainKHR
+	if swapchain != nil {
+		h1 = C.VkSwapchainKHR(unsafe.Pointer(swapchain.handle))
+	}
+	// param timeout
+	val3 := C.uint64_t(timeout)
+	// param semaphore
+	var h5 C.VkSemaphore
+	if semaphore != nil {
+		h5 = C.VkSemaphore(unsafe.Pointer(semaphore.handle))
+	}
+	// param fence
+	var h7 C.VkFence
+	if fence != nil {
+		h7 = C.VkFence(unsafe.Pointer(fence.handle))
+	}
+	var imageIndexOut C.uint32_t
+	_result := C.fn_vkAcquireNextImageKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, h5, h7, &imageIndexOut)
+	if _result != C.VK_SUCCESS {
+		return 0, vkError(_result)
+	}
+	val8 := uint32(imageIndexOut)
+	return val8, nil
 }
 
 func (h Device) AllocateCommandBuffers(
@@ -26471,6 +27274,40 @@ func (h Device) CreateShaderModule(
 	return h8, nil
 }
 
+func (h Device) CreateSwapchainKHR(
+	createInfo *SwapchainCreateInfoKHR,
+	allocator *AllocationCallbacks,
+) (*SwapchainKHR, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param createInfo
+	var ptr1 *C.VkSwapchainCreateInfoKHR
+	if createInfo != nil {
+		val2, cancel3 := createInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = val2
+	}
+	// param allocator
+	var ptr5 *C.VkAllocationCallbacks
+	if allocator != nil {
+		val6, cancel7 := allocator.toC()
+		cancels = append(cancels, cancel7)
+		ptr5 = val6
+	}
+	var swapchainOut C.VkSwapchainKHR
+	_result := C.fn_vkCreateSwapchainKHR(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &swapchainOut)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+	h8 := &SwapchainKHR{handle: unsafe.Pointer(swapchainOut)}
+	return h8, nil
+}
+
 func (h Device) DestroyBuffer(
 	buffer *Buffer,
 	allocator *AllocationCallbacks,
@@ -27083,6 +27920,58 @@ func (h Device) DestroyShaderModule(
 	C.fn_vkDestroyShaderModule(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
 }
 
+func (h Instance) DestroySurfaceKHR(
+	surface *SurfaceKHR,
+	allocator *AllocationCallbacks,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param surface
+	var h1 C.VkSurfaceKHR
+	if surface != nil {
+		h1 = C.VkSurfaceKHR(unsafe.Pointer(surface.handle))
+	}
+	// param allocator
+	var ptr3 *C.VkAllocationCallbacks
+	if allocator != nil {
+		val4, cancel5 := allocator.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = val4
+	}
+	C.fn_vkDestroySurfaceKHR(C.VkInstance(unsafe.Pointer(h.handle)), h1, ptr3)
+}
+
+func (h Device) DestroySwapchainKHR(
+	swapchain *SwapchainKHR,
+	allocator *AllocationCallbacks,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param swapchain
+	var h1 C.VkSwapchainKHR
+	if swapchain != nil {
+		h1 = C.VkSwapchainKHR(unsafe.Pointer(swapchain.handle))
+	}
+	// param allocator
+	var ptr3 *C.VkAllocationCallbacks
+	if allocator != nil {
+		val4, cancel5 := allocator.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = val4
+	}
+	C.fn_vkDestroySwapchainKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
+}
+
 func (h Device) WaitIdle() error {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -27626,6 +28515,53 @@ func (h Device) GetGroupPeerMemoryFeatures(
 		ptr7 = &val8
 	}
 	C.fn_vkGetDeviceGroupPeerMemoryFeatures(C.VkDevice(unsafe.Pointer(h.handle)), val1, val3, val5, ptr7)
+}
+
+func (h Device) GetGroupPresentCapabilitiesKHR() (DeviceGroupPresentCapabilitiesKHR, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	var deviceGroupPresentCapabilitiesOut C.VkDeviceGroupPresentCapabilitiesKHR
+	_result := C.fn_vkGetDeviceGroupPresentCapabilitiesKHR(C.VkDevice(unsafe.Pointer(h.handle)), &deviceGroupPresentCapabilitiesOut)
+	if _result != C.VK_SUCCESS {
+		return DeviceGroupPresentCapabilitiesKHR{}, vkError(_result)
+	}
+	var val0 DeviceGroupPresentCapabilitiesKHR
+	val0.fromC(&deviceGroupPresentCapabilitiesOut)
+	return val0, nil
+}
+
+func (h Device) GetGroupSurfacePresentModesKHR(
+	surface *SurfaceKHR,
+	modes *DeviceGroupPresentModeFlagsKHR,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param surface
+	var h1 C.VkSurfaceKHR
+	if surface != nil {
+		h1 = C.VkSurfaceKHR(unsafe.Pointer(surface.handle))
+	}
+	// param modes
+	var ptr3 *C.VkDeviceGroupPresentModeFlagsKHR
+	if modes != nil {
+		val4 := C.VkDeviceGroupPresentModeFlagsKHR(*modes)
+		ptr3 = &val4
+	}
+	_result := C.fn_vkGetDeviceGroupSurfacePresentModesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
 }
 
 func (h Device) GetImageMemoryRequirements(
@@ -28204,6 +29140,48 @@ func (h PhysicalDevice) GetMemoryProperties2() PhysicalDeviceMemoryProperties2 {
 	return val0
 }
 
+func (h PhysicalDevice) GetPresentRectanglesKHR(
+	surface *SurfaceKHR,
+) ([]Rect2D, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param surface
+	var h0 C.VkSurfaceKHR
+	if surface != nil {
+		h0 = C.VkSurfaceKHR(unsafe.Pointer(surface.handle))
+	}
+	var count C.uint32_t
+	_result := C.fn_vkGetPhysicalDevicePresentRectanglesKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h0, &count, nil)
+	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
+		return nil, vkError(_result)
+	}
+	if count == 0 {
+		return nil, nil
+	}
+
+	cArr := (*C.VkRect2D)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkRect2D)))))
+	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
+
+	_result = C.fn_vkGetPhysicalDevicePresentRectanglesKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h0, &count, cArr)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+
+	out := make([]Rect2D, int(count))
+	cSlice := (*[1 << 30]C.VkRect2D)(unsafe.Pointer(cArr))[:count:count]
+	for i, v := range cSlice {
+		var val1 Rect2D
+		val1.fromC(&v)
+		out[i] = val1
+	}
+	return out, nil
+}
+
 func (h PhysicalDevice) GetProperties() PhysicalDeviceProperties {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -28369,6 +29347,141 @@ func (h PhysicalDevice) GetSparseImageFormatProperties2(
 		out[i] = val3
 	}
 	return out
+}
+
+func (h PhysicalDevice) GetSurfaceCapabilitiesKHR(
+	surface *SurfaceKHR,
+) (SurfaceCapabilitiesKHR, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param surface
+	var h1 C.VkSurfaceKHR
+	if surface != nil {
+		h1 = C.VkSurfaceKHR(unsafe.Pointer(surface.handle))
+	}
+	var surfaceCapabilitiesOut C.VkSurfaceCapabilitiesKHR
+	_result := C.fn_vkGetPhysicalDeviceSurfaceCapabilitiesKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h1, &surfaceCapabilitiesOut)
+	if _result != C.VK_SUCCESS {
+		return SurfaceCapabilitiesKHR{}, vkError(_result)
+	}
+	var val2 SurfaceCapabilitiesKHR
+	val2.fromC(&surfaceCapabilitiesOut)
+	return val2, nil
+}
+
+func (h PhysicalDevice) GetSurfaceFormatsKHR(
+	surface *SurfaceKHR,
+) ([]SurfaceFormatKHR, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param surface
+	var h0 C.VkSurfaceKHR
+	if surface != nil {
+		h0 = C.VkSurfaceKHR(unsafe.Pointer(surface.handle))
+	}
+	var count C.uint32_t
+	_result := C.fn_vkGetPhysicalDeviceSurfaceFormatsKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h0, &count, nil)
+	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
+		return nil, vkError(_result)
+	}
+	if count == 0 {
+		return nil, nil
+	}
+
+	cArr := (*C.VkSurfaceFormatKHR)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkSurfaceFormatKHR)))))
+	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
+
+	_result = C.fn_vkGetPhysicalDeviceSurfaceFormatsKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h0, &count, cArr)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+
+	out := make([]SurfaceFormatKHR, int(count))
+	cSlice := (*[1 << 30]C.VkSurfaceFormatKHR)(unsafe.Pointer(cArr))[:count:count]
+	for i, v := range cSlice {
+		var val1 SurfaceFormatKHR
+		val1.fromC(&v)
+		out[i] = val1
+	}
+	return out, nil
+}
+
+func (h PhysicalDevice) GetSurfacePresentModesKHR(
+	surface *SurfaceKHR,
+) ([]PresentModeKHR, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param surface
+	var h0 C.VkSurfaceKHR
+	if surface != nil {
+		h0 = C.VkSurfaceKHR(unsafe.Pointer(surface.handle))
+	}
+	var count C.uint32_t
+	_result := C.fn_vkGetPhysicalDeviceSurfacePresentModesKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h0, &count, nil)
+	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
+		return nil, vkError(_result)
+	}
+	if count == 0 {
+		return nil, nil
+	}
+
+	cArr := (*C.VkPresentModeKHR)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkPresentModeKHR)))))
+	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
+
+	_result = C.fn_vkGetPhysicalDeviceSurfacePresentModesKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h0, &count, cArr)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+
+	out := make([]PresentModeKHR, int(count))
+	cSlice := (*[1 << 30]C.VkPresentModeKHR)(unsafe.Pointer(cArr))[:count:count]
+	for i, v := range cSlice {
+		val1 := PresentModeKHR(v)
+		out[i] = val1
+	}
+	return out, nil
+}
+
+func (h PhysicalDevice) GetSurfaceSupportKHR(
+	queueFamilyIndex uint32,
+	surface *SurfaceKHR,
+) (bool, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param queueFamilyIndex
+	val1 := C.uint32_t(queueFamilyIndex)
+	// param surface
+	var h3 C.VkSurfaceKHR
+	if surface != nil {
+		h3 = C.VkSurfaceKHR(unsafe.Pointer(surface.handle))
+	}
+	var supportedOut C.VkBool32
+	_result := C.fn_vkGetPhysicalDeviceSurfaceSupportKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), val1, h3, &supportedOut)
+	if _result != C.VK_SUCCESS {
+		return false, vkError(_result)
+	}
+	val4 := supportedOut != 0
+	return val4, nil
 }
 
 func (h PhysicalDevice) GetToolProperties() ([]PhysicalDeviceToolProperties, error) {
@@ -28571,6 +29684,47 @@ func (h Device) GetSemaphoreCounterValue(
 	}
 	val2 := uint64(valueOut)
 	return val2, nil
+}
+
+func (h Device) GetSwapchainImagesKHR(
+	swapchain *SwapchainKHR,
+) ([]*Image, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param swapchain
+	var h0 C.VkSwapchainKHR
+	if swapchain != nil {
+		h0 = C.VkSwapchainKHR(unsafe.Pointer(swapchain.handle))
+	}
+	var count C.uint32_t
+	_result := C.fn_vkGetSwapchainImagesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h0, &count, nil)
+	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
+		return nil, vkError(_result)
+	}
+	if count == 0 {
+		return nil, nil
+	}
+
+	cArr := (*C.VkImage)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkImage)))))
+	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
+
+	_result = C.fn_vkGetSwapchainImagesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h0, &count, cArr)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+
+	out := make([]*Image, int(count))
+	cSlice := (*[1 << 30]C.VkImage)(unsafe.Pointer(cArr))[:count:count]
+	for i, v := range cSlice {
+		h1 := &Image{handle: unsafe.Pointer(v)}
+		out[i] = h1
+	}
+	return out, nil
 }
 
 func (h Device) InvalidateMappedMemoryRanges(
@@ -28802,6 +29956,30 @@ func (h Queue) InsertDebugUtilsLabelEXT(
 		ptr1 = val2
 	}
 	C.fn_vkQueueInsertDebugUtilsLabelEXT(C.VkQueue(unsafe.Pointer(h.handle)), ptr1)
+}
+
+func (h Queue) PresentKHR(
+	presentInfo *PresentInfoKHR,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param presentInfo
+	var ptr1 *C.VkPresentInfoKHR
+	if presentInfo != nil {
+		val2, cancel3 := presentInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = val2
+	}
+	_result := C.fn_vkQueuePresentKHR(C.VkQueue(unsafe.Pointer(h.handle)), ptr1)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
 }
 
 func (h Queue) Submit(

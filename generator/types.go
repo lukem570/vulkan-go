@@ -307,6 +307,50 @@ func (t *VoidPtr) CName() string  { return "unsafe.Pointer" }
 func (t *VoidPtr) GoName() string { return "unsafe.Pointer" }
 
 // ---------------------------------------------------------------------------
+// ExternalType (platform-specific C types not part of the Vulkan type system)
+// ---------------------------------------------------------------------------
+
+type ExternalType struct {
+	CTypeName   string // e.g., "Display", "HWND", "DWORD"
+	GoTypeName  string // Go representation: "unsafe.Pointer", "uintptr", "uint32"
+	PtrInVulkan bool   // whether Vulkan uses it with * (e.g., Display* dpy)
+}
+
+func (t *ExternalType) GenerateToC(g *CodeGen, input string) string {
+	out := g.Var("ext")
+	if t.PtrInVulkan {
+		// Vulkan member is SomeType*, Go field is unsafe.Pointer
+		g.Line(fmt.Sprintf("\t%s := (*C.%s)(%s)", out, t.CTypeName, input))
+	} else if t.GoTypeName == "unsafe.Pointer" {
+		// Type is inherently a pointer (HWND, MTLDevice_id, etc.)
+		g.Line(fmt.Sprintf("\t%s := (C.%s)(%s)", out, t.CTypeName, input))
+	} else {
+		// Integer type (DWORD, Window, xcb_window_t)
+		g.Line(fmt.Sprintf("\t%s := C.%s(%s)", out, t.CTypeName, input))
+	}
+	return out
+}
+
+func (t *ExternalType) GenerateFromC(g *CodeGen, input string) string {
+	out := g.Var("ext")
+	if t.PtrInVulkan || t.GoTypeName == "unsafe.Pointer" {
+		g.Line(fmt.Sprintf("\t%s := unsafe.Pointer(%s)", out, input))
+	} else {
+		g.Line(fmt.Sprintf("\t%s := %s(%s)", out, t.GoTypeName, input))
+	}
+	return out
+}
+
+func (t *ExternalType) CName() string {
+	if t.PtrInVulkan {
+		return "*C." + t.CTypeName
+	}
+	return "C." + t.CTypeName
+}
+
+func (t *ExternalType) GoName() string { return t.GoTypeName }
+
+// ---------------------------------------------------------------------------
 // GoFuncPointer (Vulkan PFN_vk* function pointer types)
 // ---------------------------------------------------------------------------
 

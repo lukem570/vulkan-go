@@ -101,7 +101,46 @@ func (l *Linker) enableExtensions(e *Enabled) {
 		if ext == nil {
 			continue
 		}
+		// If the extension has a platform requirement, check it's in the config
+		if ext.Platform != "" && !l.platformEnabled(ext.Platform) {
+			continue
+		}
 		l.enableRequireBlocks(e, ext.Requires)
+		// Tag commands and structs with the extension's platform
+		if ext.Platform != "" {
+			l.tagPlatform(ext)
+		}
+	}
+}
+
+func (l *Linker) platformEnabled(platform string) bool {
+	for _, p := range l.Config.Platforms {
+		if p == platform {
+			return true
+		}
+	}
+	return false
+}
+
+func (l *Linker) tagPlatform(ext *Extension) {
+	for _, req := range ext.Requires {
+		for _, cName := range req.Commands {
+			if goName, ok := l.cToGoCmd[cName]; ok {
+				if cmd, ok := l.Registry.Commands[goName]; ok {
+					cmd.Platform = ext.Platform
+				}
+			}
+		}
+		for _, cName := range req.Types {
+			if goName, ok := l.cToGoType[cName]; ok {
+				if s, ok := l.Registry.Structs[goName]; ok {
+					s.Platform = ext.Platform
+				}
+				if h, ok := l.Registry.Handles[goName]; ok {
+					h.Platform = ext.Platform
+				}
+			}
+		}
 	}
 }
 
@@ -292,6 +331,7 @@ func (l *Linker) buildReducedRegistry(e *Enabled) *Registry {
 	}
 
 	out.APIConstants = l.Registry.APIConstants
+	out.Platforms = l.Registry.Platforms
 
 	return out
 }
