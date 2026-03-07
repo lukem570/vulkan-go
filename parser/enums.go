@@ -166,10 +166,9 @@ func applyEnumExtensions(x *XMLRegistry, r *generator.Registry) {
 		}
 	}
 
-	for i, ext := range x.Extensions.Extensions {
-		extNum := i + 1
+	for _, ext := range x.Extensions.Extensions {
 		for _, req := range ext.Requires {
-			apply(req.Enums, extNum)
+			apply(req.Enums, ext.Number)
 		}
 	}
 }

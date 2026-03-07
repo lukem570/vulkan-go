@@ -229,6 +229,10 @@ VkResult fn_vkCreateInstance(const VkInstanceCreateInfo* pCreateInfo, const VkAl
 	return vkCreateInstance(pCreateInfo, pAllocator, pInstance);
 }
 
+VkResult fn_vkCreatePipelineCache(VkDevice device, const VkPipelineCacheCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkPipelineCache* pPipelineCache) {
+	return vkCreatePipelineCache(device, pCreateInfo, pAllocator, pPipelineCache);
+}
+
 VkResult fn_vkCreatePipelineLayout(VkDevice device, const VkPipelineLayoutCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkPipelineLayout* pPipelineLayout) {
 	return vkCreatePipelineLayout(device, pCreateInfo, pAllocator, pPipelineLayout);
 }
@@ -431,10 +435,6 @@ void fn_vkCmdEndRendering(VkCommandBuffer commandBuffer) {
 
 VkResult fn_vkEnumerateDeviceExtensionProperties(VkPhysicalDevice physicalDevice, const char* pLayerName, uint32_t* pPropertyCount, VkExtensionProperties* pProperties) {
 	return vkEnumerateDeviceExtensionProperties(physicalDevice, pLayerName, pPropertyCount, pProperties);
-}
-
-VkResult fn_vkEnumerateDeviceLayerProperties(VkPhysicalDevice physicalDevice, uint32_t* pPropertyCount, VkLayerProperties* pProperties) {
-	return vkEnumerateDeviceLayerProperties(physicalDevice, pPropertyCount, pProperties);
 }
 
 VkResult fn_vkEnumerateInstanceExtensionProperties(const char* pLayerName, uint32_t* pPropertyCount, VkExtensionProperties* pProperties) {
@@ -1001,16 +1001,16 @@ VkResult fn_vkCreateGraphicsPipelines(VkDevice device, VkPipelineCache pipelineC
 	return vkCreateGraphicsPipelines(device, pipelineCache, createInfoCount, pCreateInfos, pAllocator, pPipelines);
 }
 
-VkResult fn_vkCreatePipelineCache(VkDevice device, const VkPipelineCacheCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkPipelineCache* pPipelineCache) {
-	return vkCreatePipelineCache(device, pCreateInfo, pAllocator, pPipelineCache);
-}
-
 void fn_vkDestroyDevice(VkDevice device, const VkAllocationCallbacks* pAllocator) {
 	vkDestroyDevice(device, pAllocator);
 }
 
 void fn_vkCmdEndDebugUtilsLabelEXT(VkCommandBuffer commandBuffer) {
 	vkCmdEndDebugUtilsLabelEXT(commandBuffer);
+}
+
+VkResult fn_vkEnumerateDeviceLayerProperties(VkPhysicalDevice physicalDevice, uint32_t* pPropertyCount, VkLayerProperties* pProperties) {
+	return vkEnumerateDeviceLayerProperties(physicalDevice, pPropertyCount, pProperties);
 }
 
 void fn_vkGetDeviceBufferMemoryRequirements(VkDevice device, const VkDeviceBufferMemoryRequirements* pInfo, VkMemoryRequirements2* pMemoryRequirements) {

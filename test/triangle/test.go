@@ -50,12 +50,12 @@ func run() error {
 
 	glfw.WindowHint(glfw.ClientAPI, glfw.NoAPI)
 
-	tmpWindow, err := glfw.CreateWindow(1, 1, "", nil, nil)
+	window, err := glfw.CreateWindow(800, 600, "Vulkan go triangle", nil, nil)
 	if err != nil {
-		return fmt.Errorf("create tmp window: %w", err)
+		return fmt.Errorf("create window: %w", err)
 	}
-	glfwExts := tmpWindow.GetRequiredInstanceExtensions()
-	tmpWindow.Destroy()
+	glfwExts := window.GetRequiredInstanceExtensions()
+	defer window.Destroy()
 
 	enabledExts := append(glfwExts, "VK_EXT_debug_utils")
 
@@ -111,11 +111,6 @@ func run() error {
 	defer instance.DestroyDebugUtilsMessengerEXT(messenger, nil)
 
 	fmt.Println("instance created")
-
-	window, err := glfw.CreateWindow(800, 600, "Vulkan go triangle", nil, nil)
-	if err != nil {
-		return fmt.Errorf("create window: %w", err)
-	}
 
 	surfPtr, err := window.CreateWindowSurface((*byte)(instance.Handle()), nil)
 	if err != nil {

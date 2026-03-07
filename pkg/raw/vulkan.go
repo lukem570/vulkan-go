@@ -586,8 +586,8 @@ const (
 	BorderColorIntOpaqueBlack        BorderColor = 3
 	BorderColorFloatOpaqueWhite      BorderColor = 4
 	BorderColorIntOpaqueWhite        BorderColor = 5
-	BorderColorFloatCustomEXT        BorderColor = 1000289003
-	BorderColorIntCustomEXT          BorderColor = 1000289004
+	BorderColorFloatCustomEXT        BorderColor = 1000287003
+	BorderColorIntCustomEXT          BorderColor = 1000287004
 )
 
 type BufferCreateFlagBits uint32
@@ -731,7 +731,7 @@ const (
 	ColorSpacePassThroughEXT           ColorSpaceKHR = 1000104013
 	ColorSpaceExtendedSrgbNonlinearEXT ColorSpaceKHR = 1000104014
 	ColorSpaceDciP3LinearEXT           ColorSpaceKHR = ColorSpaceDisplayP3LinearEXT
-	ColorSpaceDisplayNativeAMD         ColorSpaceKHR = 1000215000
+	ColorSpaceDisplayNativeAMD         ColorSpaceKHR = 1000213000
 )
 
 type CommandBufferLevel uint32
@@ -906,7 +906,7 @@ const (
 	DescriptorTypeInlineUniformBlock                 DescriptorType = 1000138000
 	DescriptorTypeInlineUniformBlockEXT              DescriptorType = DescriptorTypeInlineUniformBlock
 	DescriptorTypeAccelerationStructureKHR           DescriptorType = 1000150000
-	DescriptorTypeAccelerationStructureNV            DescriptorType = 1000167000
+	DescriptorTypeAccelerationStructureNV            DescriptorType = 1000165000
 	DescriptorTypeMutableVALVE                       DescriptorType = DescriptorTypeMutableEXT
 	DescriptorTypeSampleWeightImageQCOM              DescriptorType = 1000440000
 	DescriptorTypeBlockMatchImageQCOM                DescriptorType = 1000440001
@@ -1019,12 +1019,12 @@ const (
 	DynamicStateDiscardRectangleEnableEXT           DynamicState = 1000099001
 	DynamicStateDiscardRectangleModeEXT             DynamicState = 1000099002
 	DynamicStateSampleLocationsEXT                  DynamicState = 1000143000
-	DynamicStateRayTracingPipelineStackSizeKHR      DynamicState = 1000151000
-	DynamicStateViewportShadingRatePaletteNV        DynamicState = 1000166004
-	DynamicStateViewportCoarseSampleOrderNV         DynamicState = 1000166006
-	DynamicStateExclusiveScissorEnableNV            DynamicState = 1000207000
-	DynamicStateExclusiveScissorNV                  DynamicState = 1000207001
-	DynamicStateFragmentShadingRateKHR              DynamicState = 1000228000
+	DynamicStateRayTracingPipelineStackSizeKHR      DynamicState = 1000347000
+	DynamicStateViewportShadingRatePaletteNV        DynamicState = 1000164004
+	DynamicStateViewportCoarseSampleOrderNV         DynamicState = 1000164006
+	DynamicStateExclusiveScissorEnableNV            DynamicState = 1000205000
+	DynamicStateExclusiveScissorNV                  DynamicState = 1000205001
+	DynamicStateFragmentShadingRateKHR              DynamicState = 1000226000
 	DynamicStateLineStippleEXT                      DynamicState = DynamicStateLineStipple
 	DynamicStateCullModeEXT                         DynamicState = DynamicStateCullMode
 	DynamicStateFrontFaceEXT                        DynamicState = DynamicStateFrontFace
@@ -1547,20 +1547,20 @@ const (
 	FormatR16g16S105NV                            Format = FormatR16g16Sfixed5NV
 	FormatA1b5g5r5UnormPack16KHR                  Format = FormatA1b5g5r5UnormPack16
 	FormatA8UnormKHR                              Format = FormatA8Unorm
-	FormatR10x6UintPack16ARM                      Format = 1000610000
-	FormatR10x6g10x6Uint2pack16ARM                Format = 1000610001
-	FormatR10x6g10x6b10x6a10x6Uint4pack16ARM      Format = 1000610002
-	FormatR12x4UintPack16ARM                      Format = 1000610003
-	FormatR12x4g12x4Uint2pack16ARM                Format = 1000610004
-	FormatR12x4g12x4b12x4a12x4Uint4pack16ARM      Format = 1000610005
-	FormatR14x2UintPack16ARM                      Format = 1000610006
-	FormatR14x2g14x2Uint2pack16ARM                Format = 1000610007
-	FormatR14x2g14x2b14x2a14x2Uint4pack16ARM      Format = 1000610008
-	FormatR14x2UnormPack16ARM                     Format = 1000610009
-	FormatR14x2g14x2Unorm2pack16ARM               Format = 1000610010
-	FormatR14x2g14x2b14x2a14x2Unorm4pack16ARM     Format = 1000610011
-	FormatG14x2B14x2r14x22plane420Unorm3pack16ARM Format = 1000610012
-	FormatG14x2B14x2r14x22plane422Unorm3pack16ARM Format = 1000610013
+	FormatR10x6UintPack16ARM                      Format = 1000609000
+	FormatR10x6g10x6Uint2pack16ARM                Format = 1000609001
+	FormatR10x6g10x6b10x6a10x6Uint4pack16ARM      Format = 1000609002
+	FormatR12x4UintPack16ARM                      Format = 1000609003
+	FormatR12x4g12x4Uint2pack16ARM                Format = 1000609004
+	FormatR12x4g12x4b12x4a12x4Uint4pack16ARM      Format = 1000609005
+	FormatR14x2UintPack16ARM                      Format = 1000609006
+	FormatR14x2g14x2Uint2pack16ARM                Format = 1000609007
+	FormatR14x2g14x2b14x2a14x2Uint4pack16ARM      Format = 1000609008
+	FormatR14x2UnormPack16ARM                     Format = 1000609009
+	FormatR14x2g14x2Unorm2pack16ARM               Format = 1000609010
+	FormatR14x2g14x2b14x2a14x2Unorm4pack16ARM     Format = 1000609011
+	FormatG14x2B14x2r14x22plane420Unorm3pack16ARM Format = 1000609012
+	FormatG14x2B14x2r14x22plane422Unorm3pack16ARM Format = 1000609013
 )
 
 type FormatFeatureFlagBits uint32
@@ -1813,19 +1813,19 @@ const (
 	ImageLayoutDepthReadOnlyStencilAttachmentOptimalKHR ImageLayout = ImageLayoutDepthReadOnlyStencilAttachmentOptimal
 	ImageLayoutDepthAttachmentStencilReadOnlyOptimalKHR ImageLayout = ImageLayoutDepthAttachmentStencilReadOnlyOptimal
 	ImageLayoutShadingRateOptimalNV                     ImageLayout = ImageLayoutFragmentShadingRateAttachmentOptimalKHR
-	ImageLayoutFragmentDensityMapOptimalEXT             ImageLayout = 1000220000
+	ImageLayoutFragmentDensityMapOptimalEXT             ImageLayout = 1000218000
 	ImageLayoutFragmentShadingRateAttachmentOptimalKHR  ImageLayout = 1000164003
 	ImageLayoutRenderingLocalReadKHR                    ImageLayout = ImageLayoutRenderingLocalRead
 	ImageLayoutDepthAttachmentOptimalKHR                ImageLayout = ImageLayoutDepthAttachmentOptimal
 	ImageLayoutDepthReadOnlyOptimalKHR                  ImageLayout = ImageLayoutDepthReadOnlyOptimal
 	ImageLayoutStencilAttachmentOptimalKHR              ImageLayout = ImageLayoutStencilAttachmentOptimal
 	ImageLayoutStencilReadOnlyOptimalKHR                ImageLayout = ImageLayoutStencilReadOnlyOptimal
-	ImageLayoutVideoEncodeDstKHR                        ImageLayout = 1000301000
-	ImageLayoutVideoEncodeSrcKHR                        ImageLayout = 1000301001
-	ImageLayoutVideoEncodeDpbKHR                        ImageLayout = 1000301002
+	ImageLayoutVideoEncodeDstKHR                        ImageLayout = 1000299000
+	ImageLayoutVideoEncodeSrcKHR                        ImageLayout = 1000299001
+	ImageLayoutVideoEncodeDpbKHR                        ImageLayout = 1000299002
 	ImageLayoutReadOnlyOptimalKHR                       ImageLayout = ImageLayoutReadOnlyOptimal
 	ImageLayoutAttachmentOptimalKHR                     ImageLayout = ImageLayoutAttachmentOptimal
-	ImageLayoutAttachmentFeedbackLoopOptimalEXT         ImageLayout = 1000341000
+	ImageLayoutAttachmentFeedbackLoopOptimalEXT         ImageLayout = 1000339000
 	ImageLayoutTensorAliasingARM                        ImageLayout = 1000460000
 	ImageLayoutVideoEncodeQuantizationMapKHR            ImageLayout = 1000553000
 	ImageLayoutZeroInitializedEXT                       ImageLayout = 1000620000
@@ -1836,7 +1836,7 @@ type ImageTiling uint32
 const (
 	ImageTilingOptimal              ImageTiling = 0
 	ImageTilingLinear               ImageTiling = 1
-	ImageTilingDrmFormatModifierEXT ImageTiling = 1000160000
+	ImageTilingDrmFormatModifierEXT ImageTiling = 1000158000
 )
 
 type ImageType uint32
@@ -2061,14 +2061,14 @@ const (
 	ObjectTypeDebugUtilsMessengerEXT        ObjectType = 1000128000
 	ObjectTypeAccelerationStructureKHR      ObjectType = 1000150000
 	ObjectTypeSamplerYcbcrConversionKHR     ObjectType = ObjectTypeSamplerYcbcrConversion
-	ObjectTypeValidationCacheEXT            ObjectType = 1000162000
-	ObjectTypeAccelerationStructureNV       ObjectType = 1000167000
-	ObjectTypePerformanceConfigurationINTEL ObjectType = 1000212000
-	ObjectTypeDeferredOperationKHR          ObjectType = 1000270000
-	ObjectTypeIndirectCommandsLayoutNV      ObjectType = 1000279000
+	ObjectTypeValidationCacheEXT            ObjectType = 1000160000
+	ObjectTypeAccelerationStructureNV       ObjectType = 1000165000
+	ObjectTypePerformanceConfigurationINTEL ObjectType = 1000210000
+	ObjectTypeDeferredOperationKHR          ObjectType = 1000268000
+	ObjectTypeIndirectCommandsLayoutNV      ObjectType = 1000277000
 	ObjectTypePrivateDataSlotEXT            ObjectType = ObjectTypePrivateDataSlot
-	ObjectTypeCudaModuleNV                  ObjectType = 1000309000
-	ObjectTypeCudaFunctionNV                ObjectType = 1000309001
+	ObjectTypeCudaModuleNV                  ObjectType = 1000307000
+	ObjectTypeCudaFunctionNV                ObjectType = 1000307001
 	ObjectTypeBufferCollectionFuchsia       ObjectType = 1000366000
 	ObjectTypeMicromapEXT                   ObjectType = 1000396000
 	ObjectTypeTensorARM                     ObjectType = 1000460000
@@ -2081,7 +2081,7 @@ const (
 	ObjectTypeExternalComputeQueueNV        ObjectType = 1000556000
 	ObjectTypeIndirectCommandsLayoutEXT     ObjectType = 1000572000
 	ObjectTypeIndirectExecutionSetEXT       ObjectType = 1000572001
-	ObjectTypeShaderInstrumentationARM      ObjectType = 1000608000
+	ObjectTypeShaderInstrumentationARM      ObjectType = 1000607000
 )
 
 type PeerMemoryFeatureFlagBits uint32
@@ -2435,7 +2435,7 @@ const (
 	PolygonModeFill            PolygonMode = 0
 	PolygonModeLine            PolygonMode = 1
 	PolygonModePoint           PolygonMode = 2
-	PolygonModeFillRectangleNV PolygonMode = 1000155000
+	PolygonModeFillRectangleNV PolygonMode = 1000153000
 )
 
 type PresentModeKHR uint32
@@ -2519,10 +2519,10 @@ const (
 	QueryTypePerformanceQueryKHR                                      QueryType = 1000116000
 	QueryTypeAccelerationStructureCompactedSizeKHR                    QueryType = 1000150000
 	QueryTypeAccelerationStructureSerializationSizeKHR                QueryType = 1000150001
-	QueryTypeAccelerationStructureCompactedSizeNV                     QueryType = 1000167000
-	QueryTypePerformanceQueryINTEL                                    QueryType = 1000212000
-	QueryTypeVideoEncodeFeedbackKHR                                   QueryType = 1000301000
-	QueryTypeMeshPrimitivesGeneratedEXT                               QueryType = 1000330000
+	QueryTypeAccelerationStructureCompactedSizeNV                     QueryType = 1000165000
+	QueryTypePerformanceQueryINTEL                                    QueryType = 1000210000
+	QueryTypeVideoEncodeFeedbackKHR                                   QueryType = 1000299000
+	QueryTypeMeshPrimitivesGeneratedEXT                               QueryType = 1000328000
 	QueryTypePrimitivesGeneratedEXT                                   QueryType = 1000382000
 	QueryTypeAccelerationStructureSerializationBottomLevelPointersKHR QueryType = 1000386000
 	QueryTypeAccelerationStructureSizeKHR                             QueryType = 1000386001
@@ -2658,22 +2658,22 @@ const (
 	ErrorVideoStdVersionNotSupportedKHR         Result = -1000023005
 	ErrorOutOfPoolMemoryKHR                     Result = ErrorOutOfPoolMemory
 	ErrorInvalidExternalHandleKHR               Result = ErrorInvalidExternalHandle
-	ErrorInvalidDrmFormatModifierPlaneLayoutEXT Result = -1000160000
+	ErrorInvalidDrmFormatModifierPlaneLayoutEXT Result = -1000158000
 	ErrorFragmentationEXT                       Result = ErrorFragmentation
 	ErrorNotPermittedEXT                        Result = ErrorNotPermitted
 	ErrorNotPermittedKHR                        Result = ErrorNotPermitted
-	ErrorPresentTimingQueueFullEXT              Result = -1000210000
+	ErrorPresentTimingQueueFullEXT              Result = -1000208000
 	ErrorInvalidDeviceAddressEXT                Result = ErrorInvalidOpaqueCaptureAddress
-	ErrorFullScreenExclusiveModeLostEXT         Result = -1000257000
+	ErrorFullScreenExclusiveModeLostEXT         Result = -1000255000
 	ErrorInvalidOpaqueCaptureAddressKHR         Result = ErrorInvalidOpaqueCaptureAddress
-	ThreadIdleKHR                               Result = 1000270000
-	ThreadDoneKHR                               Result = 1000270001
-	OperationDeferredKHR                        Result = 1000270002
-	OperationNotDeferredKHR                     Result = 1000270003
+	ThreadIdleKHR                               Result = 1000268000
+	ThreadDoneKHR                               Result = 1000268001
+	OperationDeferredKHR                        Result = 1000268002
+	OperationNotDeferredKHR                     Result = 1000268003
 	PipelineCompileRequiredEXT                  Result = PipelineCompileRequired
 	ErrorPipelineCompileRequiredEXT             Result = PipelineCompileRequired
-	ErrorInvalidVideoStdParametersKHR           Result = -1000301000
-	ErrorCompressionExhaustedEXT                Result = -1000340000
+	ErrorInvalidVideoStdParametersKHR           Result = -1000299000
+	ErrorCompressionExhaustedEXT                Result = -1000338000
 	IncompatibleShaderBinaryEXT                 Result = 1000482000
 	ErrorIncompatibleShaderBinaryEXT            Result = IncompatibleShaderBinaryEXT
 	PipelineBinaryMissingKHR                    Result = 1000483000
@@ -3448,16 +3448,16 @@ const (
 	StructureTypePhysicalDeviceAccelerationStructurePropertiesKHR             StructureType = 1000150014
 	StructureTypeAccelerationStructureCreateInfoKHR                           StructureType = 1000150017
 	StructureTypeAccelerationStructureBuildSizesInfoKHR                       StructureType = 1000150020
-	StructureTypePhysicalDeviceRayTracingPipelineFeaturesKHR                  StructureType = 1000151000
-	StructureTypePhysicalDeviceRayTracingPipelinePropertiesKHR                StructureType = 1000151001
+	StructureTypePhysicalDeviceRayTracingPipelineFeaturesKHR                  StructureType = 1000347000
+	StructureTypePhysicalDeviceRayTracingPipelinePropertiesKHR                StructureType = 1000347001
 	StructureTypeRayTracingPipelineCreateInfoKHR                              StructureType = 1000150015
 	StructureTypeRayTracingShaderGroupCreateInfoKHR                           StructureType = 1000150016
 	StructureTypeRayTracingPipelineInterfaceCreateInfoKHR                     StructureType = 1000150018
-	StructureTypePhysicalDeviceRayQueryFeaturesKHR                            StructureType = 1000152013
-	StructureTypePipelineCoverageModulationStateCreateInfoNV                  StructureType = 1000154000
+	StructureTypePhysicalDeviceRayQueryFeaturesKHR                            StructureType = 1000348013
+	StructureTypePipelineCoverageModulationStateCreateInfoNV                  StructureType = 1000152000
 	StructureTypeAttachmentSampleCountInfoNV                                  StructureType = StructureTypeAttachmentSampleCountInfoAMD
-	StructureTypePhysicalDeviceShaderSmBuiltinsFeaturesNV                     StructureType = 1000156000
-	StructureTypePhysicalDeviceShaderSmBuiltinsPropertiesNV                   StructureType = 1000156001
+	StructureTypePhysicalDeviceShaderSmBuiltinsFeaturesNV                     StructureType = 1000154000
+	StructureTypePhysicalDeviceShaderSmBuiltinsPropertiesNV                   StructureType = 1000154001
 	StructureTypeSamplerYcbcrConversionCreateInfoKHR                          StructureType = StructureTypeSamplerYcbcrConversionCreateInfo
 	StructureTypeSamplerYcbcrConversionInfoKHR                                StructureType = StructureTypeSamplerYcbcrConversionInfo
 	StructureTypeBindImagePlaneMemoryInfoKHR                                  StructureType = StructureTypeBindImagePlaneMemoryInfo
@@ -3466,82 +3466,82 @@ const (
 	StructureTypeSamplerYcbcrConversionImageFormatPropertiesKHR               StructureType = StructureTypeSamplerYcbcrConversionImageFormatProperties
 	StructureTypeBindBufferMemoryInfoKHR                                      StructureType = StructureTypeBindBufferMemoryInfo
 	StructureTypeBindImageMemoryInfoKHR                                       StructureType = StructureTypeBindImageMemoryInfo
-	StructureTypeDrmFormatModifierPropertiesListEXT                           StructureType = 1000160000
-	StructureTypePhysicalDeviceImageDrmFormatModifierInfoEXT                  StructureType = 1000160002
-	StructureTypeImageDrmFormatModifierListCreateInfoEXT                      StructureType = 1000160003
-	StructureTypeImageDrmFormatModifierExplicitCreateInfoEXT                  StructureType = 1000160004
-	StructureTypeImageDrmFormatModifierPropertiesEXT                          StructureType = 1000160005
-	StructureTypeDrmFormatModifierPropertiesList2EXT                          StructureType = 1000160006
-	StructureTypeValidationCacheCreateInfoEXT                                 StructureType = 1000162000
-	StructureTypeShaderModuleValidationCacheCreateInfoEXT                     StructureType = 1000162001
+	StructureTypeDrmFormatModifierPropertiesListEXT                           StructureType = 1000158000
+	StructureTypePhysicalDeviceImageDrmFormatModifierInfoEXT                  StructureType = 1000158002
+	StructureTypeImageDrmFormatModifierListCreateInfoEXT                      StructureType = 1000158003
+	StructureTypeImageDrmFormatModifierExplicitCreateInfoEXT                  StructureType = 1000158004
+	StructureTypeImageDrmFormatModifierPropertiesEXT                          StructureType = 1000158005
+	StructureTypeDrmFormatModifierPropertiesList2EXT                          StructureType = 1000158006
+	StructureTypeValidationCacheCreateInfoEXT                                 StructureType = 1000160000
+	StructureTypeShaderModuleValidationCacheCreateInfoEXT                     StructureType = 1000160001
 	StructureTypeDescriptorSetLayoutBindingFlagsCreateInfoEXT                 StructureType = StructureTypeDescriptorSetLayoutBindingFlagsCreateInfo
 	StructureTypePhysicalDeviceDescriptorIndexingFeaturesEXT                  StructureType = StructureTypePhysicalDeviceDescriptorIndexingFeatures
 	StructureTypePhysicalDeviceDescriptorIndexingPropertiesEXT                StructureType = StructureTypePhysicalDeviceDescriptorIndexingProperties
 	StructureTypeDescriptorSetVariableDescriptorCountAllocateInfoEXT          StructureType = StructureTypeDescriptorSetVariableDescriptorCountAllocateInfo
 	StructureTypeDescriptorSetVariableDescriptorCountLayoutSupportEXT         StructureType = StructureTypeDescriptorSetVariableDescriptorCountLayoutSupport
-	StructureTypePhysicalDevicePortabilitySubsetFeaturesKHR                   StructureType = 1000165000
-	StructureTypePhysicalDevicePortabilitySubsetPropertiesKHR                 StructureType = 1000165001
-	StructureTypePipelineViewportShadingRateImageStateCreateInfoNV            StructureType = 1000166000
-	StructureTypePhysicalDeviceShadingRateImageFeaturesNV                     StructureType = 1000166001
-	StructureTypePhysicalDeviceShadingRateImagePropertiesNV                   StructureType = 1000166002
-	StructureTypePipelineViewportCoarseSampleOrderStateCreateInfoNV           StructureType = 1000166005
-	StructureTypeRayTracingPipelineCreateInfoNV                               StructureType = 1000167000
-	StructureTypeAccelerationStructureCreateInfoNV                            StructureType = 1000167001
-	StructureTypeGeometryNV                                                   StructureType = 1000167003
-	StructureTypeGeometryTrianglesNV                                          StructureType = 1000167004
-	StructureTypeGeometryAabbNV                                               StructureType = 1000167005
-	StructureTypeBindAccelerationStructureMemoryInfoNV                        StructureType = 1000167006
-	StructureTypeWriteDescriptorSetAccelerationStructureNV                    StructureType = 1000167007
-	StructureTypeAccelerationStructureMemoryRequirementsInfoNV                StructureType = 1000167008
-	StructureTypePhysicalDeviceRayTracingPropertiesNV                         StructureType = 1000167009
-	StructureTypeRayTracingShaderGroupCreateInfoNV                            StructureType = 1000167011
-	StructureTypeAccelerationStructureInfoNV                                  StructureType = 1000167012
-	StructureTypePhysicalDeviceRepresentativeFragmentTestFeaturesNV           StructureType = 1000168000
-	StructureTypePipelineRepresentativeFragmentTestStateCreateInfoNV          StructureType = 1000168001
+	StructureTypePhysicalDevicePortabilitySubsetFeaturesKHR                   StructureType = 1000163000
+	StructureTypePhysicalDevicePortabilitySubsetPropertiesKHR                 StructureType = 1000163001
+	StructureTypePipelineViewportShadingRateImageStateCreateInfoNV            StructureType = 1000164000
+	StructureTypePhysicalDeviceShadingRateImageFeaturesNV                     StructureType = 1000164001
+	StructureTypePhysicalDeviceShadingRateImagePropertiesNV                   StructureType = 1000164002
+	StructureTypePipelineViewportCoarseSampleOrderStateCreateInfoNV           StructureType = 1000164005
+	StructureTypeRayTracingPipelineCreateInfoNV                               StructureType = 1000165000
+	StructureTypeAccelerationStructureCreateInfoNV                            StructureType = 1000165001
+	StructureTypeGeometryNV                                                   StructureType = 1000165003
+	StructureTypeGeometryTrianglesNV                                          StructureType = 1000165004
+	StructureTypeGeometryAabbNV                                               StructureType = 1000165005
+	StructureTypeBindAccelerationStructureMemoryInfoNV                        StructureType = 1000165006
+	StructureTypeWriteDescriptorSetAccelerationStructureNV                    StructureType = 1000165007
+	StructureTypeAccelerationStructureMemoryRequirementsInfoNV                StructureType = 1000165008
+	StructureTypePhysicalDeviceRayTracingPropertiesNV                         StructureType = 1000165009
+	StructureTypeRayTracingShaderGroupCreateInfoNV                            StructureType = 1000165011
+	StructureTypeAccelerationStructureInfoNV                                  StructureType = 1000165012
+	StructureTypePhysicalDeviceRepresentativeFragmentTestFeaturesNV           StructureType = 1000166000
+	StructureTypePipelineRepresentativeFragmentTestStateCreateInfoNV          StructureType = 1000166001
 	StructureTypePhysicalDeviceMaintenance3PropertiesKHR                      StructureType = StructureTypePhysicalDeviceMaintenance3Properties
 	StructureTypeDescriptorSetLayoutSupportKHR                                StructureType = StructureTypeDescriptorSetLayoutSupport
-	StructureTypePhysicalDeviceImageViewImageFormatInfoEXT                    StructureType = 1000172000
-	StructureTypeFilterCubicImageViewImageFormatPropertiesEXT                 StructureType = 1000172001
-	StructureTypePhysicalDeviceCooperativeMatrixConversionFeaturesQCOM        StructureType = 1000174000
+	StructureTypePhysicalDeviceImageViewImageFormatInfoEXT                    StructureType = 1000170000
+	StructureTypeFilterCubicImageViewImageFormatPropertiesEXT                 StructureType = 1000170001
+	StructureTypePhysicalDeviceCooperativeMatrixConversionFeaturesQCOM        StructureType = 1000172000
 	StructureTypeDeviceQueueGlobalPriorityCreateInfoEXT                       StructureType = StructureTypeDeviceQueueGlobalPriorityCreateInfo
 	StructureTypePhysicalDeviceShaderSubgroupExtendedTypesFeaturesKHR         StructureType = StructureTypePhysicalDeviceShaderSubgroupExtendedTypesFeatures
 	StructureTypePhysicalDevice8bitStorageFeaturesKHR                         StructureType = StructureTypePhysicalDevice8bitStorageFeatures
-	StructureTypeImportMemoryHostPointerInfoEXT                               StructureType = 1000180000
-	StructureTypeMemoryHostPointerPropertiesEXT                               StructureType = 1000180001
-	StructureTypePhysicalDeviceExternalMemoryHostPropertiesEXT                StructureType = 1000180002
+	StructureTypeImportMemoryHostPointerInfoEXT                               StructureType = 1000178000
+	StructureTypeMemoryHostPointerPropertiesEXT                               StructureType = 1000178001
+	StructureTypePhysicalDeviceExternalMemoryHostPropertiesEXT                StructureType = 1000178002
 	StructureTypePhysicalDeviceShaderAtomicInt64FeaturesKHR                   StructureType = StructureTypePhysicalDeviceShaderAtomicInt64Features
-	StructureTypePhysicalDeviceShaderClockFeaturesKHR                         StructureType = 1000183000
-	StructureTypePipelineCompilerControlCreateInfoAMD                         StructureType = 1000185000
+	StructureTypePhysicalDeviceShaderClockFeaturesKHR                         StructureType = 1000181000
+	StructureTypePipelineCompilerControlCreateInfoAMD                         StructureType = 1000183000
 	StructureTypeCalibratedTimestampInfoEXT                                   StructureType = StructureTypeCalibratedTimestampInfoKHR
-	StructureTypePhysicalDeviceShaderCorePropertiesAMD                        StructureType = 1000187000
-	StructureTypeVideoDecodeH265CapabilitiesKHR                               StructureType = 1000189000
-	StructureTypeVideoDecodeH265SessionParametersCreateInfoKHR                StructureType = 1000189001
-	StructureTypeVideoDecodeH265SessionParametersAddInfoKHR                   StructureType = 1000189002
-	StructureTypeVideoDecodeH265ProfileInfoKHR                                StructureType = 1000189003
-	StructureTypeVideoDecodeH265PictureInfoKHR                                StructureType = 1000189004
-	StructureTypeVideoDecodeH265DpbSlotInfoKHR                                StructureType = 1000189005
+	StructureTypePhysicalDeviceShaderCorePropertiesAMD                        StructureType = 1000185000
+	StructureTypeVideoDecodeH265CapabilitiesKHR                               StructureType = 1000187000
+	StructureTypeVideoDecodeH265SessionParametersCreateInfoKHR                StructureType = 1000187001
+	StructureTypeVideoDecodeH265SessionParametersAddInfoKHR                   StructureType = 1000187002
+	StructureTypeVideoDecodeH265ProfileInfoKHR                                StructureType = 1000187003
+	StructureTypeVideoDecodeH265PictureInfoKHR                                StructureType = 1000187004
+	StructureTypeVideoDecodeH265DpbSlotInfoKHR                                StructureType = 1000187005
 	StructureTypeDeviceQueueGlobalPriorityCreateInfoKHR                       StructureType = StructureTypeDeviceQueueGlobalPriorityCreateInfo
 	StructureTypePhysicalDeviceGlobalPriorityQueryFeaturesKHR                 StructureType = StructureTypePhysicalDeviceGlobalPriorityQueryFeatures
 	StructureTypeQueueFamilyGlobalPriorityPropertiesKHR                       StructureType = StructureTypeQueueFamilyGlobalPriorityProperties
-	StructureTypeDeviceMemoryOverallocationCreateInfoAMD                      StructureType = 1000191000
-	StructureTypePhysicalDeviceVertexAttributeDivisorPropertiesEXT            StructureType = 1000192000
+	StructureTypeDeviceMemoryOverallocationCreateInfoAMD                      StructureType = 1000189000
+	StructureTypePhysicalDeviceVertexAttributeDivisorPropertiesEXT            StructureType = 1000190000
 	StructureTypePipelineVertexInputDivisorStateCreateInfoEXT                 StructureType = StructureTypePipelineVertexInputDivisorStateCreateInfo
 	StructureTypePhysicalDeviceVertexAttributeDivisorFeaturesEXT              StructureType = StructureTypePhysicalDeviceVertexAttributeDivisorFeatures
-	StructureTypePresentFrameTokenGgp                                         StructureType = 1000193000
+	StructureTypePresentFrameTokenGgp                                         StructureType = 1000191000
 	StructureTypePipelineCreationFeedbackCreateInfoEXT                        StructureType = StructureTypePipelineCreationFeedbackCreateInfo
 	StructureTypePhysicalDeviceDriverPropertiesKHR                            StructureType = StructureTypePhysicalDeviceDriverProperties
 	StructureTypePhysicalDeviceFloatControlsPropertiesKHR                     StructureType = StructureTypePhysicalDeviceFloatControlsProperties
 	StructureTypePhysicalDeviceDepthStencilResolvePropertiesKHR               StructureType = StructureTypePhysicalDeviceDepthStencilResolveProperties
 	StructureTypeSubpassDescriptionDepthStencilResolveKHR                     StructureType = StructureTypeSubpassDescriptionDepthStencilResolve
 	StructureTypePhysicalDeviceComputeShaderDerivativesFeaturesNV             StructureType = StructureTypePhysicalDeviceComputeShaderDerivativesFeaturesKHR
-	StructureTypePhysicalDeviceMeshShaderFeaturesNV                           StructureType = 1000204000
-	StructureTypePhysicalDeviceMeshShaderPropertiesNV                         StructureType = 1000204001
+	StructureTypePhysicalDeviceMeshShaderFeaturesNV                           StructureType = 1000202000
+	StructureTypePhysicalDeviceMeshShaderPropertiesNV                         StructureType = 1000202001
 	StructureTypePhysicalDeviceFragmentShaderBarycentricFeaturesNV            StructureType = StructureTypePhysicalDeviceFragmentShaderBarycentricFeaturesKHR
-	StructureTypePhysicalDeviceShaderImageFootprintFeaturesNV                 StructureType = 1000206000
-	StructureTypePipelineViewportExclusiveScissorStateCreateInfoNV            StructureType = 1000207000
-	StructureTypePhysicalDeviceExclusiveScissorFeaturesNV                     StructureType = 1000207002
-	StructureTypeCheckpointDataNV                                             StructureType = 1000208000
-	StructureTypeQueueFamilyCheckpointPropertiesNV                            StructureType = 1000208001
+	StructureTypePhysicalDeviceShaderImageFootprintFeaturesNV                 StructureType = 1000204000
+	StructureTypePipelineViewportExclusiveScissorStateCreateInfoNV            StructureType = 1000205000
+	StructureTypePhysicalDeviceExclusiveScissorFeaturesNV                     StructureType = 1000205002
+	StructureTypeCheckpointDataNV                                             StructureType = 1000206000
+	StructureTypeQueueFamilyCheckpointPropertiesNV                            StructureType = 1000206001
 	StructureTypeQueueFamilyCheckpointProperties2NV                           StructureType = 1000314008
 	StructureTypeCheckpointData2NV                                            StructureType = 1000314009
 	StructureTypePhysicalDeviceTimelineSemaphoreFeaturesKHR                   StructureType = StructureTypePhysicalDeviceTimelineSemaphoreFeatures
@@ -3550,84 +3550,84 @@ const (
 	StructureTypeTimelineSemaphoreSubmitInfoKHR                               StructureType = StructureTypeTimelineSemaphoreSubmitInfo
 	StructureTypeSemaphoreWaitInfoKHR                                         StructureType = StructureTypeSemaphoreWaitInfo
 	StructureTypeSemaphoreSignalInfoKHR                                       StructureType = StructureTypeSemaphoreSignalInfo
-	StructureTypePhysicalDevicePresentTimingFeaturesEXT                       StructureType = 1000210000
-	StructureTypeSwapchainTimingPropertiesEXT                                 StructureType = 1000210001
-	StructureTypeSwapchainTimeDomainPropertiesEXT                             StructureType = 1000210002
-	StructureTypePresentTimingsInfoEXT                                        StructureType = 1000210003
-	StructureTypePresentTimingInfoEXT                                         StructureType = 1000210004
-	StructureTypePastPresentationTimingInfoEXT                                StructureType = 1000210005
-	StructureTypePastPresentationTimingPropertiesEXT                          StructureType = 1000210006
-	StructureTypePastPresentationTimingEXT                                    StructureType = 1000210007
-	StructureTypePresentTimingSurfaceCapabilitiesEXT                          StructureType = 1000210008
-	StructureTypeSwapchainCalibratedTimestampInfoEXT                          StructureType = 1000210009
-	StructureTypePhysicalDeviceShaderIntegerFunctions2FeaturesINTEL           StructureType = 1000211000
-	StructureTypeQueryPoolPerformanceQueryCreateInfoINTEL                     StructureType = 1000212000
+	StructureTypePhysicalDevicePresentTimingFeaturesEXT                       StructureType = 1000208000
+	StructureTypeSwapchainTimingPropertiesEXT                                 StructureType = 1000208001
+	StructureTypeSwapchainTimeDomainPropertiesEXT                             StructureType = 1000208002
+	StructureTypePresentTimingsInfoEXT                                        StructureType = 1000208003
+	StructureTypePresentTimingInfoEXT                                         StructureType = 1000208004
+	StructureTypePastPresentationTimingInfoEXT                                StructureType = 1000208005
+	StructureTypePastPresentationTimingPropertiesEXT                          StructureType = 1000208006
+	StructureTypePastPresentationTimingEXT                                    StructureType = 1000208007
+	StructureTypePresentTimingSurfaceCapabilitiesEXT                          StructureType = 1000208008
+	StructureTypeSwapchainCalibratedTimestampInfoEXT                          StructureType = 1000208009
+	StructureTypePhysicalDeviceShaderIntegerFunctions2FeaturesINTEL           StructureType = 1000209000
+	StructureTypeQueryPoolPerformanceQueryCreateInfoINTEL                     StructureType = 1000210000
 	StructureTypeQueryPoolCreateInfoINTEL                                     StructureType = StructureTypeQueryPoolPerformanceQueryCreateInfoINTEL
-	StructureTypeInitializePerformanceApiInfoINTEL                            StructureType = 1000212001
-	StructureTypePerformanceMarkerInfoINTEL                                   StructureType = 1000212002
-	StructureTypePerformanceStreamMarkerInfoINTEL                             StructureType = 1000212003
-	StructureTypePerformanceOverrideInfoINTEL                                 StructureType = 1000212004
-	StructureTypePerformanceConfigurationAcquireInfoINTEL                     StructureType = 1000212005
+	StructureTypeInitializePerformanceApiInfoINTEL                            StructureType = 1000210001
+	StructureTypePerformanceMarkerInfoINTEL                                   StructureType = 1000210002
+	StructureTypePerformanceStreamMarkerInfoINTEL                             StructureType = 1000210003
+	StructureTypePerformanceOverrideInfoINTEL                                 StructureType = 1000210004
+	StructureTypePerformanceConfigurationAcquireInfoINTEL                     StructureType = 1000210005
 	StructureTypePhysicalDeviceVulkanMemoryModelFeaturesKHR                   StructureType = StructureTypePhysicalDeviceVulkanMemoryModelFeatures
-	StructureTypePhysicalDevicePciBusInfoPropertiesEXT                        StructureType = 1000214000
-	StructureTypeDisplayNativeHdrSurfaceCapabilitiesAMD                       StructureType = 1000215000
-	StructureTypeSwapchainDisplayNativeHdrCreateInfoAMD                       StructureType = 1000215001
-	StructureTypeImagepipeSurfaceCreateInfoFuchsia                            StructureType = 1000216000
+	StructureTypePhysicalDevicePciBusInfoPropertiesEXT                        StructureType = 1000212000
+	StructureTypeDisplayNativeHdrSurfaceCapabilitiesAMD                       StructureType = 1000213000
+	StructureTypeSwapchainDisplayNativeHdrCreateInfoAMD                       StructureType = 1000213001
+	StructureTypeImagepipeSurfaceCreateInfoFuchsia                            StructureType = 1000214000
 	StructureTypePhysicalDeviceShaderTerminateInvocationFeaturesKHR           StructureType = StructureTypePhysicalDeviceShaderTerminateInvocationFeatures
-	StructureTypeMetalSurfaceCreateInfoEXT                                    StructureType = 1000219000
-	StructureTypePhysicalDeviceFragmentDensityMapFeaturesEXT                  StructureType = 1000220000
-	StructureTypePhysicalDeviceFragmentDensityMapPropertiesEXT                StructureType = 1000220001
-	StructureTypeRenderPassFragmentDensityMapCreateInfoEXT                    StructureType = 1000220002
+	StructureTypeMetalSurfaceCreateInfoEXT                                    StructureType = 1000217000
+	StructureTypePhysicalDeviceFragmentDensityMapFeaturesEXT                  StructureType = 1000218000
+	StructureTypePhysicalDeviceFragmentDensityMapPropertiesEXT                StructureType = 1000218001
+	StructureTypeRenderPassFragmentDensityMapCreateInfoEXT                    StructureType = 1000218002
 	StructureTypeRenderingFragmentDensityMapAttachmentInfoEXT                 StructureType = 1000044007
 	StructureTypePhysicalDeviceScalarBlockLayoutFeaturesEXT                   StructureType = StructureTypePhysicalDeviceScalarBlockLayoutFeatures
 	StructureTypePhysicalDeviceSubgroupSizeControlPropertiesEXT               StructureType = StructureTypePhysicalDeviceSubgroupSizeControlProperties
 	StructureTypePipelineShaderStageRequiredSubgroupSizeCreateInfoEXT         StructureType = StructureTypePipelineShaderStageRequiredSubgroupSizeCreateInfo
 	StructureTypePhysicalDeviceSubgroupSizeControlFeaturesEXT                 StructureType = StructureTypePhysicalDeviceSubgroupSizeControlFeatures
-	StructureTypeFragmentShadingRateAttachmentInfoKHR                         StructureType = 1000228000
-	StructureTypePipelineFragmentShadingRateStateCreateInfoKHR                StructureType = 1000228001
-	StructureTypePhysicalDeviceFragmentShadingRatePropertiesKHR               StructureType = 1000228002
-	StructureTypePhysicalDeviceFragmentShadingRateFeaturesKHR                 StructureType = 1000228003
-	StructureTypePhysicalDeviceFragmentShadingRateKHR                         StructureType = 1000228004
+	StructureTypeFragmentShadingRateAttachmentInfoKHR                         StructureType = 1000226000
+	StructureTypePipelineFragmentShadingRateStateCreateInfoKHR                StructureType = 1000226001
+	StructureTypePhysicalDeviceFragmentShadingRatePropertiesKHR               StructureType = 1000226002
+	StructureTypePhysicalDeviceFragmentShadingRateFeaturesKHR                 StructureType = 1000226003
+	StructureTypePhysicalDeviceFragmentShadingRateKHR                         StructureType = 1000226004
 	StructureTypeRenderingFragmentShadingRateAttachmentInfoKHR                StructureType = 1000044006
-	StructureTypePhysicalDeviceShaderCoreProperties2AMD                       StructureType = 1000229000
-	StructureTypePhysicalDeviceCoherentMemoryFeaturesAMD                      StructureType = 1000231000
+	StructureTypePhysicalDeviceShaderCoreProperties2AMD                       StructureType = 1000227000
+	StructureTypePhysicalDeviceCoherentMemoryFeaturesAMD                      StructureType = 1000229000
 	StructureTypePhysicalDeviceDynamicRenderingLocalReadFeaturesKHR           StructureType = StructureTypePhysicalDeviceDynamicRenderingLocalReadFeatures
 	StructureTypeRenderingAttachmentLocationInfoKHR                           StructureType = StructureTypeRenderingAttachmentLocationInfo
 	StructureTypeRenderingInputAttachmentIndexInfoKHR                         StructureType = StructureTypeRenderingInputAttachmentIndexInfo
-	StructureTypePhysicalDeviceShaderImageAtomicInt64FeaturesEXT              StructureType = 1000236000
-	StructureTypePhysicalDeviceShaderQuadControlFeaturesKHR                   StructureType = 1000237000
-	StructureTypePhysicalDeviceMemoryBudgetPropertiesEXT                      StructureType = 1000239000
-	StructureTypePhysicalDeviceMemoryPriorityFeaturesEXT                      StructureType = 1000240000
-	StructureTypeMemoryPriorityAllocateInfoEXT                                StructureType = 1000240001
-	StructureTypeSurfaceProtectedCapabilitiesKHR                              StructureType = 1000241000
-	StructureTypePhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV     StructureType = 1000242000
+	StructureTypePhysicalDeviceShaderImageAtomicInt64FeaturesEXT              StructureType = 1000234000
+	StructureTypePhysicalDeviceShaderQuadControlFeaturesKHR                   StructureType = 1000235000
+	StructureTypePhysicalDeviceMemoryBudgetPropertiesEXT                      StructureType = 1000237000
+	StructureTypePhysicalDeviceMemoryPriorityFeaturesEXT                      StructureType = 1000238000
+	StructureTypeMemoryPriorityAllocateInfoEXT                                StructureType = 1000238001
+	StructureTypeSurfaceProtectedCapabilitiesKHR                              StructureType = 1000239000
+	StructureTypePhysicalDeviceDedicatedAllocationImageAliasingFeaturesNV     StructureType = 1000240000
 	StructureTypePhysicalDeviceSeparateDepthStencilLayoutsFeaturesKHR         StructureType = StructureTypePhysicalDeviceSeparateDepthStencilLayoutsFeatures
 	StructureTypeAttachmentReferenceStencilLayoutKHR                          StructureType = StructureTypeAttachmentReferenceStencilLayout
 	StructureTypeAttachmentDescriptionStencilLayoutKHR                        StructureType = StructureTypeAttachmentDescriptionStencilLayout
-	StructureTypePhysicalDeviceBufferDeviceAddressFeaturesEXT                 StructureType = 1000246000
+	StructureTypePhysicalDeviceBufferDeviceAddressFeaturesEXT                 StructureType = 1000244000
 	StructureTypePhysicalDeviceBufferAddressFeaturesEXT                       StructureType = StructureTypePhysicalDeviceBufferDeviceAddressFeaturesEXT
 	StructureTypeBufferDeviceAddressInfoEXT                                   StructureType = StructureTypeBufferDeviceAddressInfo
-	StructureTypeBufferDeviceAddressCreateInfoEXT                             StructureType = 1000246002
+	StructureTypeBufferDeviceAddressCreateInfoEXT                             StructureType = 1000244002
 	StructureTypePhysicalDeviceToolPropertiesEXT                              StructureType = StructureTypePhysicalDeviceToolProperties
 	StructureTypeImageStencilUsageCreateInfoEXT                               StructureType = StructureTypeImageStencilUsageCreateInfo
-	StructureTypeValidationFeaturesEXT                                        StructureType = 1000249000
-	StructureTypePhysicalDevicePresentWaitFeaturesKHR                         StructureType = 1000250000
-	StructureTypePhysicalDeviceCooperativeMatrixFeaturesNV                    StructureType = 1000251000
-	StructureTypeCooperativeMatrixPropertiesNV                                StructureType = 1000251001
-	StructureTypePhysicalDeviceCooperativeMatrixPropertiesNV                  StructureType = 1000251002
-	StructureTypePhysicalDeviceCoverageReductionModeFeaturesNV                StructureType = 1000252000
-	StructureTypePipelineCoverageReductionStateCreateInfoNV                   StructureType = 1000252001
-	StructureTypeFramebufferMixedSamplesCombinationNV                         StructureType = 1000252002
-	StructureTypePhysicalDeviceFragmentShaderInterlockFeaturesEXT             StructureType = 1000253000
-	StructureTypePhysicalDeviceYcbcrImageArraysFeaturesEXT                    StructureType = 1000254000
+	StructureTypeValidationFeaturesEXT                                        StructureType = 1000247000
+	StructureTypePhysicalDevicePresentWaitFeaturesKHR                         StructureType = 1000248000
+	StructureTypePhysicalDeviceCooperativeMatrixFeaturesNV                    StructureType = 1000249000
+	StructureTypeCooperativeMatrixPropertiesNV                                StructureType = 1000249001
+	StructureTypePhysicalDeviceCooperativeMatrixPropertiesNV                  StructureType = 1000249002
+	StructureTypePhysicalDeviceCoverageReductionModeFeaturesNV                StructureType = 1000250000
+	StructureTypePipelineCoverageReductionStateCreateInfoNV                   StructureType = 1000250001
+	StructureTypeFramebufferMixedSamplesCombinationNV                         StructureType = 1000250002
+	StructureTypePhysicalDeviceFragmentShaderInterlockFeaturesEXT             StructureType = 1000251000
+	StructureTypePhysicalDeviceYcbcrImageArraysFeaturesEXT                    StructureType = 1000252000
 	StructureTypePhysicalDeviceUniformBufferStandardLayoutFeaturesKHR         StructureType = StructureTypePhysicalDeviceUniformBufferStandardLayoutFeatures
-	StructureTypePhysicalDeviceProvokingVertexFeaturesEXT                     StructureType = 1000256000
-	StructureTypePipelineRasterizationProvokingVertexStateCreateInfoEXT       StructureType = 1000256001
-	StructureTypePhysicalDeviceProvokingVertexPropertiesEXT                   StructureType = 1000256002
-	StructureTypeSurfaceFullScreenExclusiveInfoEXT                            StructureType = 1000257000
-	StructureTypeSurfaceCapabilitiesFullScreenExclusiveEXT                    StructureType = 1000257002
-	StructureTypeSurfaceFullScreenExclusiveWin32InfoEXT                       StructureType = 1000257001
-	StructureTypeHeadlessSurfaceCreateInfoEXT                                 StructureType = 1000258000
+	StructureTypePhysicalDeviceProvokingVertexFeaturesEXT                     StructureType = 1000254000
+	StructureTypePipelineRasterizationProvokingVertexStateCreateInfoEXT       StructureType = 1000254001
+	StructureTypePhysicalDeviceProvokingVertexPropertiesEXT                   StructureType = 1000254002
+	StructureTypeSurfaceFullScreenExclusiveInfoEXT                            StructureType = 1000255000
+	StructureTypeSurfaceCapabilitiesFullScreenExclusiveEXT                    StructureType = 1000255002
+	StructureTypeSurfaceFullScreenExclusiveWin32InfoEXT                       StructureType = 1000255001
+	StructureTypeHeadlessSurfaceCreateInfoEXT                                 StructureType = 1000256000
 	StructureTypePhysicalDeviceBufferDeviceAddressFeaturesKHR                 StructureType = StructureTypePhysicalDeviceBufferDeviceAddressFeatures
 	StructureTypeBufferDeviceAddressInfoKHR                                   StructureType = StructureTypeBufferDeviceAddressInfo
 	StructureTypeBufferOpaqueCaptureAddressCreateInfoKHR                      StructureType = StructureTypeBufferOpaqueCaptureAddressCreateInfo
@@ -3636,16 +3636,16 @@ const (
 	StructureTypePhysicalDeviceLineRasterizationFeaturesEXT                   StructureType = StructureTypePhysicalDeviceLineRasterizationFeatures
 	StructureTypePipelineRasterizationLineStateCreateInfoEXT                  StructureType = StructureTypePipelineRasterizationLineStateCreateInfo
 	StructureTypePhysicalDeviceLineRasterizationPropertiesEXT                 StructureType = StructureTypePhysicalDeviceLineRasterizationProperties
-	StructureTypePhysicalDeviceShaderAtomicFloatFeaturesEXT                   StructureType = 1000262000
+	StructureTypePhysicalDeviceShaderAtomicFloatFeaturesEXT                   StructureType = 1000260000
 	StructureTypePhysicalDeviceHostQueryResetFeaturesEXT                      StructureType = StructureTypePhysicalDeviceHostQueryResetFeatures
 	StructureTypePhysicalDeviceIndexTypeUint8FeaturesEXT                      StructureType = StructureTypePhysicalDeviceIndexTypeUint8Features
-	StructureTypePhysicalDeviceExtendedDynamicStateFeaturesEXT                StructureType = 1000269000
-	StructureTypePhysicalDevicePipelineExecutablePropertiesFeaturesKHR        StructureType = 1000271000
-	StructureTypePipelineInfoKHR                                              StructureType = 1000271001
-	StructureTypePipelineExecutablePropertiesKHR                              StructureType = 1000271002
-	StructureTypePipelineExecutableInfoKHR                                    StructureType = 1000271003
-	StructureTypePipelineExecutableStatisticKHR                               StructureType = 1000271004
-	StructureTypePipelineExecutableInternalRepresentationKHR                  StructureType = 1000271005
+	StructureTypePhysicalDeviceExtendedDynamicStateFeaturesEXT                StructureType = 1000267000
+	StructureTypePhysicalDevicePipelineExecutablePropertiesFeaturesKHR        StructureType = 1000269000
+	StructureTypePipelineInfoKHR                                              StructureType = 1000269001
+	StructureTypePipelineExecutablePropertiesKHR                              StructureType = 1000269002
+	StructureTypePipelineExecutableInfoKHR                                    StructureType = 1000269003
+	StructureTypePipelineExecutableStatisticKHR                               StructureType = 1000269004
+	StructureTypePipelineExecutableInternalRepresentationKHR                  StructureType = 1000269005
 	StructureTypePhysicalDeviceHostImageCopyFeaturesEXT                       StructureType = StructureTypePhysicalDeviceHostImageCopyFeatures
 	StructureTypePhysicalDeviceHostImageCopyPropertiesEXT                     StructureType = StructureTypePhysicalDeviceHostImageCopyProperties
 	StructureTypeMemoryToImageCopyEXT                                         StructureType = StructureTypeMemoryToImageCopy
@@ -3658,10 +3658,10 @@ const (
 	StructureTypeHostImageCopyDevicePerformanceQueryEXT                       StructureType = StructureTypeHostImageCopyDevicePerformanceQuery
 	StructureTypeMemoryMapInfoKHR                                             StructureType = StructureTypeMemoryMapInfo
 	StructureTypeMemoryUnmapInfoKHR                                           StructureType = StructureTypeMemoryUnmapInfo
-	StructureTypePhysicalDeviceMapMemoryPlacedFeaturesEXT                     StructureType = 1000274000
-	StructureTypePhysicalDeviceMapMemoryPlacedPropertiesEXT                   StructureType = 1000274001
-	StructureTypeMemoryMapPlacedInfoEXT                                       StructureType = 1000274002
-	StructureTypePhysicalDeviceShaderAtomicFloat2FeaturesEXT                  StructureType = 1000275000
+	StructureTypePhysicalDeviceMapMemoryPlacedFeaturesEXT                     StructureType = 1000272000
+	StructureTypePhysicalDeviceMapMemoryPlacedPropertiesEXT                   StructureType = 1000272001
+	StructureTypeMemoryMapPlacedInfoEXT                                       StructureType = 1000272002
+	StructureTypePhysicalDeviceShaderAtomicFloat2FeaturesEXT                  StructureType = 1000273000
 	StructureTypeSurfacePresentModeEXT                                        StructureType = StructureTypeSurfacePresentModeKHR
 	StructureTypeSurfacePresentScalingCapabilitiesEXT                         StructureType = StructureTypeSurfacePresentScalingCapabilitiesKHR
 	StructureTypeSurfacePresentModeCompatibilityEXT                           StructureType = StructureTypeSurfacePresentModeCompatibilityKHR
@@ -3672,82 +3672,82 @@ const (
 	StructureTypeSwapchainPresentScalingCreateInfoEXT                         StructureType = StructureTypeSwapchainPresentScalingCreateInfoKHR
 	StructureTypeReleaseSwapchainImagesInfoEXT                                StructureType = StructureTypeReleaseSwapchainImagesInfoKHR
 	StructureTypePhysicalDeviceShaderDemoteToHelperInvocationFeaturesEXT      StructureType = StructureTypePhysicalDeviceShaderDemoteToHelperInvocationFeatures
-	StructureTypePhysicalDeviceDeviceGeneratedCommandsPropertiesNV            StructureType = 1000279000
-	StructureTypeGraphicsShaderGroupCreateInfoNV                              StructureType = 1000279001
-	StructureTypeGraphicsPipelineShaderGroupsCreateInfoNV                     StructureType = 1000279002
-	StructureTypeIndirectCommandsLayoutTokenNV                                StructureType = 1000279003
-	StructureTypeIndirectCommandsLayoutCreateInfoNV                           StructureType = 1000279004
-	StructureTypeGeneratedCommandsInfoNV                                      StructureType = 1000279005
-	StructureTypeGeneratedCommandsMemoryRequirementsInfoNV                    StructureType = 1000279006
-	StructureTypePhysicalDeviceDeviceGeneratedCommandsFeaturesNV              StructureType = 1000279007
-	StructureTypePhysicalDeviceInheritedViewportScissorFeaturesNV             StructureType = 1000280000
-	StructureTypeCommandBufferInheritanceViewportScissorInfoNV                StructureType = 1000280001
+	StructureTypePhysicalDeviceDeviceGeneratedCommandsPropertiesNV            StructureType = 1000277000
+	StructureTypeGraphicsShaderGroupCreateInfoNV                              StructureType = 1000277001
+	StructureTypeGraphicsPipelineShaderGroupsCreateInfoNV                     StructureType = 1000277002
+	StructureTypeIndirectCommandsLayoutTokenNV                                StructureType = 1000277003
+	StructureTypeIndirectCommandsLayoutCreateInfoNV                           StructureType = 1000277004
+	StructureTypeGeneratedCommandsInfoNV                                      StructureType = 1000277005
+	StructureTypeGeneratedCommandsMemoryRequirementsInfoNV                    StructureType = 1000277006
+	StructureTypePhysicalDeviceDeviceGeneratedCommandsFeaturesNV              StructureType = 1000277007
+	StructureTypePhysicalDeviceInheritedViewportScissorFeaturesNV             StructureType = 1000278000
+	StructureTypeCommandBufferInheritanceViewportScissorInfoNV                StructureType = 1000278001
 	StructureTypePhysicalDeviceShaderIntegerDotProductFeaturesKHR             StructureType = StructureTypePhysicalDeviceShaderIntegerDotProductFeatures
 	StructureTypePhysicalDeviceShaderIntegerDotProductPropertiesKHR           StructureType = StructureTypePhysicalDeviceShaderIntegerDotProductProperties
-	StructureTypePhysicalDeviceTexelBufferAlignmentFeaturesEXT                StructureType = 1000283000
+	StructureTypePhysicalDeviceTexelBufferAlignmentFeaturesEXT                StructureType = 1000281000
 	StructureTypePhysicalDeviceTexelBufferAlignmentPropertiesEXT              StructureType = StructureTypePhysicalDeviceTexelBufferAlignmentProperties
-	StructureTypeCommandBufferInheritanceRenderPassTransformInfoQCOM          StructureType = 1000284000
-	StructureTypeRenderPassTransformBeginInfoQCOM                             StructureType = 1000284001
-	StructureTypePhysicalDeviceDepthBiasControlFeaturesEXT                    StructureType = 1000285000
-	StructureTypeDepthBiasInfoEXT                                             StructureType = 1000285001
-	StructureTypeDepthBiasRepresentationInfoEXT                               StructureType = 1000285002
-	StructureTypePhysicalDeviceDeviceMemoryReportFeaturesEXT                  StructureType = 1000286000
-	StructureTypeDeviceDeviceMemoryReportCreateInfoEXT                        StructureType = 1000286001
-	StructureTypeDeviceMemoryReportCallbackDataEXT                            StructureType = 1000286002
+	StructureTypeCommandBufferInheritanceRenderPassTransformInfoQCOM          StructureType = 1000282000
+	StructureTypeRenderPassTransformBeginInfoQCOM                             StructureType = 1000282001
+	StructureTypePhysicalDeviceDepthBiasControlFeaturesEXT                    StructureType = 1000283000
+	StructureTypeDepthBiasInfoEXT                                             StructureType = 1000283001
+	StructureTypeDepthBiasRepresentationInfoEXT                               StructureType = 1000283002
+	StructureTypePhysicalDeviceDeviceMemoryReportFeaturesEXT                  StructureType = 1000284000
+	StructureTypeDeviceDeviceMemoryReportCreateInfoEXT                        StructureType = 1000284001
+	StructureTypeDeviceMemoryReportCallbackDataEXT                            StructureType = 1000284002
 	StructureTypePhysicalDeviceRobustness2FeaturesEXT                         StructureType = StructureTypePhysicalDeviceRobustness2FeaturesKHR
 	StructureTypePhysicalDeviceRobustness2PropertiesEXT                       StructureType = StructureTypePhysicalDeviceRobustness2PropertiesKHR
-	StructureTypeSamplerCustomBorderColorCreateInfoEXT                        StructureType = 1000289000
-	StructureTypePhysicalDeviceCustomBorderColorPropertiesEXT                 StructureType = 1000289001
-	StructureTypePhysicalDeviceCustomBorderColorFeaturesEXT                   StructureType = 1000289002
-	StructureTypePhysicalDeviceTextureCompressionAstc3dFeaturesEXT            StructureType = 1000290000
-	StructureTypePipelineLibraryCreateInfoKHR                                 StructureType = 1000292000
-	StructureTypePhysicalDevicePresentBarrierFeaturesNV                       StructureType = 1000294000
-	StructureTypeSurfaceCapabilitiesPresentBarrierNV                          StructureType = 1000294001
-	StructureTypeSwapchainPresentBarrierCreateInfoNV                          StructureType = 1000294002
-	StructureTypePresentIdKHR                                                 StructureType = 1000296000
-	StructureTypePhysicalDevicePresentIdFeaturesKHR                           StructureType = 1000296001
+	StructureTypeSamplerCustomBorderColorCreateInfoEXT                        StructureType = 1000287000
+	StructureTypePhysicalDeviceCustomBorderColorPropertiesEXT                 StructureType = 1000287001
+	StructureTypePhysicalDeviceCustomBorderColorFeaturesEXT                   StructureType = 1000287002
+	StructureTypePhysicalDeviceTextureCompressionAstc3dFeaturesEXT            StructureType = 1000288000
+	StructureTypePipelineLibraryCreateInfoKHR                                 StructureType = 1000290000
+	StructureTypePhysicalDevicePresentBarrierFeaturesNV                       StructureType = 1000292000
+	StructureTypeSurfaceCapabilitiesPresentBarrierNV                          StructureType = 1000292001
+	StructureTypeSwapchainPresentBarrierCreateInfoNV                          StructureType = 1000292002
+	StructureTypePresentIdKHR                                                 StructureType = 1000294000
+	StructureTypePhysicalDevicePresentIdFeaturesKHR                           StructureType = 1000294001
 	StructureTypePhysicalDevicePrivateDataFeaturesEXT                         StructureType = StructureTypePhysicalDevicePrivateDataFeatures
 	StructureTypeDevicePrivateDataCreateInfoEXT                               StructureType = StructureTypeDevicePrivateDataCreateInfo
 	StructureTypePrivateDataSlotCreateInfoEXT                                 StructureType = StructureTypePrivateDataSlotCreateInfo
 	StructureTypePhysicalDevicePipelineCreationCacheControlFeaturesEXT        StructureType = StructureTypePhysicalDevicePipelineCreationCacheControlFeatures
-	StructureTypeVideoEncodeInfoKHR                                           StructureType = 1000301000
-	StructureTypeVideoEncodeRateControlInfoKHR                                StructureType = 1000301001
-	StructureTypeVideoEncodeRateControlLayerInfoKHR                           StructureType = 1000301002
-	StructureTypeVideoEncodeCapabilitiesKHR                                   StructureType = 1000301003
-	StructureTypeVideoEncodeUsageInfoKHR                                      StructureType = 1000301004
-	StructureTypeQueryPoolVideoEncodeFeedbackCreateInfoKHR                    StructureType = 1000301005
-	StructureTypePhysicalDeviceVideoEncodeQualityLevelInfoKHR                 StructureType = 1000301006
-	StructureTypeVideoEncodeQualityLevelPropertiesKHR                         StructureType = 1000301007
-	StructureTypeVideoEncodeQualityLevelInfoKHR                               StructureType = 1000301008
-	StructureTypeVideoEncodeSessionParametersGetInfoKHR                       StructureType = 1000301009
-	StructureTypeVideoEncodeSessionParametersFeedbackInfoKHR                  StructureType = 1000301010
-	StructureTypePhysicalDeviceDiagnosticsConfigFeaturesNV                    StructureType = 1000302000
-	StructureTypeDeviceDiagnosticsConfigCreateInfoNV                          StructureType = 1000302001
-	StructureTypeCudaModuleCreateInfoNV                                       StructureType = 1000309000
-	StructureTypeCudaFunctionCreateInfoNV                                     StructureType = 1000309001
-	StructureTypeCudaLaunchInfoNV                                             StructureType = 1000309002
-	StructureTypePhysicalDeviceCudaKernelLaunchFeaturesNV                     StructureType = 1000309003
-	StructureTypePhysicalDeviceCudaKernelLaunchPropertiesNV                   StructureType = 1000309004
-	StructureTypeRefreshObjectListKHR                                         StructureType = 1000310000
-	StructureTypePhysicalDeviceTileShadingFeaturesQCOM                        StructureType = 1000311000
-	StructureTypePhysicalDeviceTileShadingPropertiesQCOM                      StructureType = 1000311001
-	StructureTypeRenderPassTileShadingCreateInfoQCOM                          StructureType = 1000311002
-	StructureTypePerTileBeginInfoQCOM                                         StructureType = 1000311003
-	StructureTypePerTileEndInfoQCOM                                           StructureType = 1000311004
-	StructureTypeDispatchTileInfoQCOM                                         StructureType = 1000311005
-	StructureTypeQueryLowLatencySupportNV                                     StructureType = 1000312000
-	StructureTypeExportMetalObjectCreateInfoEXT                               StructureType = 1000313000
-	StructureTypeExportMetalObjectsInfoEXT                                    StructureType = 1000313001
-	StructureTypeExportMetalDeviceInfoEXT                                     StructureType = 1000313002
-	StructureTypeExportMetalCommandQueueInfoEXT                               StructureType = 1000313003
-	StructureTypeExportMetalBufferInfoEXT                                     StructureType = 1000313004
-	StructureTypeImportMetalBufferInfoEXT                                     StructureType = 1000313005
-	StructureTypeExportMetalTextureInfoEXT                                    StructureType = 1000313006
-	StructureTypeImportMetalTextureInfoEXT                                    StructureType = 1000313007
-	StructureTypeExportMetalIoSurfaceInfoEXT                                  StructureType = 1000313008
-	StructureTypeImportMetalIoSurfaceInfoEXT                                  StructureType = 1000313009
-	StructureTypeExportMetalSharedEventInfoEXT                                StructureType = 1000313010
-	StructureTypeImportMetalSharedEventInfoEXT                                StructureType = 1000313011
+	StructureTypeVideoEncodeInfoKHR                                           StructureType = 1000299000
+	StructureTypeVideoEncodeRateControlInfoKHR                                StructureType = 1000299001
+	StructureTypeVideoEncodeRateControlLayerInfoKHR                           StructureType = 1000299002
+	StructureTypeVideoEncodeCapabilitiesKHR                                   StructureType = 1000299003
+	StructureTypeVideoEncodeUsageInfoKHR                                      StructureType = 1000299004
+	StructureTypeQueryPoolVideoEncodeFeedbackCreateInfoKHR                    StructureType = 1000299005
+	StructureTypePhysicalDeviceVideoEncodeQualityLevelInfoKHR                 StructureType = 1000299006
+	StructureTypeVideoEncodeQualityLevelPropertiesKHR                         StructureType = 1000299007
+	StructureTypeVideoEncodeQualityLevelInfoKHR                               StructureType = 1000299008
+	StructureTypeVideoEncodeSessionParametersGetInfoKHR                       StructureType = 1000299009
+	StructureTypeVideoEncodeSessionParametersFeedbackInfoKHR                  StructureType = 1000299010
+	StructureTypePhysicalDeviceDiagnosticsConfigFeaturesNV                    StructureType = 1000300000
+	StructureTypeDeviceDiagnosticsConfigCreateInfoNV                          StructureType = 1000300001
+	StructureTypeCudaModuleCreateInfoNV                                       StructureType = 1000307000
+	StructureTypeCudaFunctionCreateInfoNV                                     StructureType = 1000307001
+	StructureTypeCudaLaunchInfoNV                                             StructureType = 1000307002
+	StructureTypePhysicalDeviceCudaKernelLaunchFeaturesNV                     StructureType = 1000307003
+	StructureTypePhysicalDeviceCudaKernelLaunchPropertiesNV                   StructureType = 1000307004
+	StructureTypeRefreshObjectListKHR                                         StructureType = 1000308000
+	StructureTypePhysicalDeviceTileShadingFeaturesQCOM                        StructureType = 1000309000
+	StructureTypePhysicalDeviceTileShadingPropertiesQCOM                      StructureType = 1000309001
+	StructureTypeRenderPassTileShadingCreateInfoQCOM                          StructureType = 1000309002
+	StructureTypePerTileBeginInfoQCOM                                         StructureType = 1000309003
+	StructureTypePerTileEndInfoQCOM                                           StructureType = 1000309004
+	StructureTypeDispatchTileInfoQCOM                                         StructureType = 1000309005
+	StructureTypeQueryLowLatencySupportNV                                     StructureType = 1000310000
+	StructureTypeExportMetalObjectCreateInfoEXT                               StructureType = 1000311000
+	StructureTypeExportMetalObjectsInfoEXT                                    StructureType = 1000311001
+	StructureTypeExportMetalDeviceInfoEXT                                     StructureType = 1000311002
+	StructureTypeExportMetalCommandQueueInfoEXT                               StructureType = 1000311003
+	StructureTypeExportMetalBufferInfoEXT                                     StructureType = 1000311004
+	StructureTypeImportMetalBufferInfoEXT                                     StructureType = 1000311005
+	StructureTypeExportMetalTextureInfoEXT                                    StructureType = 1000311006
+	StructureTypeImportMetalTextureInfoEXT                                    StructureType = 1000311007
+	StructureTypeExportMetalIoSurfaceInfoEXT                                  StructureType = 1000311008
+	StructureTypeImportMetalIoSurfaceInfoEXT                                  StructureType = 1000311009
+	StructureTypeExportMetalSharedEventInfoEXT                                StructureType = 1000311010
+	StructureTypeImportMetalSharedEventInfoEXT                                StructureType = 1000311011
 	StructureTypeMemoryBarrier2KHR                                            StructureType = StructureTypeMemoryBarrier2
 	StructureTypeBufferMemoryBarrier2KHR                                      StructureType = StructureTypeBufferMemoryBarrier2
 	StructureTypeImageMemoryBarrier2KHR                                       StructureType = StructureTypeImageMemoryBarrier2
@@ -3756,41 +3756,41 @@ const (
 	StructureTypeSemaphoreSubmitInfoKHR                                       StructureType = StructureTypeSemaphoreSubmitInfo
 	StructureTypeCommandBufferSubmitInfoKHR                                   StructureType = StructureTypeCommandBufferSubmitInfo
 	StructureTypePhysicalDeviceSynchronization2FeaturesKHR                    StructureType = StructureTypePhysicalDeviceSynchronization2Features
-	StructureTypePhysicalDeviceDescriptorBufferPropertiesEXT                  StructureType = 1000318000
-	StructureTypePhysicalDeviceDescriptorBufferDensityMapPropertiesEXT        StructureType = 1000318001
-	StructureTypePhysicalDeviceDescriptorBufferFeaturesEXT                    StructureType = 1000318002
-	StructureTypeDescriptorAddressInfoEXT                                     StructureType = 1000318003
-	StructureTypeDescriptorGetInfoEXT                                         StructureType = 1000318004
-	StructureTypeBufferCaptureDescriptorDataInfoEXT                           StructureType = 1000318005
-	StructureTypeImageCaptureDescriptorDataInfoEXT                            StructureType = 1000318006
-	StructureTypeImageViewCaptureDescriptorDataInfoEXT                        StructureType = 1000318007
-	StructureTypeSamplerCaptureDescriptorDataInfoEXT                          StructureType = 1000318008
-	StructureTypeOpaqueCaptureDescriptorDataCreateInfoEXT                     StructureType = 1000318010
-	StructureTypeDescriptorBufferBindingInfoEXT                               StructureType = 1000318011
-	StructureTypeDescriptorBufferBindingPushDescriptorBufferHandleEXT         StructureType = 1000318012
-	StructureTypeAccelerationStructureCaptureDescriptorDataInfoEXT            StructureType = 1000318009
-	StructureTypePhysicalDeviceGraphicsPipelineLibraryFeaturesEXT             StructureType = 1000322000
-	StructureTypePhysicalDeviceGraphicsPipelineLibraryPropertiesEXT           StructureType = 1000322001
-	StructureTypeGraphicsPipelineLibraryCreateInfoEXT                         StructureType = 1000322002
-	StructureTypePhysicalDeviceShaderEarlyAndLateFragmentTestsFeaturesAMD     StructureType = 1000323000
+	StructureTypePhysicalDeviceDescriptorBufferPropertiesEXT                  StructureType = 1000316000
+	StructureTypePhysicalDeviceDescriptorBufferDensityMapPropertiesEXT        StructureType = 1000316001
+	StructureTypePhysicalDeviceDescriptorBufferFeaturesEXT                    StructureType = 1000316002
+	StructureTypeDescriptorAddressInfoEXT                                     StructureType = 1000316003
+	StructureTypeDescriptorGetInfoEXT                                         StructureType = 1000316004
+	StructureTypeBufferCaptureDescriptorDataInfoEXT                           StructureType = 1000316005
+	StructureTypeImageCaptureDescriptorDataInfoEXT                            StructureType = 1000316006
+	StructureTypeImageViewCaptureDescriptorDataInfoEXT                        StructureType = 1000316007
+	StructureTypeSamplerCaptureDescriptorDataInfoEXT                          StructureType = 1000316008
+	StructureTypeOpaqueCaptureDescriptorDataCreateInfoEXT                     StructureType = 1000316010
+	StructureTypeDescriptorBufferBindingInfoEXT                               StructureType = 1000316011
+	StructureTypeDescriptorBufferBindingPushDescriptorBufferHandleEXT         StructureType = 1000316012
+	StructureTypeAccelerationStructureCaptureDescriptorDataInfoEXT            StructureType = 1000316009
+	StructureTypePhysicalDeviceGraphicsPipelineLibraryFeaturesEXT             StructureType = 1000320000
+	StructureTypePhysicalDeviceGraphicsPipelineLibraryPropertiesEXT           StructureType = 1000320001
+	StructureTypeGraphicsPipelineLibraryCreateInfoEXT                         StructureType = 1000320002
+	StructureTypePhysicalDeviceShaderEarlyAndLateFragmentTestsFeaturesAMD     StructureType = 1000321000
 	StructureTypePhysicalDeviceFragmentShaderBarycentricFeaturesKHR           StructureType = 1000203000
-	StructureTypePhysicalDeviceFragmentShaderBarycentricPropertiesKHR         StructureType = 1000324000
-	StructureTypePhysicalDeviceShaderSubgroupUniformControlFlowFeaturesKHR    StructureType = 1000325000
+	StructureTypePhysicalDeviceFragmentShaderBarycentricPropertiesKHR         StructureType = 1000322000
+	StructureTypePhysicalDeviceShaderSubgroupUniformControlFlowFeaturesKHR    StructureType = 1000323000
 	StructureTypePhysicalDeviceZeroInitializeWorkgroupMemoryFeaturesKHR       StructureType = StructureTypePhysicalDeviceZeroInitializeWorkgroupMemoryFeatures
-	StructureTypePhysicalDeviceFragmentShadingRateEnumsPropertiesNV           StructureType = 1000328000
-	StructureTypePhysicalDeviceFragmentShadingRateEnumsFeaturesNV             StructureType = 1000328001
-	StructureTypePipelineFragmentShadingRateEnumStateCreateInfoNV             StructureType = 1000328002
-	StructureTypeAccelerationStructureGeometryMotionTrianglesDataNV           StructureType = 1000329000
-	StructureTypePhysicalDeviceRayTracingMotionBlurFeaturesNV                 StructureType = 1000329001
-	StructureTypeAccelerationStructureMotionInfoNV                            StructureType = 1000329002
-	StructureTypePhysicalDeviceMeshShaderFeaturesEXT                          StructureType = 1000330000
-	StructureTypePhysicalDeviceMeshShaderPropertiesEXT                        StructureType = 1000330001
-	StructureTypePhysicalDeviceYcbcr2Plane444FormatsFeaturesEXT               StructureType = 1000332000
-	StructureTypePhysicalDeviceFragmentDensityMap2FeaturesEXT                 StructureType = 1000334000
-	StructureTypePhysicalDeviceFragmentDensityMap2PropertiesEXT               StructureType = 1000334001
-	StructureTypeCopyCommandTransformInfoQCOM                                 StructureType = 1000335000
+	StructureTypePhysicalDeviceFragmentShadingRateEnumsPropertiesNV           StructureType = 1000326000
+	StructureTypePhysicalDeviceFragmentShadingRateEnumsFeaturesNV             StructureType = 1000326001
+	StructureTypePipelineFragmentShadingRateEnumStateCreateInfoNV             StructureType = 1000326002
+	StructureTypeAccelerationStructureGeometryMotionTrianglesDataNV           StructureType = 1000327000
+	StructureTypePhysicalDeviceRayTracingMotionBlurFeaturesNV                 StructureType = 1000327001
+	StructureTypeAccelerationStructureMotionInfoNV                            StructureType = 1000327002
+	StructureTypePhysicalDeviceMeshShaderFeaturesEXT                          StructureType = 1000328000
+	StructureTypePhysicalDeviceMeshShaderPropertiesEXT                        StructureType = 1000328001
+	StructureTypePhysicalDeviceYcbcr2Plane444FormatsFeaturesEXT               StructureType = 1000330000
+	StructureTypePhysicalDeviceFragmentDensityMap2FeaturesEXT                 StructureType = 1000332000
+	StructureTypePhysicalDeviceFragmentDensityMap2PropertiesEXT               StructureType = 1000332001
+	StructureTypeCopyCommandTransformInfoQCOM                                 StructureType = 1000333000
 	StructureTypePhysicalDeviceImageRobustnessFeaturesEXT                     StructureType = StructureTypePhysicalDeviceImageRobustnessFeatures
-	StructureTypePhysicalDeviceWorkgroupMemoryExplicitLayoutFeaturesKHR       StructureType = 1000338000
+	StructureTypePhysicalDeviceWorkgroupMemoryExplicitLayoutFeaturesKHR       StructureType = 1000336000
 	StructureTypeCopyBufferInfo2KHR                                           StructureType = StructureTypeCopyBufferInfo2
 	StructureTypeCopyImageInfo2KHR                                            StructureType = StructureTypeCopyImageInfo2
 	StructureTypeCopyBufferToImageInfo2KHR                                    StructureType = StructureTypeCopyBufferToImageInfo2
@@ -3802,19 +3802,19 @@ const (
 	StructureTypeImageBlit2KHR                                                StructureType = StructureTypeImageBlit2
 	StructureTypeBufferImageCopy2KHR                                          StructureType = StructureTypeBufferImageCopy2
 	StructureTypeImageResolve2KHR                                             StructureType = StructureTypeImageResolve2
-	StructureTypePhysicalDeviceImageCompressionControlFeaturesEXT             StructureType = 1000340000
-	StructureTypeImageCompressionControlEXT                                   StructureType = 1000340001
+	StructureTypePhysicalDeviceImageCompressionControlFeaturesEXT             StructureType = 1000338000
+	StructureTypeImageCompressionControlEXT                                   StructureType = 1000338001
 	StructureTypeSubresourceLayout2EXT                                        StructureType = StructureTypeSubresourceLayout2
 	StructureTypeImageSubresource2EXT                                         StructureType = StructureTypeImageSubresource2
-	StructureTypeImageCompressionPropertiesEXT                                StructureType = 1000340004
-	StructureTypePhysicalDeviceAttachmentFeedbackLoopLayoutFeaturesEXT        StructureType = 1000341000
-	StructureTypePhysicalDevice4444FormatsFeaturesEXT                         StructureType = 1000342000
-	StructureTypePhysicalDeviceFaultFeaturesEXT                               StructureType = 1000343000
-	StructureTypeDeviceFaultCountsEXT                                         StructureType = 1000343001
-	StructureTypeDeviceFaultInfoEXT                                           StructureType = 1000343002
+	StructureTypeImageCompressionPropertiesEXT                                StructureType = 1000338004
+	StructureTypePhysicalDeviceAttachmentFeedbackLoopLayoutFeaturesEXT        StructureType = 1000339000
+	StructureTypePhysicalDevice4444FormatsFeaturesEXT                         StructureType = 1000340000
+	StructureTypePhysicalDeviceFaultFeaturesEXT                               StructureType = 1000341000
+	StructureTypeDeviceFaultCountsEXT                                         StructureType = 1000341001
+	StructureTypeDeviceFaultInfoEXT                                           StructureType = 1000341002
 	StructureTypePhysicalDeviceRasterizationOrderAttachmentAccessFeaturesARM  StructureType = StructureTypePhysicalDeviceRasterizationOrderAttachmentAccessFeaturesEXT
-	StructureTypePhysicalDeviceRgba10x6FormatsFeaturesEXT                     StructureType = 1000346000
-	StructureTypeDirectfbSurfaceCreateInfoEXT                                 StructureType = 1000348000
+	StructureTypePhysicalDeviceRgba10x6FormatsFeaturesEXT                     StructureType = 1000344000
+	StructureTypeDirectfbSurfaceCreateInfoEXT                                 StructureType = 1000346000
 	StructureTypePhysicalDeviceMutableDescriptorTypeFeaturesVALVE             StructureType = StructureTypePhysicalDeviceMutableDescriptorTypeFeaturesEXT
 	StructureTypeMutableDescriptorTypeCreateInfoVALVE                         StructureType = StructureTypeMutableDescriptorTypeCreateInfoEXT
 	StructureTypePhysicalDeviceVertexInputDynamicStateFeaturesEXT             StructureType = 1000352000
@@ -4273,34 +4273,34 @@ const (
 	StructureTypeNativeBufferOhos                                             StructureType = 1000453001
 	StructureTypeSwapchainImageCreateInfoOhos                                 StructureType = 1000453002
 	StructureTypePhysicalDevicePresentationPropertiesOhos                     StructureType = 1000453003
-	StructureTypePhysicalDeviceHdrVividFeaturesHUAWEI                         StructureType = 1000591000
-	StructureTypeHdrVividDynamicMetadataHUAWEI                                StructureType = 1000591001
-	StructureTypePhysicalDeviceCooperativeMatrix2FeaturesNV                   StructureType = 1000594000
-	StructureTypeCooperativeMatrixFlexibleDimensionsPropertiesNV              StructureType = 1000594001
-	StructureTypePhysicalDeviceCooperativeMatrix2PropertiesNV                 StructureType = 1000594002
-	StructureTypePhysicalDevicePipelineOpacityMicromapFeaturesARM             StructureType = 1000597000
-	StructureTypeImportMemoryMetalHandleInfoEXT                               StructureType = 1000603000
-	StructureTypeMemoryMetalHandlePropertiesEXT                               StructureType = 1000603001
-	StructureTypeMemoryGetMetalHandleInfoEXT                                  StructureType = 1000603002
+	StructureTypePhysicalDeviceHdrVividFeaturesHUAWEI                         StructureType = 1000590000
+	StructureTypeHdrVividDynamicMetadataHUAWEI                                StructureType = 1000590001
+	StructureTypePhysicalDeviceCooperativeMatrix2FeaturesNV                   StructureType = 1000593000
+	StructureTypeCooperativeMatrixFlexibleDimensionsPropertiesNV              StructureType = 1000593001
+	StructureTypePhysicalDeviceCooperativeMatrix2PropertiesNV                 StructureType = 1000593002
+	StructureTypePhysicalDevicePipelineOpacityMicromapFeaturesARM             StructureType = 1000596000
+	StructureTypeImportMemoryMetalHandleInfoEXT                               StructureType = 1000602000
+	StructureTypeMemoryMetalHandlePropertiesEXT                               StructureType = 1000602001
+	StructureTypeMemoryGetMetalHandleInfoEXT                                  StructureType = 1000602002
 	StructureTypePhysicalDeviceDepthClampZeroOneFeaturesKHR                   StructureType = 1000421000
-	StructureTypePhysicalDevicePerformanceCountersByRegionFeaturesARM         StructureType = 1000606000
-	StructureTypePhysicalDevicePerformanceCountersByRegionPropertiesARM       StructureType = 1000606001
-	StructureTypePerformanceCounterARM                                        StructureType = 1000606002
-	StructureTypePerformanceCounterDescriptionARM                             StructureType = 1000606003
-	StructureTypeRenderPassPerformanceCountersByRegionBeginInfoARM            StructureType = 1000606004
-	StructureTypePhysicalDeviceShaderInstrumentationFeaturesARM               StructureType = 1000608000
-	StructureTypePhysicalDeviceShaderInstrumentationPropertiesARM             StructureType = 1000608001
-	StructureTypeShaderInstrumentationCreateInfoARM                           StructureType = 1000608002
-	StructureTypeShaderInstrumentationMetricDescriptionARM                    StructureType = 1000608003
-	StructureTypePhysicalDeviceVertexAttributeRobustnessFeaturesEXT           StructureType = 1000609000
-	StructureTypePhysicalDeviceFormatPackFeaturesARM                          StructureType = 1000610000
-	StructureTypePhysicalDeviceFragmentDensityMapLayeredFeaturesVALVE         StructureType = 1000612000
-	StructureTypePhysicalDeviceFragmentDensityMapLayeredPropertiesVALVE       StructureType = 1000612001
-	StructureTypePipelineFragmentDensityMapLayeredCreateInfoVALVE             StructureType = 1000612002
+	StructureTypePhysicalDevicePerformanceCountersByRegionFeaturesARM         StructureType = 1000605000
+	StructureTypePhysicalDevicePerformanceCountersByRegionPropertiesARM       StructureType = 1000605001
+	StructureTypePerformanceCounterARM                                        StructureType = 1000605002
+	StructureTypePerformanceCounterDescriptionARM                             StructureType = 1000605003
+	StructureTypeRenderPassPerformanceCountersByRegionBeginInfoARM            StructureType = 1000605004
+	StructureTypePhysicalDeviceShaderInstrumentationFeaturesARM               StructureType = 1000607000
+	StructureTypePhysicalDeviceShaderInstrumentationPropertiesARM             StructureType = 1000607001
+	StructureTypeShaderInstrumentationCreateInfoARM                           StructureType = 1000607002
+	StructureTypeShaderInstrumentationMetricDescriptionARM                    StructureType = 1000607003
+	StructureTypePhysicalDeviceVertexAttributeRobustnessFeaturesEXT           StructureType = 1000608000
+	StructureTypePhysicalDeviceFormatPackFeaturesARM                          StructureType = 1000609000
+	StructureTypePhysicalDeviceFragmentDensityMapLayeredFeaturesVALVE         StructureType = 1000611000
+	StructureTypePhysicalDeviceFragmentDensityMapLayeredPropertiesVALVE       StructureType = 1000611001
+	StructureTypePipelineFragmentDensityMapLayeredCreateInfoVALVE             StructureType = 1000611002
 	StructureTypePhysicalDeviceRobustness2FeaturesKHR                         StructureType = 1000286000
 	StructureTypePhysicalDeviceRobustness2PropertiesKHR                       StructureType = 1000286001
-	StructureTypeSetPresentConfigNV                                           StructureType = 1000614000
-	StructureTypePhysicalDevicePresentMeteringFeaturesNV                      StructureType = 1000614001
+	StructureTypeSetPresentConfigNV                                           StructureType = 1000613000
+	StructureTypePhysicalDevicePresentMeteringFeaturesNV                      StructureType = 1000613001
 	StructureTypePhysicalDeviceFragmentDensityMapOffsetFeaturesEXT            StructureType = 1000425000
 	StructureTypePhysicalDeviceFragmentDensityMapOffsetPropertiesEXT          StructureType = 1000425001
 	StructureTypeRenderPassFragmentDensityMapOffsetEndInfoEXT                 StructureType = 1000425002
@@ -26048,6 +26048,40 @@ func CreateInstance(
 	return h8, nil
 }
 
+func (h Device) CreatePipelineCache(
+	createInfo *PipelineCacheCreateInfo,
+	allocator *AllocationCallbacks,
+) (*PipelineCache, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param createInfo
+	var ptr1 *C.VkPipelineCacheCreateInfo
+	if createInfo != nil {
+		val2, cancel3 := createInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkPipelineCacheCreateInfo)(val2)
+	}
+	// param allocator
+	var ptr5 *C.VkAllocationCallbacks
+	if allocator != nil {
+		val6, cancel7 := allocator.toC()
+		cancels = append(cancels, cancel7)
+		ptr5 = (*C.VkAllocationCallbacks)(val6)
+	}
+	var pipelineCacheOut C.VkPipelineCache
+	_result := C.fn_vkCreatePipelineCache(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &pipelineCacheOut)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+	h8 := &PipelineCache{handle: unsafe.Pointer(pipelineCacheOut)}
+	return h8, nil
+}
+
 func (h Device) CreatePipelineLayout(
 	createInfo *PipelineLayoutCreateInfo,
 	allocator *AllocationCallbacks,
@@ -27478,41 +27512,6 @@ func (h PhysicalDevice) EnumerateDeviceExtensionProperties(
 		var val1 ExtensionProperties
 		val1.fromC(&v)
 		out[i] = val1
-	}
-	return out, nil
-}
-
-func (h PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	var count C.uint32_t
-	_result := C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, nil)
-	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
-	}
-	if count == 0 {
-		return nil, nil
-	}
-
-	cArr := (*C.VkLayerProperties)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkLayerProperties)))))
-	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
-
-	_result = C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, cArr)
-	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
-	}
-
-	out := make([]LayerProperties, int(count))
-	cSlice := (*[1 << 30]C.VkLayerProperties)(unsafe.Pointer(cArr))[:count:count]
-	for i, v := range cSlice {
-		var val0 LayerProperties
-		val0.fromC(&v)
-		out[i] = val0
 	}
 	return out, nil
 }
@@ -31369,40 +31368,6 @@ func (h Device) CreateGraphicsPipelines(
 	return out16, nil
 }
 
-func (h Device) CreatePipelineCache(
-	createInfo *PipelineCacheCreateInfo,
-	allocator *AllocationCallbacks,
-) (*PipelineCache, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param createInfo
-	var ptr1 *C.VkPipelineCacheCreateInfo
-	if createInfo != nil {
-		val2, cancel3 := createInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkPipelineCacheCreateInfo)(val2)
-	}
-	// param allocator
-	var ptr5 *C.VkAllocationCallbacks
-	if allocator != nil {
-		val6, cancel7 := allocator.toC()
-		cancels = append(cancels, cancel7)
-		ptr5 = (*C.VkAllocationCallbacks)(val6)
-	}
-	var pipelineCacheOut C.VkPipelineCache
-	_result := C.fn_vkCreatePipelineCache(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &pipelineCacheOut)
-	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
-	}
-	h8 := &PipelineCache{handle: unsafe.Pointer(pipelineCacheOut)}
-	return h8, nil
-}
-
 func (h Device) Destroy(
 	allocator *AllocationCallbacks,
 ) {
@@ -31432,6 +31397,41 @@ func (h CommandBuffer) EndDebugUtilsLabelEXT() {
 	}()
 
 	C.fn_vkCmdEndDebugUtilsLabelEXT(C.VkCommandBuffer(unsafe.Pointer(h.handle)))
+}
+
+func (h PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	var count C.uint32_t
+	_result := C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, nil)
+	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
+		return nil, vkError(_result)
+	}
+	if count == 0 {
+		return nil, nil
+	}
+
+	cArr := (*C.VkLayerProperties)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkLayerProperties)))))
+	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
+
+	_result = C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, cArr)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+
+	out := make([]LayerProperties, int(count))
+	cSlice := (*[1 << 30]C.VkLayerProperties)(unsafe.Pointer(cArr))[:count:count]
+	for i, v := range cSlice {
+		var val0 LayerProperties
+		val0.fromC(&v)
+		out[i] = val0
+	}
+	return out, nil
 }
 
 func (h Instance) GetProcAddr(
