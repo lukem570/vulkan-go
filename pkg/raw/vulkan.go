@@ -24463,7 +24463,137 @@ func (h CommandBuffer) Begin(
 	return nil
 }
 
-func (h Queue) BeginDebugUtilsLabelEXT(
+func (h Device) BindBufferMemory(
+	buffer *Buffer,
+	memory *DeviceMemory,
+	memoryOffset uint64,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param buffer
+	var h1 C.VkBuffer
+	if buffer != nil {
+		h1 = C.VkBuffer(unsafe.Pointer(buffer.handle))
+	}
+	// param memory
+	var h3 C.VkDeviceMemory
+	if memory != nil {
+		h3 = C.VkDeviceMemory(unsafe.Pointer(memory.handle))
+	}
+	// param memoryOffset
+	val5 := C.VkDeviceSize(memoryOffset)
+	_result := C.fn_vkBindBufferMemory(C.VkDevice(unsafe.Pointer(h.handle)), h1, h3, val5)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Device) BindBufferMemory2(
+	bindInfoCount uint32,
+	bindInfos []BindBufferMemoryInfo,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param bindInfoCount
+	val1 := C.uint32_t(bindInfoCount)
+	// param bindInfos
+	len3 := len(bindInfos)
+
+	var arr4 *C.VkBindBufferMemoryInfo
+	if len3 > 0 {
+		arr4 = (*C.VkBindBufferMemoryInfo)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkBindBufferMemoryInfo)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
+	}
+	for i5, elem6 := range bindInfos {
+		val7, cancel8 := elem6.toC()
+		cancels = append(cancels, cancel8)
+		cast9 := (*C.VkBindBufferMemoryInfo)(val7)
+		(*[1 << 30]C.VkBindBufferMemoryInfo)(unsafe.Pointer(arr4))[i5] = *cast9
+	}
+	_result := C.fn_vkBindBufferMemory2(C.VkDevice(unsafe.Pointer(h.handle)), val1, arr4)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Device) BindImageMemory(
+	image *Image,
+	memory *DeviceMemory,
+	memoryOffset uint64,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param image
+	var h1 C.VkImage
+	if image != nil {
+		h1 = C.VkImage(unsafe.Pointer(image.handle))
+	}
+	// param memory
+	var h3 C.VkDeviceMemory
+	if memory != nil {
+		h3 = C.VkDeviceMemory(unsafe.Pointer(memory.handle))
+	}
+	// param memoryOffset
+	val5 := C.VkDeviceSize(memoryOffset)
+	_result := C.fn_vkBindImageMemory(C.VkDevice(unsafe.Pointer(h.handle)), h1, h3, val5)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Device) BindImageMemory2(
+	bindInfoCount uint32,
+	bindInfos []BindImageMemoryInfo,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param bindInfoCount
+	val1 := C.uint32_t(bindInfoCount)
+	// param bindInfos
+	len3 := len(bindInfos)
+
+	var arr4 *C.VkBindImageMemoryInfo
+	if len3 > 0 {
+		arr4 = (*C.VkBindImageMemoryInfo)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkBindImageMemoryInfo)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
+	}
+	for i5, elem6 := range bindInfos {
+		val7, cancel8 := elem6.toC()
+		cancels = append(cancels, cancel8)
+		cast9 := (*C.VkBindImageMemoryInfo)(val7)
+		(*[1 << 30]C.VkBindImageMemoryInfo)(unsafe.Pointer(arr4))[i5] = *cast9
+	}
+	_result := C.fn_vkBindImageMemory2(C.VkDevice(unsafe.Pointer(h.handle)), val1, arr4)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h CommandBuffer) BeginDebugUtilsLabelEXT(
 	labelInfo *DebugUtilsLabelEXT,
 ) {
 	cancels := make([]func(), 0)
@@ -24480,7 +24610,7 @@ func (h Queue) BeginDebugUtilsLabelEXT(
 		cancels = append(cancels, cancel3)
 		ptr1 = (*C.VkDebugUtilsLabelEXT)(val2)
 	}
-	C.fn_vkQueueBeginDebugUtilsLabelEXT(C.VkQueue(unsafe.Pointer(h.handle)), ptr1)
+	C.fn_vkCmdBeginDebugUtilsLabelEXT(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
 }
 
 func (h CommandBuffer) BeginQuery(
@@ -24578,71 +24708,6 @@ func (h CommandBuffer) BeginRendering(
 	C.fn_vkCmdBeginRendering(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
 }
 
-func (h Device) BindBufferMemory(
-	buffer *Buffer,
-	memory *DeviceMemory,
-	memoryOffset uint64,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param buffer
-	var h1 C.VkBuffer
-	if buffer != nil {
-		h1 = C.VkBuffer(unsafe.Pointer(buffer.handle))
-	}
-	// param memory
-	var h3 C.VkDeviceMemory
-	if memory != nil {
-		h3 = C.VkDeviceMemory(unsafe.Pointer(memory.handle))
-	}
-	// param memoryOffset
-	val5 := C.VkDeviceSize(memoryOffset)
-	_result := C.fn_vkBindBufferMemory(C.VkDevice(unsafe.Pointer(h.handle)), h1, h3, val5)
-	if _result != C.VK_SUCCESS {
-		return vkError(_result)
-	}
-	return nil
-}
-
-func (h Device) BindBufferMemory2(
-	bindInfoCount uint32,
-	bindInfos []BindBufferMemoryInfo,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param bindInfoCount
-	val1 := C.uint32_t(bindInfoCount)
-	// param bindInfos
-	len3 := len(bindInfos)
-
-	var arr4 *C.VkBindBufferMemoryInfo
-	if len3 > 0 {
-		arr4 = (*C.VkBindBufferMemoryInfo)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkBindBufferMemoryInfo)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
-	}
-	for i5, elem6 := range bindInfos {
-		val7, cancel8 := elem6.toC()
-		cancels = append(cancels, cancel8)
-		cast9 := (*C.VkBindBufferMemoryInfo)(val7)
-		(*[1 << 30]C.VkBindBufferMemoryInfo)(unsafe.Pointer(arr4))[i5] = *cast9
-	}
-	_result := C.fn_vkBindBufferMemory2(C.VkDevice(unsafe.Pointer(h.handle)), val1, arr4)
-	if _result != C.VK_SUCCESS {
-		return vkError(_result)
-	}
-	return nil
-}
-
 func (h CommandBuffer) BindDescriptorSets(
 	pipelineBindPoint PipelineBindPoint,
 	layout *PipelineLayout,
@@ -24722,71 +24787,6 @@ func (h CommandBuffer) BindDescriptorSets2(
 	C.fn_vkCmdBindDescriptorSets2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
 }
 
-func (h Device) BindImageMemory(
-	image *Image,
-	memory *DeviceMemory,
-	memoryOffset uint64,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param image
-	var h1 C.VkImage
-	if image != nil {
-		h1 = C.VkImage(unsafe.Pointer(image.handle))
-	}
-	// param memory
-	var h3 C.VkDeviceMemory
-	if memory != nil {
-		h3 = C.VkDeviceMemory(unsafe.Pointer(memory.handle))
-	}
-	// param memoryOffset
-	val5 := C.VkDeviceSize(memoryOffset)
-	_result := C.fn_vkBindImageMemory(C.VkDevice(unsafe.Pointer(h.handle)), h1, h3, val5)
-	if _result != C.VK_SUCCESS {
-		return vkError(_result)
-	}
-	return nil
-}
-
-func (h Device) BindImageMemory2(
-	bindInfoCount uint32,
-	bindInfos []BindImageMemoryInfo,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param bindInfoCount
-	val1 := C.uint32_t(bindInfoCount)
-	// param bindInfos
-	len3 := len(bindInfos)
-
-	var arr4 *C.VkBindImageMemoryInfo
-	if len3 > 0 {
-		arr4 = (*C.VkBindImageMemoryInfo)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkBindImageMemoryInfo)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
-	}
-	for i5, elem6 := range bindInfos {
-		val7, cancel8 := elem6.toC()
-		cancels = append(cancels, cancel8)
-		cast9 := (*C.VkBindImageMemoryInfo)(val7)
-		(*[1 << 30]C.VkBindImageMemoryInfo)(unsafe.Pointer(arr4))[i5] = *cast9
-	}
-	_result := C.fn_vkBindImageMemory2(C.VkDevice(unsafe.Pointer(h.handle)), val1, arr4)
-	if _result != C.VK_SUCCESS {
-		return vkError(_result)
-	}
-	return nil
-}
-
 func (h CommandBuffer) BindIndexBuffer(
 	buffer *Buffer,
 	offset uint64,
@@ -24857,46 +24857,6 @@ func (h CommandBuffer) BindPipeline(
 		h3 = C.VkPipeline(unsafe.Pointer(pipeline.handle))
 	}
 	C.fn_vkCmdBindPipeline(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, h3)
-}
-
-func (h Queue) BindSparse(
-	bindInfoCount uint32,
-	bindInfo []BindSparseInfo,
-	fence *Fence,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param bindInfoCount
-	val1 := C.uint32_t(bindInfoCount)
-	// param bindInfo
-	len3 := len(bindInfo)
-
-	var arr4 *C.VkBindSparseInfo
-	if len3 > 0 {
-		arr4 = (*C.VkBindSparseInfo)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkBindSparseInfo)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
-	}
-	for i5, elem6 := range bindInfo {
-		val7, cancel8 := elem6.toC()
-		cancels = append(cancels, cancel8)
-		cast9 := (*C.VkBindSparseInfo)(val7)
-		(*[1 << 30]C.VkBindSparseInfo)(unsafe.Pointer(arr4))[i5] = *cast9
-	}
-	// param fence
-	var h11 C.VkFence
-	if fence != nil {
-		h11 = C.VkFence(unsafe.Pointer(fence.handle))
-	}
-	_result := C.fn_vkQueueBindSparse(C.VkQueue(unsafe.Pointer(h.handle)), val1, arr4, h11)
-	if _result != C.VK_SUCCESS {
-		return vkError(_result)
-	}
-	return nil
 }
 
 func (h CommandBuffer) BindVertexBuffers(
@@ -25492,6 +25452,1675 @@ func (h CommandBuffer) CopyImageToBuffer2(
 	C.fn_vkCmdCopyImageToBuffer2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
 }
 
+func (h CommandBuffer) CopyQueryPoolResults(
+	queryPool *QueryPool,
+	firstQuery uint32,
+	queryCount uint32,
+	dstBuffer *Buffer,
+	dstOffset uint64,
+	stride uint64,
+	flags QueryResultFlags,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param queryPool
+	var h1 C.VkQueryPool
+	if queryPool != nil {
+		h1 = C.VkQueryPool(unsafe.Pointer(queryPool.handle))
+	}
+	// param firstQuery
+	val3 := C.uint32_t(firstQuery)
+	// param queryCount
+	val5 := C.uint32_t(queryCount)
+	// param dstBuffer
+	var h7 C.VkBuffer
+	if dstBuffer != nil {
+		h7 = C.VkBuffer(unsafe.Pointer(dstBuffer.handle))
+	}
+	// param dstOffset
+	val9 := C.VkDeviceSize(dstOffset)
+	// param stride
+	val11 := C.VkDeviceSize(stride)
+	// param flags
+	val13 := C.VkQueryResultFlags(flags)
+	C.fn_vkCmdCopyQueryPoolResults(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5, h7, val9, val11, val13)
+}
+
+func (h CommandBuffer) Dispatch(
+	groupCountX uint32,
+	groupCountY uint32,
+	groupCountZ uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param groupCountX
+	val1 := C.uint32_t(groupCountX)
+	// param groupCountY
+	val3 := C.uint32_t(groupCountY)
+	// param groupCountZ
+	val5 := C.uint32_t(groupCountZ)
+	C.fn_vkCmdDispatch(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5)
+}
+
+func (h CommandBuffer) DispatchBase(
+	baseGroupX uint32,
+	baseGroupY uint32,
+	baseGroupZ uint32,
+	groupCountX uint32,
+	groupCountY uint32,
+	groupCountZ uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param baseGroupX
+	val1 := C.uint32_t(baseGroupX)
+	// param baseGroupY
+	val3 := C.uint32_t(baseGroupY)
+	// param baseGroupZ
+	val5 := C.uint32_t(baseGroupZ)
+	// param groupCountX
+	val7 := C.uint32_t(groupCountX)
+	// param groupCountY
+	val9 := C.uint32_t(groupCountY)
+	// param groupCountZ
+	val11 := C.uint32_t(groupCountZ)
+	C.fn_vkCmdDispatchBase(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5, val7, val9, val11)
+}
+
+func (h CommandBuffer) DispatchIndirect(
+	buffer *Buffer,
+	offset uint64,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param buffer
+	var h1 C.VkBuffer
+	if buffer != nil {
+		h1 = C.VkBuffer(unsafe.Pointer(buffer.handle))
+	}
+	// param offset
+	val3 := C.VkDeviceSize(offset)
+	C.fn_vkCmdDispatchIndirect(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3)
+}
+
+func (h CommandBuffer) Draw(
+	vertexCount uint32,
+	instanceCount uint32,
+	firstVertex uint32,
+	firstInstance uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param vertexCount
+	val1 := C.uint32_t(vertexCount)
+	// param instanceCount
+	val3 := C.uint32_t(instanceCount)
+	// param firstVertex
+	val5 := C.uint32_t(firstVertex)
+	// param firstInstance
+	val7 := C.uint32_t(firstInstance)
+	C.fn_vkCmdDraw(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5, val7)
+}
+
+func (h CommandBuffer) DrawIndexed(
+	indexCount uint32,
+	instanceCount uint32,
+	firstIndex uint32,
+	vertexOffset int32,
+	firstInstance uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param indexCount
+	val1 := C.uint32_t(indexCount)
+	// param instanceCount
+	val3 := C.uint32_t(instanceCount)
+	// param firstIndex
+	val5 := C.uint32_t(firstIndex)
+	// param vertexOffset
+	val7 := C.int32_t(vertexOffset)
+	// param firstInstance
+	val9 := C.uint32_t(firstInstance)
+	C.fn_vkCmdDrawIndexed(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5, val7, val9)
+}
+
+func (h CommandBuffer) DrawIndexedIndirect(
+	buffer *Buffer,
+	offset uint64,
+	drawCount uint32,
+	stride uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param buffer
+	var h1 C.VkBuffer
+	if buffer != nil {
+		h1 = C.VkBuffer(unsafe.Pointer(buffer.handle))
+	}
+	// param offset
+	val3 := C.VkDeviceSize(offset)
+	// param drawCount
+	val5 := C.uint32_t(drawCount)
+	// param stride
+	val7 := C.uint32_t(stride)
+	C.fn_vkCmdDrawIndexedIndirect(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5, val7)
+}
+
+func (h CommandBuffer) DrawIndexedIndirectCount(
+	buffer *Buffer,
+	offset uint64,
+	countBuffer *Buffer,
+	countBufferOffset uint64,
+	maxDrawCount uint32,
+	stride uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param buffer
+	var h1 C.VkBuffer
+	if buffer != nil {
+		h1 = C.VkBuffer(unsafe.Pointer(buffer.handle))
+	}
+	// param offset
+	val3 := C.VkDeviceSize(offset)
+	// param countBuffer
+	var h5 C.VkBuffer
+	if countBuffer != nil {
+		h5 = C.VkBuffer(unsafe.Pointer(countBuffer.handle))
+	}
+	// param countBufferOffset
+	val7 := C.VkDeviceSize(countBufferOffset)
+	// param maxDrawCount
+	val9 := C.uint32_t(maxDrawCount)
+	// param stride
+	val11 := C.uint32_t(stride)
+	C.fn_vkCmdDrawIndexedIndirectCount(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, h5, val7, val9, val11)
+}
+
+func (h CommandBuffer) DrawIndirect(
+	buffer *Buffer,
+	offset uint64,
+	drawCount uint32,
+	stride uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param buffer
+	var h1 C.VkBuffer
+	if buffer != nil {
+		h1 = C.VkBuffer(unsafe.Pointer(buffer.handle))
+	}
+	// param offset
+	val3 := C.VkDeviceSize(offset)
+	// param drawCount
+	val5 := C.uint32_t(drawCount)
+	// param stride
+	val7 := C.uint32_t(stride)
+	C.fn_vkCmdDrawIndirect(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5, val7)
+}
+
+func (h CommandBuffer) DrawIndirectCount(
+	buffer *Buffer,
+	offset uint64,
+	countBuffer *Buffer,
+	countBufferOffset uint64,
+	maxDrawCount uint32,
+	stride uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param buffer
+	var h1 C.VkBuffer
+	if buffer != nil {
+		h1 = C.VkBuffer(unsafe.Pointer(buffer.handle))
+	}
+	// param offset
+	val3 := C.VkDeviceSize(offset)
+	// param countBuffer
+	var h5 C.VkBuffer
+	if countBuffer != nil {
+		h5 = C.VkBuffer(unsafe.Pointer(countBuffer.handle))
+	}
+	// param countBufferOffset
+	val7 := C.VkDeviceSize(countBufferOffset)
+	// param maxDrawCount
+	val9 := C.uint32_t(maxDrawCount)
+	// param stride
+	val11 := C.uint32_t(stride)
+	C.fn_vkCmdDrawIndirectCount(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, h5, val7, val9, val11)
+}
+
+func (h CommandBuffer) EndDebugUtilsLabelEXT() {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	C.fn_vkCmdEndDebugUtilsLabelEXT(C.VkCommandBuffer(unsafe.Pointer(h.handle)))
+}
+
+func (h CommandBuffer) EndQuery(
+	queryPool *QueryPool,
+	query uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param queryPool
+	var h1 C.VkQueryPool
+	if queryPool != nil {
+		h1 = C.VkQueryPool(unsafe.Pointer(queryPool.handle))
+	}
+	// param query
+	val3 := C.uint32_t(query)
+	C.fn_vkCmdEndQuery(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3)
+}
+
+func (h CommandBuffer) EndRenderPass() {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	C.fn_vkCmdEndRenderPass(C.VkCommandBuffer(unsafe.Pointer(h.handle)))
+}
+
+func (h CommandBuffer) EndRenderPass2(
+	subpassEndInfo *SubpassEndInfo,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param subpassEndInfo
+	var ptr1 *C.VkSubpassEndInfo
+	if subpassEndInfo != nil {
+		val2, cancel3 := subpassEndInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkSubpassEndInfo)(val2)
+	}
+	C.fn_vkCmdEndRenderPass2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+}
+
+func (h CommandBuffer) EndRendering() {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	C.fn_vkCmdEndRendering(C.VkCommandBuffer(unsafe.Pointer(h.handle)))
+}
+
+func (h CommandBuffer) ExecuteCommands(
+	commandBufferCount uint32,
+	commandBuffers []*CommandBuffer,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param commandBufferCount
+	val1 := C.uint32_t(commandBufferCount)
+	// param commandBuffers
+	len3 := len(commandBuffers)
+
+	var arr4 *C.VkCommandBuffer
+	if len3 > 0 {
+		arr4 = (*C.VkCommandBuffer)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkCommandBuffer)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
+	}
+	for i5, elem6 := range commandBuffers {
+		var h7 C.VkCommandBuffer
+		if elem6 != nil {
+			h7 = C.VkCommandBuffer(unsafe.Pointer(elem6.handle))
+		}
+		(*[1 << 30]C.VkCommandBuffer)(unsafe.Pointer(arr4))[i5] = h7
+	}
+	C.fn_vkCmdExecuteCommands(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, arr4)
+}
+
+func (h CommandBuffer) FillBuffer(
+	dstBuffer *Buffer,
+	dstOffset uint64,
+	size uint64,
+	data uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param dstBuffer
+	var h1 C.VkBuffer
+	if dstBuffer != nil {
+		h1 = C.VkBuffer(unsafe.Pointer(dstBuffer.handle))
+	}
+	// param dstOffset
+	val3 := C.VkDeviceSize(dstOffset)
+	// param size
+	val5 := C.VkDeviceSize(size)
+	// param data
+	val7 := C.uint32_t(data)
+	C.fn_vkCmdFillBuffer(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5, val7)
+}
+
+func (h CommandBuffer) InsertDebugUtilsLabelEXT(
+	labelInfo *DebugUtilsLabelEXT,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param labelInfo
+	var ptr1 *C.VkDebugUtilsLabelEXT
+	if labelInfo != nil {
+		val2, cancel3 := labelInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkDebugUtilsLabelEXT)(val2)
+	}
+	C.fn_vkCmdInsertDebugUtilsLabelEXT(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+}
+
+func (h CommandBuffer) NextSubpass(
+	contents SubpassContents,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param contents
+	val1 := C.VkSubpassContents(contents)
+	C.fn_vkCmdNextSubpass(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) NextSubpass2(
+	subpassBeginInfo *SubpassBeginInfo,
+	subpassEndInfo *SubpassEndInfo,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param subpassBeginInfo
+	var ptr1 *C.VkSubpassBeginInfo
+	if subpassBeginInfo != nil {
+		val2, cancel3 := subpassBeginInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkSubpassBeginInfo)(val2)
+	}
+	// param subpassEndInfo
+	var ptr5 *C.VkSubpassEndInfo
+	if subpassEndInfo != nil {
+		val6, cancel7 := subpassEndInfo.toC()
+		cancels = append(cancels, cancel7)
+		ptr5 = (*C.VkSubpassEndInfo)(val6)
+	}
+	C.fn_vkCmdNextSubpass2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1, ptr5)
+}
+
+func (h CommandBuffer) PipelineBarrier(
+	srcStageMask PipelineStageFlags,
+	dstStageMask PipelineStageFlags,
+	dependencyFlags DependencyFlags,
+	memoryBarrierCount uint32,
+	memoryBarriers []MemoryBarrier,
+	bufferMemoryBarrierCount uint32,
+	bufferMemoryBarriers []BufferMemoryBarrier,
+	imageMemoryBarrierCount uint32,
+	imageMemoryBarriers []ImageMemoryBarrier,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param srcStageMask
+	val1 := C.VkPipelineStageFlags(srcStageMask)
+	// param dstStageMask
+	val3 := C.VkPipelineStageFlags(dstStageMask)
+	// param dependencyFlags
+	val5 := C.VkDependencyFlags(dependencyFlags)
+	// param memoryBarrierCount
+	val7 := C.uint32_t(memoryBarrierCount)
+	// param memoryBarriers
+	len9 := len(memoryBarriers)
+
+	var arr10 *C.VkMemoryBarrier
+	if len9 > 0 {
+		arr10 = (*C.VkMemoryBarrier)(C.malloc(C.size_t(len9) * C.size_t(unsafe.Sizeof(*new(C.VkMemoryBarrier)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr10)) })
+	}
+	for i11, elem12 := range memoryBarriers {
+		val13, cancel14 := elem12.toC()
+		cancels = append(cancels, cancel14)
+		cast15 := (*C.VkMemoryBarrier)(val13)
+		(*[1 << 30]C.VkMemoryBarrier)(unsafe.Pointer(arr10))[i11] = *cast15
+	}
+	// param bufferMemoryBarrierCount
+	val17 := C.uint32_t(bufferMemoryBarrierCount)
+	// param bufferMemoryBarriers
+	len19 := len(bufferMemoryBarriers)
+
+	var arr20 *C.VkBufferMemoryBarrier
+	if len19 > 0 {
+		arr20 = (*C.VkBufferMemoryBarrier)(C.malloc(C.size_t(len19) * C.size_t(unsafe.Sizeof(*new(C.VkBufferMemoryBarrier)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr20)) })
+	}
+	for i21, elem22 := range bufferMemoryBarriers {
+		val23, cancel24 := elem22.toC()
+		cancels = append(cancels, cancel24)
+		cast25 := (*C.VkBufferMemoryBarrier)(val23)
+		(*[1 << 30]C.VkBufferMemoryBarrier)(unsafe.Pointer(arr20))[i21] = *cast25
+	}
+	// param imageMemoryBarrierCount
+	val27 := C.uint32_t(imageMemoryBarrierCount)
+	// param imageMemoryBarriers
+	len29 := len(imageMemoryBarriers)
+
+	var arr30 *C.VkImageMemoryBarrier
+	if len29 > 0 {
+		arr30 = (*C.VkImageMemoryBarrier)(C.malloc(C.size_t(len29) * C.size_t(unsafe.Sizeof(*new(C.VkImageMemoryBarrier)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr30)) })
+	}
+	for i31, elem32 := range imageMemoryBarriers {
+		val33, cancel34 := elem32.toC()
+		cancels = append(cancels, cancel34)
+		cast35 := (*C.VkImageMemoryBarrier)(val33)
+		(*[1 << 30]C.VkImageMemoryBarrier)(unsafe.Pointer(arr30))[i31] = *cast35
+	}
+	C.fn_vkCmdPipelineBarrier(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5, val7, arr10, val17, arr20, val27, arr30)
+}
+
+func (h CommandBuffer) PipelineBarrier2(
+	dependencyInfo *DependencyInfo,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param dependencyInfo
+	var ptr1 *C.VkDependencyInfo
+	if dependencyInfo != nil {
+		val2, cancel3 := dependencyInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkDependencyInfo)(val2)
+	}
+	C.fn_vkCmdPipelineBarrier2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+}
+
+func (h CommandBuffer) PushConstants(
+	layout *PipelineLayout,
+	stageFlags ShaderStageFlags,
+	offset uint32,
+	size uint32,
+	values unsafe.Pointer,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param layout
+	var h1 C.VkPipelineLayout
+	if layout != nil {
+		h1 = C.VkPipelineLayout(unsafe.Pointer(layout.handle))
+	}
+	// param stageFlags
+	val3 := C.VkShaderStageFlags(stageFlags)
+	// param offset
+	val5 := C.uint32_t(offset)
+	// param size
+	val7 := C.uint32_t(size)
+	// param values
+	C.fn_vkCmdPushConstants(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5, val7, values)
+}
+
+func (h CommandBuffer) PushConstants2(
+	pushConstantsInfo *PushConstantsInfo,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pushConstantsInfo
+	var ptr1 *C.VkPushConstantsInfo
+	if pushConstantsInfo != nil {
+		val2, cancel3 := pushConstantsInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkPushConstantsInfo)(val2)
+	}
+	C.fn_vkCmdPushConstants2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+}
+
+func (h CommandBuffer) PushDescriptorSet(
+	pipelineBindPoint PipelineBindPoint,
+	layout *PipelineLayout,
+	set uint32,
+	descriptorWriteCount uint32,
+	descriptorWrites []WriteDescriptorSet,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pipelineBindPoint
+	val1 := C.VkPipelineBindPoint(pipelineBindPoint)
+	// param layout
+	var h3 C.VkPipelineLayout
+	if layout != nil {
+		h3 = C.VkPipelineLayout(unsafe.Pointer(layout.handle))
+	}
+	// param set
+	val5 := C.uint32_t(set)
+	// param descriptorWriteCount
+	val7 := C.uint32_t(descriptorWriteCount)
+	// param descriptorWrites
+	len9 := len(descriptorWrites)
+
+	var arr10 *C.VkWriteDescriptorSet
+	if len9 > 0 {
+		arr10 = (*C.VkWriteDescriptorSet)(C.malloc(C.size_t(len9) * C.size_t(unsafe.Sizeof(*new(C.VkWriteDescriptorSet)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr10)) })
+	}
+	for i11, elem12 := range descriptorWrites {
+		val13, cancel14 := elem12.toC()
+		cancels = append(cancels, cancel14)
+		cast15 := (*C.VkWriteDescriptorSet)(val13)
+		(*[1 << 30]C.VkWriteDescriptorSet)(unsafe.Pointer(arr10))[i11] = *cast15
+	}
+	C.fn_vkCmdPushDescriptorSet(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, h3, val5, val7, arr10)
+}
+
+func (h CommandBuffer) PushDescriptorSet2(
+	pushDescriptorSetInfo *PushDescriptorSetInfo,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pushDescriptorSetInfo
+	var ptr1 *C.VkPushDescriptorSetInfo
+	if pushDescriptorSetInfo != nil {
+		val2, cancel3 := pushDescriptorSetInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkPushDescriptorSetInfo)(val2)
+	}
+	C.fn_vkCmdPushDescriptorSet2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+}
+
+func (h CommandBuffer) PushDescriptorSetWithTemplate(
+	descriptorUpdateTemplate *DescriptorUpdateTemplate,
+	layout *PipelineLayout,
+	set uint32,
+	data unsafe.Pointer,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param descriptorUpdateTemplate
+	var h1 C.VkDescriptorUpdateTemplate
+	if descriptorUpdateTemplate != nil {
+		h1 = C.VkDescriptorUpdateTemplate(unsafe.Pointer(descriptorUpdateTemplate.handle))
+	}
+	// param layout
+	var h3 C.VkPipelineLayout
+	if layout != nil {
+		h3 = C.VkPipelineLayout(unsafe.Pointer(layout.handle))
+	}
+	// param set
+	val5 := C.uint32_t(set)
+	// param data
+	C.fn_vkCmdPushDescriptorSetWithTemplate(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, h3, val5, data)
+}
+
+func (h CommandBuffer) PushDescriptorSetWithTemplate2(
+	pushDescriptorSetWithTemplateInfo *PushDescriptorSetWithTemplateInfo,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pushDescriptorSetWithTemplateInfo
+	var ptr1 *C.VkPushDescriptorSetWithTemplateInfo
+	if pushDescriptorSetWithTemplateInfo != nil {
+		val2, cancel3 := pushDescriptorSetWithTemplateInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkPushDescriptorSetWithTemplateInfo)(val2)
+	}
+	C.fn_vkCmdPushDescriptorSetWithTemplate2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+}
+
+func (h CommandBuffer) ResetEvent(
+	event *Event,
+	stageMask PipelineStageFlags,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param event
+	var h1 C.VkEvent
+	if event != nil {
+		h1 = C.VkEvent(unsafe.Pointer(event.handle))
+	}
+	// param stageMask
+	val3 := C.VkPipelineStageFlags(stageMask)
+	C.fn_vkCmdResetEvent(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3)
+}
+
+func (h CommandBuffer) ResetEvent2(
+	event *Event,
+	stageMask PipelineStageFlags2,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param event
+	var h1 C.VkEvent
+	if event != nil {
+		h1 = C.VkEvent(unsafe.Pointer(event.handle))
+	}
+	// param stageMask
+	val3 := C.VkPipelineStageFlags2(stageMask)
+	C.fn_vkCmdResetEvent2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3)
+}
+
+func (h CommandBuffer) ResetQueryPool(
+	queryPool *QueryPool,
+	firstQuery uint32,
+	queryCount uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param queryPool
+	var h1 C.VkQueryPool
+	if queryPool != nil {
+		h1 = C.VkQueryPool(unsafe.Pointer(queryPool.handle))
+	}
+	// param firstQuery
+	val3 := C.uint32_t(firstQuery)
+	// param queryCount
+	val5 := C.uint32_t(queryCount)
+	C.fn_vkCmdResetQueryPool(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5)
+}
+
+func (h CommandBuffer) ResolveImage(
+	srcImage *Image,
+	srcImageLayout ImageLayout,
+	dstImage *Image,
+	dstImageLayout ImageLayout,
+	regionCount uint32,
+	regions []ImageResolve,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param srcImage
+	var h1 C.VkImage
+	if srcImage != nil {
+		h1 = C.VkImage(unsafe.Pointer(srcImage.handle))
+	}
+	// param srcImageLayout
+	val3 := C.VkImageLayout(srcImageLayout)
+	// param dstImage
+	var h5 C.VkImage
+	if dstImage != nil {
+		h5 = C.VkImage(unsafe.Pointer(dstImage.handle))
+	}
+	// param dstImageLayout
+	val7 := C.VkImageLayout(dstImageLayout)
+	// param regionCount
+	val9 := C.uint32_t(regionCount)
+	// param regions
+	len11 := len(regions)
+
+	var arr12 *C.VkImageResolve
+	if len11 > 0 {
+		arr12 = (*C.VkImageResolve)(C.malloc(C.size_t(len11) * C.size_t(unsafe.Sizeof(*new(C.VkImageResolve)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr12)) })
+	}
+	for i13, elem14 := range regions {
+		val15, cancel16 := elem14.toC()
+		cancels = append(cancels, cancel16)
+		cast17 := (*C.VkImageResolve)(val15)
+		(*[1 << 30]C.VkImageResolve)(unsafe.Pointer(arr12))[i13] = *cast17
+	}
+	C.fn_vkCmdResolveImage(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, h5, val7, val9, arr12)
+}
+
+func (h CommandBuffer) ResolveImage2(
+	resolveImageInfo *ResolveImageInfo2,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param resolveImageInfo
+	var ptr1 *C.VkResolveImageInfo2
+	if resolveImageInfo != nil {
+		val2, cancel3 := resolveImageInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkResolveImageInfo2)(val2)
+	}
+	C.fn_vkCmdResolveImage2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+}
+
+func (h CommandBuffer) SetBlendConstants(
+	blendConstants [4]float32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param blendConstants
+	var arr1 [4]C.float
+	for i2, elem3 := range blendConstants {
+		val4 := C.float(elem3)
+		arr1[i2] = val4
+	}
+	C.fn_vkCmdSetBlendConstants(C.VkCommandBuffer(unsafe.Pointer(h.handle)), &arr1[0])
+}
+
+func (h CommandBuffer) SetCullMode(
+	cullMode CullModeFlags,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param cullMode
+	val1 := C.VkCullModeFlags(cullMode)
+	C.fn_vkCmdSetCullMode(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) SetDepthBias(
+	depthBiasConstantFactor float32,
+	depthBiasClamp float32,
+	depthBiasSlopeFactor float32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param depthBiasConstantFactor
+	val1 := C.float(depthBiasConstantFactor)
+	// param depthBiasClamp
+	val3 := C.float(depthBiasClamp)
+	// param depthBiasSlopeFactor
+	val5 := C.float(depthBiasSlopeFactor)
+	C.fn_vkCmdSetDepthBias(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5)
+}
+
+func (h CommandBuffer) SetDepthBiasEnable(
+	depthBiasEnable bool,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param depthBiasEnable
+	val1 := C.VkBool32(0)
+	if depthBiasEnable {
+		val1 = C.VkBool32(1)
+	}
+	C.fn_vkCmdSetDepthBiasEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) SetDepthBounds(
+	minDepthBounds float32,
+	maxDepthBounds float32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param minDepthBounds
+	val1 := C.float(minDepthBounds)
+	// param maxDepthBounds
+	val3 := C.float(maxDepthBounds)
+	C.fn_vkCmdSetDepthBounds(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3)
+}
+
+func (h CommandBuffer) SetDepthBoundsTestEnable(
+	depthBoundsTestEnable bool,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param depthBoundsTestEnable
+	val1 := C.VkBool32(0)
+	if depthBoundsTestEnable {
+		val1 = C.VkBool32(1)
+	}
+	C.fn_vkCmdSetDepthBoundsTestEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) SetDepthCompareOp(
+	depthCompareOp CompareOp,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param depthCompareOp
+	val1 := C.VkCompareOp(depthCompareOp)
+	C.fn_vkCmdSetDepthCompareOp(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) SetDepthTestEnable(
+	depthTestEnable bool,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param depthTestEnable
+	val1 := C.VkBool32(0)
+	if depthTestEnable {
+		val1 = C.VkBool32(1)
+	}
+	C.fn_vkCmdSetDepthTestEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) SetDepthWriteEnable(
+	depthWriteEnable bool,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param depthWriteEnable
+	val1 := C.VkBool32(0)
+	if depthWriteEnable {
+		val1 = C.VkBool32(1)
+	}
+	C.fn_vkCmdSetDepthWriteEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) SetDeviceMask(
+	deviceMask uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param deviceMask
+	val1 := C.uint32_t(deviceMask)
+	C.fn_vkCmdSetDeviceMask(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) SetEvent(
+	event *Event,
+	stageMask PipelineStageFlags,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param event
+	var h1 C.VkEvent
+	if event != nil {
+		h1 = C.VkEvent(unsafe.Pointer(event.handle))
+	}
+	// param stageMask
+	val3 := C.VkPipelineStageFlags(stageMask)
+	C.fn_vkCmdSetEvent(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3)
+}
+
+func (h CommandBuffer) SetEvent2(
+	event *Event,
+	dependencyInfo *DependencyInfo,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param event
+	var h1 C.VkEvent
+	if event != nil {
+		h1 = C.VkEvent(unsafe.Pointer(event.handle))
+	}
+	// param dependencyInfo
+	var ptr3 *C.VkDependencyInfo
+	if dependencyInfo != nil {
+		val4, cancel5 := dependencyInfo.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = (*C.VkDependencyInfo)(val4)
+	}
+	C.fn_vkCmdSetEvent2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, ptr3)
+}
+
+func (h CommandBuffer) SetFrontFace(
+	frontFace FrontFace,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param frontFace
+	val1 := C.VkFrontFace(frontFace)
+	C.fn_vkCmdSetFrontFace(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) SetLineStipple(
+	lineStippleFactor uint32,
+	lineStipplePattern uint16,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param lineStippleFactor
+	val1 := C.uint32_t(lineStippleFactor)
+	// param lineStipplePattern
+	val3 := C.uint16_t(lineStipplePattern)
+	C.fn_vkCmdSetLineStipple(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3)
+}
+
+func (h CommandBuffer) SetLineWidth(
+	lineWidth float32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param lineWidth
+	val1 := C.float(lineWidth)
+	C.fn_vkCmdSetLineWidth(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) SetPrimitiveRestartEnable(
+	primitiveRestartEnable bool,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param primitiveRestartEnable
+	val1 := C.VkBool32(0)
+	if primitiveRestartEnable {
+		val1 = C.VkBool32(1)
+	}
+	C.fn_vkCmdSetPrimitiveRestartEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) SetPrimitiveTopology(
+	primitiveTopology PrimitiveTopology,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param primitiveTopology
+	val1 := C.VkPrimitiveTopology(primitiveTopology)
+	C.fn_vkCmdSetPrimitiveTopology(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) SetRasterizerDiscardEnable(
+	rasterizerDiscardEnable bool,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param rasterizerDiscardEnable
+	val1 := C.VkBool32(0)
+	if rasterizerDiscardEnable {
+		val1 = C.VkBool32(1)
+	}
+	C.fn_vkCmdSetRasterizerDiscardEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) SetRenderingAttachmentLocations(
+	locationInfo *RenderingAttachmentLocationInfo,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param locationInfo
+	var ptr1 *C.VkRenderingAttachmentLocationInfo
+	if locationInfo != nil {
+		val2, cancel3 := locationInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkRenderingAttachmentLocationInfo)(val2)
+	}
+	C.fn_vkCmdSetRenderingAttachmentLocations(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+}
+
+func (h CommandBuffer) SetRenderingInputAttachmentIndices(
+	inputAttachmentIndexInfo *RenderingInputAttachmentIndexInfo,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param inputAttachmentIndexInfo
+	var ptr1 *C.VkRenderingInputAttachmentIndexInfo
+	if inputAttachmentIndexInfo != nil {
+		val2, cancel3 := inputAttachmentIndexInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkRenderingInputAttachmentIndexInfo)(val2)
+	}
+	C.fn_vkCmdSetRenderingInputAttachmentIndices(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+}
+
+func (h CommandBuffer) SetScissor(
+	firstScissor uint32,
+	scissorCount uint32,
+	scissors []Rect2D,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param firstScissor
+	val1 := C.uint32_t(firstScissor)
+	// param scissorCount
+	val3 := C.uint32_t(scissorCount)
+	// param scissors
+	len5 := len(scissors)
+
+	var arr6 *C.VkRect2D
+	if len5 > 0 {
+		arr6 = (*C.VkRect2D)(C.malloc(C.size_t(len5) * C.size_t(unsafe.Sizeof(*new(C.VkRect2D)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr6)) })
+	}
+	for i7, elem8 := range scissors {
+		val9, cancel10 := elem8.toC()
+		cancels = append(cancels, cancel10)
+		cast11 := (*C.VkRect2D)(val9)
+		(*[1 << 30]C.VkRect2D)(unsafe.Pointer(arr6))[i7] = *cast11
+	}
+	C.fn_vkCmdSetScissor(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, arr6)
+}
+
+func (h CommandBuffer) SetScissorWithCount(
+	scissorCount uint32,
+	scissors []Rect2D,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param scissorCount
+	val1 := C.uint32_t(scissorCount)
+	// param scissors
+	len3 := len(scissors)
+
+	var arr4 *C.VkRect2D
+	if len3 > 0 {
+		arr4 = (*C.VkRect2D)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkRect2D)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
+	}
+	for i5, elem6 := range scissors {
+		val7, cancel8 := elem6.toC()
+		cancels = append(cancels, cancel8)
+		cast9 := (*C.VkRect2D)(val7)
+		(*[1 << 30]C.VkRect2D)(unsafe.Pointer(arr4))[i5] = *cast9
+	}
+	C.fn_vkCmdSetScissorWithCount(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, arr4)
+}
+
+func (h CommandBuffer) SetStencilCompareMask(
+	faceMask StencilFaceFlags,
+	compareMask uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param faceMask
+	val1 := C.VkStencilFaceFlags(faceMask)
+	// param compareMask
+	val3 := C.uint32_t(compareMask)
+	C.fn_vkCmdSetStencilCompareMask(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3)
+}
+
+func (h CommandBuffer) SetStencilOp(
+	faceMask StencilFaceFlags,
+	failOp StencilOp,
+	passOp StencilOp,
+	depthFailOp StencilOp,
+	compareOp CompareOp,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param faceMask
+	val1 := C.VkStencilFaceFlags(faceMask)
+	// param failOp
+	val3 := C.VkStencilOp(failOp)
+	// param passOp
+	val5 := C.VkStencilOp(passOp)
+	// param depthFailOp
+	val7 := C.VkStencilOp(depthFailOp)
+	// param compareOp
+	val9 := C.VkCompareOp(compareOp)
+	C.fn_vkCmdSetStencilOp(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5, val7, val9)
+}
+
+func (h CommandBuffer) SetStencilReference(
+	faceMask StencilFaceFlags,
+	reference uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param faceMask
+	val1 := C.VkStencilFaceFlags(faceMask)
+	// param reference
+	val3 := C.uint32_t(reference)
+	C.fn_vkCmdSetStencilReference(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3)
+}
+
+func (h CommandBuffer) SetStencilTestEnable(
+	stencilTestEnable bool,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param stencilTestEnable
+	val1 := C.VkBool32(0)
+	if stencilTestEnable {
+		val1 = C.VkBool32(1)
+	}
+	C.fn_vkCmdSetStencilTestEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) SetStencilWriteMask(
+	faceMask StencilFaceFlags,
+	writeMask uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param faceMask
+	val1 := C.VkStencilFaceFlags(faceMask)
+	// param writeMask
+	val3 := C.uint32_t(writeMask)
+	C.fn_vkCmdSetStencilWriteMask(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3)
+}
+
+func (h CommandBuffer) SetViewport(
+	firstViewport uint32,
+	viewportCount uint32,
+	viewports []Viewport,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param firstViewport
+	val1 := C.uint32_t(firstViewport)
+	// param viewportCount
+	val3 := C.uint32_t(viewportCount)
+	// param viewports
+	len5 := len(viewports)
+
+	var arr6 *C.VkViewport
+	if len5 > 0 {
+		arr6 = (*C.VkViewport)(C.malloc(C.size_t(len5) * C.size_t(unsafe.Sizeof(*new(C.VkViewport)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr6)) })
+	}
+	for i7, elem8 := range viewports {
+		val9, cancel10 := elem8.toC()
+		cancels = append(cancels, cancel10)
+		cast11 := (*C.VkViewport)(val9)
+		(*[1 << 30]C.VkViewport)(unsafe.Pointer(arr6))[i7] = *cast11
+	}
+	C.fn_vkCmdSetViewport(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, arr6)
+}
+
+func (h CommandBuffer) SetViewportWithCount(
+	viewportCount uint32,
+	viewports []Viewport,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param viewportCount
+	val1 := C.uint32_t(viewportCount)
+	// param viewports
+	len3 := len(viewports)
+
+	var arr4 *C.VkViewport
+	if len3 > 0 {
+		arr4 = (*C.VkViewport)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkViewport)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
+	}
+	for i5, elem6 := range viewports {
+		val7, cancel8 := elem6.toC()
+		cancels = append(cancels, cancel8)
+		cast9 := (*C.VkViewport)(val7)
+		(*[1 << 30]C.VkViewport)(unsafe.Pointer(arr4))[i5] = *cast9
+	}
+	C.fn_vkCmdSetViewportWithCount(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, arr4)
+}
+
+func (h CommandBuffer) UpdateBuffer(
+	dstBuffer *Buffer,
+	dstOffset uint64,
+	dataSize uint64,
+	data unsafe.Pointer,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param dstBuffer
+	var h1 C.VkBuffer
+	if dstBuffer != nil {
+		h1 = C.VkBuffer(unsafe.Pointer(dstBuffer.handle))
+	}
+	// param dstOffset
+	val3 := C.VkDeviceSize(dstOffset)
+	// param dataSize
+	val5 := C.VkDeviceSize(dataSize)
+	// param data
+	C.fn_vkCmdUpdateBuffer(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5, data)
+}
+
+func (h CommandBuffer) WaitEvents(
+	eventCount uint32,
+	events []*Event,
+	srcStageMask PipelineStageFlags,
+	dstStageMask PipelineStageFlags,
+	memoryBarrierCount uint32,
+	memoryBarriers []MemoryBarrier,
+	bufferMemoryBarrierCount uint32,
+	bufferMemoryBarriers []BufferMemoryBarrier,
+	imageMemoryBarrierCount uint32,
+	imageMemoryBarriers []ImageMemoryBarrier,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param eventCount
+	val1 := C.uint32_t(eventCount)
+	// param events
+	len3 := len(events)
+
+	var arr4 *C.VkEvent
+	if len3 > 0 {
+		arr4 = (*C.VkEvent)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkEvent)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
+	}
+	for i5, elem6 := range events {
+		var h7 C.VkEvent
+		if elem6 != nil {
+			h7 = C.VkEvent(unsafe.Pointer(elem6.handle))
+		}
+		(*[1 << 30]C.VkEvent)(unsafe.Pointer(arr4))[i5] = h7
+	}
+	// param srcStageMask
+	val9 := C.VkPipelineStageFlags(srcStageMask)
+	// param dstStageMask
+	val11 := C.VkPipelineStageFlags(dstStageMask)
+	// param memoryBarrierCount
+	val13 := C.uint32_t(memoryBarrierCount)
+	// param memoryBarriers
+	len15 := len(memoryBarriers)
+
+	var arr16 *C.VkMemoryBarrier
+	if len15 > 0 {
+		arr16 = (*C.VkMemoryBarrier)(C.malloc(C.size_t(len15) * C.size_t(unsafe.Sizeof(*new(C.VkMemoryBarrier)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr16)) })
+	}
+	for i17, elem18 := range memoryBarriers {
+		val19, cancel20 := elem18.toC()
+		cancels = append(cancels, cancel20)
+		cast21 := (*C.VkMemoryBarrier)(val19)
+		(*[1 << 30]C.VkMemoryBarrier)(unsafe.Pointer(arr16))[i17] = *cast21
+	}
+	// param bufferMemoryBarrierCount
+	val23 := C.uint32_t(bufferMemoryBarrierCount)
+	// param bufferMemoryBarriers
+	len25 := len(bufferMemoryBarriers)
+
+	var arr26 *C.VkBufferMemoryBarrier
+	if len25 > 0 {
+		arr26 = (*C.VkBufferMemoryBarrier)(C.malloc(C.size_t(len25) * C.size_t(unsafe.Sizeof(*new(C.VkBufferMemoryBarrier)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr26)) })
+	}
+	for i27, elem28 := range bufferMemoryBarriers {
+		val29, cancel30 := elem28.toC()
+		cancels = append(cancels, cancel30)
+		cast31 := (*C.VkBufferMemoryBarrier)(val29)
+		(*[1 << 30]C.VkBufferMemoryBarrier)(unsafe.Pointer(arr26))[i27] = *cast31
+	}
+	// param imageMemoryBarrierCount
+	val33 := C.uint32_t(imageMemoryBarrierCount)
+	// param imageMemoryBarriers
+	len35 := len(imageMemoryBarriers)
+
+	var arr36 *C.VkImageMemoryBarrier
+	if len35 > 0 {
+		arr36 = (*C.VkImageMemoryBarrier)(C.malloc(C.size_t(len35) * C.size_t(unsafe.Sizeof(*new(C.VkImageMemoryBarrier)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr36)) })
+	}
+	for i37, elem38 := range imageMemoryBarriers {
+		val39, cancel40 := elem38.toC()
+		cancels = append(cancels, cancel40)
+		cast41 := (*C.VkImageMemoryBarrier)(val39)
+		(*[1 << 30]C.VkImageMemoryBarrier)(unsafe.Pointer(arr36))[i37] = *cast41
+	}
+	C.fn_vkCmdWaitEvents(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, arr4, val9, val11, val13, arr16, val23, arr26, val33, arr36)
+}
+
+func (h CommandBuffer) WaitEvents2(
+	eventCount uint32,
+	events []*Event,
+	dependencyInfos []DependencyInfo,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param eventCount
+	val1 := C.uint32_t(eventCount)
+	// param events
+	len3 := len(events)
+
+	var arr4 *C.VkEvent
+	if len3 > 0 {
+		arr4 = (*C.VkEvent)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkEvent)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
+	}
+	for i5, elem6 := range events {
+		var h7 C.VkEvent
+		if elem6 != nil {
+			h7 = C.VkEvent(unsafe.Pointer(elem6.handle))
+		}
+		(*[1 << 30]C.VkEvent)(unsafe.Pointer(arr4))[i5] = h7
+	}
+	// param dependencyInfos
+	len9 := len(dependencyInfos)
+
+	var arr10 *C.VkDependencyInfo
+	if len9 > 0 {
+		arr10 = (*C.VkDependencyInfo)(C.malloc(C.size_t(len9) * C.size_t(unsafe.Sizeof(*new(C.VkDependencyInfo)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr10)) })
+	}
+	for i11, elem12 := range dependencyInfos {
+		val13, cancel14 := elem12.toC()
+		cancels = append(cancels, cancel14)
+		cast15 := (*C.VkDependencyInfo)(val13)
+		(*[1 << 30]C.VkDependencyInfo)(unsafe.Pointer(arr10))[i11] = *cast15
+	}
+	C.fn_vkCmdWaitEvents2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, arr4, arr10)
+}
+
+func (h CommandBuffer) WriteTimestamp(
+	pipelineStage PipelineStageFlagBits,
+	queryPool *QueryPool,
+	query uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pipelineStage
+	val1 := C.VkPipelineStageFlagBits(pipelineStage)
+	// param queryPool
+	var h3 C.VkQueryPool
+	if queryPool != nil {
+		h3 = C.VkQueryPool(unsafe.Pointer(queryPool.handle))
+	}
+	// param query
+	val5 := C.uint32_t(query)
+	C.fn_vkCmdWriteTimestamp(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, h3, val5)
+}
+
+func (h CommandBuffer) WriteTimestamp2(
+	stage PipelineStageFlags2,
+	queryPool *QueryPool,
+	query uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param stage
+	val1 := C.VkPipelineStageFlags2(stage)
+	// param queryPool
+	var h3 C.VkQueryPool
+	if queryPool != nil {
+		h3 = C.VkQueryPool(unsafe.Pointer(queryPool.handle))
+	}
+	// param query
+	val5 := C.uint32_t(query)
+	C.fn_vkCmdWriteTimestamp2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, h3, val5)
+}
+
 func (h Device) CopyImageToImage(
 	copyImageToImageInfo *CopyImageToImageInfo,
 ) error {
@@ -25562,45 +27191,6 @@ func (h Device) CopyMemoryToImage(
 		return vkError(_result)
 	}
 	return nil
-}
-
-func (h CommandBuffer) CopyQueryPoolResults(
-	queryPool *QueryPool,
-	firstQuery uint32,
-	queryCount uint32,
-	dstBuffer *Buffer,
-	dstOffset uint64,
-	stride uint64,
-	flags QueryResultFlags,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param queryPool
-	var h1 C.VkQueryPool
-	if queryPool != nil {
-		h1 = C.VkQueryPool(unsafe.Pointer(queryPool.handle))
-	}
-	// param firstQuery
-	val3 := C.uint32_t(firstQuery)
-	// param queryCount
-	val5 := C.uint32_t(queryCount)
-	// param dstBuffer
-	var h7 C.VkBuffer
-	if dstBuffer != nil {
-		h7 = C.VkBuffer(unsafe.Pointer(dstBuffer.handle))
-	}
-	// param dstOffset
-	val9 := C.VkDeviceSize(dstOffset)
-	// param stride
-	val11 := C.VkDeviceSize(stride)
-	// param flags
-	val13 := C.VkQueryResultFlags(flags)
-	C.fn_vkCmdCopyQueryPoolResults(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5, h7, val9, val11, val13)
 }
 
 func (h Device) CreateBuffer(
@@ -25703,6 +27293,61 @@ func (h Device) CreateCommandPool(
 	}
 	h8 := &CommandPool{handle: unsafe.Pointer(commandPoolOut)}
 	return h8, nil
+}
+
+func (h Device) CreateComputePipelines(
+	pipelineCache *PipelineCache,
+	createInfoCount uint32,
+	createInfos []ComputePipelineCreateInfo,
+	allocator *AllocationCallbacks,
+) ([]*Pipeline, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pipelineCache
+	var h1 C.VkPipelineCache
+	if pipelineCache != nil {
+		h1 = C.VkPipelineCache(unsafe.Pointer(pipelineCache.handle))
+	}
+	// param createInfoCount
+	val3 := C.uint32_t(createInfoCount)
+	// param createInfos
+	len5 := len(createInfos)
+
+	var arr6 *C.VkComputePipelineCreateInfo
+	if len5 > 0 {
+		arr6 = (*C.VkComputePipelineCreateInfo)(C.malloc(C.size_t(len5) * C.size_t(unsafe.Sizeof(*new(C.VkComputePipelineCreateInfo)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr6)) })
+	}
+	for i7, elem8 := range createInfos {
+		val9, cancel10 := elem8.toC()
+		cancels = append(cancels, cancel10)
+		cast11 := (*C.VkComputePipelineCreateInfo)(val9)
+		(*[1 << 30]C.VkComputePipelineCreateInfo)(unsafe.Pointer(arr6))[i7] = *cast11
+	}
+	// param allocator
+	var ptr13 *C.VkAllocationCallbacks
+	if allocator != nil {
+		val14, cancel15 := allocator.toC()
+		cancels = append(cancels, cancel15)
+		ptr13 = (*C.VkAllocationCallbacks)(val14)
+	}
+	pipelinesOut := (*C.VkPipeline)(C.malloc(C.size_t(createInfoCount) * C.size_t(unsafe.Sizeof(*new(C.VkPipeline)))))
+	defer C.free(unsafe.Pointer(pipelinesOut))
+	_result := C.fn_vkCreateComputePipelines(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, arr6, ptr13, pipelinesOut)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+	out16 := make([]*Pipeline, createInfoCount)
+	for i17 := range out16 {
+		h18 := &Pipeline{handle: unsafe.Pointer((*[1 << 30]C.VkPipeline)(unsafe.Pointer(pipelinesOut))[i17])}
+		out16[i17] = h18
+	}
+	return out16, nil
 }
 
 func (h Instance) CreateDebugUtilsMessengerEXT(
@@ -25844,6 +27489,40 @@ func (h Device) CreateDescriptorUpdateTemplate(
 	return h8, nil
 }
 
+func (h PhysicalDevice) CreateDevice(
+	createInfo *DeviceCreateInfo,
+	allocator *AllocationCallbacks,
+) (*Device, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param createInfo
+	var ptr1 *C.VkDeviceCreateInfo
+	if createInfo != nil {
+		val2, cancel3 := createInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkDeviceCreateInfo)(val2)
+	}
+	// param allocator
+	var ptr5 *C.VkAllocationCallbacks
+	if allocator != nil {
+		val6, cancel7 := allocator.toC()
+		cancels = append(cancels, cancel7)
+		ptr5 = (*C.VkAllocationCallbacks)(val6)
+	}
+	var deviceOut C.VkDevice
+	_result := C.fn_vkCreateDevice(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &deviceOut)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+	h8 := &Device{handle: unsafe.Pointer(deviceOut)}
+	return h8, nil
+}
+
 func (h Device) CreateEvent(
 	createInfo *EventCreateInfo,
 	allocator *AllocationCallbacks,
@@ -25944,6 +27623,61 @@ func (h Device) CreateFramebuffer(
 	}
 	h8 := &Framebuffer{handle: unsafe.Pointer(framebufferOut)}
 	return h8, nil
+}
+
+func (h Device) CreateGraphicsPipelines(
+	pipelineCache *PipelineCache,
+	createInfoCount uint32,
+	createInfos []GraphicsPipelineCreateInfo,
+	allocator *AllocationCallbacks,
+) ([]*Pipeline, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pipelineCache
+	var h1 C.VkPipelineCache
+	if pipelineCache != nil {
+		h1 = C.VkPipelineCache(unsafe.Pointer(pipelineCache.handle))
+	}
+	// param createInfoCount
+	val3 := C.uint32_t(createInfoCount)
+	// param createInfos
+	len5 := len(createInfos)
+
+	var arr6 *C.VkGraphicsPipelineCreateInfo
+	if len5 > 0 {
+		arr6 = (*C.VkGraphicsPipelineCreateInfo)(C.malloc(C.size_t(len5) * C.size_t(unsafe.Sizeof(*new(C.VkGraphicsPipelineCreateInfo)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr6)) })
+	}
+	for i7, elem8 := range createInfos {
+		val9, cancel10 := elem8.toC()
+		cancels = append(cancels, cancel10)
+		cast11 := (*C.VkGraphicsPipelineCreateInfo)(val9)
+		(*[1 << 30]C.VkGraphicsPipelineCreateInfo)(unsafe.Pointer(arr6))[i7] = *cast11
+	}
+	// param allocator
+	var ptr13 *C.VkAllocationCallbacks
+	if allocator != nil {
+		val14, cancel15 := allocator.toC()
+		cancels = append(cancels, cancel15)
+		ptr13 = (*C.VkAllocationCallbacks)(val14)
+	}
+	pipelinesOut := (*C.VkPipeline)(C.malloc(C.size_t(createInfoCount) * C.size_t(unsafe.Sizeof(*new(C.VkPipeline)))))
+	defer C.free(unsafe.Pointer(pipelinesOut))
+	_result := C.fn_vkCreateGraphicsPipelines(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, arr6, ptr13, pipelinesOut)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+	out16 := make([]*Pipeline, createInfoCount)
+	for i17 := range out16 {
+		h18 := &Pipeline{handle: unsafe.Pointer((*[1 << 30]C.VkPipeline)(unsafe.Pointer(pipelinesOut))[i17])}
+		out16[i17] = h18
+	}
+	return out16, nil
 }
 
 func (h Device) CreateImage(
@@ -26422,26 +28156,6 @@ func (h Device) CreateSwapchainKHR(
 	return h8, nil
 }
 
-func (h Instance) Destroy(
-	allocator *AllocationCallbacks,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param allocator
-	var ptr1 *C.VkAllocationCallbacks
-	if allocator != nil {
-		val2, cancel3 := allocator.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkAllocationCallbacks)(val2)
-	}
-	C.fn_vkDestroyInstance(C.VkInstance(unsafe.Pointer(h.handle)), ptr1)
-}
-
 func (h Device) DestroyBuffer(
 	buffer *Buffer,
 	allocator *AllocationCallbacks,
@@ -26645,6 +28359,26 @@ func (h Device) DestroyDescriptorUpdateTemplate(
 	C.fn_vkDestroyDescriptorUpdateTemplate(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
 }
 
+func (h Device) Destroy(
+	allocator *AllocationCallbacks,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param allocator
+	var ptr1 *C.VkAllocationCallbacks
+	if allocator != nil {
+		val2, cancel3 := allocator.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkAllocationCallbacks)(val2)
+	}
+	C.fn_vkDestroyDevice(C.VkDevice(unsafe.Pointer(h.handle)), ptr1)
+}
+
 func (h Device) DestroyEvent(
 	event *Event,
 	allocator *AllocationCallbacks,
@@ -26788,6 +28522,26 @@ func (h Device) DestroyImageView(
 		imageView.cleanup()
 	}
 	C.fn_vkDestroyImageView(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
+}
+
+func (h Instance) Destroy(
+	allocator *AllocationCallbacks,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param allocator
+	var ptr1 *C.VkAllocationCallbacks
+	if allocator != nil {
+		val2, cancel3 := allocator.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkAllocationCallbacks)(val2)
+	}
+	C.fn_vkDestroyInstance(C.VkInstance(unsafe.Pointer(h.handle)), ptr1)
 }
 
 func (h Device) DestroyPipeline(
@@ -27138,11 +28892,7 @@ func (h Device) DestroySwapchainKHR(
 	C.fn_vkDestroySwapchainKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
 }
 
-func (h CommandBuffer) Dispatch(
-	groupCountX uint32,
-	groupCountY uint32,
-	groupCountZ uint32,
-) {
+func (h Device) WaitIdle() error {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -27150,241 +28900,11 @@ func (h CommandBuffer) Dispatch(
 		}
 	}()
 
-	// param groupCountX
-	val1 := C.uint32_t(groupCountX)
-	// param groupCountY
-	val3 := C.uint32_t(groupCountY)
-	// param groupCountZ
-	val5 := C.uint32_t(groupCountZ)
-	C.fn_vkCmdDispatch(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5)
-}
-
-func (h CommandBuffer) DispatchBase(
-	baseGroupX uint32,
-	baseGroupY uint32,
-	baseGroupZ uint32,
-	groupCountX uint32,
-	groupCountY uint32,
-	groupCountZ uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param baseGroupX
-	val1 := C.uint32_t(baseGroupX)
-	// param baseGroupY
-	val3 := C.uint32_t(baseGroupY)
-	// param baseGroupZ
-	val5 := C.uint32_t(baseGroupZ)
-	// param groupCountX
-	val7 := C.uint32_t(groupCountX)
-	// param groupCountY
-	val9 := C.uint32_t(groupCountY)
-	// param groupCountZ
-	val11 := C.uint32_t(groupCountZ)
-	C.fn_vkCmdDispatchBase(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5, val7, val9, val11)
-}
-
-func (h CommandBuffer) DispatchIndirect(
-	buffer *Buffer,
-	offset uint64,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param buffer
-	var h1 C.VkBuffer
-	if buffer != nil {
-		h1 = C.VkBuffer(unsafe.Pointer(buffer.handle))
+	_result := C.fn_vkDeviceWaitIdle(C.VkDevice(unsafe.Pointer(h.handle)))
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
 	}
-	// param offset
-	val3 := C.VkDeviceSize(offset)
-	C.fn_vkCmdDispatchIndirect(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3)
-}
-
-func (h CommandBuffer) Draw(
-	vertexCount uint32,
-	instanceCount uint32,
-	firstVertex uint32,
-	firstInstance uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param vertexCount
-	val1 := C.uint32_t(vertexCount)
-	// param instanceCount
-	val3 := C.uint32_t(instanceCount)
-	// param firstVertex
-	val5 := C.uint32_t(firstVertex)
-	// param firstInstance
-	val7 := C.uint32_t(firstInstance)
-	C.fn_vkCmdDraw(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5, val7)
-}
-
-func (h CommandBuffer) DrawIndexed(
-	indexCount uint32,
-	instanceCount uint32,
-	firstIndex uint32,
-	vertexOffset int32,
-	firstInstance uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param indexCount
-	val1 := C.uint32_t(indexCount)
-	// param instanceCount
-	val3 := C.uint32_t(instanceCount)
-	// param firstIndex
-	val5 := C.uint32_t(firstIndex)
-	// param vertexOffset
-	val7 := C.int32_t(vertexOffset)
-	// param firstInstance
-	val9 := C.uint32_t(firstInstance)
-	C.fn_vkCmdDrawIndexed(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5, val7, val9)
-}
-
-func (h CommandBuffer) DrawIndexedIndirect(
-	buffer *Buffer,
-	offset uint64,
-	drawCount uint32,
-	stride uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param buffer
-	var h1 C.VkBuffer
-	if buffer != nil {
-		h1 = C.VkBuffer(unsafe.Pointer(buffer.handle))
-	}
-	// param offset
-	val3 := C.VkDeviceSize(offset)
-	// param drawCount
-	val5 := C.uint32_t(drawCount)
-	// param stride
-	val7 := C.uint32_t(stride)
-	C.fn_vkCmdDrawIndexedIndirect(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5, val7)
-}
-
-func (h CommandBuffer) DrawIndexedIndirectCount(
-	buffer *Buffer,
-	offset uint64,
-	countBuffer *Buffer,
-	countBufferOffset uint64,
-	maxDrawCount uint32,
-	stride uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param buffer
-	var h1 C.VkBuffer
-	if buffer != nil {
-		h1 = C.VkBuffer(unsafe.Pointer(buffer.handle))
-	}
-	// param offset
-	val3 := C.VkDeviceSize(offset)
-	// param countBuffer
-	var h5 C.VkBuffer
-	if countBuffer != nil {
-		h5 = C.VkBuffer(unsafe.Pointer(countBuffer.handle))
-	}
-	// param countBufferOffset
-	val7 := C.VkDeviceSize(countBufferOffset)
-	// param maxDrawCount
-	val9 := C.uint32_t(maxDrawCount)
-	// param stride
-	val11 := C.uint32_t(stride)
-	C.fn_vkCmdDrawIndexedIndirectCount(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, h5, val7, val9, val11)
-}
-
-func (h CommandBuffer) DrawIndirect(
-	buffer *Buffer,
-	offset uint64,
-	drawCount uint32,
-	stride uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param buffer
-	var h1 C.VkBuffer
-	if buffer != nil {
-		h1 = C.VkBuffer(unsafe.Pointer(buffer.handle))
-	}
-	// param offset
-	val3 := C.VkDeviceSize(offset)
-	// param drawCount
-	val5 := C.uint32_t(drawCount)
-	// param stride
-	val7 := C.uint32_t(stride)
-	C.fn_vkCmdDrawIndirect(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5, val7)
-}
-
-func (h CommandBuffer) DrawIndirectCount(
-	buffer *Buffer,
-	offset uint64,
-	countBuffer *Buffer,
-	countBufferOffset uint64,
-	maxDrawCount uint32,
-	stride uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param buffer
-	var h1 C.VkBuffer
-	if buffer != nil {
-		h1 = C.VkBuffer(unsafe.Pointer(buffer.handle))
-	}
-	// param offset
-	val3 := C.VkDeviceSize(offset)
-	// param countBuffer
-	var h5 C.VkBuffer
-	if countBuffer != nil {
-		h5 = C.VkBuffer(unsafe.Pointer(countBuffer.handle))
-	}
-	// param countBufferOffset
-	val7 := C.VkDeviceSize(countBufferOffset)
-	// param maxDrawCount
-	val9 := C.uint32_t(maxDrawCount)
-	// param stride
-	val11 := C.uint32_t(stride)
-	C.fn_vkCmdDrawIndirectCount(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, h5, val7, val9, val11)
+	return nil
 }
 
 func (h CommandBuffer) End() error {
@@ -27400,80 +28920,6 @@ func (h CommandBuffer) End() error {
 		return vkError(_result)
 	}
 	return nil
-}
-
-func (h Queue) EndDebugUtilsLabelEXT() {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	C.fn_vkQueueEndDebugUtilsLabelEXT(C.VkQueue(unsafe.Pointer(h.handle)))
-}
-
-func (h CommandBuffer) EndQuery(
-	queryPool *QueryPool,
-	query uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param queryPool
-	var h1 C.VkQueryPool
-	if queryPool != nil {
-		h1 = C.VkQueryPool(unsafe.Pointer(queryPool.handle))
-	}
-	// param query
-	val3 := C.uint32_t(query)
-	C.fn_vkCmdEndQuery(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3)
-}
-
-func (h CommandBuffer) EndRenderPass() {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	C.fn_vkCmdEndRenderPass(C.VkCommandBuffer(unsafe.Pointer(h.handle)))
-}
-
-func (h CommandBuffer) EndRenderPass2(
-	subpassEndInfo *SubpassEndInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param subpassEndInfo
-	var ptr1 *C.VkSubpassEndInfo
-	if subpassEndInfo != nil {
-		val2, cancel3 := subpassEndInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkSubpassEndInfo)(val2)
-	}
-	C.fn_vkCmdEndRenderPass2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
-}
-
-func (h CommandBuffer) EndRendering() {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	C.fn_vkCmdEndRendering(C.VkCommandBuffer(unsafe.Pointer(h.handle)))
 }
 
 func (h PhysicalDevice) EnumerateDeviceExtensionProperties(
@@ -27512,6 +28958,41 @@ func (h PhysicalDevice) EnumerateDeviceExtensionProperties(
 		var val1 ExtensionProperties
 		val1.fromC(&v)
 		out[i] = val1
+	}
+	return out, nil
+}
+
+func (h PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	var count C.uint32_t
+	_result := C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, nil)
+	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
+		return nil, vkError(_result)
+	}
+	if count == 0 {
+		return nil, nil
+	}
+
+	cArr := (*C.VkLayerProperties)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkLayerProperties)))))
+	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
+
+	_result = C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, cArr)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+
+	out := make([]LayerProperties, int(count))
+	cSlice := (*[1 << 30]C.VkLayerProperties)(unsafe.Pointer(cArr))[:count:count]
+	for i, v := range cSlice {
+		var val0 LayerProperties
+		val0.fromC(&v)
+		out[i] = val0
 	}
 	return out, nil
 }
@@ -27675,64 +29156,6 @@ func (h Instance) EnumeratePhysicalDevices() ([]*PhysicalDevice, error) {
 		out[i] = h0
 	}
 	return out, nil
-}
-
-func (h CommandBuffer) ExecuteCommands(
-	commandBufferCount uint32,
-	commandBuffers []*CommandBuffer,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param commandBufferCount
-	val1 := C.uint32_t(commandBufferCount)
-	// param commandBuffers
-	len3 := len(commandBuffers)
-
-	var arr4 *C.VkCommandBuffer
-	if len3 > 0 {
-		arr4 = (*C.VkCommandBuffer)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkCommandBuffer)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
-	}
-	for i5, elem6 := range commandBuffers {
-		var h7 C.VkCommandBuffer
-		if elem6 != nil {
-			h7 = C.VkCommandBuffer(unsafe.Pointer(elem6.handle))
-		}
-		(*[1 << 30]C.VkCommandBuffer)(unsafe.Pointer(arr4))[i5] = h7
-	}
-	C.fn_vkCmdExecuteCommands(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, arr4)
-}
-
-func (h CommandBuffer) FillBuffer(
-	dstBuffer *Buffer,
-	dstOffset uint64,
-	size uint64,
-	data uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param dstBuffer
-	var h1 C.VkBuffer
-	if dstBuffer != nil {
-		h1 = C.VkBuffer(unsafe.Pointer(dstBuffer.handle))
-	}
-	// param dstOffset
-	val3 := C.VkDeviceSize(dstOffset)
-	// param size
-	val5 := C.VkDeviceSize(size)
-	// param data
-	val7 := C.uint32_t(data)
-	C.fn_vkCmdFillBuffer(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5, val7)
 }
 
 func (h Device) FlushMappedMemoryRanges(
@@ -27996,6 +29419,272 @@ func (h Device) GetDescriptorSetLayoutSupport(
 	return val4
 }
 
+func (h Device) GetGroupPeerMemoryFeatures(
+	heapIndex uint32,
+	localDeviceIndex uint32,
+	remoteDeviceIndex uint32,
+	peerMemoryFeatures *PeerMemoryFeatureFlags,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param heapIndex
+	val1 := C.uint32_t(heapIndex)
+	// param localDeviceIndex
+	val3 := C.uint32_t(localDeviceIndex)
+	// param remoteDeviceIndex
+	val5 := C.uint32_t(remoteDeviceIndex)
+	// param peerMemoryFeatures
+	var ptr7 *C.VkPeerMemoryFeatureFlags
+	if peerMemoryFeatures != nil {
+		val8 := C.VkPeerMemoryFeatureFlags(*peerMemoryFeatures)
+		ptr7 = &val8
+	}
+	C.fn_vkGetDeviceGroupPeerMemoryFeatures(C.VkDevice(unsafe.Pointer(h.handle)), val1, val3, val5, ptr7)
+}
+
+func (h Device) GetGroupPresentCapabilitiesKHR() (DeviceGroupPresentCapabilitiesKHR, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	var deviceGroupPresentCapabilitiesOut C.VkDeviceGroupPresentCapabilitiesKHR
+	_result := C.fn_vkGetDeviceGroupPresentCapabilitiesKHR(C.VkDevice(unsafe.Pointer(h.handle)), &deviceGroupPresentCapabilitiesOut)
+	if _result != C.VK_SUCCESS {
+		return DeviceGroupPresentCapabilitiesKHR{}, vkError(_result)
+	}
+	var val0 DeviceGroupPresentCapabilitiesKHR
+	val0.fromC(&deviceGroupPresentCapabilitiesOut)
+	return val0, nil
+}
+
+func (h Device) GetGroupSurfacePresentModesKHR(
+	surface *SurfaceKHR,
+	modes *DeviceGroupPresentModeFlagsKHR,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param surface
+	var h1 C.VkSurfaceKHR
+	if surface != nil {
+		h1 = C.VkSurfaceKHR(unsafe.Pointer(surface.handle))
+	}
+	// param modes
+	var ptr3 *C.VkDeviceGroupPresentModeFlagsKHR
+	if modes != nil {
+		val4 := C.VkDeviceGroupPresentModeFlagsKHR(*modes)
+		ptr3 = &val4
+	}
+	_result := C.fn_vkGetDeviceGroupSurfacePresentModesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Device) GetImageMemoryRequirements(
+	info *DeviceImageMemoryRequirements,
+) MemoryRequirements2 {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param info
+	var ptr1 *C.VkDeviceImageMemoryRequirements
+	if info != nil {
+		val2, cancel3 := info.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkDeviceImageMemoryRequirements)(val2)
+	}
+	var memoryRequirementsOut C.VkMemoryRequirements2
+	C.fn_vkGetDeviceImageMemoryRequirements(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &memoryRequirementsOut)
+	var val4 MemoryRequirements2
+	val4.fromC(&memoryRequirementsOut)
+	return val4
+}
+
+func (h Device) GetImageSparseMemoryRequirements(
+	info *DeviceImageMemoryRequirements,
+) []SparseImageMemoryRequirements2 {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param info
+	var ptr0 *C.VkDeviceImageMemoryRequirements
+	if info != nil {
+		val1, cancel2 := info.toC()
+		cancels = append(cancels, cancel2)
+		ptr0 = (*C.VkDeviceImageMemoryRequirements)(val1)
+	}
+	var count C.uint32_t
+	C.fn_vkGetDeviceImageSparseMemoryRequirements(C.VkDevice(unsafe.Pointer(h.handle)), ptr0, &count, nil)
+	if count == 0 {
+		return nil
+	}
+
+	cArr := (*C.VkSparseImageMemoryRequirements2)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkSparseImageMemoryRequirements2)))))
+	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
+
+	C.fn_vkGetDeviceImageSparseMemoryRequirements(C.VkDevice(unsafe.Pointer(h.handle)), ptr0, &count, cArr)
+	out := make([]SparseImageMemoryRequirements2, int(count))
+	cSlice := (*[1 << 30]C.VkSparseImageMemoryRequirements2)(unsafe.Pointer(cArr))[:count:count]
+	for i, v := range cSlice {
+		var val3 SparseImageMemoryRequirements2
+		val3.fromC(&v)
+		out[i] = val3
+	}
+	return out
+}
+
+func (h Device) GetImageSubresourceLayout(
+	info *DeviceImageSubresourceInfo,
+) SubresourceLayout2 {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param info
+	var ptr1 *C.VkDeviceImageSubresourceInfo
+	if info != nil {
+		val2, cancel3 := info.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkDeviceImageSubresourceInfo)(val2)
+	}
+	var layoutOut C.VkSubresourceLayout2
+	C.fn_vkGetDeviceImageSubresourceLayout(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &layoutOut)
+	var val4 SubresourceLayout2
+	val4.fromC(&layoutOut)
+	return val4
+}
+
+func (h Device) GetMemoryCommitment(
+	memory *DeviceMemory,
+) uint64 {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param memory
+	var h1 C.VkDeviceMemory
+	if memory != nil {
+		h1 = C.VkDeviceMemory(unsafe.Pointer(memory.handle))
+	}
+	var committedMemoryInBytesOut C.VkDeviceSize
+	C.fn_vkGetDeviceMemoryCommitment(C.VkDevice(unsafe.Pointer(h.handle)), h1, &committedMemoryInBytesOut)
+	val2 := uint64(committedMemoryInBytesOut)
+	return val2
+}
+
+func (h Device) GetMemoryOpaqueCaptureAddress(
+	info *DeviceMemoryOpaqueCaptureAddressInfo,
+) uint64 {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param info
+	var ptr1 *C.VkDeviceMemoryOpaqueCaptureAddressInfo
+	if info != nil {
+		val2, cancel3 := info.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkDeviceMemoryOpaqueCaptureAddressInfo)(val2)
+	}
+	_result := C.fn_vkGetDeviceMemoryOpaqueCaptureAddress(C.VkDevice(unsafe.Pointer(h.handle)), ptr1)
+	val4 := uint64(_result)
+	return val4
+}
+
+func (h Device) GetProcAddr(
+	name string,
+) VoidFunction {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param name
+	cstr1 := C.CString(name)
+	cancels = append(cancels, func() { C.free(unsafe.Pointer(cstr1)) })
+	_result := C.fn_vkGetDeviceProcAddr(C.VkDevice(unsafe.Pointer(h.handle)), cstr1)
+	var fn2 VoidFunction
+	*(*unsafe.Pointer)(unsafe.Pointer(&fn2)) = *(*unsafe.Pointer)(unsafe.Pointer(&_result))
+	return fn2
+}
+
+func (h Device) GetQueue(
+	queueFamilyIndex uint32,
+	queueIndex uint32,
+) *Queue {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param queueFamilyIndex
+	val1 := C.uint32_t(queueFamilyIndex)
+	// param queueIndex
+	val3 := C.uint32_t(queueIndex)
+	var queueOut C.VkQueue
+	C.fn_vkGetDeviceQueue(C.VkDevice(unsafe.Pointer(h.handle)), val1, val3, &queueOut)
+	h4 := &Queue{handle: unsafe.Pointer(queueOut)}
+	return h4
+}
+
+func (h Device) GetQueue2(
+	queueInfo *DeviceQueueInfo2,
+) *Queue {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param queueInfo
+	var ptr1 *C.VkDeviceQueueInfo2
+	if queueInfo != nil {
+		val2, cancel3 := queueInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkDeviceQueueInfo2)(val2)
+	}
+	var queueOut C.VkQueue
+	C.fn_vkGetDeviceQueue2(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &queueOut)
+	h4 := &Queue{handle: unsafe.Pointer(queueOut)}
+	return h4
+}
+
 func (h Device) GetEventStatus(
 	event *Event,
 ) error {
@@ -28016,6 +29705,138 @@ func (h Device) GetEventStatus(
 		return vkError(_result)
 	}
 	return nil
+}
+
+func (h Device) GetFenceStatus(
+	fence *Fence,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param fence
+	var h1 C.VkFence
+	if fence != nil {
+		h1 = C.VkFence(unsafe.Pointer(fence.handle))
+	}
+	_result := C.fn_vkGetFenceStatus(C.VkDevice(unsafe.Pointer(h.handle)), h1)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Device) GetImageMemoryRequirements2(
+	info *ImageMemoryRequirementsInfo2,
+) MemoryRequirements2 {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param info
+	var ptr1 *C.VkImageMemoryRequirementsInfo2
+	if info != nil {
+		val2, cancel3 := info.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkImageMemoryRequirementsInfo2)(val2)
+	}
+	var memoryRequirementsOut C.VkMemoryRequirements2
+	C.fn_vkGetImageMemoryRequirements2(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &memoryRequirementsOut)
+	var val4 MemoryRequirements2
+	val4.fromC(&memoryRequirementsOut)
+	return val4
+}
+
+func (h Device) GetImageSparseMemoryRequirements2(
+	info *ImageSparseMemoryRequirementsInfo2,
+) []SparseImageMemoryRequirements2 {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param info
+	var ptr0 *C.VkImageSparseMemoryRequirementsInfo2
+	if info != nil {
+		val1, cancel2 := info.toC()
+		cancels = append(cancels, cancel2)
+		ptr0 = (*C.VkImageSparseMemoryRequirementsInfo2)(val1)
+	}
+	var count C.uint32_t
+	C.fn_vkGetImageSparseMemoryRequirements2(C.VkDevice(unsafe.Pointer(h.handle)), ptr0, &count, nil)
+	if count == 0 {
+		return nil
+	}
+
+	cArr := (*C.VkSparseImageMemoryRequirements2)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkSparseImageMemoryRequirements2)))))
+	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
+
+	C.fn_vkGetImageSparseMemoryRequirements2(C.VkDevice(unsafe.Pointer(h.handle)), ptr0, &count, cArr)
+	out := make([]SparseImageMemoryRequirements2, int(count))
+	cSlice := (*[1 << 30]C.VkSparseImageMemoryRequirements2)(unsafe.Pointer(cArr))[:count:count]
+	for i, v := range cSlice {
+		var val3 SparseImageMemoryRequirements2
+		val3.fromC(&v)
+		out[i] = val3
+	}
+	return out
+}
+
+func (h Device) GetImageSubresourceLayout2(
+	image *Image,
+	subresource *ImageSubresource2,
+) SubresourceLayout2 {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param image
+	var h1 C.VkImage
+	if image != nil {
+		h1 = C.VkImage(unsafe.Pointer(image.handle))
+	}
+	// param subresource
+	var ptr3 *C.VkImageSubresource2
+	if subresource != nil {
+		val4, cancel5 := subresource.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = (*C.VkImageSubresource2)(val4)
+	}
+	var layoutOut C.VkSubresourceLayout2
+	C.fn_vkGetImageSubresourceLayout2(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3, &layoutOut)
+	var val6 SubresourceLayout2
+	val6.fromC(&layoutOut)
+	return val6
+}
+
+func (h Instance) GetProcAddr(
+	name string,
+) VoidFunction {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param name
+	cstr1 := C.CString(name)
+	cancels = append(cancels, func() { C.free(unsafe.Pointer(cstr1)) })
+	_result := C.fn_vkGetInstanceProcAddr(C.VkInstance(unsafe.Pointer(h.handle)), cstr1)
+	var fn2 VoidFunction
+	*(*unsafe.Pointer)(unsafe.Pointer(&fn2)) = *(*unsafe.Pointer)(unsafe.Pointer(&_result))
+	return fn2
 }
 
 func (h PhysicalDevice) GetExternalBufferProperties(
@@ -28120,28 +29941,6 @@ func (h PhysicalDevice) GetFeatures2() PhysicalDeviceFeatures2 {
 	return val0
 }
 
-func (h Device) GetFenceStatus(
-	fence *Fence,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param fence
-	var h1 C.VkFence
-	if fence != nil {
-		h1 = C.VkFence(unsafe.Pointer(fence.handle))
-	}
-	_result := C.fn_vkGetFenceStatus(C.VkDevice(unsafe.Pointer(h.handle)), h1)
-	if _result != C.VK_SUCCESS {
-		return vkError(_result)
-	}
-	return nil
-}
-
 func (h PhysicalDevice) GetFormatProperties(
 	format Format,
 ) FormatProperties {
@@ -28178,81 +29977,6 @@ func (h PhysicalDevice) GetFormatProperties2(
 	var val2 FormatProperties2
 	val2.fromC(&formatPropertiesOut)
 	return val2
-}
-
-func (h Device) GetGroupPeerMemoryFeatures(
-	heapIndex uint32,
-	localDeviceIndex uint32,
-	remoteDeviceIndex uint32,
-	peerMemoryFeatures *PeerMemoryFeatureFlags,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param heapIndex
-	val1 := C.uint32_t(heapIndex)
-	// param localDeviceIndex
-	val3 := C.uint32_t(localDeviceIndex)
-	// param remoteDeviceIndex
-	val5 := C.uint32_t(remoteDeviceIndex)
-	// param peerMemoryFeatures
-	var ptr7 *C.VkPeerMemoryFeatureFlags
-	if peerMemoryFeatures != nil {
-		val8 := C.VkPeerMemoryFeatureFlags(*peerMemoryFeatures)
-		ptr7 = &val8
-	}
-	C.fn_vkGetDeviceGroupPeerMemoryFeatures(C.VkDevice(unsafe.Pointer(h.handle)), val1, val3, val5, ptr7)
-}
-
-func (h Device) GetGroupPresentCapabilitiesKHR() (DeviceGroupPresentCapabilitiesKHR, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	var deviceGroupPresentCapabilitiesOut C.VkDeviceGroupPresentCapabilitiesKHR
-	_result := C.fn_vkGetDeviceGroupPresentCapabilitiesKHR(C.VkDevice(unsafe.Pointer(h.handle)), &deviceGroupPresentCapabilitiesOut)
-	if _result != C.VK_SUCCESS {
-		return DeviceGroupPresentCapabilitiesKHR{}, vkError(_result)
-	}
-	var val0 DeviceGroupPresentCapabilitiesKHR
-	val0.fromC(&deviceGroupPresentCapabilitiesOut)
-	return val0, nil
-}
-
-func (h Device) GetGroupSurfacePresentModesKHR(
-	surface *SurfaceKHR,
-	modes *DeviceGroupPresentModeFlagsKHR,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param surface
-	var h1 C.VkSurfaceKHR
-	if surface != nil {
-		h1 = C.VkSurfaceKHR(unsafe.Pointer(surface.handle))
-	}
-	// param modes
-	var ptr3 *C.VkDeviceGroupPresentModeFlagsKHR
-	if modes != nil {
-		val4 := C.VkDeviceGroupPresentModeFlagsKHR(*modes)
-		ptr3 = &val4
-	}
-	_result := C.fn_vkGetDeviceGroupSurfacePresentModesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
-	if _result != C.VK_SUCCESS {
-		return vkError(_result)
-	}
-	return nil
 }
 
 func (h PhysicalDevice) GetImageFormatProperties(
@@ -28316,227 +30040,6 @@ func (h PhysicalDevice) GetImageFormatProperties2(
 	return val4, nil
 }
 
-func (h Device) GetImageMemoryRequirements(
-	image *Image,
-) MemoryRequirements {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param image
-	var h1 C.VkImage
-	if image != nil {
-		h1 = C.VkImage(unsafe.Pointer(image.handle))
-	}
-	var memoryRequirementsOut C.VkMemoryRequirements
-	C.fn_vkGetImageMemoryRequirements(C.VkDevice(unsafe.Pointer(h.handle)), h1, &memoryRequirementsOut)
-	var val2 MemoryRequirements
-	val2.fromC(&memoryRequirementsOut)
-	return val2
-}
-
-func (h Device) GetImageMemoryRequirements2(
-	info *ImageMemoryRequirementsInfo2,
-) MemoryRequirements2 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param info
-	var ptr1 *C.VkImageMemoryRequirementsInfo2
-	if info != nil {
-		val2, cancel3 := info.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkImageMemoryRequirementsInfo2)(val2)
-	}
-	var memoryRequirementsOut C.VkMemoryRequirements2
-	C.fn_vkGetImageMemoryRequirements2(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &memoryRequirementsOut)
-	var val4 MemoryRequirements2
-	val4.fromC(&memoryRequirementsOut)
-	return val4
-}
-
-func (h Device) GetImageSparseMemoryRequirements(
-	image *Image,
-) []SparseImageMemoryRequirements {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param image
-	var h0 C.VkImage
-	if image != nil {
-		h0 = C.VkImage(unsafe.Pointer(image.handle))
-	}
-	var count C.uint32_t
-	C.fn_vkGetImageSparseMemoryRequirements(C.VkDevice(unsafe.Pointer(h.handle)), h0, &count, nil)
-	if count == 0 {
-		return nil
-	}
-
-	cArr := (*C.VkSparseImageMemoryRequirements)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkSparseImageMemoryRequirements)))))
-	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
-
-	C.fn_vkGetImageSparseMemoryRequirements(C.VkDevice(unsafe.Pointer(h.handle)), h0, &count, cArr)
-	out := make([]SparseImageMemoryRequirements, int(count))
-	cSlice := (*[1 << 30]C.VkSparseImageMemoryRequirements)(unsafe.Pointer(cArr))[:count:count]
-	for i, v := range cSlice {
-		var val1 SparseImageMemoryRequirements
-		val1.fromC(&v)
-		out[i] = val1
-	}
-	return out
-}
-
-func (h Device) GetImageSparseMemoryRequirements2(
-	info *ImageSparseMemoryRequirementsInfo2,
-) []SparseImageMemoryRequirements2 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param info
-	var ptr0 *C.VkImageSparseMemoryRequirementsInfo2
-	if info != nil {
-		val1, cancel2 := info.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = (*C.VkImageSparseMemoryRequirementsInfo2)(val1)
-	}
-	var count C.uint32_t
-	C.fn_vkGetImageSparseMemoryRequirements2(C.VkDevice(unsafe.Pointer(h.handle)), ptr0, &count, nil)
-	if count == 0 {
-		return nil
-	}
-
-	cArr := (*C.VkSparseImageMemoryRequirements2)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkSparseImageMemoryRequirements2)))))
-	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
-
-	C.fn_vkGetImageSparseMemoryRequirements2(C.VkDevice(unsafe.Pointer(h.handle)), ptr0, &count, cArr)
-	out := make([]SparseImageMemoryRequirements2, int(count))
-	cSlice := (*[1 << 30]C.VkSparseImageMemoryRequirements2)(unsafe.Pointer(cArr))[:count:count]
-	for i, v := range cSlice {
-		var val3 SparseImageMemoryRequirements2
-		val3.fromC(&v)
-		out[i] = val3
-	}
-	return out
-}
-
-func (h Device) GetImageSubresourceLayout(
-	image *Image,
-	subresource *ImageSubresource,
-) SubresourceLayout {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param image
-	var h1 C.VkImage
-	if image != nil {
-		h1 = C.VkImage(unsafe.Pointer(image.handle))
-	}
-	// param subresource
-	var ptr3 *C.VkImageSubresource
-	if subresource != nil {
-		val4, cancel5 := subresource.toC()
-		cancels = append(cancels, cancel5)
-		ptr3 = (*C.VkImageSubresource)(val4)
-	}
-	var layoutOut C.VkSubresourceLayout
-	C.fn_vkGetImageSubresourceLayout(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3, &layoutOut)
-	var val6 SubresourceLayout
-	val6.fromC(&layoutOut)
-	return val6
-}
-
-func (h Device) GetImageSubresourceLayout2(
-	image *Image,
-	subresource *ImageSubresource2,
-) SubresourceLayout2 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param image
-	var h1 C.VkImage
-	if image != nil {
-		h1 = C.VkImage(unsafe.Pointer(image.handle))
-	}
-	// param subresource
-	var ptr3 *C.VkImageSubresource2
-	if subresource != nil {
-		val4, cancel5 := subresource.toC()
-		cancels = append(cancels, cancel5)
-		ptr3 = (*C.VkImageSubresource2)(val4)
-	}
-	var layoutOut C.VkSubresourceLayout2
-	C.fn_vkGetImageSubresourceLayout2(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3, &layoutOut)
-	var val6 SubresourceLayout2
-	val6.fromC(&layoutOut)
-	return val6
-}
-
-func (h Device) GetMemoryCommitment(
-	memory *DeviceMemory,
-) uint64 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param memory
-	var h1 C.VkDeviceMemory
-	if memory != nil {
-		h1 = C.VkDeviceMemory(unsafe.Pointer(memory.handle))
-	}
-	var committedMemoryInBytesOut C.VkDeviceSize
-	C.fn_vkGetDeviceMemoryCommitment(C.VkDevice(unsafe.Pointer(h.handle)), h1, &committedMemoryInBytesOut)
-	val2 := uint64(committedMemoryInBytesOut)
-	return val2
-}
-
-func (h Device) GetMemoryOpaqueCaptureAddress(
-	info *DeviceMemoryOpaqueCaptureAddressInfo,
-) uint64 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param info
-	var ptr1 *C.VkDeviceMemoryOpaqueCaptureAddressInfo
-	if info != nil {
-		val2, cancel3 := info.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkDeviceMemoryOpaqueCaptureAddressInfo)(val2)
-	}
-	_result := C.fn_vkGetDeviceMemoryOpaqueCaptureAddress(C.VkDevice(unsafe.Pointer(h.handle)), ptr1)
-	val4 := uint64(_result)
-	return val4
-}
-
 func (h PhysicalDevice) GetMemoryProperties() PhysicalDeviceMemoryProperties {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -28565,37 +30068,6 @@ func (h PhysicalDevice) GetMemoryProperties2() PhysicalDeviceMemoryProperties2 {
 	var val0 PhysicalDeviceMemoryProperties2
 	val0.fromC(&memoryPropertiesOut)
 	return val0
-}
-
-func (h Device) GetPipelineCacheData(
-	pipelineCache *PipelineCache,
-	dataSize *uintptr,
-	data unsafe.Pointer,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param pipelineCache
-	var h1 C.VkPipelineCache
-	if pipelineCache != nil {
-		h1 = C.VkPipelineCache(unsafe.Pointer(pipelineCache.handle))
-	}
-	// param dataSize
-	var ptr3 *C.size_t
-	if dataSize != nil {
-		val4 := C.size_t(*dataSize)
-		ptr3 = &val4
-	}
-	// param data
-	_result := C.fn_vkGetPipelineCacheData(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3, data)
-	if _result != C.VK_SUCCESS {
-		return vkError(_result)
-	}
-	return nil
 }
 
 func (h PhysicalDevice) GetPresentRectanglesKHR(
@@ -28640,52 +30112,6 @@ func (h PhysicalDevice) GetPresentRectanglesKHR(
 	return out, nil
 }
 
-func (h Device) GetPrivateData(
-	objectType ObjectType,
-	objectHandle uint64,
-	privateDataSlot *PrivateDataSlot,
-) uint64 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param objectType
-	val1 := C.VkObjectType(objectType)
-	// param objectHandle
-	val3 := C.uint64_t(objectHandle)
-	// param privateDataSlot
-	var h5 C.VkPrivateDataSlot
-	if privateDataSlot != nil {
-		h5 = C.VkPrivateDataSlot(unsafe.Pointer(privateDataSlot.handle))
-	}
-	var dataOut C.uint64_t
-	C.fn_vkGetPrivateData(C.VkDevice(unsafe.Pointer(h.handle)), val1, val3, h5, &dataOut)
-	val6 := uint64(dataOut)
-	return val6
-}
-
-func (h Device) GetProcAddr(
-	name string,
-) VoidFunction {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param name
-	cstr1 := C.CString(name)
-	cancels = append(cancels, func() { C.free(unsafe.Pointer(cstr1)) })
-	_result := C.fn_vkGetDeviceProcAddr(C.VkDevice(unsafe.Pointer(h.handle)), cstr1)
-	var fn2 VoidFunction
-	*(*unsafe.Pointer)(unsafe.Pointer(&fn2)) = *(*unsafe.Pointer)(unsafe.Pointer(&_result))
-	return fn2
-}
-
 func (h PhysicalDevice) GetProperties() PhysicalDeviceProperties {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -28714,89 +30140,6 @@ func (h PhysicalDevice) GetProperties2() PhysicalDeviceProperties2 {
 	var val0 PhysicalDeviceProperties2
 	val0.fromC(&propertiesOut)
 	return val0
-}
-
-func (h Device) GetQueryPoolResults(
-	queryPool *QueryPool,
-	firstQuery uint32,
-	queryCount uint32,
-	dataSize uintptr,
-	data unsafe.Pointer,
-	stride uint64,
-	flags QueryResultFlags,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param queryPool
-	var h1 C.VkQueryPool
-	if queryPool != nil {
-		h1 = C.VkQueryPool(unsafe.Pointer(queryPool.handle))
-	}
-	// param firstQuery
-	val3 := C.uint32_t(firstQuery)
-	// param queryCount
-	val5 := C.uint32_t(queryCount)
-	// param dataSize
-	val7 := C.size_t(dataSize)
-	// param data
-	// param stride
-	val10 := C.VkDeviceSize(stride)
-	// param flags
-	val12 := C.VkQueryResultFlags(flags)
-	_result := C.fn_vkGetQueryPoolResults(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, val5, val7, data, val10, val12)
-	if _result != C.VK_SUCCESS {
-		return vkError(_result)
-	}
-	return nil
-}
-
-func (h Device) GetQueue(
-	queueFamilyIndex uint32,
-	queueIndex uint32,
-) *Queue {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param queueFamilyIndex
-	val1 := C.uint32_t(queueFamilyIndex)
-	// param queueIndex
-	val3 := C.uint32_t(queueIndex)
-	var queueOut C.VkQueue
-	C.fn_vkGetDeviceQueue(C.VkDevice(unsafe.Pointer(h.handle)), val1, val3, &queueOut)
-	h4 := &Queue{handle: unsafe.Pointer(queueOut)}
-	return h4
-}
-
-func (h Device) GetQueue2(
-	queueInfo *DeviceQueueInfo2,
-) *Queue {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param queueInfo
-	var ptr1 *C.VkDeviceQueueInfo2
-	if queueInfo != nil {
-		val2, cancel3 := queueInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkDeviceQueueInfo2)(val2)
-	}
-	var queueOut C.VkQueue
-	C.fn_vkGetDeviceQueue2(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &queueOut)
-	h4 := &Queue{handle: unsafe.Pointer(queueOut)}
-	return h4
 }
 
 func (h PhysicalDevice) GetQueueFamilyProperties() []QueueFamilyProperties {
@@ -28853,76 +30196,6 @@ func (h PhysicalDevice) GetQueueFamilyProperties2() []QueueFamilyProperties2 {
 		out[i] = val0
 	}
 	return out
-}
-
-func (h Device) GetRenderAreaGranularity(
-	renderPass *RenderPass,
-) Extent2D {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param renderPass
-	var h1 C.VkRenderPass
-	if renderPass != nil {
-		h1 = C.VkRenderPass(unsafe.Pointer(renderPass.handle))
-	}
-	var granularityOut C.VkExtent2D
-	C.fn_vkGetRenderAreaGranularity(C.VkDevice(unsafe.Pointer(h.handle)), h1, &granularityOut)
-	var val2 Extent2D
-	val2.fromC(&granularityOut)
-	return val2
-}
-
-func (h Device) GetRenderingAreaGranularity(
-	renderingAreaInfo *RenderingAreaInfo,
-) Extent2D {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param renderingAreaInfo
-	var ptr1 *C.VkRenderingAreaInfo
-	if renderingAreaInfo != nil {
-		val2, cancel3 := renderingAreaInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkRenderingAreaInfo)(val2)
-	}
-	var granularityOut C.VkExtent2D
-	C.fn_vkGetRenderingAreaGranularity(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &granularityOut)
-	var val4 Extent2D
-	val4.fromC(&granularityOut)
-	return val4
-}
-
-func (h Device) GetSemaphoreCounterValue(
-	semaphore *Semaphore,
-) (uint64, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param semaphore
-	var h1 C.VkSemaphore
-	if semaphore != nil {
-		h1 = C.VkSemaphore(unsafe.Pointer(semaphore.handle))
-	}
-	var valueOut C.uint64_t
-	_result := C.fn_vkGetSemaphoreCounterValue(C.VkDevice(unsafe.Pointer(h.handle)), h1, &valueOut)
-	if _result != C.VK_SUCCESS {
-		return 0, vkError(_result)
-	}
-	val2 := uint64(valueOut)
-	return val2, nil
 }
 
 func (h PhysicalDevice) GetSparseImageFormatProperties(
@@ -29141,6 +30414,208 @@ func (h PhysicalDevice) GetSurfaceSupportKHR(
 	return val4, nil
 }
 
+func (h PhysicalDevice) GetToolProperties() ([]PhysicalDeviceToolProperties, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	var count C.uint32_t
+	_result := C.fn_vkGetPhysicalDeviceToolProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, nil)
+	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
+		return nil, vkError(_result)
+	}
+	if count == 0 {
+		return nil, nil
+	}
+
+	cArr := (*C.VkPhysicalDeviceToolProperties)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkPhysicalDeviceToolProperties)))))
+	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
+
+	_result = C.fn_vkGetPhysicalDeviceToolProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, cArr)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+
+	out := make([]PhysicalDeviceToolProperties, int(count))
+	cSlice := (*[1 << 30]C.VkPhysicalDeviceToolProperties)(unsafe.Pointer(cArr))[:count:count]
+	for i, v := range cSlice {
+		var val0 PhysicalDeviceToolProperties
+		val0.fromC(&v)
+		out[i] = val0
+	}
+	return out, nil
+}
+
+func (h Device) GetPipelineCacheData(
+	pipelineCache *PipelineCache,
+	dataSize *uintptr,
+	data unsafe.Pointer,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pipelineCache
+	var h1 C.VkPipelineCache
+	if pipelineCache != nil {
+		h1 = C.VkPipelineCache(unsafe.Pointer(pipelineCache.handle))
+	}
+	// param dataSize
+	var ptr3 *C.size_t
+	if dataSize != nil {
+		val4 := C.size_t(*dataSize)
+		ptr3 = &val4
+	}
+	// param data
+	_result := C.fn_vkGetPipelineCacheData(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3, data)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Device) GetPrivateData(
+	objectType ObjectType,
+	objectHandle uint64,
+	privateDataSlot *PrivateDataSlot,
+) uint64 {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param objectType
+	val1 := C.VkObjectType(objectType)
+	// param objectHandle
+	val3 := C.uint64_t(objectHandle)
+	// param privateDataSlot
+	var h5 C.VkPrivateDataSlot
+	if privateDataSlot != nil {
+		h5 = C.VkPrivateDataSlot(unsafe.Pointer(privateDataSlot.handle))
+	}
+	var dataOut C.uint64_t
+	C.fn_vkGetPrivateData(C.VkDevice(unsafe.Pointer(h.handle)), val1, val3, h5, &dataOut)
+	val6 := uint64(dataOut)
+	return val6
+}
+
+func (h Device) GetQueryPoolResults(
+	queryPool *QueryPool,
+	firstQuery uint32,
+	queryCount uint32,
+	dataSize uintptr,
+	data unsafe.Pointer,
+	stride uint64,
+	flags QueryResultFlags,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param queryPool
+	var h1 C.VkQueryPool
+	if queryPool != nil {
+		h1 = C.VkQueryPool(unsafe.Pointer(queryPool.handle))
+	}
+	// param firstQuery
+	val3 := C.uint32_t(firstQuery)
+	// param queryCount
+	val5 := C.uint32_t(queryCount)
+	// param dataSize
+	val7 := C.size_t(dataSize)
+	// param data
+	// param stride
+	val10 := C.VkDeviceSize(stride)
+	// param flags
+	val12 := C.VkQueryResultFlags(flags)
+	_result := C.fn_vkGetQueryPoolResults(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, val5, val7, data, val10, val12)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Device) GetRenderAreaGranularity(
+	renderPass *RenderPass,
+) Extent2D {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param renderPass
+	var h1 C.VkRenderPass
+	if renderPass != nil {
+		h1 = C.VkRenderPass(unsafe.Pointer(renderPass.handle))
+	}
+	var granularityOut C.VkExtent2D
+	C.fn_vkGetRenderAreaGranularity(C.VkDevice(unsafe.Pointer(h.handle)), h1, &granularityOut)
+	var val2 Extent2D
+	val2.fromC(&granularityOut)
+	return val2
+}
+
+func (h Device) GetRenderingAreaGranularity(
+	renderingAreaInfo *RenderingAreaInfo,
+) Extent2D {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param renderingAreaInfo
+	var ptr1 *C.VkRenderingAreaInfo
+	if renderingAreaInfo != nil {
+		val2, cancel3 := renderingAreaInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkRenderingAreaInfo)(val2)
+	}
+	var granularityOut C.VkExtent2D
+	C.fn_vkGetRenderingAreaGranularity(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &granularityOut)
+	var val4 Extent2D
+	val4.fromC(&granularityOut)
+	return val4
+}
+
+func (h Device) GetSemaphoreCounterValue(
+	semaphore *Semaphore,
+) (uint64, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param semaphore
+	var h1 C.VkSemaphore
+	if semaphore != nil {
+		h1 = C.VkSemaphore(unsafe.Pointer(semaphore.handle))
+	}
+	var valueOut C.uint64_t
+	_result := C.fn_vkGetSemaphoreCounterValue(C.VkDevice(unsafe.Pointer(h.handle)), h1, &valueOut)
+	if _result != C.VK_SUCCESS {
+		return 0, vkError(_result)
+	}
+	val2 := uint64(valueOut)
+	return val2, nil
+}
+
 func (h Device) GetSwapchainImagesKHR(
 	swapchain *SwapchainKHR,
 ) ([]*Image, error) {
@@ -29180,61 +30655,6 @@ func (h Device) GetSwapchainImagesKHR(
 		out[i] = h1
 	}
 	return out, nil
-}
-
-func (h PhysicalDevice) GetToolProperties() ([]PhysicalDeviceToolProperties, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	var count C.uint32_t
-	_result := C.fn_vkGetPhysicalDeviceToolProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, nil)
-	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
-	}
-	if count == 0 {
-		return nil, nil
-	}
-
-	cArr := (*C.VkPhysicalDeviceToolProperties)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkPhysicalDeviceToolProperties)))))
-	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
-
-	_result = C.fn_vkGetPhysicalDeviceToolProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, cArr)
-	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
-	}
-
-	out := make([]PhysicalDeviceToolProperties, int(count))
-	cSlice := (*[1 << 30]C.VkPhysicalDeviceToolProperties)(unsafe.Pointer(cArr))[:count:count]
-	for i, v := range cSlice {
-		var val0 PhysicalDeviceToolProperties
-		val0.fromC(&v)
-		out[i] = val0
-	}
-	return out, nil
-}
-
-func (h Queue) InsertDebugUtilsLabelEXT(
-	labelInfo *DebugUtilsLabelEXT,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param labelInfo
-	var ptr1 *C.VkDebugUtilsLabelEXT
-	if labelInfo != nil {
-		val2, cancel3 := labelInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkDebugUtilsLabelEXT)(val2)
-	}
-	C.fn_vkQueueInsertDebugUtilsLabelEXT(C.VkQueue(unsafe.Pointer(h.handle)), ptr1)
 }
 
 func (h Device) InvalidateMappedMemoryRanges(
@@ -29379,8 +30799,8 @@ func (h Device) MergePipelineCaches(
 	return nil
 }
 
-func (h CommandBuffer) NextSubpass(
-	contents SubpassContents,
+func (h Queue) BeginDebugUtilsLabelEXT(
+	labelInfo *DebugUtilsLabelEXT,
 ) {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -29389,49 +30809,69 @@ func (h CommandBuffer) NextSubpass(
 		}
 	}()
 
-	// param contents
-	val1 := C.VkSubpassContents(contents)
-	C.fn_vkCmdNextSubpass(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
-}
-
-func (h CommandBuffer) NextSubpass2(
-	subpassBeginInfo *SubpassBeginInfo,
-	subpassEndInfo *SubpassEndInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param subpassBeginInfo
-	var ptr1 *C.VkSubpassBeginInfo
-	if subpassBeginInfo != nil {
-		val2, cancel3 := subpassBeginInfo.toC()
+	// param labelInfo
+	var ptr1 *C.VkDebugUtilsLabelEXT
+	if labelInfo != nil {
+		val2, cancel3 := labelInfo.toC()
 		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkSubpassBeginInfo)(val2)
+		ptr1 = (*C.VkDebugUtilsLabelEXT)(val2)
 	}
-	// param subpassEndInfo
-	var ptr5 *C.VkSubpassEndInfo
-	if subpassEndInfo != nil {
-		val6, cancel7 := subpassEndInfo.toC()
-		cancels = append(cancels, cancel7)
-		ptr5 = (*C.VkSubpassEndInfo)(val6)
-	}
-	C.fn_vkCmdNextSubpass2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1, ptr5)
+	C.fn_vkQueueBeginDebugUtilsLabelEXT(C.VkQueue(unsafe.Pointer(h.handle)), ptr1)
 }
 
-func (h CommandBuffer) PipelineBarrier(
-	srcStageMask PipelineStageFlags,
-	dstStageMask PipelineStageFlags,
-	dependencyFlags DependencyFlags,
-	memoryBarrierCount uint32,
-	memoryBarriers []MemoryBarrier,
-	bufferMemoryBarrierCount uint32,
-	bufferMemoryBarriers []BufferMemoryBarrier,
-	imageMemoryBarrierCount uint32,
-	imageMemoryBarriers []ImageMemoryBarrier,
+func (h Queue) BindSparse(
+	bindInfoCount uint32,
+	bindInfo []BindSparseInfo,
+	fence *Fence,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param bindInfoCount
+	val1 := C.uint32_t(bindInfoCount)
+	// param bindInfo
+	len3 := len(bindInfo)
+
+	var arr4 *C.VkBindSparseInfo
+	if len3 > 0 {
+		arr4 = (*C.VkBindSparseInfo)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkBindSparseInfo)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
+	}
+	for i5, elem6 := range bindInfo {
+		val7, cancel8 := elem6.toC()
+		cancels = append(cancels, cancel8)
+		cast9 := (*C.VkBindSparseInfo)(val7)
+		(*[1 << 30]C.VkBindSparseInfo)(unsafe.Pointer(arr4))[i5] = *cast9
+	}
+	// param fence
+	var h11 C.VkFence
+	if fence != nil {
+		h11 = C.VkFence(unsafe.Pointer(fence.handle))
+	}
+	_result := C.fn_vkQueueBindSparse(C.VkQueue(unsafe.Pointer(h.handle)), val1, arr4, h11)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Queue) EndDebugUtilsLabelEXT() {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	C.fn_vkQueueEndDebugUtilsLabelEXT(C.VkQueue(unsafe.Pointer(h.handle)))
+}
+
+func (h Queue) InsertDebugUtilsLabelEXT(
+	labelInfo *DebugUtilsLabelEXT,
 ) {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -29440,81 +30880,14 @@ func (h CommandBuffer) PipelineBarrier(
 		}
 	}()
 
-	// param srcStageMask
-	val1 := C.VkPipelineStageFlags(srcStageMask)
-	// param dstStageMask
-	val3 := C.VkPipelineStageFlags(dstStageMask)
-	// param dependencyFlags
-	val5 := C.VkDependencyFlags(dependencyFlags)
-	// param memoryBarrierCount
-	val7 := C.uint32_t(memoryBarrierCount)
-	// param memoryBarriers
-	len9 := len(memoryBarriers)
-
-	var arr10 *C.VkMemoryBarrier
-	if len9 > 0 {
-		arr10 = (*C.VkMemoryBarrier)(C.malloc(C.size_t(len9) * C.size_t(unsafe.Sizeof(*new(C.VkMemoryBarrier)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr10)) })
-	}
-	for i11, elem12 := range memoryBarriers {
-		val13, cancel14 := elem12.toC()
-		cancels = append(cancels, cancel14)
-		cast15 := (*C.VkMemoryBarrier)(val13)
-		(*[1 << 30]C.VkMemoryBarrier)(unsafe.Pointer(arr10))[i11] = *cast15
-	}
-	// param bufferMemoryBarrierCount
-	val17 := C.uint32_t(bufferMemoryBarrierCount)
-	// param bufferMemoryBarriers
-	len19 := len(bufferMemoryBarriers)
-
-	var arr20 *C.VkBufferMemoryBarrier
-	if len19 > 0 {
-		arr20 = (*C.VkBufferMemoryBarrier)(C.malloc(C.size_t(len19) * C.size_t(unsafe.Sizeof(*new(C.VkBufferMemoryBarrier)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr20)) })
-	}
-	for i21, elem22 := range bufferMemoryBarriers {
-		val23, cancel24 := elem22.toC()
-		cancels = append(cancels, cancel24)
-		cast25 := (*C.VkBufferMemoryBarrier)(val23)
-		(*[1 << 30]C.VkBufferMemoryBarrier)(unsafe.Pointer(arr20))[i21] = *cast25
-	}
-	// param imageMemoryBarrierCount
-	val27 := C.uint32_t(imageMemoryBarrierCount)
-	// param imageMemoryBarriers
-	len29 := len(imageMemoryBarriers)
-
-	var arr30 *C.VkImageMemoryBarrier
-	if len29 > 0 {
-		arr30 = (*C.VkImageMemoryBarrier)(C.malloc(C.size_t(len29) * C.size_t(unsafe.Sizeof(*new(C.VkImageMemoryBarrier)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr30)) })
-	}
-	for i31, elem32 := range imageMemoryBarriers {
-		val33, cancel34 := elem32.toC()
-		cancels = append(cancels, cancel34)
-		cast35 := (*C.VkImageMemoryBarrier)(val33)
-		(*[1 << 30]C.VkImageMemoryBarrier)(unsafe.Pointer(arr30))[i31] = *cast35
-	}
-	C.fn_vkCmdPipelineBarrier(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5, val7, arr10, val17, arr20, val27, arr30)
-}
-
-func (h CommandBuffer) PipelineBarrier2(
-	dependencyInfo *DependencyInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param dependencyInfo
-	var ptr1 *C.VkDependencyInfo
-	if dependencyInfo != nil {
-		val2, cancel3 := dependencyInfo.toC()
+	// param labelInfo
+	var ptr1 *C.VkDebugUtilsLabelEXT
+	if labelInfo != nil {
+		val2, cancel3 := labelInfo.toC()
 		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkDependencyInfo)(val2)
+		ptr1 = (*C.VkDebugUtilsLabelEXT)(val2)
 	}
-	C.fn_vkCmdPipelineBarrier2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+	C.fn_vkQueueInsertDebugUtilsLabelEXT(C.VkQueue(unsafe.Pointer(h.handle)), ptr1)
 }
 
 func (h Queue) PresentKHR(
@@ -29541,13 +30914,11 @@ func (h Queue) PresentKHR(
 	return nil
 }
 
-func (h CommandBuffer) PushConstants(
-	layout *PipelineLayout,
-	stageFlags ShaderStageFlags,
-	offset uint32,
-	size uint32,
-	values unsafe.Pointer,
-) {
+func (h Queue) Submit(
+	submitCount uint32,
+	submits []SubmitInfo,
+	fence *Fence,
+) error {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -29555,24 +30926,39 @@ func (h CommandBuffer) PushConstants(
 		}
 	}()
 
-	// param layout
-	var h1 C.VkPipelineLayout
-	if layout != nil {
-		h1 = C.VkPipelineLayout(unsafe.Pointer(layout.handle))
+	// param submitCount
+	val1 := C.uint32_t(submitCount)
+	// param submits
+	len3 := len(submits)
+
+	var arr4 *C.VkSubmitInfo
+	if len3 > 0 {
+		arr4 = (*C.VkSubmitInfo)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkSubmitInfo)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
 	}
-	// param stageFlags
-	val3 := C.VkShaderStageFlags(stageFlags)
-	// param offset
-	val5 := C.uint32_t(offset)
-	// param size
-	val7 := C.uint32_t(size)
-	// param values
-	C.fn_vkCmdPushConstants(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5, val7, values)
+	for i5, elem6 := range submits {
+		val7, cancel8 := elem6.toC()
+		cancels = append(cancels, cancel8)
+		cast9 := (*C.VkSubmitInfo)(val7)
+		(*[1 << 30]C.VkSubmitInfo)(unsafe.Pointer(arr4))[i5] = *cast9
+	}
+	// param fence
+	var h11 C.VkFence
+	if fence != nil {
+		h11 = C.VkFence(unsafe.Pointer(fence.handle))
+	}
+	_result := C.fn_vkQueueSubmit(C.VkQueue(unsafe.Pointer(h.handle)), val1, arr4, h11)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
 }
 
-func (h CommandBuffer) PushConstants2(
-	pushConstantsInfo *PushConstantsInfo,
-) {
+func (h Queue) Submit2(
+	submitCount uint32,
+	submits []SubmitInfo2,
+	fence *Fence,
+) error {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -29580,23 +30966,35 @@ func (h CommandBuffer) PushConstants2(
 		}
 	}()
 
-	// param pushConstantsInfo
-	var ptr1 *C.VkPushConstantsInfo
-	if pushConstantsInfo != nil {
-		val2, cancel3 := pushConstantsInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkPushConstantsInfo)(val2)
+	// param submitCount
+	val1 := C.uint32_t(submitCount)
+	// param submits
+	len3 := len(submits)
+
+	var arr4 *C.VkSubmitInfo2
+	if len3 > 0 {
+		arr4 = (*C.VkSubmitInfo2)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkSubmitInfo2)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
 	}
-	C.fn_vkCmdPushConstants2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+	for i5, elem6 := range submits {
+		val7, cancel8 := elem6.toC()
+		cancels = append(cancels, cancel8)
+		cast9 := (*C.VkSubmitInfo2)(val7)
+		(*[1 << 30]C.VkSubmitInfo2)(unsafe.Pointer(arr4))[i5] = *cast9
+	}
+	// param fence
+	var h11 C.VkFence
+	if fence != nil {
+		h11 = C.VkFence(unsafe.Pointer(fence.handle))
+	}
+	_result := C.fn_vkQueueSubmit2(C.VkQueue(unsafe.Pointer(h.handle)), val1, arr4, h11)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
 }
 
-func (h CommandBuffer) PushDescriptorSet(
-	pipelineBindPoint PipelineBindPoint,
-	layout *PipelineLayout,
-	set uint32,
-	descriptorWriteCount uint32,
-	descriptorWrites []WriteDescriptorSet,
-) {
+func (h Queue) WaitIdle() error {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -29604,101 +31002,11 @@ func (h CommandBuffer) PushDescriptorSet(
 		}
 	}()
 
-	// param pipelineBindPoint
-	val1 := C.VkPipelineBindPoint(pipelineBindPoint)
-	// param layout
-	var h3 C.VkPipelineLayout
-	if layout != nil {
-		h3 = C.VkPipelineLayout(unsafe.Pointer(layout.handle))
+	_result := C.fn_vkQueueWaitIdle(C.VkQueue(unsafe.Pointer(h.handle)))
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
 	}
-	// param set
-	val5 := C.uint32_t(set)
-	// param descriptorWriteCount
-	val7 := C.uint32_t(descriptorWriteCount)
-	// param descriptorWrites
-	len9 := len(descriptorWrites)
-
-	var arr10 *C.VkWriteDescriptorSet
-	if len9 > 0 {
-		arr10 = (*C.VkWriteDescriptorSet)(C.malloc(C.size_t(len9) * C.size_t(unsafe.Sizeof(*new(C.VkWriteDescriptorSet)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr10)) })
-	}
-	for i11, elem12 := range descriptorWrites {
-		val13, cancel14 := elem12.toC()
-		cancels = append(cancels, cancel14)
-		cast15 := (*C.VkWriteDescriptorSet)(val13)
-		(*[1 << 30]C.VkWriteDescriptorSet)(unsafe.Pointer(arr10))[i11] = *cast15
-	}
-	C.fn_vkCmdPushDescriptorSet(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, h3, val5, val7, arr10)
-}
-
-func (h CommandBuffer) PushDescriptorSet2(
-	pushDescriptorSetInfo *PushDescriptorSetInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param pushDescriptorSetInfo
-	var ptr1 *C.VkPushDescriptorSetInfo
-	if pushDescriptorSetInfo != nil {
-		val2, cancel3 := pushDescriptorSetInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkPushDescriptorSetInfo)(val2)
-	}
-	C.fn_vkCmdPushDescriptorSet2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
-}
-
-func (h CommandBuffer) PushDescriptorSetWithTemplate(
-	descriptorUpdateTemplate *DescriptorUpdateTemplate,
-	layout *PipelineLayout,
-	set uint32,
-	data unsafe.Pointer,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param descriptorUpdateTemplate
-	var h1 C.VkDescriptorUpdateTemplate
-	if descriptorUpdateTemplate != nil {
-		h1 = C.VkDescriptorUpdateTemplate(unsafe.Pointer(descriptorUpdateTemplate.handle))
-	}
-	// param layout
-	var h3 C.VkPipelineLayout
-	if layout != nil {
-		h3 = C.VkPipelineLayout(unsafe.Pointer(layout.handle))
-	}
-	// param set
-	val5 := C.uint32_t(set)
-	// param data
-	C.fn_vkCmdPushDescriptorSetWithTemplate(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, h3, val5, data)
-}
-
-func (h CommandBuffer) PushDescriptorSetWithTemplate2(
-	pushDescriptorSetWithTemplateInfo *PushDescriptorSetWithTemplateInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param pushDescriptorSetWithTemplateInfo
-	var ptr1 *C.VkPushDescriptorSetWithTemplateInfo
-	if pushDescriptorSetWithTemplateInfo != nil {
-		val2, cancel3 := pushDescriptorSetWithTemplateInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkPushDescriptorSetWithTemplateInfo)(val2)
-	}
-	C.fn_vkCmdPushDescriptorSetWithTemplate2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+	return nil
 }
 
 func (h CommandBuffer) Reset(
@@ -29792,27 +31100,6 @@ func (h Device) ResetEvent(
 	return nil
 }
 
-func (h CommandBuffer) ResetEvent2(
-	event *Event,
-	stageMask PipelineStageFlags2,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param event
-	var h1 C.VkEvent
-	if event != nil {
-		h1 = C.VkEvent(unsafe.Pointer(event.handle))
-	}
-	// param stageMask
-	val3 := C.VkPipelineStageFlags2(stageMask)
-	C.fn_vkCmdResetEvent2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3)
-}
-
 func (h Device) ResetFences(
 	fenceCount uint32,
 	fences []*Fence,
@@ -29872,108 +31159,6 @@ func (h Device) ResetQueryPool(
 	C.fn_vkResetQueryPool(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, val5)
 }
 
-func (h CommandBuffer) ResolveImage(
-	srcImage *Image,
-	srcImageLayout ImageLayout,
-	dstImage *Image,
-	dstImageLayout ImageLayout,
-	regionCount uint32,
-	regions []ImageResolve,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param srcImage
-	var h1 C.VkImage
-	if srcImage != nil {
-		h1 = C.VkImage(unsafe.Pointer(srcImage.handle))
-	}
-	// param srcImageLayout
-	val3 := C.VkImageLayout(srcImageLayout)
-	// param dstImage
-	var h5 C.VkImage
-	if dstImage != nil {
-		h5 = C.VkImage(unsafe.Pointer(dstImage.handle))
-	}
-	// param dstImageLayout
-	val7 := C.VkImageLayout(dstImageLayout)
-	// param regionCount
-	val9 := C.uint32_t(regionCount)
-	// param regions
-	len11 := len(regions)
-
-	var arr12 *C.VkImageResolve
-	if len11 > 0 {
-		arr12 = (*C.VkImageResolve)(C.malloc(C.size_t(len11) * C.size_t(unsafe.Sizeof(*new(C.VkImageResolve)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr12)) })
-	}
-	for i13, elem14 := range regions {
-		val15, cancel16 := elem14.toC()
-		cancels = append(cancels, cancel16)
-		cast17 := (*C.VkImageResolve)(val15)
-		(*[1 << 30]C.VkImageResolve)(unsafe.Pointer(arr12))[i13] = *cast17
-	}
-	C.fn_vkCmdResolveImage(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, h5, val7, val9, arr12)
-}
-
-func (h CommandBuffer) ResolveImage2(
-	resolveImageInfo *ResolveImageInfo2,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param resolveImageInfo
-	var ptr1 *C.VkResolveImageInfo2
-	if resolveImageInfo != nil {
-		val2, cancel3 := resolveImageInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkResolveImageInfo2)(val2)
-	}
-	C.fn_vkCmdResolveImage2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
-}
-
-func (h CommandBuffer) SetBlendConstants(
-	blendConstants [4]float32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param blendConstants
-	var arr1 [4]C.float
-	for i2, elem3 := range blendConstants {
-		val4 := C.float(elem3)
-		arr1[i2] = val4
-	}
-	C.fn_vkCmdSetBlendConstants(C.VkCommandBuffer(unsafe.Pointer(h.handle)), &arr1[0])
-}
-
-func (h CommandBuffer) SetCullMode(
-	cullMode CullModeFlags,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param cullMode
-	val1 := C.VkCullModeFlags(cullMode)
-	C.fn_vkCmdSetCullMode(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
-}
-
 func (h Device) SetDebugUtilsObjectNameEXT(
 	nameInfo *DebugUtilsObjectNameInfoEXT,
 ) error {
@@ -30022,147 +31207,6 @@ func (h Device) SetDebugUtilsObjectTagEXT(
 	return nil
 }
 
-func (h CommandBuffer) SetDepthBias(
-	depthBiasConstantFactor float32,
-	depthBiasClamp float32,
-	depthBiasSlopeFactor float32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param depthBiasConstantFactor
-	val1 := C.float(depthBiasConstantFactor)
-	// param depthBiasClamp
-	val3 := C.float(depthBiasClamp)
-	// param depthBiasSlopeFactor
-	val5 := C.float(depthBiasSlopeFactor)
-	C.fn_vkCmdSetDepthBias(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5)
-}
-
-func (h CommandBuffer) SetDepthBiasEnable(
-	depthBiasEnable bool,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param depthBiasEnable
-	val1 := C.VkBool32(0)
-	if depthBiasEnable {
-		val1 = C.VkBool32(1)
-	}
-	C.fn_vkCmdSetDepthBiasEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
-}
-
-func (h CommandBuffer) SetDepthBounds(
-	minDepthBounds float32,
-	maxDepthBounds float32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param minDepthBounds
-	val1 := C.float(minDepthBounds)
-	// param maxDepthBounds
-	val3 := C.float(maxDepthBounds)
-	C.fn_vkCmdSetDepthBounds(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3)
-}
-
-func (h CommandBuffer) SetDepthBoundsTestEnable(
-	depthBoundsTestEnable bool,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param depthBoundsTestEnable
-	val1 := C.VkBool32(0)
-	if depthBoundsTestEnable {
-		val1 = C.VkBool32(1)
-	}
-	C.fn_vkCmdSetDepthBoundsTestEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
-}
-
-func (h CommandBuffer) SetDepthCompareOp(
-	depthCompareOp CompareOp,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param depthCompareOp
-	val1 := C.VkCompareOp(depthCompareOp)
-	C.fn_vkCmdSetDepthCompareOp(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
-}
-
-func (h CommandBuffer) SetDepthTestEnable(
-	depthTestEnable bool,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param depthTestEnable
-	val1 := C.VkBool32(0)
-	if depthTestEnable {
-		val1 = C.VkBool32(1)
-	}
-	C.fn_vkCmdSetDepthTestEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
-}
-
-func (h CommandBuffer) SetDepthWriteEnable(
-	depthWriteEnable bool,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param depthWriteEnable
-	val1 := C.VkBool32(0)
-	if depthWriteEnable {
-		val1 = C.VkBool32(1)
-	}
-	C.fn_vkCmdSetDepthWriteEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
-}
-
-func (h CommandBuffer) SetDeviceMask(
-	deviceMask uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param deviceMask
-	val1 := C.uint32_t(deviceMask)
-	C.fn_vkCmdSetDeviceMask(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
-}
-
 func (h Device) SetEvent(
 	event *Event,
 ) error {
@@ -30183,113 +31227,6 @@ func (h Device) SetEvent(
 		return vkError(_result)
 	}
 	return nil
-}
-
-func (h CommandBuffer) SetEvent2(
-	event *Event,
-	dependencyInfo *DependencyInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param event
-	var h1 C.VkEvent
-	if event != nil {
-		h1 = C.VkEvent(unsafe.Pointer(event.handle))
-	}
-	// param dependencyInfo
-	var ptr3 *C.VkDependencyInfo
-	if dependencyInfo != nil {
-		val4, cancel5 := dependencyInfo.toC()
-		cancels = append(cancels, cancel5)
-		ptr3 = (*C.VkDependencyInfo)(val4)
-	}
-	C.fn_vkCmdSetEvent2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, ptr3)
-}
-
-func (h CommandBuffer) SetFrontFace(
-	frontFace FrontFace,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param frontFace
-	val1 := C.VkFrontFace(frontFace)
-	C.fn_vkCmdSetFrontFace(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
-}
-
-func (h CommandBuffer) SetLineStipple(
-	lineStippleFactor uint32,
-	lineStipplePattern uint16,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param lineStippleFactor
-	val1 := C.uint32_t(lineStippleFactor)
-	// param lineStipplePattern
-	val3 := C.uint16_t(lineStipplePattern)
-	C.fn_vkCmdSetLineStipple(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3)
-}
-
-func (h CommandBuffer) SetLineWidth(
-	lineWidth float32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param lineWidth
-	val1 := C.float(lineWidth)
-	C.fn_vkCmdSetLineWidth(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
-}
-
-func (h CommandBuffer) SetPrimitiveRestartEnable(
-	primitiveRestartEnable bool,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param primitiveRestartEnable
-	val1 := C.VkBool32(0)
-	if primitiveRestartEnable {
-		val1 = C.VkBool32(1)
-	}
-	C.fn_vkCmdSetPrimitiveRestartEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
-}
-
-func (h CommandBuffer) SetPrimitiveTopology(
-	primitiveTopology PrimitiveTopology,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param primitiveTopology
-	val1 := C.VkPrimitiveTopology(primitiveTopology)
-	C.fn_vkCmdSetPrimitiveTopology(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
 }
 
 func (h Device) SetPrivateData(
@@ -30323,289 +31260,6 @@ func (h Device) SetPrivateData(
 	return nil
 }
 
-func (h CommandBuffer) SetRasterizerDiscardEnable(
-	rasterizerDiscardEnable bool,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param rasterizerDiscardEnable
-	val1 := C.VkBool32(0)
-	if rasterizerDiscardEnable {
-		val1 = C.VkBool32(1)
-	}
-	C.fn_vkCmdSetRasterizerDiscardEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
-}
-
-func (h CommandBuffer) SetRenderingAttachmentLocations(
-	locationInfo *RenderingAttachmentLocationInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param locationInfo
-	var ptr1 *C.VkRenderingAttachmentLocationInfo
-	if locationInfo != nil {
-		val2, cancel3 := locationInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkRenderingAttachmentLocationInfo)(val2)
-	}
-	C.fn_vkCmdSetRenderingAttachmentLocations(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
-}
-
-func (h CommandBuffer) SetRenderingInputAttachmentIndices(
-	inputAttachmentIndexInfo *RenderingInputAttachmentIndexInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param inputAttachmentIndexInfo
-	var ptr1 *C.VkRenderingInputAttachmentIndexInfo
-	if inputAttachmentIndexInfo != nil {
-		val2, cancel3 := inputAttachmentIndexInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkRenderingInputAttachmentIndexInfo)(val2)
-	}
-	C.fn_vkCmdSetRenderingInputAttachmentIndices(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
-}
-
-func (h CommandBuffer) SetScissor(
-	firstScissor uint32,
-	scissorCount uint32,
-	scissors []Rect2D,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param firstScissor
-	val1 := C.uint32_t(firstScissor)
-	// param scissorCount
-	val3 := C.uint32_t(scissorCount)
-	// param scissors
-	len5 := len(scissors)
-
-	var arr6 *C.VkRect2D
-	if len5 > 0 {
-		arr6 = (*C.VkRect2D)(C.malloc(C.size_t(len5) * C.size_t(unsafe.Sizeof(*new(C.VkRect2D)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr6)) })
-	}
-	for i7, elem8 := range scissors {
-		val9, cancel10 := elem8.toC()
-		cancels = append(cancels, cancel10)
-		cast11 := (*C.VkRect2D)(val9)
-		(*[1 << 30]C.VkRect2D)(unsafe.Pointer(arr6))[i7] = *cast11
-	}
-	C.fn_vkCmdSetScissor(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, arr6)
-}
-
-func (h CommandBuffer) SetScissorWithCount(
-	scissorCount uint32,
-	scissors []Rect2D,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param scissorCount
-	val1 := C.uint32_t(scissorCount)
-	// param scissors
-	len3 := len(scissors)
-
-	var arr4 *C.VkRect2D
-	if len3 > 0 {
-		arr4 = (*C.VkRect2D)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkRect2D)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
-	}
-	for i5, elem6 := range scissors {
-		val7, cancel8 := elem6.toC()
-		cancels = append(cancels, cancel8)
-		cast9 := (*C.VkRect2D)(val7)
-		(*[1 << 30]C.VkRect2D)(unsafe.Pointer(arr4))[i5] = *cast9
-	}
-	C.fn_vkCmdSetScissorWithCount(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, arr4)
-}
-
-func (h CommandBuffer) SetStencilCompareMask(
-	faceMask StencilFaceFlags,
-	compareMask uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param faceMask
-	val1 := C.VkStencilFaceFlags(faceMask)
-	// param compareMask
-	val3 := C.uint32_t(compareMask)
-	C.fn_vkCmdSetStencilCompareMask(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3)
-}
-
-func (h CommandBuffer) SetStencilOp(
-	faceMask StencilFaceFlags,
-	failOp StencilOp,
-	passOp StencilOp,
-	depthFailOp StencilOp,
-	compareOp CompareOp,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param faceMask
-	val1 := C.VkStencilFaceFlags(faceMask)
-	// param failOp
-	val3 := C.VkStencilOp(failOp)
-	// param passOp
-	val5 := C.VkStencilOp(passOp)
-	// param depthFailOp
-	val7 := C.VkStencilOp(depthFailOp)
-	// param compareOp
-	val9 := C.VkCompareOp(compareOp)
-	C.fn_vkCmdSetStencilOp(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, val5, val7, val9)
-}
-
-func (h CommandBuffer) SetStencilReference(
-	faceMask StencilFaceFlags,
-	reference uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param faceMask
-	val1 := C.VkStencilFaceFlags(faceMask)
-	// param reference
-	val3 := C.uint32_t(reference)
-	C.fn_vkCmdSetStencilReference(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3)
-}
-
-func (h CommandBuffer) SetStencilTestEnable(
-	stencilTestEnable bool,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param stencilTestEnable
-	val1 := C.VkBool32(0)
-	if stencilTestEnable {
-		val1 = C.VkBool32(1)
-	}
-	C.fn_vkCmdSetStencilTestEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
-}
-
-func (h CommandBuffer) SetStencilWriteMask(
-	faceMask StencilFaceFlags,
-	writeMask uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param faceMask
-	val1 := C.VkStencilFaceFlags(faceMask)
-	// param writeMask
-	val3 := C.uint32_t(writeMask)
-	C.fn_vkCmdSetStencilWriteMask(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3)
-}
-
-func (h CommandBuffer) SetViewport(
-	firstViewport uint32,
-	viewportCount uint32,
-	viewports []Viewport,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param firstViewport
-	val1 := C.uint32_t(firstViewport)
-	// param viewportCount
-	val3 := C.uint32_t(viewportCount)
-	// param viewports
-	len5 := len(viewports)
-
-	var arr6 *C.VkViewport
-	if len5 > 0 {
-		arr6 = (*C.VkViewport)(C.malloc(C.size_t(len5) * C.size_t(unsafe.Sizeof(*new(C.VkViewport)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr6)) })
-	}
-	for i7, elem8 := range viewports {
-		val9, cancel10 := elem8.toC()
-		cancels = append(cancels, cancel10)
-		cast11 := (*C.VkViewport)(val9)
-		(*[1 << 30]C.VkViewport)(unsafe.Pointer(arr6))[i7] = *cast11
-	}
-	C.fn_vkCmdSetViewport(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, val3, arr6)
-}
-
-func (h CommandBuffer) SetViewportWithCount(
-	viewportCount uint32,
-	viewports []Viewport,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param viewportCount
-	val1 := C.uint32_t(viewportCount)
-	// param viewports
-	len3 := len(viewports)
-
-	var arr4 *C.VkViewport
-	if len3 > 0 {
-		arr4 = (*C.VkViewport)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkViewport)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
-	}
-	for i5, elem6 := range viewports {
-		val7, cancel8 := elem6.toC()
-		cancels = append(cancels, cancel8)
-		cast9 := (*C.VkViewport)(val7)
-		(*[1 << 30]C.VkViewport)(unsafe.Pointer(arr4))[i5] = *cast9
-	}
-	C.fn_vkCmdSetViewportWithCount(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, arr4)
-}
-
 func (h Device) SignalSemaphore(
 	signalInfo *SemaphoreSignalInfo,
 ) error {
@@ -30624,86 +31278,6 @@ func (h Device) SignalSemaphore(
 		ptr1 = (*C.VkSemaphoreSignalInfo)(val2)
 	}
 	_result := C.fn_vkSignalSemaphore(C.VkDevice(unsafe.Pointer(h.handle)), ptr1)
-	if _result != C.VK_SUCCESS {
-		return vkError(_result)
-	}
-	return nil
-}
-
-func (h Queue) Submit(
-	submitCount uint32,
-	submits []SubmitInfo,
-	fence *Fence,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param submitCount
-	val1 := C.uint32_t(submitCount)
-	// param submits
-	len3 := len(submits)
-
-	var arr4 *C.VkSubmitInfo
-	if len3 > 0 {
-		arr4 = (*C.VkSubmitInfo)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkSubmitInfo)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
-	}
-	for i5, elem6 := range submits {
-		val7, cancel8 := elem6.toC()
-		cancels = append(cancels, cancel8)
-		cast9 := (*C.VkSubmitInfo)(val7)
-		(*[1 << 30]C.VkSubmitInfo)(unsafe.Pointer(arr4))[i5] = *cast9
-	}
-	// param fence
-	var h11 C.VkFence
-	if fence != nil {
-		h11 = C.VkFence(unsafe.Pointer(fence.handle))
-	}
-	_result := C.fn_vkQueueSubmit(C.VkQueue(unsafe.Pointer(h.handle)), val1, arr4, h11)
-	if _result != C.VK_SUCCESS {
-		return vkError(_result)
-	}
-	return nil
-}
-
-func (h Queue) Submit2(
-	submitCount uint32,
-	submits []SubmitInfo2,
-	fence *Fence,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param submitCount
-	val1 := C.uint32_t(submitCount)
-	// param submits
-	len3 := len(submits)
-
-	var arr4 *C.VkSubmitInfo2
-	if len3 > 0 {
-		arr4 = (*C.VkSubmitInfo2)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkSubmitInfo2)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
-	}
-	for i5, elem6 := range submits {
-		val7, cancel8 := elem6.toC()
-		cancels = append(cancels, cancel8)
-		cast9 := (*C.VkSubmitInfo2)(val7)
-		(*[1 << 30]C.VkSubmitInfo2)(unsafe.Pointer(arr4))[i5] = *cast9
-	}
-	// param fence
-	var h11 C.VkFence
-	if fence != nil {
-		h11 = C.VkFence(unsafe.Pointer(fence.handle))
-	}
-	_result := C.fn_vkQueueSubmit2(C.VkQueue(unsafe.Pointer(h.handle)), val1, arr4, h11)
 	if _result != C.VK_SUCCESS {
 		return vkError(_result)
 	}
@@ -30833,32 +31407,6 @@ func (h Device) UnmapMemory2(
 	return nil
 }
 
-func (h CommandBuffer) UpdateBuffer(
-	dstBuffer *Buffer,
-	dstOffset uint64,
-	dataSize uint64,
-	data unsafe.Pointer,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param dstBuffer
-	var h1 C.VkBuffer
-	if dstBuffer != nil {
-		h1 = C.VkBuffer(unsafe.Pointer(dstBuffer.handle))
-	}
-	// param dstOffset
-	val3 := C.VkDeviceSize(dstOffset)
-	// param dataSize
-	val5 := C.VkDeviceSize(dataSize)
-	// param data
-	C.fn_vkCmdUpdateBuffer(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5, data)
-}
-
 func (h Device) UpdateDescriptorSetWithTemplate(
 	descriptorSet *DescriptorSet,
 	descriptorUpdateTemplate *DescriptorUpdateTemplate,
@@ -30933,143 +31481,6 @@ func (h Device) UpdateDescriptorSets(
 	C.fn_vkUpdateDescriptorSets(C.VkDevice(unsafe.Pointer(h.handle)), val1, arr4, val11, arr14)
 }
 
-func (h CommandBuffer) WaitEvents(
-	eventCount uint32,
-	events []*Event,
-	srcStageMask PipelineStageFlags,
-	dstStageMask PipelineStageFlags,
-	memoryBarrierCount uint32,
-	memoryBarriers []MemoryBarrier,
-	bufferMemoryBarrierCount uint32,
-	bufferMemoryBarriers []BufferMemoryBarrier,
-	imageMemoryBarrierCount uint32,
-	imageMemoryBarriers []ImageMemoryBarrier,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param eventCount
-	val1 := C.uint32_t(eventCount)
-	// param events
-	len3 := len(events)
-
-	var arr4 *C.VkEvent
-	if len3 > 0 {
-		arr4 = (*C.VkEvent)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkEvent)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
-	}
-	for i5, elem6 := range events {
-		var h7 C.VkEvent
-		if elem6 != nil {
-			h7 = C.VkEvent(unsafe.Pointer(elem6.handle))
-		}
-		(*[1 << 30]C.VkEvent)(unsafe.Pointer(arr4))[i5] = h7
-	}
-	// param srcStageMask
-	val9 := C.VkPipelineStageFlags(srcStageMask)
-	// param dstStageMask
-	val11 := C.VkPipelineStageFlags(dstStageMask)
-	// param memoryBarrierCount
-	val13 := C.uint32_t(memoryBarrierCount)
-	// param memoryBarriers
-	len15 := len(memoryBarriers)
-
-	var arr16 *C.VkMemoryBarrier
-	if len15 > 0 {
-		arr16 = (*C.VkMemoryBarrier)(C.malloc(C.size_t(len15) * C.size_t(unsafe.Sizeof(*new(C.VkMemoryBarrier)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr16)) })
-	}
-	for i17, elem18 := range memoryBarriers {
-		val19, cancel20 := elem18.toC()
-		cancels = append(cancels, cancel20)
-		cast21 := (*C.VkMemoryBarrier)(val19)
-		(*[1 << 30]C.VkMemoryBarrier)(unsafe.Pointer(arr16))[i17] = *cast21
-	}
-	// param bufferMemoryBarrierCount
-	val23 := C.uint32_t(bufferMemoryBarrierCount)
-	// param bufferMemoryBarriers
-	len25 := len(bufferMemoryBarriers)
-
-	var arr26 *C.VkBufferMemoryBarrier
-	if len25 > 0 {
-		arr26 = (*C.VkBufferMemoryBarrier)(C.malloc(C.size_t(len25) * C.size_t(unsafe.Sizeof(*new(C.VkBufferMemoryBarrier)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr26)) })
-	}
-	for i27, elem28 := range bufferMemoryBarriers {
-		val29, cancel30 := elem28.toC()
-		cancels = append(cancels, cancel30)
-		cast31 := (*C.VkBufferMemoryBarrier)(val29)
-		(*[1 << 30]C.VkBufferMemoryBarrier)(unsafe.Pointer(arr26))[i27] = *cast31
-	}
-	// param imageMemoryBarrierCount
-	val33 := C.uint32_t(imageMemoryBarrierCount)
-	// param imageMemoryBarriers
-	len35 := len(imageMemoryBarriers)
-
-	var arr36 *C.VkImageMemoryBarrier
-	if len35 > 0 {
-		arr36 = (*C.VkImageMemoryBarrier)(C.malloc(C.size_t(len35) * C.size_t(unsafe.Sizeof(*new(C.VkImageMemoryBarrier)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr36)) })
-	}
-	for i37, elem38 := range imageMemoryBarriers {
-		val39, cancel40 := elem38.toC()
-		cancels = append(cancels, cancel40)
-		cast41 := (*C.VkImageMemoryBarrier)(val39)
-		(*[1 << 30]C.VkImageMemoryBarrier)(unsafe.Pointer(arr36))[i37] = *cast41
-	}
-	C.fn_vkCmdWaitEvents(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, arr4, val9, val11, val13, arr16, val23, arr26, val33, arr36)
-}
-
-func (h CommandBuffer) WaitEvents2(
-	eventCount uint32,
-	events []*Event,
-	dependencyInfos []DependencyInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param eventCount
-	val1 := C.uint32_t(eventCount)
-	// param events
-	len3 := len(events)
-
-	var arr4 *C.VkEvent
-	if len3 > 0 {
-		arr4 = (*C.VkEvent)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkEvent)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
-	}
-	for i5, elem6 := range events {
-		var h7 C.VkEvent
-		if elem6 != nil {
-			h7 = C.VkEvent(unsafe.Pointer(elem6.handle))
-		}
-		(*[1 << 30]C.VkEvent)(unsafe.Pointer(arr4))[i5] = h7
-	}
-	// param dependencyInfos
-	len9 := len(dependencyInfos)
-
-	var arr10 *C.VkDependencyInfo
-	if len9 > 0 {
-		arr10 = (*C.VkDependencyInfo)(C.malloc(C.size_t(len9) * C.size_t(unsafe.Sizeof(*new(C.VkDependencyInfo)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr10)) })
-	}
-	for i11, elem12 := range dependencyInfos {
-		val13, cancel14 := elem12.toC()
-		cancels = append(cancels, cancel14)
-		cast15 := (*C.VkDependencyInfo)(val13)
-		(*[1 << 30]C.VkDependencyInfo)(unsafe.Pointer(arr10))[i11] = *cast15
-	}
-	C.fn_vkCmdWaitEvents2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, arr4, arr10)
-}
-
 func (h Device) WaitForFences(
 	fenceCount uint32,
 	fences []*Fence,
@@ -31114,21 +31525,6 @@ func (h Device) WaitForFences(
 	return nil
 }
 
-func (h Queue) WaitIdle() error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_result := C.fn_vkQueueWaitIdle(C.VkQueue(unsafe.Pointer(h.handle)))
-	if _result != C.VK_SUCCESS {
-		return vkError(_result)
-	}
-	return nil
-}
-
 func (h Device) WaitSemaphores(
 	waitInfo *SemaphoreWaitInfo,
 	timeout uint64,
@@ -31150,404 +31546,6 @@ func (h Device) WaitSemaphores(
 	// param timeout
 	val5 := C.uint64_t(timeout)
 	_result := C.fn_vkWaitSemaphores(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, val5)
-	if _result != C.VK_SUCCESS {
-		return vkError(_result)
-	}
-	return nil
-}
-
-func (h CommandBuffer) WriteTimestamp(
-	pipelineStage PipelineStageFlagBits,
-	queryPool *QueryPool,
-	query uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param pipelineStage
-	val1 := C.VkPipelineStageFlagBits(pipelineStage)
-	// param queryPool
-	var h3 C.VkQueryPool
-	if queryPool != nil {
-		h3 = C.VkQueryPool(unsafe.Pointer(queryPool.handle))
-	}
-	// param query
-	val5 := C.uint32_t(query)
-	C.fn_vkCmdWriteTimestamp(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, h3, val5)
-}
-
-func (h CommandBuffer) WriteTimestamp2(
-	stage PipelineStageFlags2,
-	queryPool *QueryPool,
-	query uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param stage
-	val1 := C.VkPipelineStageFlags2(stage)
-	// param queryPool
-	var h3 C.VkQueryPool
-	if queryPool != nil {
-		h3 = C.VkQueryPool(unsafe.Pointer(queryPool.handle))
-	}
-	// param query
-	val5 := C.uint32_t(query)
-	C.fn_vkCmdWriteTimestamp2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, h3, val5)
-}
-
-func (h CommandBuffer) BeginDebugUtilsLabelEXT(
-	labelInfo *DebugUtilsLabelEXT,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param labelInfo
-	var ptr1 *C.VkDebugUtilsLabelEXT
-	if labelInfo != nil {
-		val2, cancel3 := labelInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkDebugUtilsLabelEXT)(val2)
-	}
-	C.fn_vkCmdBeginDebugUtilsLabelEXT(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
-}
-
-func (h Device) CreateComputePipelines(
-	pipelineCache *PipelineCache,
-	createInfoCount uint32,
-	createInfos []ComputePipelineCreateInfo,
-	allocator *AllocationCallbacks,
-) ([]*Pipeline, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param pipelineCache
-	var h1 C.VkPipelineCache
-	if pipelineCache != nil {
-		h1 = C.VkPipelineCache(unsafe.Pointer(pipelineCache.handle))
-	}
-	// param createInfoCount
-	val3 := C.uint32_t(createInfoCount)
-	// param createInfos
-	len5 := len(createInfos)
-
-	var arr6 *C.VkComputePipelineCreateInfo
-	if len5 > 0 {
-		arr6 = (*C.VkComputePipelineCreateInfo)(C.malloc(C.size_t(len5) * C.size_t(unsafe.Sizeof(*new(C.VkComputePipelineCreateInfo)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr6)) })
-	}
-	for i7, elem8 := range createInfos {
-		val9, cancel10 := elem8.toC()
-		cancels = append(cancels, cancel10)
-		cast11 := (*C.VkComputePipelineCreateInfo)(val9)
-		(*[1 << 30]C.VkComputePipelineCreateInfo)(unsafe.Pointer(arr6))[i7] = *cast11
-	}
-	// param allocator
-	var ptr13 *C.VkAllocationCallbacks
-	if allocator != nil {
-		val14, cancel15 := allocator.toC()
-		cancels = append(cancels, cancel15)
-		ptr13 = (*C.VkAllocationCallbacks)(val14)
-	}
-	pipelinesOut := (*C.VkPipeline)(C.malloc(C.size_t(createInfoCount) * C.size_t(unsafe.Sizeof(*new(C.VkPipeline)))))
-	defer C.free(unsafe.Pointer(pipelinesOut))
-	_result := C.fn_vkCreateComputePipelines(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, arr6, ptr13, pipelinesOut)
-	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
-	}
-	out16 := make([]*Pipeline, createInfoCount)
-	for i17 := range out16 {
-		h18 := &Pipeline{handle: unsafe.Pointer((*[1 << 30]C.VkPipeline)(unsafe.Pointer(pipelinesOut))[i17])}
-		out16[i17] = h18
-	}
-	return out16, nil
-}
-
-func (h PhysicalDevice) CreateDevice(
-	createInfo *DeviceCreateInfo,
-	allocator *AllocationCallbacks,
-) (*Device, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param createInfo
-	var ptr1 *C.VkDeviceCreateInfo
-	if createInfo != nil {
-		val2, cancel3 := createInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkDeviceCreateInfo)(val2)
-	}
-	// param allocator
-	var ptr5 *C.VkAllocationCallbacks
-	if allocator != nil {
-		val6, cancel7 := allocator.toC()
-		cancels = append(cancels, cancel7)
-		ptr5 = (*C.VkAllocationCallbacks)(val6)
-	}
-	var deviceOut C.VkDevice
-	_result := C.fn_vkCreateDevice(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &deviceOut)
-	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
-	}
-	h8 := &Device{handle: unsafe.Pointer(deviceOut)}
-	return h8, nil
-}
-
-func (h Device) CreateGraphicsPipelines(
-	pipelineCache *PipelineCache,
-	createInfoCount uint32,
-	createInfos []GraphicsPipelineCreateInfo,
-	allocator *AllocationCallbacks,
-) ([]*Pipeline, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param pipelineCache
-	var h1 C.VkPipelineCache
-	if pipelineCache != nil {
-		h1 = C.VkPipelineCache(unsafe.Pointer(pipelineCache.handle))
-	}
-	// param createInfoCount
-	val3 := C.uint32_t(createInfoCount)
-	// param createInfos
-	len5 := len(createInfos)
-
-	var arr6 *C.VkGraphicsPipelineCreateInfo
-	if len5 > 0 {
-		arr6 = (*C.VkGraphicsPipelineCreateInfo)(C.malloc(C.size_t(len5) * C.size_t(unsafe.Sizeof(*new(C.VkGraphicsPipelineCreateInfo)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr6)) })
-	}
-	for i7, elem8 := range createInfos {
-		val9, cancel10 := elem8.toC()
-		cancels = append(cancels, cancel10)
-		cast11 := (*C.VkGraphicsPipelineCreateInfo)(val9)
-		(*[1 << 30]C.VkGraphicsPipelineCreateInfo)(unsafe.Pointer(arr6))[i7] = *cast11
-	}
-	// param allocator
-	var ptr13 *C.VkAllocationCallbacks
-	if allocator != nil {
-		val14, cancel15 := allocator.toC()
-		cancels = append(cancels, cancel15)
-		ptr13 = (*C.VkAllocationCallbacks)(val14)
-	}
-	pipelinesOut := (*C.VkPipeline)(C.malloc(C.size_t(createInfoCount) * C.size_t(unsafe.Sizeof(*new(C.VkPipeline)))))
-	defer C.free(unsafe.Pointer(pipelinesOut))
-	_result := C.fn_vkCreateGraphicsPipelines(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, arr6, ptr13, pipelinesOut)
-	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
-	}
-	out16 := make([]*Pipeline, createInfoCount)
-	for i17 := range out16 {
-		h18 := &Pipeline{handle: unsafe.Pointer((*[1 << 30]C.VkPipeline)(unsafe.Pointer(pipelinesOut))[i17])}
-		out16[i17] = h18
-	}
-	return out16, nil
-}
-
-func (h Device) Destroy(
-	allocator *AllocationCallbacks,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param allocator
-	var ptr1 *C.VkAllocationCallbacks
-	if allocator != nil {
-		val2, cancel3 := allocator.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkAllocationCallbacks)(val2)
-	}
-	C.fn_vkDestroyDevice(C.VkDevice(unsafe.Pointer(h.handle)), ptr1)
-}
-
-func (h CommandBuffer) EndDebugUtilsLabelEXT() {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	C.fn_vkCmdEndDebugUtilsLabelEXT(C.VkCommandBuffer(unsafe.Pointer(h.handle)))
-}
-
-func (h PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	var count C.uint32_t
-	_result := C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, nil)
-	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
-	}
-	if count == 0 {
-		return nil, nil
-	}
-
-	cArr := (*C.VkLayerProperties)(C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(*new(C.VkLayerProperties)))))
-	cancels = append(cancels, func() { C.free(unsafe.Pointer(cArr)) })
-
-	_result = C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, cArr)
-	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
-	}
-
-	out := make([]LayerProperties, int(count))
-	cSlice := (*[1 << 30]C.VkLayerProperties)(unsafe.Pointer(cArr))[:count:count]
-	for i, v := range cSlice {
-		var val0 LayerProperties
-		val0.fromC(&v)
-		out[i] = val0
-	}
-	return out, nil
-}
-
-func (h Instance) GetProcAddr(
-	name string,
-) VoidFunction {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param name
-	cstr1 := C.CString(name)
-	cancels = append(cancels, func() { C.free(unsafe.Pointer(cstr1)) })
-	_result := C.fn_vkGetInstanceProcAddr(C.VkInstance(unsafe.Pointer(h.handle)), cstr1)
-	var fn2 VoidFunction
-	*(*unsafe.Pointer)(unsafe.Pointer(&fn2)) = *(*unsafe.Pointer)(unsafe.Pointer(&_result))
-	return fn2
-}
-
-func (h CommandBuffer) InsertDebugUtilsLabelEXT(
-	labelInfo *DebugUtilsLabelEXT,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param labelInfo
-	var ptr1 *C.VkDebugUtilsLabelEXT
-	if labelInfo != nil {
-		val2, cancel3 := labelInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = (*C.VkDebugUtilsLabelEXT)(val2)
-	}
-	C.fn_vkCmdInsertDebugUtilsLabelEXT(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
-}
-
-func (h CommandBuffer) ResetEvent(
-	event *Event,
-	stageMask PipelineStageFlags,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param event
-	var h1 C.VkEvent
-	if event != nil {
-		h1 = C.VkEvent(unsafe.Pointer(event.handle))
-	}
-	// param stageMask
-	val3 := C.VkPipelineStageFlags(stageMask)
-	C.fn_vkCmdResetEvent(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3)
-}
-
-func (h CommandBuffer) ResetQueryPool(
-	queryPool *QueryPool,
-	firstQuery uint32,
-	queryCount uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param queryPool
-	var h1 C.VkQueryPool
-	if queryPool != nil {
-		h1 = C.VkQueryPool(unsafe.Pointer(queryPool.handle))
-	}
-	// param firstQuery
-	val3 := C.uint32_t(firstQuery)
-	// param queryCount
-	val5 := C.uint32_t(queryCount)
-	C.fn_vkCmdResetQueryPool(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, val5)
-}
-
-func (h CommandBuffer) SetEvent(
-	event *Event,
-	stageMask PipelineStageFlags,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	// param event
-	var h1 C.VkEvent
-	if event != nil {
-		h1 = C.VkEvent(unsafe.Pointer(event.handle))
-	}
-	// param stageMask
-	val3 := C.VkPipelineStageFlags(stageMask)
-	C.fn_vkCmdSetEvent(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3)
-}
-
-func (h Device) WaitIdle() error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_result := C.fn_vkDeviceWaitIdle(C.VkDevice(unsafe.Pointer(h.handle)))
 	if _result != C.VK_SUCCESS {
 		return vkError(_result)
 	}

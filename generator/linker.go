@@ -1,25 +1,17 @@
 package generator
 
-type Config struct {
-	API        string   `yaml:"api"`
-	Version    string   `yaml:"version"`
-	Extensions []string `yaml:"extensions"`
-	Platforms  []string `yaml:"platforms,omitempty"`
-}
-
 type Linker struct {
 	Registry *Registry
 	Config   *Config
 
-	// reverse-lookup maps: C name → Go name
-	cToGoCmd    map[string]string
-	cToGoType   map[string]string
-	cToGoEnum   map[string]string
+	// reverse-lookup maps: C name → Go name (commands are keyed by CName directly)
+	cToGoType    map[string]string
+	cToGoEnum    map[string]string
 	cToGoBitmask map[string]string
 }
 
 type Enabled struct {
-	Commands     map[string]bool // keyed by Go name
+	Commands     map[string]bool // keyed by CName (e.g. "vkCreateInstance")
 	Types        map[string]bool // keyed by Go name (structs + handles)
 	Enums        map[string]bool // keyed by Go name
 	Bitmasks     map[string]bool // keyed by Go name
@@ -27,11 +19,6 @@ type Enabled struct {
 }
 
 func (l *Linker) buildIndexes() {
-	l.cToGoCmd = make(map[string]string, len(l.Registry.Commands))
-	for goName, cmd := range l.Registry.Commands {
-		l.cToGoCmd[cmd.CName] = goName
-	}
-
 	l.cToGoType = make(map[string]string)
 	for goName, s := range l.Registry.Structs {
 		l.cToGoType[s.CName] = goName
@@ -74,7 +61,6 @@ func (l *Linker) Link() *Registry {
 }
 
 func (l *Linker) enableCoreVersions(e *Enabled) {
-	// First, enable all VK_VERSION_* features that match the target version
 	for _, f := range l.Registry.Features {
 		if versionLE(f.Name, l.Config.Version) {
 			l.enableFeatureRecursive(e, f.Name)
@@ -88,7 +74,6 @@ func (l *Linker) enableFeatureRecursive(e *Enabled, name string) {
 	if f == nil {
 		return
 	}
-	// Enable dependencies first
 	for _, dep := range f.Depends {
 		l.enableFeatureRecursive(e, dep)
 	}
@@ -125,10 +110,8 @@ func (l *Linker) platformEnabled(platform string) bool {
 func (l *Linker) tagPlatform(ext *Extension) {
 	for _, req := range ext.Requires {
 		for _, cName := range req.Commands {
-			if goName, ok := l.cToGoCmd[cName]; ok {
-				if cmd, ok := l.Registry.Commands[goName]; ok {
-					cmd.Platform = ext.Platform
-				}
+			if cmd, ok := l.Registry.Commands[cName]; ok {
+				cmd.Platform = ext.Platform
 			}
 		}
 		for _, cName := range req.Types {
@@ -144,13 +127,13 @@ func (l *Linker) tagPlatform(ext *Extension) {
 	}
 }
 
-// enableRequireBlocks translates C names from the XML require blocks into Go
-// names and marks them enabled.
+// enableRequireBlocks translates C names from the XML require blocks into
+// enabled sets. Commands are enabled by CName; types/enums/bitmasks by Go name.
 func (l *Linker) enableRequireBlocks(e *Enabled, reqs []RequireBlock) {
 	for _, r := range reqs {
 		for _, cName := range r.Commands {
-			if goName, ok := l.cToGoCmd[cName]; ok {
-				e.Commands[goName] = true
+			if _, ok := l.Registry.Commands[cName]; ok {
+				e.Commands[cName] = true
 			}
 		}
 		for _, cName := range r.Types {
@@ -176,8 +159,8 @@ func (l *Linker) resolveDependencies(e *Enabled) {
 	for changed {
 		changed = false
 
-		for goName := range e.Commands {
-			cmd := l.Registry.Commands[goName]
+		for cName := range e.Commands {
+			cmd := l.Registry.Commands[cName]
 			if cmd == nil {
 				continue
 			}
@@ -319,9 +302,9 @@ func (l *Linker) buildReducedRegistry(e *Enabled) *Registry {
 			out.Handles[name] = v
 		}
 	}
-	for name := range e.Commands {
-		if v, ok := l.Registry.Commands[name]; ok {
-			out.Commands[name] = v
+	for cName := range e.Commands {
+		if v, ok := l.Registry.Commands[cName]; ok {
+			out.Commands[cName] = v
 			// Detect commands that create a handle from a callback-bearing struct.
 			// For such commands, the param's callbackCleanupFn must be attached to
 			// the returned handle so the holder outlives the create call.

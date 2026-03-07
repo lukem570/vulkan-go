@@ -364,8 +364,8 @@ type FuncPointerParam struct {
 // GoFuncPointer represents a Vulkan PFN_vk* function pointer type.
 // Generate() emits a proper Go func type with the full signature.
 type GoFuncPointer struct {
-	CTypeName  string // e.g. PFN_vkAllocationFunction
-	GoTypeName string // e.g. AllocationFunction
+	CTypeName  string             // e.g. PFN_vkAllocationFunction
+	GoTypeName string             // e.g. AllocationFunction
 	Return     FieldType          // nil means void return
 	Params     []FuncPointerParam // may be empty until resolved
 }

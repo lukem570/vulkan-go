@@ -43,8 +43,8 @@ type CParam struct {
 // OutParam describes a parameter that is an output pointer in C but a return
 // value in Go.
 type OutParam struct {
-	Name       string
-	Type       FieldType
+	Name         string
+	Type         FieldType
 	IsArray      bool   // true when the output is an array (e.g. pPipelines with len=createInfoCount)
 	CountGoParam string // Go param name that holds the count (e.g. "createInfoCount")
 }
@@ -378,32 +378,3 @@ func (c *GoCommand) GenerateCWrapperImpl() string {
 	return b.String()
 }
 
-// zeroValue returns the Go zero value expression for a type.
-// Pointer types use nil, structs use Type{}, primitives use 0.
-func zeroValue(t FieldType) string {
-	switch t.(type) {
-	case *Pointer, *Handle, *VoidPtr:
-		return "nil"
-	case *StructType:
-		return t.GoName() + "{}"
-	case *Bool:
-		return "false"
-	case *String:
-		return `""`
-	default:
-		goName := t.GoName()
-		// If it starts with uppercase or contains brackets, it's a named/complex type
-		if len(goName) > 0 && goName[0] >= 'A' && goName[0] <= 'Z' {
-			return goName + "{}"
-		}
-		return "0"
-	}
-}
-
-func sanitizeIdent(s string) string {
-	s = strings.TrimPrefix(s, "p")
-	if s == "" {
-		return "val"
-	}
-	return strings.ToLower(s[:1]) + s[1:]
-}

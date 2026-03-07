@@ -8,6 +8,7 @@ import (
 )
 
 var fixedArrayRe = regexp.MustCompile(`\[(\d+)\]`)
+var namedArrayRe = regexp.MustCompile(`\[<enum>(\w+)</enum>\]`)
 
 // namedArrayConstants maps Vulkan constant names to their integer values.
 var namedArrayConstants = map[string]int{
@@ -84,8 +85,7 @@ func fixedArraySize(m XMLMember) int {
 	}
 
 	// Try named constant: [<enum>VK_MAX_FOO</enum>]
-	enumRe := regexp.MustCompile(`\[<enum>(\w+)</enum>\]`)
-	enumMatch := enumRe.FindStringSubmatch(after)
+	enumMatch := namedArrayRe.FindStringSubmatch(after)
 	if enumMatch != nil {
 		if val, ok := namedArrayConstants[enumMatch[1]]; ok {
 			return val
@@ -210,7 +210,6 @@ func parseStruct(t XMLType, handles map[string]*generator.GoHandle, funcPointers
 	}
 
 	s.HasSType, s.SType = detectSType(t)
-
 
 	// Build a map of countField → fieldItCounts so we can mark them
 	// e.g. descriptorSetCount → pDescriptorSets
@@ -350,4 +349,3 @@ func detectSType(t XMLType) (bool, string) {
 	goName := UpperSnakeToPascal(sTypeValue)
 	return true, goName
 }
-

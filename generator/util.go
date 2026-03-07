@@ -5,6 +5,7 @@ import (
 	"go/format"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func versionLE(featureName string, target string) bool {
@@ -53,4 +54,54 @@ func WriteCFile(path string, contents string) error {
 		return err
 	}
 	return os.WriteFile(path, []byte(contents), 0644)
+}
+
+// lowerFirstChar lowercases the first character of s.
+func lowerFirstChar(s string) string {
+	if s == "" {
+		return ""
+	}
+	return strings.ToLower(s[:1]) + s[1:]
+}
+
+// sanitizeCField escapes C field names that are Go keywords.
+func sanitizeCField(name string) string {
+	switch name {
+	case "type":
+		return "_type"
+	case "range":
+		return "_range"
+	default:
+		return name
+	}
+}
+
+// sanitizeIdent strips a leading 'p' pointer prefix and lowercases the result,
+// turning e.g. "pCreateInfo" into "createInfo".
+func sanitizeIdent(s string) string {
+	s = strings.TrimPrefix(s, "p")
+	if s == "" {
+		return "val"
+	}
+	return strings.ToLower(s[:1]) + s[1:]
+}
+
+// zeroValue returns the Go zero-value expression for a FieldType.
+func zeroValue(t FieldType) string {
+	switch t.(type) {
+	case *Pointer, *Handle, *VoidPtr:
+		return "nil"
+	case *StructType:
+		return t.GoName() + "{}"
+	case *Bool:
+		return "false"
+	case *String:
+		return `""`
+	default:
+		goName := t.GoName()
+		if len(goName) > 0 && goName[0] >= 'A' && goName[0] <= 'Z' {
+			return goName + "{}"
+		}
+		return "0"
+	}
 }

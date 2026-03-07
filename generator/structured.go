@@ -6,11 +6,11 @@ import (
 )
 
 type StructField struct {
-	GoName    string
-	CName     string
-	CountFor  string // if non-empty, this field is the count for field CountFor (skip in Go)
+	GoName     string
+	CName      string
+	CountFor   string // if non-empty, this field is the count for field CountFor (skip in Go)
 	CountCName string // C name of the count field
-	Type      FieldType
+	Type       FieldType
 }
 
 type Structured struct {
@@ -602,20 +602,3 @@ func (s *Structured) userDataField() (goName, cName string) {
 	return "", ""
 }
 
-func lowerFirstChar(s string) string {
-	if s == "" {
-		return ""
-	}
-	return strings.ToLower(s[:1]) + s[1:]
-}
-
-func sanitizeCField(name string) string {
-	switch name {
-	case "type":
-		return "_type"
-	case "range":
-		return "_range"
-	default:
-		return name
-	}
-}

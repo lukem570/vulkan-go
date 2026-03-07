@@ -232,13 +232,3 @@ func makeExtendedEnumElement(val XMLRequireEnum, parent *generator.Enum, extNumb
 
 	return el
 }
-
-func stripEnumSuffix(name string) string {
-	suffixes := []string{"_KHR", "_EXT", "_NV", "_AMD", "_INTEL", "_ARM", "_VALVE", "_MESA", "_IMG", "_QCOM", "_FB", "_SEC", "_HUAWEI"}
-	for _, suf := range suffixes {
-		if strings.HasSuffix(name, suf) {
-			return strings.TrimSuffix(name, suf)
-		}
-	}
-	return name
-}

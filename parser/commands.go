@@ -42,18 +42,11 @@ func parseCommands(x *XMLRegistry, r *generator.Registry) {
 		}
 		c := buildCommand(cmd, r.Handles, r.FuncPointers, r.Structs)
 		if c != nil {
-			var idx int
-			for r.Commands[string(rune(idx))+c.Name] != nil {
-				idx++
-			}
-
-			r.Commands[string(rune(idx))+c.Name] = c
+			r.Commands[c.CName] = c
 		}
 	}
 }
 
-// extractCType reconstructs the full C type string from an XML param's InnerXML.
-// e.g. "const <type>VkAllocationCallbacks</type>* <name>pAllocator</name>" -> "const VkAllocationCallbacks*"
 // extractCType reconstructs the full C type string from an XML param's InnerXML.
 // e.g. "const <type>VkAllocationCallbacks</type>* <name>pAllocator</name>" -> "const VkAllocationCallbacks*"
 // Array params like "const <type>float</type> <name>blendConstants</name>[4]" -> "const float*"
@@ -114,12 +107,10 @@ func buildCommand(cmd XMLCommand, handles map[string]*generator.GoHandle, funcPo
 
 	// Build CParams from all XML params
 	for _, p := range cmd.Params {
-
 		if seen[p.Name] {
 			continue
 		}
 		seen[p.Name] = true
-
 		c.CParams = append(c.CParams, generator.CParam{
 			Type: extractCType(p.InnerXML),
 			Name: p.Name,
@@ -218,7 +209,6 @@ func buildCommand(cmd XMLCommand, handles map[string]*generator.GoHandle, funcPo
 
 	// ---- Regular input params -----------------------------------------------
 	for _, p := range params {
-
 		if seen[p.Name] {
 			continue
 		}
@@ -253,7 +243,7 @@ func methodName(cName string, handle string) string {
 	name = strings.ReplaceAll(name, handle, "")
 
 	if prefixes, ok := receiverPrefixes[handle]; ok {
-		for _, prefix := range prefixes  {
+		for _, prefix := range prefixes {
 			name = strings.TrimPrefix(name, prefix)
 		}
 	}
