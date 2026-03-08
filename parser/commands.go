@@ -35,7 +35,7 @@ type XMLParam struct {
 	InnerXML string `xml:",innerxml"`
 }
 
-func parseCommands(x *XMLRegistry, r *generator.Registry) {
+func (x *XMLRegistry) parseCommands(r *generator.Registry) {
 	for _, cmd := range x.Commands.Commands {
 		if cmd.Alias != "" {
 			continue
@@ -93,7 +93,13 @@ func extractCType(innerXML string) string {
 	return s
 }
 
-func buildCommand(cmd XMLCommand, handles map[string]*generator.GoHandle, funcPointers map[string]*generator.GoFuncPointer, structs map[string]*generator.Structured) *generator.GoCommand {
+func buildCommand(
+	cmd XMLCommand, 
+	handles map[string]*generator.GoHandle, 
+	funcPointers map[string]*generator.GoFuncPointer, 
+	structs map[string]*generator.Structured,
+) *generator.GoCommand {
+
 	rawName := cmd.Proto.Name
 	returnTypeName := cmd.Proto.Type
 

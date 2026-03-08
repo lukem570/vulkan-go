@@ -136,8 +136,8 @@ func (s *XlibSurfaceCreateInfoKHR) fromC(p *C.VkXlibSurfaceCreateInfoKHR) {
 }
 
 func (h Instance) CreateWaylandSurfaceKHR(
-	createInfo *WaylandSurfaceCreateInfoKHR,
-	allocator *AllocationCallbacks,
+	CreateInfo *WaylandSurfaceCreateInfoKHR,
+	Allocator *AllocationCallbacks,
 ) (*SurfaceKHR, error) {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -146,17 +146,17 @@ func (h Instance) CreateWaylandSurfaceKHR(
 		}
 	}()
 
-	// param createInfo
+	// param CreateInfo
 	var ptr1 *C.VkWaylandSurfaceCreateInfoKHR
-	if createInfo != nil {
-		val2, cancel3 := createInfo.toC()
+	if CreateInfo != nil {
+		val2, cancel3 := CreateInfo.toC()
 		cancels = append(cancels, cancel3)
 		ptr1 = (*C.VkWaylandSurfaceCreateInfoKHR)(val2)
 	}
-	// param allocator
+	// param Allocator
 	var ptr5 *C.VkAllocationCallbacks
-	if allocator != nil {
-		val6, cancel7 := allocator.toC()
+	if Allocator != nil {
+		val6, cancel7 := Allocator.toC()
 		cancels = append(cancels, cancel7)
 		ptr5 = (*C.VkAllocationCallbacks)(val6)
 	}
@@ -170,8 +170,8 @@ func (h Instance) CreateWaylandSurfaceKHR(
 }
 
 func (h Instance) CreateXcbSurfaceKHR(
-	createInfo *XcbSurfaceCreateInfoKHR,
-	allocator *AllocationCallbacks,
+	CreateInfo *XcbSurfaceCreateInfoKHR,
+	Allocator *AllocationCallbacks,
 ) (*SurfaceKHR, error) {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -180,17 +180,17 @@ func (h Instance) CreateXcbSurfaceKHR(
 		}
 	}()
 
-	// param createInfo
+	// param CreateInfo
 	var ptr1 *C.VkXcbSurfaceCreateInfoKHR
-	if createInfo != nil {
-		val2, cancel3 := createInfo.toC()
+	if CreateInfo != nil {
+		val2, cancel3 := CreateInfo.toC()
 		cancels = append(cancels, cancel3)
 		ptr1 = (*C.VkXcbSurfaceCreateInfoKHR)(val2)
 	}
-	// param allocator
+	// param Allocator
 	var ptr5 *C.VkAllocationCallbacks
-	if allocator != nil {
-		val6, cancel7 := allocator.toC()
+	if Allocator != nil {
+		val6, cancel7 := Allocator.toC()
 		cancels = append(cancels, cancel7)
 		ptr5 = (*C.VkAllocationCallbacks)(val6)
 	}
@@ -204,8 +204,8 @@ func (h Instance) CreateXcbSurfaceKHR(
 }
 
 func (h Instance) CreateXlibSurfaceKHR(
-	createInfo *XlibSurfaceCreateInfoKHR,
-	allocator *AllocationCallbacks,
+	CreateInfo *XlibSurfaceCreateInfoKHR,
+	Allocator *AllocationCallbacks,
 ) (*SurfaceKHR, error) {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -214,17 +214,17 @@ func (h Instance) CreateXlibSurfaceKHR(
 		}
 	}()
 
-	// param createInfo
+	// param CreateInfo
 	var ptr1 *C.VkXlibSurfaceCreateInfoKHR
-	if createInfo != nil {
-		val2, cancel3 := createInfo.toC()
+	if CreateInfo != nil {
+		val2, cancel3 := CreateInfo.toC()
 		cancels = append(cancels, cancel3)
 		ptr1 = (*C.VkXlibSurfaceCreateInfoKHR)(val2)
 	}
-	// param allocator
+	// param Allocator
 	var ptr5 *C.VkAllocationCallbacks
-	if allocator != nil {
-		val6, cancel7 := allocator.toC()
+	if Allocator != nil {
+		val6, cancel7 := Allocator.toC()
 		cancels = append(cancels, cancel7)
 		ptr5 = (*C.VkAllocationCallbacks)(val6)
 	}

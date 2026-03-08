@@ -26,7 +26,9 @@ type XMLRequireTyp struct {
 	Name string `xml:"name,attr"`
 }
 
-func parseFeatures(x *XMLRegistry, r *generator.Registry) {
+func (x *XMLRegistry) parseFeatures() map[string]*generator.Feature {
+	features := make(map[string]*generator.Feature)
+
 	for _, f := range x.Features {
 		feat := &generator.Feature{Name: f.Name}
 		if f.Depends != "" {
@@ -52,6 +54,8 @@ func parseFeatures(x *XMLRegistry, r *generator.Registry) {
 			feat.Requires = append(feat.Requires, block)
 		}
 
-		r.Features[feat.Name] = feat
+		features[feat.Name] = feat
 	}
+
+	return features
 }

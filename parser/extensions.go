@@ -14,7 +14,9 @@ type XMLExtension struct {
 	Requires  []XMLRequire `xml:"require"`
 }
 
-func parseExtensions(x *XMLRegistry, r *generator.Registry) {
+func (x *XMLRegistry) parseExtensions() map[string]*generator.Extension {
+	extensions := make(map[string]*generator.Extension)
+
 	for _, ext := range x.Extensions.Extensions {
 		e := &generator.Extension{
 			Name:      ext.Name,
@@ -36,6 +38,8 @@ func parseExtensions(x *XMLRegistry, r *generator.Registry) {
 			e.Requires = append(e.Requires, block)
 		}
 
-		r.Extensions[e.Name] = e
+		extensions[e.Name] = e
 	}
+
+	return extensions
 }

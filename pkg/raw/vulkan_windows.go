@@ -54,8 +54,8 @@ func (s *Win32SurfaceCreateInfoKHR) fromC(p *C.VkWin32SurfaceCreateInfoKHR) {
 }
 
 func (h Instance) CreateWin32SurfaceKHR(
-	createInfo *Win32SurfaceCreateInfoKHR,
-	allocator *AllocationCallbacks,
+	CreateInfo *Win32SurfaceCreateInfoKHR,
+	Allocator *AllocationCallbacks,
 ) (*SurfaceKHR, error) {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -64,17 +64,17 @@ func (h Instance) CreateWin32SurfaceKHR(
 		}
 	}()
 
-	// param createInfo
+	// param CreateInfo
 	var ptr1 *C.VkWin32SurfaceCreateInfoKHR
-	if createInfo != nil {
-		val2, cancel3 := createInfo.toC()
+	if CreateInfo != nil {
+		val2, cancel3 := CreateInfo.toC()
 		cancels = append(cancels, cancel3)
 		ptr1 = (*C.VkWin32SurfaceCreateInfoKHR)(val2)
 	}
-	// param allocator
+	// param Allocator
 	var ptr5 *C.VkAllocationCallbacks
-	if allocator != nil {
-		val6, cancel7 := allocator.toC()
+	if Allocator != nil {
+		val6, cancel7 := Allocator.toC()
 		cancels = append(cancels, cancel7)
 		ptr5 = (*C.VkAllocationCallbacks)(val6)
 	}

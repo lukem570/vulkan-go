@@ -2,6 +2,7 @@ package parser
 
 import (
 	"strings"
+	"unicode"
 
 	"github.com/lukem570/vulkan-go/generator"
 )
@@ -10,17 +11,16 @@ func stripVk(name string) string    { return strings.TrimPrefix(name, "Vk") }
 func stripPFNvk(name string) string { return strings.TrimPrefix(name, "PFN_vk") }
 
 func stripP(name string) string {
-	if strings.HasPrefix(name, "pp") && len(name) > 2 {
-		if name[2] >= 'A' && name[2] <= 'Z' {
-			return lowerFirst(name[2:])
-		}
+	i := 0
+	for strings.HasPrefix(name[i:], "p") {
+		i++
 	}
-	if strings.HasPrefix(name, "p") && len(name) > 1 {
-		if name[1] >= 'A' && name[1] <= 'Z' {
-			return lowerFirst(name[1:])
-		}
+
+	if strings.ToUpper(name[i:])[0] != name[i:][0] {
+		return name
 	}
-	return name
+
+	return name[i:]
 }
 
 func toPublic(name string) string {
@@ -70,14 +70,14 @@ var externalTypes = map[string]*generator.ExternalType{
 	"xcb_visualid_t":   {CTypeName: "xcb_visualid_t", GoTypeName: "uint32"},
 	// Wayland (cgo uses struct_ prefix for C structs)
 	"wl_display": {CTypeName: "struct_wl_display", GoTypeName: "unsafe.Pointer", PtrInVulkan: true},
-	"wl_surface":  {CTypeName: "struct_wl_surface", GoTypeName: "unsafe.Pointer", PtrInVulkan: true},
+	"wl_surface": {CTypeName: "struct_wl_surface", GoTypeName: "unsafe.Pointer", PtrInVulkan: true},
 	// Win32
-	"HINSTANCE": {CTypeName: "HINSTANCE", GoTypeName: "unsafe.Pointer"},
-	"HWND":      {CTypeName: "HWND", GoTypeName: "unsafe.Pointer"},
-	"HMONITOR":  {CTypeName: "HMONITOR", GoTypeName: "unsafe.Pointer"},
-	"DWORD":     {CTypeName: "DWORD", GoTypeName: "uint32"},
-	"LPCWSTR":   {CTypeName: "LPCWSTR", GoTypeName: "unsafe.Pointer"},
-	"HANDLE":    {CTypeName: "HANDLE", GoTypeName: "unsafe.Pointer"},
+	"HINSTANCE":           {CTypeName: "HINSTANCE", GoTypeName: "unsafe.Pointer"},
+	"HWND":                {CTypeName: "HWND", GoTypeName: "unsafe.Pointer"},
+	"HMONITOR":            {CTypeName: "HMONITOR", GoTypeName: "unsafe.Pointer"},
+	"DWORD":               {CTypeName: "DWORD", GoTypeName: "uint32"},
+	"LPCWSTR":             {CTypeName: "LPCWSTR", GoTypeName: "unsafe.Pointer"},
+	"HANDLE":              {CTypeName: "HANDLE", GoTypeName: "unsafe.Pointer"},
 	"SECURITY_ATTRIBUTES": {CTypeName: "SECURITY_ATTRIBUTES", GoTypeName: "unsafe.Pointer", PtrInVulkan: true},
 	// Metal / macOS
 	"CAMetalLayer": {CTypeName: "CAMetalLayer", GoTypeName: "unsafe.Pointer", PtrInVulkan: true},
@@ -163,42 +163,52 @@ func resolveFieldType(
 	return named
 }
 
-func primitiveType(name string) generator.FieldType {
-	switch name {
-	case "uint8_t":
-		return generator.NewPrimitive("uint8_t", "uint8")
-	case "uint16_t":
-		return generator.NewPrimitive("uint16_t", "uint16")
-	case "uint32_t":
-		return generator.NewPrimitive("uint32_t", "uint32")
-	case "uint64_t":
-		return generator.NewPrimitive("uint64_t", "uint64")
-	case "int8_t":
-		return generator.NewPrimitive("int8_t", "int8")
-	case "int16_t":
-		return generator.NewPrimitive("int16_t", "int16")
-	case "int32_t":
-		return generator.NewPrimitive("int32_t", "int32")
-	case "int64_t":
-		return generator.NewPrimitive("int64_t", "int64")
-	case "float":
-		return generator.NewPrimitive("float", "float32")
-	case "double":
-		return generator.NewPrimitive("double", "float64")
-	case "size_t":
-		return generator.NewPrimitive("size_t", "uintptr")
-	case "int":
-		return generator.NewPrimitive("int", "int32")
-	case "char":
-		return generator.NewPrimitive("char", "byte")
-	case "VkBool32":
+var primitiveMap = map[string]string{
+	"int": "int32",
+
+	"int8_t":  "int8",
+	"int16_t": "int16",
+	"int32_t": "int32",
+	"int64_t": "int64",
+
+	"uint8_t":  "uint8",
+	"uint16_t": "uint16",
+	"uint32_t": "uint32",
+	"uint64_t": "uint64",
+
+	"size_t": "uintptr",
+
+	"float":  "float32",
+	"double": "float64",
+
+	"char": "byte",
+
+	"VkDeviceSize":    "uint64",
+	"VkDeviceAddress": "uint64",
+	"VkSampleMask":    "uint32",
+}
+
+func primitiveType(cName string) generator.FieldType {
+	if cName == "VkBool32" {
 		return &generator.Bool{}
-	case "VkDeviceSize":
-		return generator.NewPrimitive("VkDeviceSize", "uint64")
-	case "VkDeviceAddress":
-		return generator.NewPrimitive("VkDeviceAddress", "uint64")
-	case "VkSampleMask":
-		return generator.NewPrimitive("VkSampleMask", "uint32")
 	}
-	return nil
+
+	goName, ok := primitiveMap[cName]
+	if !ok {
+		return nil
+	}
+
+	return generator.NewPrimitive(cName, goName)
+}
+
+func extractDigits(s string) string {
+	var digits strings.Builder
+
+	for _, r := range s {
+		if unicode.IsDigit(r) || r == '.' {
+			digits.WriteRune(r)
+		}
+	}
+
+	return digits.String()
 }

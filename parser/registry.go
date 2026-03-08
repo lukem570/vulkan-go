@@ -42,28 +42,26 @@ func ParseXML(path string) (*XMLRegistry, error) {
 
 func BuildRegistry(x *XMLRegistry) *generator.Registry {
 	r := &generator.Registry{
-		Enums:        make(map[string]*generator.Enum),
+		Enums:        x.parseEnums(),
+		APIConstants: x.parseConstants(),
 		Bitmasks:     make(map[string]*generator.Bitmask),
 		Structs:      make(map[string]*generator.Structured),
 		Handles:      make(map[string]*generator.GoHandle),
 		Commands:     make(map[string]*generator.GoCommand),
-		Features:     make(map[string]*generator.Feature),
-		Extensions:   make(map[string]*generator.Extension),
+		Features:     x.parseFeatures(),
+		Extensions:   x.parseExtensions(),
 		FuncPointers: make(map[string]*generator.GoFuncPointer),
 		Platforms:    make(map[string]string),
 	}
 
-	// Parse platform name → protect macro mapping
 	for _, p := range x.Platforms.Platforms {
 		r.Platforms[p.Name] = p.Protect
 	}
 
-	parseEnums(x, r)
-	parseTypes(x, r)
-	parseCommands(x, r)
-	parseFeatures(x, r)
-	parseExtensions(x, r)
-	applyEnumExtensions(x, r)
+	
+	x.parseTypes(r)
+	x.parseCommands(r)
+	x.applyEnumExtensions(r)
 
 	return r
 }

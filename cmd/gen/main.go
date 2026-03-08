@@ -32,7 +32,7 @@ func main() {
 
 	err = generator.WriteFile("pkg/raw/vulkan.go", output)
 	if err != nil {
-		log.Fatalf("WriteFile: %v", err)
+		log.Fatalf("WriteFile (base): %v", err)
 	}
 
 	callbacksOutput := reduced.GenerateCallbacksFile("vulkan")
@@ -62,6 +62,11 @@ func main() {
 		log.Fatalf("WriteCFile (source): %v", err)
 	}
 
-	log.Printf("Generated pkg/raw/vulkan.go, volk_wrappers.{c,h} (%d commands, %d structs, %d enums, %d handles)",
-		len(reduced.Commands), len(reduced.Structs), len(reduced.Enums), len(reduced.Handles))
+	log.Printf(
+		"Generated pkg/raw/vulkan.go, volk_wrappers.{c,h} (%d commands, %d structs, %d enums, %d handles)",
+		len(reduced.Commands), 
+		len(reduced.Structs), 
+		len(reduced.Enums), 
+		len(reduced.Handles),
+	)
 }

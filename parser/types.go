@@ -95,7 +95,7 @@ func fixedArraySize(m XMLMember) int {
 	return 0
 }
 
-func parseTypes(x *XMLRegistry, r *generator.Registry) {
+func (x *XMLRegistry) parseTypes(r *generator.Registry) {
 	// First pass: collect all handle names so we can reference them in structs/params
 	for _, t := range x.Types.Types {
 		if t.Category == "handle" {

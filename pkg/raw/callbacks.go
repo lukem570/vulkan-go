@@ -25,7 +25,7 @@ var allocationCallbacksCallbackRegistry sync.Map
 
 //export go_bridge_AllocationCallbacks_PfnAllocation
 func go_bridge_AllocationCallbacks_PfnAllocation(p0 unsafe.Pointer, p1 C.size_t, p2 C.size_t, p3 C.VkSystemAllocationScope) unsafe.Pointer {
-	v, ok := allocationCallbacksCallbackRegistry.Load(p0)
+	v, ok := allocationCallbacksCallbackRegistry.Load(p3)
 	if !ok {
 		return nil
 	}
@@ -33,13 +33,13 @@ func go_bridge_AllocationCallbacks_PfnAllocation(p0 unsafe.Pointer, p1 C.size_t,
 	if holder.PfnAllocation == nil {
 		return nil
 	}
-	result := holder.PfnAllocation(holder.UserData, uintptr(p1), uintptr(p2), SystemAllocationScope(p3))
+	result := holder.PfnAllocation(p0, uintptr(p1), uintptr(p2), SystemAllocationScope(p3))
 	return result
 }
 
 //export go_bridge_AllocationCallbacks_PfnReallocation
 func go_bridge_AllocationCallbacks_PfnReallocation(p0 unsafe.Pointer, p1 unsafe.Pointer, p2 C.size_t, p3 C.size_t, p4 C.VkSystemAllocationScope) unsafe.Pointer {
-	v, ok := allocationCallbacksCallbackRegistry.Load(p0)
+	v, ok := allocationCallbacksCallbackRegistry.Load(p4)
 	if !ok {
 		return nil
 	}
@@ -47,13 +47,13 @@ func go_bridge_AllocationCallbacks_PfnReallocation(p0 unsafe.Pointer, p1 unsafe.
 	if holder.PfnReallocation == nil {
 		return nil
 	}
-	result := holder.PfnReallocation(holder.UserData, p1, uintptr(p2), uintptr(p3), SystemAllocationScope(p4))
+	result := holder.PfnReallocation(p0, p1, uintptr(p2), uintptr(p3), SystemAllocationScope(p4))
 	return result
 }
 
 //export go_bridge_AllocationCallbacks_PfnFree
 func go_bridge_AllocationCallbacks_PfnFree(p0 unsafe.Pointer, p1 unsafe.Pointer) {
-	v, ok := allocationCallbacksCallbackRegistry.Load(p0)
+	v, ok := allocationCallbacksCallbackRegistry.Load(p1)
 	if !ok {
 		return
 	}
@@ -61,12 +61,12 @@ func go_bridge_AllocationCallbacks_PfnFree(p0 unsafe.Pointer, p1 unsafe.Pointer)
 	if holder.PfnFree == nil {
 		return
 	}
-	holder.PfnFree(holder.UserData, p1)
+	holder.PfnFree(p0, p1)
 }
 
 //export go_bridge_AllocationCallbacks_PfnInternalAllocation
 func go_bridge_AllocationCallbacks_PfnInternalAllocation(p0 unsafe.Pointer, p1 C.size_t, p2 C.VkInternalAllocationType, p3 C.VkSystemAllocationScope) {
-	v, ok := allocationCallbacksCallbackRegistry.Load(p0)
+	v, ok := allocationCallbacksCallbackRegistry.Load(p3)
 	if !ok {
 		return
 	}
@@ -74,12 +74,12 @@ func go_bridge_AllocationCallbacks_PfnInternalAllocation(p0 unsafe.Pointer, p1 C
 	if holder.PfnInternalAllocation == nil {
 		return
 	}
-	holder.PfnInternalAllocation(holder.UserData, uintptr(p1), InternalAllocationType(p2), SystemAllocationScope(p3))
+	holder.PfnInternalAllocation(p0, uintptr(p1), InternalAllocationType(p2), SystemAllocationScope(p3))
 }
 
 //export go_bridge_AllocationCallbacks_PfnInternalFree
 func go_bridge_AllocationCallbacks_PfnInternalFree(p0 unsafe.Pointer, p1 C.size_t, p2 C.VkInternalAllocationType, p3 C.VkSystemAllocationScope) {
-	v, ok := allocationCallbacksCallbackRegistry.Load(p0)
+	v, ok := allocationCallbacksCallbackRegistry.Load(p3)
 	if !ok {
 		return
 	}
@@ -87,7 +87,7 @@ func go_bridge_AllocationCallbacks_PfnInternalFree(p0 unsafe.Pointer, p1 C.size_
 	if holder.PfnInternalFree == nil {
 		return
 	}
-	holder.PfnInternalFree(holder.UserData, uintptr(p1), InternalAllocationType(p2), SystemAllocationScope(p3))
+	holder.PfnInternalFree(p0, uintptr(p1), InternalAllocationType(p2), SystemAllocationScope(p3))
 }
 
 type debugUtilsMessengerCreateInfoEXTCallbacks struct {
@@ -111,7 +111,7 @@ func go_bridge_DebugUtilsMessengerCreateInfoEXT_PfnUserCallback(p0 C.VkDebugUtil
 		var _go_p2 DebugUtilsMessengerCallbackDataEXT
 		_go_p2.fromC(p2)
 		return &_go_p2
-	}(), holder.UserData)
+	}(), p3)
 	if result {
 		return C.VkBool32(1)
 	}
