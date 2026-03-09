@@ -1,8 +1,18 @@
 version: '3'
 
 tasks:
+  copy-mod:
+    desc: Copy the submodules
+    cmds:
+      - git submodule update --init --recursive
+      - cp -r ./mod/volk ./mod/cp-volk
+      - cp -r ./mod/Vulkan-Headers ./mod/cp-Vulkan-Headers
+      - find ./mod/cp-Vulkan-Headers -type f -name ".git" -exec rm -rf {} +
+      - find ./mod/cp-volk -type f -name ".git" -exec rm -rf {} +
+
   generate:
     desc: Generate the go bindings
+    deps: [ 'copy-mod' ]
     cmds:
       - rm -rf ./pkg/raw
       - mkdir -p ./pkg/raw

@@ -1,7 +1,7 @@
 package vulkan
 
 /*
-#cgo CFLAGS: -I./../../mod/Vulkan-Headers/include -I./../../mod/volk
+#cgo CFLAGS: -I./../../mod/cp-Vulkan-Headers/include -I./../../mod/cp-volk
 #cgo LDFLAGS: -ldl
 #include <stdlib.h>
 #include <string.h>
