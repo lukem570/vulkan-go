@@ -9,13 +9,10 @@ import (
 	"unsafe"
 
 	vk "github.com/lukem570/vulkan-go/pkg/raw"
+	"github.com/lukem570/vulkan-go/pkg/util"
 )
 
 var _ embed.FS
-
-func VkMakeApiVersion(variant, major, minor, patch uint32) uint32 {
-	return (variant << 29) | (major << 22) | (minor << 12) | patch
-}
 
 func bytesToUint32(b []byte) []uint32 {
 	n := len(b) / 4
@@ -53,7 +50,7 @@ func run() error {
 			ApplicationVersion: 1,
 			EngineName:         "vulkan-go",
 			EngineVersion:      1,
-			ApiVersion:         VkMakeApiVersion(0, 1, 4, 0),
+			ApiVersion:         vkutil.VkMakeApiVersion(0, 1, 4, 0),
 		},
 		EnabledLayerNames: []string{
 			"VK_LAYER_KHRONOS_validation",

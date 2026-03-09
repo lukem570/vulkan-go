@@ -7,11 +7,8 @@ import (
 
 	"github.com/go-gl/glfw/v3.3/glfw"
 	vk "github.com/lukem570/vulkan-go/pkg/raw"
+	"github.com/lukem570/vulkan-go/pkg/util"
 )
-
-func VkMakeApiVersion(variant, major, minor, patch uint32) uint32 {
-	return (variant << 29) | (major << 22) | (minor << 12) | patch
-}
 
 func main() {
 	if err := run(); err != nil {
@@ -51,7 +48,7 @@ func run() error {
 			ApplicationVersion: 1,
 			EngineName:         "vulkan-go",
 			EngineVersion:      1,
-			ApiVersion:         VkMakeApiVersion(0, 1, 4, 0),
+			ApiVersion:         vkutil.VkMakeApiVersion(0, 1, 4, 0),
 		},
 		EnabledLayerNames: []string{
 			"VK_LAYER_KHRONOS_validation",
