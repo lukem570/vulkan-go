@@ -96,6 +96,7 @@ type APIConstant struct {
 type Registry struct {
 	Enums        map[string]*Enum
 	Bitmasks     map[string]*Bitmask
+	EnumAliases  map[string]*EnumAlias
 	Structs      map[string]*Structured
 	Handles      map[string]*GoHandle
 	Commands     map[string]*GoCommand
@@ -156,6 +157,10 @@ func (r *Registry) GeneratePackage(pkg string) string {
 		if r.Handles[k].Platform == "" {
 			b.WriteString(r.Handles[k].Generate())
 		}
+	}
+	
+	for _, k := range r.EnumAliases {
+		b.WriteString(k.Generate())
 	}
 
 	// FuncPointers

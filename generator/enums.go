@@ -21,6 +21,13 @@ type Bitmask struct {
 	BitsEnum *Enum
 }
 
+type EnumAlias struct {
+	CName string
+	GoName  string
+
+	Alias string
+}
+
 type EnumElement struct {
 	CName    string
 	GoName   string
@@ -28,6 +35,14 @@ type EnumElement struct {
 	BitPos   *int
 	Parent   *Enum
 	Platform string // non-empty for platform-specific extension values
+}
+
+func (e *EnumAlias) Generate() string {
+	return fmt.Sprintf(
+		"type %s %s\n\n",
+		e.GoName,
+		e.Alias,
+	)
 }
 
 // SetReserved marks element names that conflict with other Go declarations

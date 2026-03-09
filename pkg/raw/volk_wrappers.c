@@ -97,6 +97,10 @@ void fn_vkCmdBindPipeline(VkCommandBuffer commandBuffer, VkPipelineBindPoint pip
 	vkCmdBindPipeline(commandBuffer, pipelineBindPoint, pipeline);
 }
 
+void fn_vkCmdBindShadersEXT(VkCommandBuffer commandBuffer, uint32_t stageCount, const VkShaderStageFlagBits* pStages, const VkShaderEXT* pShaders) {
+	vkCmdBindShadersEXT(commandBuffer, stageCount, pStages, pShaders);
+}
+
 void fn_vkCmdBindVertexBuffers(VkCommandBuffer commandBuffer, uint32_t firstBinding, uint32_t bindingCount, const VkBuffer* pBuffers, const VkDeviceSize* pOffsets) {
 	vkCmdBindVertexBuffers(commandBuffer, firstBinding, bindingCount, pBuffers, pOffsets);
 }
@@ -289,8 +293,60 @@ void fn_vkCmdResolveImage2(VkCommandBuffer commandBuffer, const VkResolveImageIn
 	vkCmdResolveImage2(commandBuffer, pResolveImageInfo);
 }
 
+void fn_vkCmdSetAlphaToCoverageEnableEXT(VkCommandBuffer commandBuffer, VkBool32 alphaToCoverageEnable) {
+	vkCmdSetAlphaToCoverageEnableEXT(commandBuffer, alphaToCoverageEnable);
+}
+
+void fn_vkCmdSetAlphaToOneEnableEXT(VkCommandBuffer commandBuffer, VkBool32 alphaToOneEnable) {
+	vkCmdSetAlphaToOneEnableEXT(commandBuffer, alphaToOneEnable);
+}
+
 void fn_vkCmdSetBlendConstants(VkCommandBuffer commandBuffer, const float* blendConstants) {
 	vkCmdSetBlendConstants(commandBuffer, blendConstants);
+}
+
+void fn_vkCmdSetColorBlendAdvancedEXT(VkCommandBuffer commandBuffer, uint32_t firstAttachment, uint32_t attachmentCount, const VkColorBlendAdvancedEXT* pColorBlendAdvanced) {
+	vkCmdSetColorBlendAdvancedEXT(commandBuffer, firstAttachment, attachmentCount, pColorBlendAdvanced);
+}
+
+void fn_vkCmdSetColorBlendEnableEXT(VkCommandBuffer commandBuffer, uint32_t firstAttachment, uint32_t attachmentCount, const VkBool32* pColorBlendEnables) {
+	vkCmdSetColorBlendEnableEXT(commandBuffer, firstAttachment, attachmentCount, pColorBlendEnables);
+}
+
+void fn_vkCmdSetColorBlendEquationEXT(VkCommandBuffer commandBuffer, uint32_t firstAttachment, uint32_t attachmentCount, const VkColorBlendEquationEXT* pColorBlendEquations) {
+	vkCmdSetColorBlendEquationEXT(commandBuffer, firstAttachment, attachmentCount, pColorBlendEquations);
+}
+
+void fn_vkCmdSetColorWriteMaskEXT(VkCommandBuffer commandBuffer, uint32_t firstAttachment, uint32_t attachmentCount, const VkColorComponentFlags* pColorWriteMasks) {
+	vkCmdSetColorWriteMaskEXT(commandBuffer, firstAttachment, attachmentCount, pColorWriteMasks);
+}
+
+void fn_vkCmdSetConservativeRasterizationModeEXT(VkCommandBuffer commandBuffer, VkConservativeRasterizationModeEXT conservativeRasterizationMode) {
+	vkCmdSetConservativeRasterizationModeEXT(commandBuffer, conservativeRasterizationMode);
+}
+
+void fn_vkCmdSetCoverageModulationModeNV(VkCommandBuffer commandBuffer, VkCoverageModulationModeNV coverageModulationMode) {
+	vkCmdSetCoverageModulationModeNV(commandBuffer, coverageModulationMode);
+}
+
+void fn_vkCmdSetCoverageModulationTableEnableNV(VkCommandBuffer commandBuffer, VkBool32 coverageModulationTableEnable) {
+	vkCmdSetCoverageModulationTableEnableNV(commandBuffer, coverageModulationTableEnable);
+}
+
+void fn_vkCmdSetCoverageModulationTableNV(VkCommandBuffer commandBuffer, uint32_t coverageModulationTableCount, const float* pCoverageModulationTable) {
+	vkCmdSetCoverageModulationTableNV(commandBuffer, coverageModulationTableCount, pCoverageModulationTable);
+}
+
+void fn_vkCmdSetCoverageReductionModeNV(VkCommandBuffer commandBuffer, VkCoverageReductionModeNV coverageReductionMode) {
+	vkCmdSetCoverageReductionModeNV(commandBuffer, coverageReductionMode);
+}
+
+void fn_vkCmdSetCoverageToColorEnableNV(VkCommandBuffer commandBuffer, VkBool32 coverageToColorEnable) {
+	vkCmdSetCoverageToColorEnableNV(commandBuffer, coverageToColorEnable);
+}
+
+void fn_vkCmdSetCoverageToColorLocationNV(VkCommandBuffer commandBuffer, uint32_t coverageToColorLocation) {
+	vkCmdSetCoverageToColorLocationNV(commandBuffer, coverageToColorLocation);
 }
 
 void fn_vkCmdSetCullMode(VkCommandBuffer commandBuffer, VkCullModeFlags cullMode) {
@@ -311,6 +367,22 @@ void fn_vkCmdSetDepthBounds(VkCommandBuffer commandBuffer, float minDepthBounds,
 
 void fn_vkCmdSetDepthBoundsTestEnable(VkCommandBuffer commandBuffer, VkBool32 depthBoundsTestEnable) {
 	vkCmdSetDepthBoundsTestEnable(commandBuffer, depthBoundsTestEnable);
+}
+
+void fn_vkCmdSetDepthClampEnableEXT(VkCommandBuffer commandBuffer, VkBool32 depthClampEnable) {
+	vkCmdSetDepthClampEnableEXT(commandBuffer, depthClampEnable);
+}
+
+void fn_vkCmdSetDepthClampRangeEXT(VkCommandBuffer commandBuffer, VkDepthClampModeEXT depthClampMode, const VkDepthClampRangeEXT* pDepthClampRange) {
+	vkCmdSetDepthClampRangeEXT(commandBuffer, depthClampMode, pDepthClampRange);
+}
+
+void fn_vkCmdSetDepthClipEnableEXT(VkCommandBuffer commandBuffer, VkBool32 depthClipEnable) {
+	vkCmdSetDepthClipEnableEXT(commandBuffer, depthClipEnable);
+}
+
+void fn_vkCmdSetDepthClipNegativeOneToOneEXT(VkCommandBuffer commandBuffer, VkBool32 negativeOneToOne) {
+	vkCmdSetDepthClipNegativeOneToOneEXT(commandBuffer, negativeOneToOne);
 }
 
 void fn_vkCmdSetDepthCompareOp(VkCommandBuffer commandBuffer, VkCompareOp depthCompareOp) {
@@ -337,16 +409,44 @@ void fn_vkCmdSetEvent2(VkCommandBuffer commandBuffer, VkEvent event, const VkDep
 	vkCmdSetEvent2(commandBuffer, event, pDependencyInfo);
 }
 
+void fn_vkCmdSetExtraPrimitiveOverestimationSizeEXT(VkCommandBuffer commandBuffer, float extraPrimitiveOverestimationSize) {
+	vkCmdSetExtraPrimitiveOverestimationSizeEXT(commandBuffer, extraPrimitiveOverestimationSize);
+}
+
 void fn_vkCmdSetFrontFace(VkCommandBuffer commandBuffer, VkFrontFace frontFace) {
 	vkCmdSetFrontFace(commandBuffer, frontFace);
+}
+
+void fn_vkCmdSetLineRasterizationModeEXT(VkCommandBuffer commandBuffer, VkLineRasterizationModeEXT lineRasterizationMode) {
+	vkCmdSetLineRasterizationModeEXT(commandBuffer, lineRasterizationMode);
 }
 
 void fn_vkCmdSetLineStipple(VkCommandBuffer commandBuffer, uint32_t lineStippleFactor, uint16_t lineStipplePattern) {
 	vkCmdSetLineStipple(commandBuffer, lineStippleFactor, lineStipplePattern);
 }
 
+void fn_vkCmdSetLineStippleEnableEXT(VkCommandBuffer commandBuffer, VkBool32 stippledLineEnable) {
+	vkCmdSetLineStippleEnableEXT(commandBuffer, stippledLineEnable);
+}
+
 void fn_vkCmdSetLineWidth(VkCommandBuffer commandBuffer, float lineWidth) {
 	vkCmdSetLineWidth(commandBuffer, lineWidth);
+}
+
+void fn_vkCmdSetLogicOpEXT(VkCommandBuffer commandBuffer, VkLogicOp logicOp) {
+	vkCmdSetLogicOpEXT(commandBuffer, logicOp);
+}
+
+void fn_vkCmdSetLogicOpEnableEXT(VkCommandBuffer commandBuffer, VkBool32 logicOpEnable) {
+	vkCmdSetLogicOpEnableEXT(commandBuffer, logicOpEnable);
+}
+
+void fn_vkCmdSetPatchControlPointsEXT(VkCommandBuffer commandBuffer, uint32_t patchControlPoints) {
+	vkCmdSetPatchControlPointsEXT(commandBuffer, patchControlPoints);
+}
+
+void fn_vkCmdSetPolygonModeEXT(VkCommandBuffer commandBuffer, VkPolygonMode polygonMode) {
+	vkCmdSetPolygonModeEXT(commandBuffer, polygonMode);
 }
 
 void fn_vkCmdSetPrimitiveRestartEnable(VkCommandBuffer commandBuffer, VkBool32 primitiveRestartEnable) {
@@ -355,6 +455,18 @@ void fn_vkCmdSetPrimitiveRestartEnable(VkCommandBuffer commandBuffer, VkBool32 p
 
 void fn_vkCmdSetPrimitiveTopology(VkCommandBuffer commandBuffer, VkPrimitiveTopology primitiveTopology) {
 	vkCmdSetPrimitiveTopology(commandBuffer, primitiveTopology);
+}
+
+void fn_vkCmdSetProvokingVertexModeEXT(VkCommandBuffer commandBuffer, VkProvokingVertexModeEXT provokingVertexMode) {
+	vkCmdSetProvokingVertexModeEXT(commandBuffer, provokingVertexMode);
+}
+
+void fn_vkCmdSetRasterizationSamplesEXT(VkCommandBuffer commandBuffer, VkSampleCountFlagBits rasterizationSamples) {
+	vkCmdSetRasterizationSamplesEXT(commandBuffer, rasterizationSamples);
+}
+
+void fn_vkCmdSetRasterizationStreamEXT(VkCommandBuffer commandBuffer, uint32_t rasterizationStream) {
+	vkCmdSetRasterizationStreamEXT(commandBuffer, rasterizationStream);
 }
 
 void fn_vkCmdSetRasterizerDiscardEnable(VkCommandBuffer commandBuffer, VkBool32 rasterizerDiscardEnable) {
@@ -369,12 +481,28 @@ void fn_vkCmdSetRenderingInputAttachmentIndices(VkCommandBuffer commandBuffer, c
 	vkCmdSetRenderingInputAttachmentIndices(commandBuffer, pInputAttachmentIndexInfo);
 }
 
+void fn_vkCmdSetRepresentativeFragmentTestEnableNV(VkCommandBuffer commandBuffer, VkBool32 representativeFragmentTestEnable) {
+	vkCmdSetRepresentativeFragmentTestEnableNV(commandBuffer, representativeFragmentTestEnable);
+}
+
+void fn_vkCmdSetSampleLocationsEnableEXT(VkCommandBuffer commandBuffer, VkBool32 sampleLocationsEnable) {
+	vkCmdSetSampleLocationsEnableEXT(commandBuffer, sampleLocationsEnable);
+}
+
+void fn_vkCmdSetSampleMaskEXT(VkCommandBuffer commandBuffer, VkSampleCountFlagBits samples, const VkSampleMask* pSampleMask) {
+	vkCmdSetSampleMaskEXT(commandBuffer, samples, pSampleMask);
+}
+
 void fn_vkCmdSetScissor(VkCommandBuffer commandBuffer, uint32_t firstScissor, uint32_t scissorCount, const VkRect2D* pScissors) {
 	vkCmdSetScissor(commandBuffer, firstScissor, scissorCount, pScissors);
 }
 
 void fn_vkCmdSetScissorWithCount(VkCommandBuffer commandBuffer, uint32_t scissorCount, const VkRect2D* pScissors) {
 	vkCmdSetScissorWithCount(commandBuffer, scissorCount, pScissors);
+}
+
+void fn_vkCmdSetShadingRateImageEnableNV(VkCommandBuffer commandBuffer, VkBool32 shadingRateImageEnable) {
+	vkCmdSetShadingRateImageEnableNV(commandBuffer, shadingRateImageEnable);
 }
 
 void fn_vkCmdSetStencilCompareMask(VkCommandBuffer commandBuffer, VkStencilFaceFlags faceMask, uint32_t compareMask) {
@@ -397,8 +525,24 @@ void fn_vkCmdSetStencilWriteMask(VkCommandBuffer commandBuffer, VkStencilFaceFla
 	vkCmdSetStencilWriteMask(commandBuffer, faceMask, writeMask);
 }
 
+void fn_vkCmdSetTessellationDomainOriginEXT(VkCommandBuffer commandBuffer, VkTessellationDomainOrigin domainOrigin) {
+	vkCmdSetTessellationDomainOriginEXT(commandBuffer, domainOrigin);
+}
+
+void fn_vkCmdSetVertexInputEXT(VkCommandBuffer commandBuffer, uint32_t vertexBindingDescriptionCount, const VkVertexInputBindingDescription2EXT* pVertexBindingDescriptions, uint32_t vertexAttributeDescriptionCount, const VkVertexInputAttributeDescription2EXT* pVertexAttributeDescriptions) {
+	vkCmdSetVertexInputEXT(commandBuffer, vertexBindingDescriptionCount, pVertexBindingDescriptions, vertexAttributeDescriptionCount, pVertexAttributeDescriptions);
+}
+
 void fn_vkCmdSetViewport(VkCommandBuffer commandBuffer, uint32_t firstViewport, uint32_t viewportCount, const VkViewport* pViewports) {
 	vkCmdSetViewport(commandBuffer, firstViewport, viewportCount, pViewports);
+}
+
+void fn_vkCmdSetViewportSwizzleNV(VkCommandBuffer commandBuffer, uint32_t firstViewport, uint32_t viewportCount, const VkViewportSwizzleNV* pViewportSwizzles) {
+	vkCmdSetViewportSwizzleNV(commandBuffer, firstViewport, viewportCount, pViewportSwizzles);
+}
+
+void fn_vkCmdSetViewportWScalingEnableNV(VkCommandBuffer commandBuffer, VkBool32 viewportWScalingEnable) {
+	vkCmdSetViewportWScalingEnableNV(commandBuffer, viewportWScalingEnable);
 }
 
 void fn_vkCmdSetViewportWithCount(VkCommandBuffer commandBuffer, uint32_t viewportCount, const VkViewport* pViewports) {
@@ -541,6 +685,10 @@ VkResult fn_vkCreateShaderModule(VkDevice device, const VkShaderModuleCreateInfo
 	return vkCreateShaderModule(device, pCreateInfo, pAllocator, pShaderModule);
 }
 
+VkResult fn_vkCreateShadersEXT(VkDevice device, uint32_t createInfoCount, const VkShaderCreateInfoEXT* pCreateInfos, const VkAllocationCallbacks* pAllocator, VkShaderEXT* pShaders) {
+	return vkCreateShadersEXT(device, createInfoCount, pCreateInfos, pAllocator, pShaders);
+}
+
 VkResult fn_vkCreateSwapchainKHR(VkDevice device, const VkSwapchainCreateInfoKHR* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSwapchainKHR* pSwapchain) {
 	return vkCreateSwapchainKHR(device, pCreateInfo, pAllocator, pSwapchain);
 }
@@ -635,6 +783,10 @@ void fn_vkDestroySamplerYcbcrConversion(VkDevice device, VkSamplerYcbcrConversio
 
 void fn_vkDestroySemaphore(VkDevice device, VkSemaphore semaphore, const VkAllocationCallbacks* pAllocator) {
 	vkDestroySemaphore(device, semaphore, pAllocator);
+}
+
+void fn_vkDestroyShaderEXT(VkDevice device, VkShaderEXT shader, const VkAllocationCallbacks* pAllocator) {
+	vkDestroyShaderEXT(device, shader, pAllocator);
 }
 
 void fn_vkDestroyShaderModule(VkDevice device, VkShaderModule shaderModule, const VkAllocationCallbacks* pAllocator) {
@@ -919,6 +1071,10 @@ void fn_vkGetRenderingAreaGranularity(VkDevice device, const VkRenderingAreaInfo
 
 VkResult fn_vkGetSemaphoreCounterValue(VkDevice device, VkSemaphore semaphore, uint64_t* pValue) {
 	return vkGetSemaphoreCounterValue(device, semaphore, pValue);
+}
+
+VkResult fn_vkGetShaderBinaryDataEXT(VkDevice device, VkShaderEXT shader, size_t* pDataSize, void* pData) {
+	return vkGetShaderBinaryDataEXT(device, shader, pDataSize, pData);
 }
 
 VkResult fn_vkGetSwapchainImagesKHR(VkDevice device, VkSwapchainKHR swapchain, uint32_t* pSwapchainImageCount, VkImage* pSwapchainImages) {

@@ -12,18 +12,18 @@ var namedArrayRe = regexp.MustCompile(`\[<enum>(\w+)</enum>\]`)
 
 // namedArrayConstants maps Vulkan constant names to their integer values.
 var namedArrayConstants = map[string]int{
-	"VK_MAX_PHYSICAL_DEVICE_NAME_SIZE": 256,
-	"VK_UUID_SIZE":                     16,
-	"VK_LUID_SIZE":                     8,
-	"VK_MAX_EXTENSION_NAME_SIZE":       256,
-	"VK_MAX_DESCRIPTION_SIZE":          256,
-	"VK_MAX_MEMORY_TYPES":              32,
-	"VK_MAX_MEMORY_HEAPS":              16,
-	"VK_MAX_DEVICE_GROUP_SIZE":         32,
-	"VK_MAX_DRIVER_NAME_SIZE":          256,
-	"VK_MAX_DRIVER_INFO_SIZE":          256,
-	"VK_MAX_GLOBAL_PRIORITY_SIZE_KHR":  16,
-	"VK_MAX_GLOBAL_PRIORITY_SIZE":      16,
+	"VK_MAX_PHYSICAL_DEVICE_NAME_SIZE":         256,
+	"VK_UUID_SIZE":                             16,
+	"VK_LUID_SIZE":                             8,
+	"VK_MAX_EXTENSION_NAME_SIZE":               256,
+	"VK_MAX_DESCRIPTION_SIZE":                  256,
+	"VK_MAX_MEMORY_TYPES":                      32,
+	"VK_MAX_MEMORY_HEAPS":                      16,
+	"VK_MAX_DEVICE_GROUP_SIZE":                 32,
+	"VK_MAX_DRIVER_NAME_SIZE":                  256,
+	"VK_MAX_DRIVER_INFO_SIZE":                  256,
+	"VK_MAX_GLOBAL_PRIORITY_SIZE_KHR":          16,
+	"VK_MAX_GLOBAL_PRIORITY_SIZE":              16,
 	"VK_MAX_SHADER_MODULE_IDENTIFIER_SIZE_EXT": 32,
 	"VK_MAX_PIPELINE_BINARY_KEY_SIZE_KHR":      32,
 }
@@ -145,6 +145,18 @@ func (x *XMLRegistry) parseTypes(r *generator.Registry) {
 			}
 			b := &generator.Bitmask{CName: name, GoName: stripVk(name)}
 			r.Bitmasks[b.GoName] = b
+		case "enum":
+			if t.Alias == "" {
+				continue
+			}
+
+			name := stripVk(t.Name)
+
+			r.EnumAliases[name] = &generator.EnumAlias{
+				CName:  name,
+				GoName: name,
+				Alias:  stripVk(t.Alias),
+			}
 		}
 	}
 
@@ -230,11 +242,11 @@ func parseStruct(t XMLType, handles map[string]*generator.GoHandle, funcPointers
 		if sliceField, ok := countMap[m.Name]; ok {
 			// This is a count field — record it but mark it as CountFor
 			field := generator.StructField{
-				GoName:    toPublic(stripP(m.Name)),
-				CName:     m.Name,
-				CountFor:  toPublic(stripP(sliceField)),
+				GoName:     toPublic(stripP(m.Name)),
+				CName:      m.Name,
+				CountFor:   toPublic(stripP(sliceField)),
 				CountCName: m.Name,
-				Type:      generator.NewPrimitive("uint32_t", "uint32"),
+				Type:       generator.NewPrimitive("uint32_t", "uint32"),
 			}
 			s.Fields = append(s.Fields, field)
 			continue

@@ -45,6 +45,7 @@ func BuildRegistry(x *XMLRegistry) *generator.Registry {
 		Enums:        x.parseEnums(),
 		APIConstants: x.parseConstants(),
 		Bitmasks:     make(map[string]*generator.Bitmask),
+		EnumAliases:  make(map[string]*generator.EnumAlias),
 		Structs:      make(map[string]*generator.Structured),
 		Handles:      make(map[string]*generator.GoHandle),
 		Commands:     make(map[string]*generator.GoCommand),
@@ -58,7 +59,6 @@ func BuildRegistry(x *XMLRegistry) *generator.Registry {
 		r.Platforms[p.Name] = p.Protect
 	}
 
-	
 	x.parseTypes(r)
 	x.parseCommands(r)
 	x.applyEnumExtensions(r)

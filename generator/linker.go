@@ -5,9 +5,10 @@ type Linker struct {
 	Config   *Config
 
 	// reverse-lookup maps: C name → Go name (commands are keyed by CName directly)
-	cToGoType    map[string]string
-	cToGoEnum    map[string]string
-	cToGoBitmask map[string]string
+	cToGoType      map[string]string
+	cToGoEnum      map[string]string
+	cToGoBitmask   map[string]string
+	cToGoEnumAlias map[string]string
 }
 
 type Enabled struct {
@@ -16,6 +17,7 @@ type Enabled struct {
 	Enums        map[string]bool // keyed by Go name
 	Bitmasks     map[string]bool // keyed by Go name
 	FuncPointers map[string]bool // keyed by Go name
+	EnumAliases  map[string]bool
 }
 
 func (l *Linker) buildIndexes() {
@@ -40,6 +42,11 @@ func (l *Linker) buildIndexes() {
 	for goName, b := range l.Registry.Bitmasks {
 		l.cToGoBitmask[b.CName] = goName
 	}
+
+	l.cToGoEnumAlias = make(map[string]string, len(l.Registry.EnumAliases))
+	for goName, b := range l.Registry.EnumAliases {
+		l.cToGoEnumAlias[b.CName] = goName
+	}
 }
 
 func (l *Linker) Link() *Registry {
@@ -50,6 +57,7 @@ func (l *Linker) Link() *Registry {
 		Types:        map[string]bool{},
 		Enums:        map[string]bool{},
 		Bitmasks:     map[string]bool{},
+		EnumAliases:  map[string]bool{},
 		FuncPointers: map[string]bool{},
 	}
 
@@ -143,6 +151,8 @@ func (l *Linker) enableRequireBlocks(e *Enabled, reqs []RequireBlock) {
 				e.Enums[goName] = true
 			} else if goName, ok := l.cToGoBitmask[cName]; ok {
 				e.Bitmasks[goName] = true
+			} else if goName, ok := l.cToGoEnumAlias[cName]; ok {
+				e.EnumAliases[goName] = true
 			}
 		}
 		for _, cName := range r.Enums {
@@ -270,6 +280,12 @@ func (l *Linker) enableTypeRecursive(e *Enabled, t FieldType) bool {
 				return true
 			}
 		}
+		if !e.EnumAliases[v.Name] {
+			if _, isEnumAlias := l.Registry.EnumAliases[v.Name]; isEnumAlias {
+				e.EnumAliases[v.Name] = true
+				return true
+			}
+		}
 	}
 	return false
 }
@@ -280,6 +296,7 @@ func (l *Linker) buildReducedRegistry(e *Enabled) *Registry {
 		Structs:      map[string]*Structured{},
 		Commands:     map[string]*GoCommand{},
 		Bitmasks:     map[string]*Bitmask{},
+		EnumAliases:  map[string]*EnumAlias{},
 		Handles:      map[string]*GoHandle{},
 		FuncPointers: map[string]*GoFuncPointer{},
 	}
@@ -292,6 +309,11 @@ func (l *Linker) buildReducedRegistry(e *Enabled) *Registry {
 	for name := range e.Bitmasks {
 		if v, ok := l.Registry.Bitmasks[name]; ok {
 			out.Bitmasks[name] = v
+		}
+	}
+	for name := range e.EnumAliases {
+		if v, ok := l.Registry.EnumAliases[name]; ok {
+			out.EnumAliases[name] = v
 		}
 	}
 	for name := range e.Types {
