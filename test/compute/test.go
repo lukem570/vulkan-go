@@ -210,7 +210,7 @@ func run() error {
 	defer device.DestroyShaderModule(shaderModule, nil)
 
 	// Create compute pipeline
-	pipelines, err := device.CreateComputePipelines(nil, 1, []vk.ComputePipelineCreateInfo{
+	pipelines, err := device.CreateComputePipelines(nil, []vk.ComputePipelineCreateInfo{
 		{
 			Stage: vk.PipelineShaderStageCreateInfo{
 				Stage:  vk.ShaderStageComputeBit,
@@ -249,7 +249,7 @@ func run() error {
 	descSet := descSets[0]
 
 	// Update descriptor set to point to our buffer
-	device.UpdateDescriptorSets(1, []vk.WriteDescriptorSet{
+	device.UpdateDescriptorSets([]vk.WriteDescriptorSet{
 		{
 			DstSet:          descSet,
 			DstBinding:      0,
@@ -259,7 +259,7 @@ func run() error {
 				{Buffer: buffer, Offset: 0, Range: bufferSize},
 			},
 		},
-	}, 0, nil)
+	}, nil)
 
 	// Create command pool and command buffer
 	cmdPool, err := device.CreateCommandPool(&vk.CommandPoolCreateInfo{
@@ -291,9 +291,9 @@ func run() error {
 	cmdBuf.BindDescriptorSets(
 		vk.PipelineBindPointCompute,
 		pipelineLayout,
-		0, 1,
+		0,
 		[]*vk.DescriptorSet{descSet},
-		0, nil,
+		nil,
 	)
 	cmdBuf.Dispatch(1, 1, 1) // 1 workgroup of 64 invocations
 
@@ -308,7 +308,7 @@ func run() error {
 	}
 	defer device.DestroyFence(fence, nil)
 
-	if err := queue.Submit(1, []vk.SubmitInfo{
+	if err := queue.Submit([]vk.SubmitInfo{
 		{
 			CommandBuffers: []*vk.CommandBuffer{cmdBuf},
 		},
@@ -316,7 +316,7 @@ func run() error {
 		return fmt.Errorf("queue submit: %w", err)
 	}
 
-	if err := device.WaitForFences(1, []*vk.Fence{fence}, true, ^uint64(0)); err != nil {
+	if err := device.WaitForFences([]*vk.Fence{fence}, true, ^uint64(0)); err != nil {
 		return fmt.Errorf("wait for fences: %w", err)
 	}
 	fmt.Println("compute shader executed")

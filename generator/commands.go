@@ -10,9 +10,9 @@ type GoCommand struct {
 	CName        string // original C name e.g. vkCreateInstance
 	ReceiverType string // e.g. "Instance" if first param was a handle
 	HasError     bool
-	ReturnType   FieldType    // non-VkResult return, if any
-	OutParams    []OutParam   // params that are actually return values
-	Params       []CommandParam
+	ReturnType   FieldType  // non-VkResult return, if any
+	OutParams    []OutParam // params that are actually return values
+	Params       []*CommandParam
 	CReturnType  string   // C return type e.g. "VkResult", "void"
 	CParams      []CParam // full C prototype params for wrapper generation
 	Platform     string   // non-empty for platform-specific commands (e.g. "xlib")
@@ -50,8 +50,9 @@ type OutParam struct {
 }
 
 type CommandParam struct {
-	Name string
-	Type FieldType
+	Name    string
+	Type    FieldType
+	CountOf *CommandParam
 }
 
 func (c *GoCommand) GenerateWrapper() string {
@@ -73,6 +74,10 @@ func (c *GoCommand) GenerateWrapper() string {
 	}
 
 	for _, p := range c.Params {
+		if p.CountOf != nil {
+			continue
+		}
+
 		b.WriteString(fmt.Sprintf("\t%s %s,\n", p.Name, p.Type.GoName()))
 	}
 	b.WriteString(")")
@@ -111,6 +116,12 @@ func (c *GoCommand) GenerateWrapper() string {
 	}
 
 	for _, p := range c.Params {
+		if p.CountOf != nil {
+			g.builder.WriteString(p.Name+" := len("+p.CountOf.Name+")\n")
+			cArgs = append(cArgs, "C.uint32_t("+p.Name+")")
+			continue
+		}
+		
 		cVar := g.Var("c_" + sanitizeIdent(p.Name))
 		b.WriteString(fmt.Sprintf("\t// param %s\n", p.Name))
 		result := p.Type.GenerateToC(g, p.Name)
@@ -252,6 +263,10 @@ func (c *GoCommand) generateEnumerateWrapper() string {
 		b.WriteString(fmt.Sprintf("func %s(\n", c.Name))
 	}
 	for _, p := range c.Params {
+		if p.CountOf != nil {
+			continue
+		}
+
 		b.WriteString(fmt.Sprintf("\t%s %s,\n", p.Name, p.Type.GoName()))
 	}
 	b.WriteString(")")
@@ -275,6 +290,12 @@ func (c *GoCommand) generateEnumerateWrapper() string {
 		cArgs = append(cArgs, fmt.Sprintf("C.%s(unsafe.Pointer(h.handle))", "Vk"+c.ReceiverType))
 	}
 	for _, p := range c.Params {
+		if p.CountOf != nil {
+			g.builder.WriteString(p.Name+" := len("+p.CountOf.Name+")\n")
+			cArgs = append(cArgs, "C.uint32_t("+p.Name+")")
+			continue
+		}
+
 		b.WriteString(fmt.Sprintf("\t// param %s\n", p.Name))
 		result := p.Type.GenerateToC(g, p.Name)
 		b.WriteString(g.String())
@@ -377,4 +398,3 @@ func (c *GoCommand) GenerateCWrapperImpl() string {
 	b.WriteString("}\n\n")
 	return b.String()
 }
-

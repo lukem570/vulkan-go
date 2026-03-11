@@ -94,9 +94,9 @@ func extractCType(innerXML string) string {
 }
 
 func buildCommand(
-	cmd XMLCommand, 
-	handles map[string]*generator.GoHandle, 
-	funcPointers map[string]*generator.GoFuncPointer, 
+	cmd XMLCommand,
+	handles map[string]*generator.GoHandle,
+	funcPointers map[string]*generator.GoFuncPointer,
 	structs map[string]*generator.Structured,
 ) *generator.GoCommand {
 
@@ -231,10 +231,17 @@ func buildCommand(
 			ft = &generator.FixedArray{Child: ft, Size: fixedSize}
 		}
 
-		param := generator.CommandParam{
+		param := &generator.CommandParam{
 			Name: goParamName(p.Name),
 			Type: ft,
 		}
+
+		if _, ok := ft.(*generator.Slice); ok &&
+			strings.Contains(strings.ToLower(c.Params[len(c.Params)-1].Name), "count") {
+
+			c.Params[len(c.Params)-1].CountOf = param
+		}
+
 		c.Params = append(c.Params, param)
 	}
 
