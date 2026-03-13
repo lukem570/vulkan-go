@@ -149,12 +149,13 @@ func (c *GoCommand) GenerateWrapper(sTypes map[string]string) string {
 		} else {
 			b.WriteString(fmt.Sprintf("\tvar %s %s\n", varName, op.Type.CName()))
 
-			if s, ok := sTypes[op.Name]; ok {
-				b.WriteString(fmt.Sprintf(
-					"\t%s.sType = (C.VkStructureType)(%s)\n", 
-					varName, 
-					s,
-				))
+			if s, ok := op.Type.(*StructType); ok {
+				if stype, ok := sTypes[s.Name]; ok {
+					b.WriteString(fmt.Sprintf(
+						"\t%s.sType = (C.VkStructureType)(%s)\n", 
+						varName, stype,
+					))
+				}
 			}
 			cArgs = append(cArgs, "&"+varName)
 		}

@@ -30726,6 +30726,7 @@ func (h Device) GetBufferMemoryRequirements2(
 		ptr1 = (*C.VkBufferMemoryRequirementsInfo2)(val2)
 	}
 	var memoryRequirementsOut C.VkMemoryRequirements2
+	memoryRequirementsOut.sType = (C.VkStructureType)(StructureTypeMemoryRequirements2)
 	C.fn_vkGetBufferMemoryRequirements2(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &memoryRequirementsOut)
 	var val4 MemoryRequirements2
 	val4.fromC(&memoryRequirementsOut)
@@ -30772,6 +30773,7 @@ func (h Device) GetDescriptorSetLayoutSupport(
 		ptr1 = (*C.VkDescriptorSetLayoutCreateInfo)(val2)
 	}
 	var supportOut C.VkDescriptorSetLayoutSupport
+	supportOut.sType = (C.VkStructureType)(StructureTypeDescriptorSetLayoutSupport)
 	C.fn_vkGetDescriptorSetLayoutSupport(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &supportOut)
 	var val4 DescriptorSetLayoutSupport
 	val4.fromC(&supportOut)
@@ -30815,6 +30817,7 @@ func (h Device) GetGroupPresentCapabilitiesKHR() (DeviceGroupPresentCapabilities
 	}()
 
 	var deviceGroupPresentCapabilitiesOut C.VkDeviceGroupPresentCapabilitiesKHR
+	deviceGroupPresentCapabilitiesOut.sType = (C.VkStructureType)(StructureTypeDeviceGroupPresentCapabilitiesKHR)
 	_result := C.fn_vkGetDeviceGroupPresentCapabilitiesKHR(C.VkDevice(unsafe.Pointer(h.handle)), &deviceGroupPresentCapabilitiesOut)
 	if _result != C.VK_SUCCESS {
 		return DeviceGroupPresentCapabilitiesKHR{}, vkError(_result)
@@ -30871,6 +30874,7 @@ func (h Device) GetImageMemoryRequirements(
 		ptr1 = (*C.VkDeviceImageMemoryRequirements)(val2)
 	}
 	var memoryRequirementsOut C.VkMemoryRequirements2
+	memoryRequirementsOut.sType = (C.VkStructureType)(StructureTypeMemoryRequirements2)
 	C.fn_vkGetDeviceImageMemoryRequirements(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &memoryRequirementsOut)
 	var val4 MemoryRequirements2
 	val4.fromC(&memoryRequirementsOut)
@@ -30932,6 +30936,7 @@ func (h Device) GetImageSubresourceLayout(
 		ptr1 = (*C.VkDeviceImageSubresourceInfo)(val2)
 	}
 	var layoutOut C.VkSubresourceLayout2
+	layoutOut.sType = (C.VkStructureType)(StructureTypeSubresourceLayout2)
 	C.fn_vkGetDeviceImageSubresourceLayout(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &layoutOut)
 	var val4 SubresourceLayout2
 	val4.fromC(&layoutOut)
@@ -31106,6 +31111,7 @@ func (h Device) GetImageMemoryRequirements2(
 		ptr1 = (*C.VkImageMemoryRequirementsInfo2)(val2)
 	}
 	var memoryRequirementsOut C.VkMemoryRequirements2
+	memoryRequirementsOut.sType = (C.VkStructureType)(StructureTypeMemoryRequirements2)
 	C.fn_vkGetImageMemoryRequirements2(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &memoryRequirementsOut)
 	var val4 MemoryRequirements2
 	val4.fromC(&memoryRequirementsOut)
@@ -31173,6 +31179,7 @@ func (h Device) GetImageSubresourceLayout2(
 		ptr3 = (*C.VkImageSubresource2)(val4)
 	}
 	var layoutOut C.VkSubresourceLayout2
+	layoutOut.sType = (C.VkStructureType)(StructureTypeSubresourceLayout2)
 	C.fn_vkGetImageSubresourceLayout2(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3, &layoutOut)
 	var val6 SubresourceLayout2
 	val6.fromC(&layoutOut)
@@ -31216,6 +31223,7 @@ func (h PhysicalDevice) GetExternalBufferProperties(
 		ptr1 = (*C.VkPhysicalDeviceExternalBufferInfo)(val2)
 	}
 	var externalBufferPropertiesOut C.VkExternalBufferProperties
+	externalBufferPropertiesOut.sType = (C.VkStructureType)(StructureTypeExternalBufferProperties)
 	C.fn_vkGetPhysicalDeviceExternalBufferProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), ptr1, &externalBufferPropertiesOut)
 	var val4 ExternalBufferProperties
 	val4.fromC(&externalBufferPropertiesOut)
@@ -31240,6 +31248,7 @@ func (h PhysicalDevice) GetExternalFenceProperties(
 		ptr1 = (*C.VkPhysicalDeviceExternalFenceInfo)(val2)
 	}
 	var externalFencePropertiesOut C.VkExternalFenceProperties
+	externalFencePropertiesOut.sType = (C.VkStructureType)(StructureTypeExternalFenceProperties)
 	C.fn_vkGetPhysicalDeviceExternalFenceProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), ptr1, &externalFencePropertiesOut)
 	var val4 ExternalFenceProperties
 	val4.fromC(&externalFencePropertiesOut)
@@ -31264,6 +31273,7 @@ func (h PhysicalDevice) GetExternalSemaphoreProperties(
 		ptr1 = (*C.VkPhysicalDeviceExternalSemaphoreInfo)(val2)
 	}
 	var externalSemaphorePropertiesOut C.VkExternalSemaphoreProperties
+	externalSemaphorePropertiesOut.sType = (C.VkStructureType)(StructureTypeExternalSemaphoreProperties)
 	C.fn_vkGetPhysicalDeviceExternalSemaphoreProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), ptr1, &externalSemaphorePropertiesOut)
 	var val4 ExternalSemaphoreProperties
 	val4.fromC(&externalSemaphorePropertiesOut)
@@ -31294,6 +31304,7 @@ func (h PhysicalDevice) GetFeatures2() PhysicalDeviceFeatures2 {
 	}()
 
 	var featuresOut C.VkPhysicalDeviceFeatures2
+	featuresOut.sType = (C.VkStructureType)(StructureTypePhysicalDeviceFeatures2)
 	C.fn_vkGetPhysicalDeviceFeatures2(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &featuresOut)
 	var val0 PhysicalDeviceFeatures2
 	val0.fromC(&featuresOut)
@@ -31332,6 +31343,7 @@ func (h PhysicalDevice) GetFormatProperties2(
 	// param format
 	val1 := C.VkFormat(format)
 	var formatPropertiesOut C.VkFormatProperties2
+	formatPropertiesOut.sType = (C.VkStructureType)(StructureTypeFormatProperties2)
 	C.fn_vkGetPhysicalDeviceFormatProperties2(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), val1, &formatPropertiesOut)
 	var val2 FormatProperties2
 	val2.fromC(&formatPropertiesOut)
@@ -31390,6 +31402,7 @@ func (h PhysicalDevice) GetImageFormatProperties2(
 		ptr1 = (*C.VkPhysicalDeviceImageFormatInfo2)(val2)
 	}
 	var imageFormatPropertiesOut C.VkImageFormatProperties2
+	imageFormatPropertiesOut.sType = (C.VkStructureType)(StructureTypeImageFormatProperties2)
 	_result := C.fn_vkGetPhysicalDeviceImageFormatProperties2(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), ptr1, &imageFormatPropertiesOut)
 	if _result != C.VK_SUCCESS {
 		return ImageFormatProperties2{}, vkError(_result)
@@ -31423,6 +31436,7 @@ func (h PhysicalDevice) GetMemoryProperties2() PhysicalDeviceMemoryProperties2 {
 	}()
 
 	var memoryPropertiesOut C.VkPhysicalDeviceMemoryProperties2
+	memoryPropertiesOut.sType = (C.VkStructureType)(StructureTypePhysicalDeviceMemoryProperties2)
 	C.fn_vkGetPhysicalDeviceMemoryProperties2(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &memoryPropertiesOut)
 	var val0 PhysicalDeviceMemoryProperties2
 	val0.fromC(&memoryPropertiesOut)
@@ -31495,6 +31509,7 @@ func (h PhysicalDevice) GetProperties2() PhysicalDeviceProperties2 {
 	}()
 
 	var propertiesOut C.VkPhysicalDeviceProperties2
+	propertiesOut.sType = (C.VkStructureType)(StructureTypePhysicalDeviceProperties2)
 	C.fn_vkGetPhysicalDeviceProperties2(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &propertiesOut)
 	var val0 PhysicalDeviceProperties2
 	val0.fromC(&propertiesOut)

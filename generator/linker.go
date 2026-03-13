@@ -299,6 +299,7 @@ func (l *Linker) buildReducedRegistry(e *Enabled) *Registry {
 		EnumAliases:  map[string]*EnumAlias{},
 		Handles:      map[string]*GoHandle{},
 		FuncPointers: map[string]*GoFuncPointer{},
+		STypes:       l.Registry.STypes,
 	}
 
 	for name := range e.Enums {
