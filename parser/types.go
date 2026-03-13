@@ -171,7 +171,7 @@ func (x *XMLRegistry) parseTypes(r *generator.Registry) {
 	for _, t := range x.Types.Types {
 		switch t.Category {
 		case "struct", "union":
-			s := parseStruct(t, r.Handles, r.FuncPointers, r.Structs)
+			s := parseStruct(t, r.Handles, r.FuncPointers, r.Structs, r.STypes)
 			if s != nil {
 				r.Structs[s.GoName] = s
 			}
@@ -208,7 +208,13 @@ func resolveFuncPointerTypes(t XMLType, handles map[string]*generator.GoHandle, 
 }
 
 // parseStruct converts an XMLType of category struct/union into a Structured.
-func parseStruct(t XMLType, handles map[string]*generator.GoHandle, funcPointers map[string]*generator.GoFuncPointer, structs map[string]*generator.Structured) *generator.Structured {
+func parseStruct(
+	t XMLType, 
+	handles map[string]*generator.GoHandle, 
+	funcPointers map[string]*generator.GoFuncPointer, 
+	structs map[string]*generator.Structured,
+	sTypes map[string]string,
+) *generator.Structured {
 	name := t.Name
 	if name == "" {
 		return nil
@@ -222,6 +228,10 @@ func parseStruct(t XMLType, handles map[string]*generator.GoHandle, funcPointers
 	}
 
 	s.HasSType, s.SType = detectSType(t)
+
+	if s.HasSType {
+		sTypes[s.GoName] = s.SType
+	}
 
 	// Build a map of countField → fieldItCounts so we can mark them
 	// e.g. descriptorSetCount → pDescriptorSets

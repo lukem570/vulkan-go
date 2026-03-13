@@ -325,7 +325,7 @@ func run() error {
 	defer device.DestroyPipelineLayout(pipelineLayout, nil)
 
 	// Create graphics pipeline
-	pipelines, err := device.CreateGraphicsPipelines(nil, 1, []vk.GraphicsPipelineCreateInfo{
+	pipelines, err := device.CreateGraphicsPipelines(nil, []vk.GraphicsPipelineCreateInfo{
 		{
 			StageCount: 2,
 			Stages: []vk.PipelineShaderStageCreateInfo{
@@ -463,10 +463,10 @@ func run() error {
 		glfw.PollEvents()
 
 		// Wait for previous frame
-		if err := device.WaitForFences(1, []*vk.Fence{inFlightFences[currentFrame]}, true, ^uint64(0)); err != nil {
+		if err := device.WaitForFences([]*vk.Fence{inFlightFences[currentFrame]}, true, ^uint64(0)); err != nil {
 			return fmt.Errorf("wait for fence: %w", err)
 		}
-		if err := device.ResetFences(1, []*vk.Fence{inFlightFences[currentFrame]}); err != nil {
+		if err := device.ResetFences([]*vk.Fence{inFlightFences[currentFrame]}); err != nil {
 			return fmt.Errorf("reset fence: %w", err)
 		}
 
@@ -498,7 +498,7 @@ func run() error {
 
 		cmdBuf.BindPipeline(vk.PipelineBindPointGraphics, pipeline)
 
-		cmdBuf.SetViewport(0, 1, []vk.Viewport{
+		cmdBuf.SetViewport(0, []vk.Viewport{
 			{
 				X:        0,
 				Y:        0,
@@ -509,7 +509,7 @@ func run() error {
 			},
 		})
 
-		cmdBuf.SetScissor(0, 1, []vk.Rect2D{
+		cmdBuf.SetScissor(0, []vk.Rect2D{
 			{
 				Offset: vk.Offset2D{X: 0, Y: 0},
 				Extent: extent,
@@ -525,7 +525,7 @@ func run() error {
 		}
 
 		// Submit
-		if err := queue.Submit(1, []vk.SubmitInfo{
+		if err := queue.Submit([]vk.SubmitInfo{
 			{
 				WaitSemaphoreCount: 1,
 				WaitSemaphores:     []*vk.Semaphore{imageAvailableSemaphores[currentFrame]},

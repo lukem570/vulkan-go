@@ -55,7 +55,7 @@ type CommandParam struct {
 	CountOf *CommandParam
 }
 
-func (c *GoCommand) GenerateWrapper() string {
+func (c *GoCommand) GenerateWrapper(sTypes map[string]string) string {
 	if c == nil {
 		return ""
 	}
@@ -148,6 +148,14 @@ func (c *GoCommand) GenerateWrapper() string {
 			cArgs = append(cArgs, varName)
 		} else {
 			b.WriteString(fmt.Sprintf("\tvar %s %s\n", varName, op.Type.CName()))
+
+			if s, ok := sTypes[op.Name]; ok {
+				b.WriteString(fmt.Sprintf(
+					"\t%s.sType = (C.VkStructureType)(%s)\n", 
+					varName, 
+					s,
+				))
+			}
 			cArgs = append(cArgs, "&"+varName)
 		}
 	}
@@ -193,6 +201,7 @@ func (c *GoCommand) GenerateWrapper() string {
 	var handleRetVar string // tracks the var name of a Handle out param, for callback cleanup attachment
 	for _, op := range c.OutParams {
 		varName := sanitizeIdent(op.Name) + "Out"
+
 		if op.IsArray {
 			// Convert C array to Go slice
 			sliceVar := g.Var("out")

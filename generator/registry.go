@@ -103,6 +103,7 @@ type Registry struct {
 	Features     map[string]*Feature
 	Extensions   map[string]*Extension
 	FuncPointers map[string]*GoFuncPointer
+	STypes 		 map[string]string
 	APIConstants []APIConstant
 	Platforms    map[string]string // platform name → protect macro (e.g. "xlib" → "VK_USE_PLATFORM_XLIB_KHR")
 }
@@ -212,7 +213,7 @@ func (r *Registry) GeneratePackage(pkg string) string {
 			continue
 		}
 		seenMethods[key] = true
-		b.WriteString(cmd.GenerateWrapper())
+		b.WriteString(cmd.GenerateWrapper(r.STypes))
 	}
 
 	return b.String()
@@ -306,7 +307,7 @@ func (r *Registry) GeneratePlatformFiles(pkg string) []PlatformFile {
 				continue
 			}
 			seenMethods[key] = true
-			b.WriteString(cmd.GenerateWrapper())
+			b.WriteString(cmd.GenerateWrapper(r.STypes))
 		}
 
 		files = append(files, PlatformFile{

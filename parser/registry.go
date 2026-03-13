@@ -49,6 +49,7 @@ func BuildRegistry(x *XMLRegistry) *generator.Registry {
 		Structs:      make(map[string]*generator.Structured),
 		Handles:      make(map[string]*generator.GoHandle),
 		Commands:     make(map[string]*generator.GoCommand),
+		STypes:       make(map[string]string),
 		Features:     x.parseFeatures(),
 		Extensions:   x.parseExtensions(),
 		FuncPointers: make(map[string]*generator.GoFuncPointer),
