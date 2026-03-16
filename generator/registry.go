@@ -49,7 +49,7 @@ func Initialize() error {
 }
 
 func vkError(r C.VkResult) error {
-	return fmt.Errorf("vulkan error: VkResult(%d)", int(r))
+	return fmt.Errorf("vulkan error: %s", Result(r).String())
 }
 
 // LoadInstance loads instance-level Vulkan function pointers via Volk.
@@ -182,6 +182,9 @@ func (r *Registry) GeneratePackage(pkg string) string {
 	for _, k := range sortedKeys(r.Enums) {
 		r.Enums[k].SetReserved(reserved)
 		b.WriteString(r.Enums[k].Generate())
+		if r.Enums[k].GoName == "Result" {
+			b.WriteString(r.Enums[k].GenerateString())
+		}
 	}
 
 	// Bitmasks

@@ -21,6 +21,10 @@ type GoCommand struct {
 	// enumerate pattern (call once for count, then again with array).
 	EnumeratePattern *EnumerateInfo
 
+	// ByteDataPattern, when non-nil, indicates the two-call Vulkan
+	// byte-data pattern (call once for size, then again with void* buffer).
+	ByteDataPattern *ByteDataInfo
+
 	// CallbackStructParamName, when non-empty, names the input param whose
 	// callbackCleanupFn should be attached to the returned handle after a
 	// successful create call.
@@ -32,6 +36,13 @@ type EnumerateInfo struct {
 	CountCParam string    // C param name for the count (e.g. "pPhysicalDeviceCount")
 	ArrayCParam string    // C param name for the array (e.g. "pPhysicalDevices")
 	ElementType FieldType // Go element type (e.g. Handle for PhysicalDevice)
+}
+
+// ByteDataInfo describes a Vulkan two-call byte-data pattern:
+// first call to get pDataSize, second to fill void* pData.
+type ByteDataInfo struct {
+	SizeCParam string // C param name for the size (e.g. "pDataSize")
+	DataCParam string // C param name for the data (e.g. "pData")
 }
 
 // CParam holds the full C type and name for a command parameter.
@@ -61,6 +72,9 @@ func (c *GoCommand) GenerateWrapper(sTypes map[string]string) string {
 	}
 	if c.EnumeratePattern != nil {
 		return c.generateEnumerateWrapper()
+	}
+	if c.ByteDataPattern != nil {
+		return c.generateByteDataWrapper()
 	}
 
 	var b strings.Builder
@@ -366,6 +380,103 @@ func (c *GoCommand) generateEnumerateWrapper() string {
 		b.WriteString("\treturn out, nil\n")
 	} else {
 		b.WriteString("\treturn out\n")
+	}
+	b.WriteString("}\n\n")
+	return b.String()
+}
+
+// generateByteDataWrapper generates a Go wrapper for the Vulkan two-call byte-data
+// pattern: first call with nil data to get pDataSize, then allocate and fill.
+func (c *GoCommand) generateByteDataWrapper() string {
+	var b strings.Builder
+
+	// Signature
+	if c.ReceiverType != "" {
+		b.WriteString(fmt.Sprintf("func (h %s) %s(\n", c.ReceiverType, c.Name))
+	} else {
+		b.WriteString(fmt.Sprintf("func %s(\n", c.Name))
+	}
+	for _, p := range c.Params {
+		if p.CountOf != nil {
+			continue
+		}
+		b.WriteString(fmt.Sprintf("\t%s %s,\n", p.Name, p.Type.GoName()))
+	}
+	b.WriteString(")")
+
+	// Return type
+	if c.HasError {
+		b.WriteString(" ([]byte, error)")
+	} else {
+		b.WriteString(" []byte")
+	}
+	b.WriteString(" {\n")
+
+	// Body
+	b.WriteString("\tcancels := make([]func(), 0)\n")
+	b.WriteString("\tdefer func() { for _, c := range cancels { c() } }()\n\n")
+
+	// Build C args for receiver + input params
+	g := &CodeGen{}
+	var cArgs []string
+	if c.ReceiverType != "" {
+		cArgs = append(cArgs, fmt.Sprintf("C.%s(unsafe.Pointer(h.handle))", "Vk"+c.ReceiverType))
+	}
+	for _, p := range c.Params {
+		if p.CountOf != nil {
+			g.builder.WriteString(p.Name + " := len(" + p.CountOf.Name + ")\n")
+			cArgs = append(cArgs, "C.uint32_t("+p.Name+")")
+			continue
+		}
+		b.WriteString(fmt.Sprintf("\t// param %s\n", p.Name))
+		result := p.Type.GenerateToC(g, p.Name)
+		b.WriteString(g.String())
+		g = &CodeGen{varIndex: g.varIndex}
+		if _, ok := p.Type.(*FixedArray); ok {
+			cArgs = append(cArgs, "&"+result+"[0]")
+		} else {
+			cArgs = append(cArgs, result)
+		}
+	}
+
+	// First call: get data size
+	b.WriteString("\tvar dataSize C.size_t\n")
+	firstCallArgs := append(append([]string{}, cArgs...), "&dataSize", "nil")
+	if c.HasError {
+		b.WriteString(fmt.Sprintf("\t_result := C.fn_%s(%s)\n", c.CName, strings.Join(firstCallArgs, ", ")))
+		b.WriteString("\tif _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {\n")
+		b.WriteString("\t\treturn nil, vkError(_result)\n")
+		b.WriteString("\t}\n")
+	} else {
+		b.WriteString(fmt.Sprintf("\tC.fn_%s(%s)\n", c.CName, strings.Join(firstCallArgs, ", ")))
+	}
+	b.WriteString("\tif dataSize == 0 {\n")
+	if c.HasError {
+		b.WriteString("\t\treturn nil, nil\n")
+	} else {
+		b.WriteString("\t\treturn nil\n")
+	}
+	b.WriteString("\t}\n\n")
+
+	// Allocate buffer
+	b.WriteString("\tbuf := C.malloc(dataSize)\n")
+	b.WriteString("\tcancels = append(cancels, func() { C.free(buf) })\n\n")
+
+	// Second call: fill buffer
+	secondCallArgs := append(append([]string{}, cArgs...), "&dataSize", "buf")
+	if c.HasError {
+		b.WriteString(fmt.Sprintf("\t_result = C.fn_%s(%s)\n", c.CName, strings.Join(secondCallArgs, ", ")))
+		b.WriteString("\tif _result != C.VK_SUCCESS {\n")
+		b.WriteString("\t\treturn nil, vkError(_result)\n")
+		b.WriteString("\t}\n\n")
+	} else {
+		b.WriteString(fmt.Sprintf("\tC.fn_%s(%s)\n", c.CName, strings.Join(secondCallArgs, ", ")))
+	}
+
+	if c.HasError {
+		b.WriteString("\treturn C.GoBytes(buf, C.int(dataSize)), nil\n")
+	} else {
+		b.WriteString("\treturn C.GoBytes(buf, C.int(dataSize))\n")
 	}
 	b.WriteString("}\n\n")
 	return b.String()

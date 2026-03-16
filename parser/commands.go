@@ -152,11 +152,38 @@ func buildCommand(
 		c.Name = methodName(rawName, firstGoName)
 	}
 
+	// ---- Byte-data pattern detection ----------------------------------------
+	// Detect: second-to-last is size_t* pDataSize, last is void* pData with len="pDataSize".
+	byteDataDetected := false
+	if len(params) >= 2 && (returnTypeName == "VkResult" || returnTypeName == "void" || returnTypeName == "") {
+		secondLast := params[len(params)-2]
+		last := params[len(params)-1]
+
+		isSizeParam := secondLast.Type == "size_t" &&
+			strings.Contains(secondLast.InnerXML, "*") &&
+			!strings.Contains(secondLast.InnerXML, "const")
+
+		isDataParam := last.Type == "void" &&
+			last.Len != "" &&
+			strings.Contains(last.Len, secondLast.Name) &&
+			strings.Contains(last.InnerXML, "*") &&
+			!strings.Contains(last.InnerXML, "const")
+
+		if isSizeParam && isDataParam {
+			c.ByteDataPattern = &generator.ByteDataInfo{
+				SizeCParam: secondLast.Name,
+				DataCParam: last.Name,
+			}
+			params = params[:len(params)-2]
+			byteDataDetected = true
+		}
+	}
+
 	// ---- Enumerate pattern detection ----------------------------------------
 	// Detect the two-call pattern: second-to-last is uint32_t* pFooCount,
 	// last is T* pFoos with len="pFooCount".
 	enumerateDetected := false
-	if len(params) >= 2 && (returnTypeName == "VkResult" || returnTypeName == "void" || returnTypeName == "") {
+	if !byteDataDetected && len(params) >= 2 && (returnTypeName == "VkResult" || returnTypeName == "void" || returnTypeName == "") {
 		secondLast := params[len(params)-2]
 		last := params[len(params)-1]
 
@@ -193,7 +220,7 @@ func buildCommand(
 	//   - last param is a non-const pointer
 	//   - param name starts with 'p' followed by uppercase
 	//   - optional attribute is NOT set (or is "false")
-	if !enumerateDetected && len(params) > 0 {
+	if !enumerateDetected && !byteDataDetected && len(params) > 0 {
 		last := params[len(params)-1]
 		if isOutputParam(last, returnTypeName, handles, structs) {
 			ft := outParamType(last, handles, funcPointers, structs)

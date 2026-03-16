@@ -136,6 +136,42 @@ func (e *Enum) Generate(platformFilter ...string) string {
 	return b.String()
 }
 
+// GenerateString emits a String() method for the enum using a switch over
+// canonical (non-alias) values. Alias constants (Value is another identifier)
+// are skipped to avoid duplicate switch cases.
+func (e *Enum) GenerateString() string {
+	if e == nil {
+		return ""
+	}
+
+	var b strings.Builder
+	b.WriteString(fmt.Sprintf("func (v %s) String() string {\n\tswitch v {\n", e.GoName))
+
+	seenValues := make(map[string]bool)
+	for _, el := range e.Elements {
+		if el == nil || el.Platform != "" {
+			continue
+		}
+		// Skip aliases: Value is another identifier (not a numeric literal)
+		val := el.Value
+		if val == "" {
+			continue
+		}
+		isNumeric := val[0] == '-' || (val[0] >= '0' && val[0] <= '9')
+		if !isNumeric {
+			continue
+		}
+		if seenValues[val] {
+			continue
+		}
+		seenValues[val] = true
+		b.WriteString(fmt.Sprintf("\tcase %s:\n\t\treturn %q\n", el.GoName, el.GoName))
+	}
+
+	b.WriteString(fmt.Sprintf("\tdefault:\n\t\treturn fmt.Sprintf(\"%s(%%d)\", int(v))\n\t}\n}\n\n", e.GoName))
+	return b.String()
+}
+
 func (bmask *Bitmask) Generate() string {
 	var b strings.Builder
 	b.WriteString(fmt.Sprintf("type %s uint32\n\n", bmask.GoName))

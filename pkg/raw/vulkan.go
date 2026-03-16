@@ -30,7 +30,7 @@ func Initialize() error {
 }
 
 func vkError(r C.VkResult) error {
-	return fmt.Errorf("vulkan error: VkResult(%d)", int(r))
+	return fmt.Errorf("vulkan error: %s", Result(r).String())
 }
 
 // LoadInstance loads instance-level Vulkan function pointers via Volk.
@@ -2734,6 +2734,117 @@ const (
 	PipelineBinaryMissingKHR                    Result = 1000483000
 	ErrorNotEnoughSpaceKHR                      Result = -1000483000
 )
+
+func (v Result) String() string {
+	switch v {
+	case Success:
+		return "Success"
+	case NotReady:
+		return "NotReady"
+	case Timeout:
+		return "Timeout"
+	case EventSet:
+		return "EventSet"
+	case EventReset:
+		return "EventReset"
+	case Incomplete:
+		return "Incomplete"
+	case ErrorOutOfHostMemory:
+		return "ErrorOutOfHostMemory"
+	case ErrorOutOfDeviceMemory:
+		return "ErrorOutOfDeviceMemory"
+	case ErrorInitializationFailed:
+		return "ErrorInitializationFailed"
+	case ErrorDeviceLost:
+		return "ErrorDeviceLost"
+	case ErrorMemoryMapFailed:
+		return "ErrorMemoryMapFailed"
+	case ErrorLayerNotPresent:
+		return "ErrorLayerNotPresent"
+	case ErrorExtensionNotPresent:
+		return "ErrorExtensionNotPresent"
+	case ErrorFeatureNotPresent:
+		return "ErrorFeatureNotPresent"
+	case ErrorIncompatibleDriver:
+		return "ErrorIncompatibleDriver"
+	case ErrorTooManyObjects:
+		return "ErrorTooManyObjects"
+	case ErrorFormatNotSupported:
+		return "ErrorFormatNotSupported"
+	case ErrorFragmentedPool:
+		return "ErrorFragmentedPool"
+	case ErrorUnknown:
+		return "ErrorUnknown"
+	case ErrorValidationFailed:
+		return "ErrorValidationFailed"
+	case ErrorOutOfPoolMemory:
+		return "ErrorOutOfPoolMemory"
+	case ErrorInvalidExternalHandle:
+		return "ErrorInvalidExternalHandle"
+	case ErrorInvalidOpaqueCaptureAddress:
+		return "ErrorInvalidOpaqueCaptureAddress"
+	case ErrorFragmentation:
+		return "ErrorFragmentation"
+	case PipelineCompileRequired:
+		return "PipelineCompileRequired"
+	case ErrorNotPermitted:
+		return "ErrorNotPermitted"
+	case ErrorInvalidPipelineCacheData:
+		return "ErrorInvalidPipelineCacheData"
+	case ErrorNoPipelineMatch:
+		return "ErrorNoPipelineMatch"
+	case ErrorSurfaceLostKHR:
+		return "ErrorSurfaceLostKHR"
+	case ErrorNativeWindowInUseKHR:
+		return "ErrorNativeWindowInUseKHR"
+	case SuboptimalKHR:
+		return "SuboptimalKHR"
+	case ErrorOutOfDateKHR:
+		return "ErrorOutOfDateKHR"
+	case ErrorIncompatibleDisplayKHR:
+		return "ErrorIncompatibleDisplayKHR"
+	case ErrorInvalidShaderNV:
+		return "ErrorInvalidShaderNV"
+	case ErrorImageUsageNotSupportedKHR:
+		return "ErrorImageUsageNotSupportedKHR"
+	case ErrorVideoPictureLayoutNotSupportedKHR:
+		return "ErrorVideoPictureLayoutNotSupportedKHR"
+	case ErrorVideoProfileOperationNotSupportedKHR:
+		return "ErrorVideoProfileOperationNotSupportedKHR"
+	case ErrorVideoProfileFormatNotSupportedKHR:
+		return "ErrorVideoProfileFormatNotSupportedKHR"
+	case ErrorVideoProfileCodecNotSupportedKHR:
+		return "ErrorVideoProfileCodecNotSupportedKHR"
+	case ErrorVideoStdVersionNotSupportedKHR:
+		return "ErrorVideoStdVersionNotSupportedKHR"
+	case ErrorInvalidDrmFormatModifierPlaneLayoutEXT:
+		return "ErrorInvalidDrmFormatModifierPlaneLayoutEXT"
+	case ErrorPresentTimingQueueFullEXT:
+		return "ErrorPresentTimingQueueFullEXT"
+	case ErrorFullScreenExclusiveModeLostEXT:
+		return "ErrorFullScreenExclusiveModeLostEXT"
+	case ThreadIdleKHR:
+		return "ThreadIdleKHR"
+	case ThreadDoneKHR:
+		return "ThreadDoneKHR"
+	case OperationDeferredKHR:
+		return "OperationDeferredKHR"
+	case OperationNotDeferredKHR:
+		return "OperationNotDeferredKHR"
+	case ErrorInvalidVideoStdParametersKHR:
+		return "ErrorInvalidVideoStdParametersKHR"
+	case ErrorCompressionExhaustedEXT:
+		return "ErrorCompressionExhaustedEXT"
+	case IncompatibleShaderBinaryEXT:
+		return "IncompatibleShaderBinaryEXT"
+	case PipelineBinaryMissingKHR:
+		return "PipelineBinaryMissingKHR"
+	case ErrorNotEnoughSpaceKHR:
+		return "ErrorNotEnoughSpaceKHR"
+	default:
+		return fmt.Sprintf("Result(%d)", int(v))
+	}
+}
 
 type SampleCountFlagBits uint32
 
@@ -31998,9 +32109,7 @@ func (h PhysicalDevice) GetToolProperties() ([]PhysicalDeviceToolProperties, err
 
 func (h Device) GetPipelineCacheData(
 	pipelineCache *PipelineCache,
-	DataSize *uintptr,
-	Data []byte,
-) error {
+) ([]byte, error) {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -32009,26 +32118,28 @@ func (h Device) GetPipelineCacheData(
 	}()
 
 	// param pipelineCache
-	var h1 C.VkPipelineCache
+	var h0 C.VkPipelineCache
 	if pipelineCache != nil {
-		h1 = C.VkPipelineCache(unsafe.Pointer(pipelineCache.handle))
+		h0 = C.VkPipelineCache(unsafe.Pointer(pipelineCache.handle))
 	}
-	// param DataSize
-	var ptr3 *C.size_t
-	if DataSize != nil {
-		val4 := C.size_t(*DataSize)
-		ptr3 = &val4
+	var dataSize C.size_t
+	_result := C.fn_vkGetPipelineCacheData(C.VkDevice(unsafe.Pointer(h.handle)), h0, &dataSize, nil)
+	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
+		return nil, vkError(_result)
 	}
-	// param Data
-	var ptr6 unsafe.Pointer
-	if len(Data) > 0 {
-		ptr6 = unsafe.Pointer(&Data[0])
+	if dataSize == 0 {
+		return nil, nil
 	}
-	_result := C.fn_vkGetPipelineCacheData(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3, ptr6)
+
+	buf := C.malloc(dataSize)
+	cancels = append(cancels, func() { C.free(buf) })
+
+	_result = C.fn_vkGetPipelineCacheData(C.VkDevice(unsafe.Pointer(h.handle)), h0, &dataSize, buf)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return nil, vkError(_result)
 	}
-	return nil
+
+	return C.GoBytes(buf, C.int(dataSize)), nil
 }
 
 func (h Device) GetPrivateData(
@@ -32173,9 +32284,7 @@ func (h Device) GetSemaphoreCounterValue(
 
 func (h Device) GetShaderBinaryDataEXT(
 	shader *ShaderEXT,
-	DataSize *uintptr,
-	Data []byte,
-) error {
+) ([]byte, error) {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -32184,26 +32293,28 @@ func (h Device) GetShaderBinaryDataEXT(
 	}()
 
 	// param shader
-	var h1 C.VkShaderEXT
+	var h0 C.VkShaderEXT
 	if shader != nil {
-		h1 = C.VkShaderEXT(unsafe.Pointer(shader.handle))
+		h0 = C.VkShaderEXT(unsafe.Pointer(shader.handle))
 	}
-	// param DataSize
-	var ptr3 *C.size_t
-	if DataSize != nil {
-		val4 := C.size_t(*DataSize)
-		ptr3 = &val4
+	var dataSize C.size_t
+	_result := C.fn_vkGetShaderBinaryDataEXT(C.VkDevice(unsafe.Pointer(h.handle)), h0, &dataSize, nil)
+	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
+		return nil, vkError(_result)
 	}
-	// param Data
-	var ptr6 unsafe.Pointer
-	if len(Data) > 0 {
-		ptr6 = unsafe.Pointer(&Data[0])
+	if dataSize == 0 {
+		return nil, nil
 	}
-	_result := C.fn_vkGetShaderBinaryDataEXT(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3, ptr6)
+
+	buf := C.malloc(dataSize)
+	cancels = append(cancels, func() { C.free(buf) })
+
+	_result = C.fn_vkGetShaderBinaryDataEXT(C.VkDevice(unsafe.Pointer(h.handle)), h0, &dataSize, buf)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return nil, vkError(_result)
 	}
-	return nil
+
+	return C.GoBytes(buf, C.int(dataSize)), nil
 }
 
 func (h Device) GetSwapchainImagesKHR(
