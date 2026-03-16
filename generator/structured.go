@@ -10,6 +10,7 @@ type StructField struct {
 	CName      string
 	CountFor   string // if non-empty, this field is the count for field CountFor (skip in Go)
 	CountCName string // C name of the count field
+	CountScale int    // if > 1, C count = len(slice) * CountScale (e.g. codeSize = len(Code)*4)
 	Type       FieldType
 }
 
@@ -173,18 +174,25 @@ func (s *Structured) GenerateToC() string {
 		cFieldName := sanitizeCField(field.CName)
 		g.Line(fmt.Sprintf("\tp.%s = %s", cFieldName, output))
 
-		// If this is a slice field and the count field was collapsed, auto-set it
-		if _, ok := field.Type.(*Slice); ok && field.CountCName != "" {
+		// If this is a slice/byte-slice field and the count field was collapsed, auto-set it
+		_, isSliceField := field.Type.(*Slice)
+		_, isByteSliceField := field.Type.(*ByteSlice)
+		if (isSliceField || isByteSliceField) && field.CountCName != "" {
 			// Only auto-set the count if it was collapsed (CountFor is set)
-			collapsed := false
+			var countFieldType FieldType
 			for _, f := range s.Fields {
 				if f.CName == field.CountCName && f.CountFor != "" {
-					collapsed = true
+					countFieldType = f.Type
 					break
 				}
 			}
-			if collapsed {
-				g.Line(fmt.Sprintf("\tp.%s = C.uint32_t(len(%s))", field.CountCName, input))
+			if countFieldType != nil {
+				cTypeName := strings.TrimPrefix(countFieldType.CName(), "C.")
+				if field.CountScale > 1 {
+					g.Line(fmt.Sprintf("\tp.%s = C.%s(len(%s) * %d)", field.CountCName, cTypeName, input, field.CountScale))
+				} else {
+					g.Line(fmt.Sprintf("\tp.%s = C.%s(len(%s))", field.CountCName, cTypeName, input))
+				}
 			}
 		}
 	}
@@ -268,6 +276,13 @@ func (s *Structured) GenerateFromC() string {
 			}
 		case *VoidPtr:
 			g.Line(fmt.Sprintf("\t%s = unsafe.Pointer(%s)", goField, input))
+		case *ByteSlice:
+			if field.CountCName != "" {
+				countCField := sanitizeCField(field.CountCName)
+				g.Line(fmt.Sprintf("\tif p.%s > 0 && %s != nil {", countCField, input))
+				g.Line(fmt.Sprintf("\t\t%s = C.GoBytes(%s, C.int(p.%s))", goField, input, countCField))
+				g.Line("\t}")
+			}
 		case *String:
 			g.Line(fmt.Sprintf("\tif %s != nil { %s = C.GoString(%s) }", input, goField, input))
 		case *Pointer:
@@ -282,12 +297,26 @@ func (s *Structured) GenerateFromC() string {
 		case *Slice:
 			if field.CountCName != "" {
 				countCField := sanitizeCField(field.CountCName)
+				// Element count expression: divide by CountScale if the C field is a byte count.
+				var countExpr string
+				if field.CountScale > 1 {
+					countExpr = fmt.Sprintf("int(p.%s) / %d", countCField, field.CountScale)
+				} else {
+					countExpr = fmt.Sprintf("p.%s", countCField)
+				}
 				indexVar := g.Var("i")
 				elemVar := g.Var("elem")
 				switch child := ft.Child.(type) {
+				case *Primitive:
+					g.Line(fmt.Sprintf("\tif p.%s > 0 && %s != nil {", countCField, input))
+					g.Line(fmt.Sprintf("\t\t%s = make([]%s, %s)", goField, child.GoName(), countExpr))
+					g.Line(fmt.Sprintf("\t\tfor %s := range %s {", indexVar, goField))
+					g.Line(fmt.Sprintf("\t\t\t%s[%s] = %s((*[1<<30]C.%s)(unsafe.Pointer(%s))[%s])", goField, indexVar, child.GoName(), child.CName()[len("C."):], input, indexVar))
+					g.Line("\t\t}")
+					g.Line("\t}")
 				case *StructType:
 					g.Line(fmt.Sprintf("\tif p.%s > 0 && %s != nil {", countCField, input))
-					g.Line(fmt.Sprintf("\t\t%s = make([]%s, p.%s)", goField, child.Name, countCField))
+					g.Line(fmt.Sprintf("\t\t%s = make([]%s, %s)", goField, child.Name, countExpr))
 					g.Line(fmt.Sprintf("\t\tfor %s := range %s {", indexVar, goField))
 					g.Line(fmt.Sprintf("\t\t\t%s := (*[1<<30]C.%s)(unsafe.Pointer(%s))[%s]", elemVar, child.CTypeName, input, indexVar))
 					g.Line(fmt.Sprintf("\t\t\t%s[%s].fromC(&%s)", goField, indexVar, elemVar))
@@ -295,7 +324,7 @@ func (s *Structured) GenerateFromC() string {
 					g.Line("\t}")
 				case *Handle:
 					g.Line(fmt.Sprintf("\tif p.%s > 0 && %s != nil {", countCField, input))
-					g.Line(fmt.Sprintf("\t\t%s = make([]%s, p.%s)", goField, child.GoName(), countCField))
+					g.Line(fmt.Sprintf("\t\t%s = make([]%s, %s)", goField, child.GoName(), countExpr))
 					g.Line(fmt.Sprintf("\t\tfor %s := range %s {", indexVar, goField))
 					g.Line(fmt.Sprintf("\t\t\t%s[%s] = &%s{handle: unsafe.Pointer((*[1<<30]C.%s)(unsafe.Pointer(%s))[%s])}", goField, indexVar, child.Name, child.CTypeName, input, indexVar))
 					g.Line("\t\t}")

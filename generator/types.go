@@ -308,6 +308,23 @@ func (t *VoidPtr) CName() string  { return "unsafe.Pointer" }
 func (t *VoidPtr) GoName() string { return "unsafe.Pointer" }
 
 // ---------------------------------------------------------------------------
+// ByteSlice  (void* with a paired size/length field — represented as []byte)
+// ---------------------------------------------------------------------------
+
+type ByteSlice struct{}
+
+func (t *ByteSlice) GenerateToC(g *CodeGen, input string) string {
+	ptrVar := g.Var("ptr")
+	g.Line(fmt.Sprintf("\tvar %s unsafe.Pointer", ptrVar))
+	g.Line(fmt.Sprintf("\tif len(%s) > 0 { %s = unsafe.Pointer(&%s[0]) }", input, ptrVar, input))
+	return ptrVar
+}
+
+func (t *ByteSlice) GenerateFromC(_ *CodeGen, _ string) string { return "nil" }
+func (t *ByteSlice) CName() string                             { return "unsafe.Pointer" }
+func (t *ByteSlice) GoName() string                            { return "[]byte" }
+
+// ---------------------------------------------------------------------------
 // ExternalType (platform-specific C types not part of the Vulkan type system)
 // ---------------------------------------------------------------------------
 
@@ -432,6 +449,8 @@ func ToCTypeName(ft FieldType) string {
 	case *Pointer:
 		return ToCTypeName(t.Child) + "*"
 	case *VoidPtr:
+		return "void*"
+	case *ByteSlice:
 		return "void*"
 	case *String:
 		return "const char*"

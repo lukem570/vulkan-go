@@ -2,6 +2,7 @@ package parser
 
 import (
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/lukem570/vulkan-go/generator"
@@ -249,14 +250,19 @@ func parseStruct(
 		seen[m.Name] = true
 
 		// Determine if this is a count-only field that will be folded into a slice
-		if sliceField, ok := countMap[m.Name]; ok {
-			// This is a count field — record it but mark it as CountFor
+		if entry, ok := countMap[m.Name]; ok {
+			// This is a count field — record it but mark it as CountFor.
+			// Preserve the actual C type so auto-set in toC() uses the right cast.
+			ft := primitiveType(m.Type)
+			if ft == nil {
+				ft = generator.NewPrimitive("uint32_t", "uint32")
+			}
 			field := generator.StructField{
 				GoName:     toPublic(stripP(m.Name)),
 				CName:      m.Name,
-				CountFor:   toPublic(stripP(sliceField)),
+				CountFor:   toPublic(stripP(entry.arrayField)),
 				CountCName: m.Name,
-				Type:       generator.NewPrimitive("uint32_t", "uint32"),
+				Type:       ft,
 			}
 			s.Fields = append(s.Fields, field)
 			continue
@@ -264,9 +270,10 @@ func parseStruct(
 
 		isPtr := isPointerMember(m)
 		fixedSize := fixedArraySize(m)
-		// If there's a len attribute that references another member, it's a slice
-		// BUT fixed-size arrays take precedence over len-based slices
-		isArr := fixedSize == 0 && m.Len != "" && m.Len != "null-terminated"
+		// If there's a len attribute that references another member, it's a slice.
+		// Also treat altlen-only fields as arrays (e.g. pCode with latexmath len).
+		// Fixed-size arrays take precedence over len-based slices.
+		isArr := fixedSize == 0 && (m.Len != "" && m.Len != "null-terminated" || m.AltLen != "")
 
 		isDblPtr := strings.Count(m.InnerXML, "*") >= 2
 		ft := resolveFieldType(m.Type, isPtr, isArr, handles, funcPointers, structs, isDblPtr)
@@ -276,10 +283,18 @@ func parseStruct(
 			ft = &generator.FixedArray{Child: ft, Size: fixedSize}
 		}
 
-		// Find the C name of the count field for this slice
+		// Find the C name of the count field for this slice.
+		// For altlen expressions like "codeSize / 4", extract the count field name.
 		countCName := ""
+		countScale := 0
 		if isArr {
 			countCName = findCountFieldName(m.Len, t.Members)
+			if countCName == "" && m.AltLen != "" {
+				if field, divisor := parseAltLenDivExpr(m.AltLen); field != "" {
+					countCName = field
+					countScale = divisor
+				}
+			}
 		}
 
 		goFieldName := toPublic(stripP(m.Name))
@@ -287,6 +302,7 @@ func parseStruct(
 			GoName:     goFieldName,
 			CName:      m.Name,
 			CountCName: countCName,
+			CountScale: countScale,
 			Type:       ft,
 		}
 		s.Fields = append(s.Fields, field)
@@ -295,41 +311,89 @@ func parseStruct(
 	return s
 }
 
-// buildCountMap returns a map from count-field-name → the array field it counts.
-// For example: "descriptorSetCount" → "pDescriptorSets"
+// countEntry describes the relationship between a count field and the array it counts.
+type countEntry struct {
+	arrayField string
+	scale      int // if > 1: C count = len(slice) * scale (e.g. codeSize = len(Code)*4)
+}
+
+// buildCountMap returns a map from count-field-name → countEntry describing the array it counts.
+// For example: "descriptorSetCount" → {arrayField:"pDescriptorSets", scale:1}
+//              "codeSize"           → {arrayField:"pCode", scale:4}  (altlen="codeSize / 4")
 // A count field is only collapsed when exactly one array references it.
-func buildCountMap(members []XMLMember) map[string]string {
-	// Count how many arrays reference each count field
+func buildCountMap(members []XMLMember) map[string]countEntry {
 	type arrayRef struct {
 		name     string
 		optional bool
+		scale    int
 	}
 	refs := map[string][]arrayRef{}
 	for _, m := range members {
-		if m.Len == "" || m.Len == "null-terminated" {
-			continue
+		lenStr := m.Len
+		scale := 1
+
+		if lenStr == "" || lenStr == "null-terminated" {
+			// Try altlen alone (e.g. pCode has latexmath in len= but simple altlen)
+			if m.AltLen == "" {
+				continue
+			}
+			lenStr = m.AltLen
 		}
-		parts := strings.Split(m.Len, ",")
+
+		// If AltLen provides a simpler human-readable form, prefer it for parsing.
+		if m.AltLen != "" {
+			if field, divisor := parseAltLenDivExpr(m.AltLen); field != "" {
+				lenStr = field
+				scale = divisor
+			}
+		}
+
+		parts := strings.Split(lenStr, ",")
 		for _, part := range parts {
 			part = strings.TrimSpace(part)
 			if part != "" && part != "null-terminated" {
 				refs[part] = append(refs[part], arrayRef{
 					name:     m.Name,
 					optional: m.Optional == "true",
+					scale:    scale,
 				})
 			}
 		}
 	}
 	// Only collapse when exactly one array uses the count.
-	// Don't collapse when the array is purely optional (optional="true"),
-	// as the count has independent meaning. But optional="false,true" is fine.
-	result := map[string]string{}
+	result := map[string]countEntry{}
 	for countField, arrayFields := range refs {
 		if len(arrayFields) == 1 && !arrayFields[0].optional {
-			result[countField] = arrayFields[0].name
+			result[countField] = countEntry{
+				arrayField: arrayFields[0].name,
+				scale:      arrayFields[0].scale,
+			}
 		}
 	}
 	return result
+}
+
+// parseAltLenDivExpr parses simple expressions like "codeSize / 4" returning ("codeSize", 4).
+// The dividend must be a plain identifier (letters, digits, underscore only).
+// Returns ("", 0) for complex expressions like "(rasterizationSamples + 31) / 32".
+func parseAltLenDivExpr(s string) (string, int) {
+	parts := strings.SplitN(s, "/", 2)
+	if len(parts) != 2 {
+		return "", 0
+	}
+	field := strings.TrimSpace(parts[0])
+	divisorStr := strings.TrimSpace(parts[1])
+	// Reject complex left-hand expressions (spaces, parens, operators)
+	for _, ch := range field {
+		if !((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_') {
+			return "", 0
+		}
+	}
+	divisor, err := strconv.Atoi(divisorStr)
+	if err != nil || divisor <= 1 {
+		return "", 0
+	}
+	return field, divisor
 }
 
 // findCountFieldName returns the C name of the count member referenced by a len attr.

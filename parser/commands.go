@@ -272,10 +272,6 @@ func isOutputParam(p XMLParam, retType string, handles map[string]*generator.GoH
 	if !strings.Contains(p.InnerXML, "*") {
 		return false
 	}
-	// must have p-prefix convention
-	if len(p.Name) < 2 || p.Name[0] != 'p' || p.Name[1] < 'A' || p.Name[1] > 'Z' {
-		return false
-	}
 	// const pointers are inputs, not outputs
 	if strings.Contains(p.InnerXML, "const") {
 		return false
@@ -284,13 +280,19 @@ func isOutputParam(p XMLParam, retType string, handles map[string]*generator.GoH
 	if retType != "VkResult" && retType != "void" && retType != "" {
 		return false
 	}
+	// void** params are output pointers (e.g. vkMapMemory's ppData).
+	// Check this before the p-prefix convention since ppData has double-p.
+	// Single void* params are caller-provided buffers, not output values.
+	if p.Type == "void" {
+		return strings.Contains(p.InnerXML, "**")
+	}
+	// must have p-prefix convention
+	if len(p.Name) < 2 || p.Name[0] != 'p' || p.Name[1] < 'A' || p.Name[1] > 'Z' {
+		return false
+	}
 	goName := stripVk(p.Type)
 	if _, isHandle := handles[goName]; isHandle {
 		return true
-	}
-	// void* params are typically caller-provided buffers, not output values
-	if p.Type == "void" {
-		return false
 	}
 	// Primitives and simple types
 	if primitiveType(p.Type) != nil {

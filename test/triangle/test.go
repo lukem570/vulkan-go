@@ -300,7 +300,6 @@ func run() error {
 
 	// Create shader modules
 	vertModule, err := device.CreateShaderModule(&vk.ShaderModuleCreateInfo{
-		CodeSize: uintptr(len(vertShaderSPV)),
 		Code:     bytesToUint32(vertShaderSPV),
 	}, nil)
 	if err != nil {
@@ -309,7 +308,6 @@ func run() error {
 	defer device.DestroyShaderModule(vertModule, nil)
 
 	fragModule, err := device.CreateShaderModule(&vk.ShaderModuleCreateInfo{
-		CodeSize: uintptr(len(fragShaderSPV)),
 		Code:     bytesToUint32(fragShaderSPV),
 	}, nil)
 	if err != nil {

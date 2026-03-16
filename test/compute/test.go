@@ -162,8 +162,8 @@ func run() error {
 	}
 
 	// Map memory and write input data: [1, 2, 3, ..., 64]
-	var mappedPtr unsafe.Pointer
-	if err := device.MapMemory(memory, 0, bufferSize, 0, &mappedPtr); err != nil {
+	mappedPtr, err := device.MapMemory(memory, 0, bufferSize, 0)
+	if err != nil {
 		return fmt.Errorf("map memory: %w", err)
 	}
 
@@ -201,7 +201,6 @@ func run() error {
 
 	// Create shader module
 	shaderModule, err := device.CreateShaderModule(&vk.ShaderModuleCreateInfo{
-		CodeSize: uintptr(len(computeShaderSPV)),
 		Code:     bytesToUint32(computeShaderSPV),
 	}, nil)
 	if err != nil {
@@ -322,7 +321,8 @@ func run() error {
 	fmt.Println("compute shader executed")
 
 	// Read back results
-	if err := device.MapMemory(memory, 0, bufferSize, 0, &mappedPtr); err != nil {
+	mappedPtr, err = device.MapMemory(memory, 0, bufferSize, 0)
+	if err != nil {
 		return fmt.Errorf("map memory (readback): %w", err)
 	}
 

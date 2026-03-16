@@ -96,6 +96,9 @@ func resolveFieldType(
 ) generator.FieldType {
 	isDoublePointer := len(extraOpts) > 0 && extraOpts[0]
 	if typeName == "void" && isPointer {
+		if isArray {
+			return &generator.ByteSlice{}
+		}
 		if isDoublePointer {
 			return &generator.Pointer{Child: &generator.VoidPtr{}}
 		}
