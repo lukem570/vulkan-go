@@ -21,12 +21,17 @@ jobs:
 
       - name: Update submodules
         run: |
-          git submodule update --remote --merge
+          git submodule foreach 'git fetch origin'
+          git submodule update --remote --checkout
+
+      - name: Stage submodule changes
+        run: |
+          git add mod/Vulkan-Headers
 
       - name: Check for submodule changes
         id: changes
         run: |
-          if git diff --quiet; then
+          if git diff --cached --quiet; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
