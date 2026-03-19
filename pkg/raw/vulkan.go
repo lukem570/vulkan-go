@@ -930,7 +930,6 @@ const (
 	DescriptorSetLayoutCreateUpdateAfterBindPoolBitEXT       DescriptorSetLayoutCreateFlagBits = DescriptorSetLayoutCreateUpdateAfterBindPoolBit
 	DescriptorSetLayoutCreateDescriptorBufferBitEXT          DescriptorSetLayoutCreateFlagBits = 1 << 4
 	DescriptorSetLayoutCreateEmbeddedImmutableSamplersBitEXT DescriptorSetLayoutCreateFlagBits = 1 << 5
-	DescriptorSetLayoutCreateReserved3BitAMD                 DescriptorSetLayoutCreateFlagBits = 1 << 3
 	DescriptorSetLayoutCreateHostOnlyPoolBitVALVE            DescriptorSetLayoutCreateFlagBits = DescriptorSetLayoutCreateHostOnlyPoolBitEXT
 	DescriptorSetLayoutCreateIndirectBindableBitNV           DescriptorSetLayoutCreateFlagBits = 1 << 7
 	DescriptorSetLayoutCreateHostOnlyPoolBitEXT              DescriptorSetLayoutCreateFlagBits = 1 << 2
@@ -2184,6 +2183,13 @@ const (
 	PipelineCacheHeaderVersionDataGraphQCOM     PipelineCacheHeaderVersion = 1000629000
 )
 
+type PipelineColorBlendStateCreateFlagBits uint32
+
+const (
+	PipelineColorBlendStateCreateRasterizationOrderAttachmentAccessBitARM PipelineColorBlendStateCreateFlagBits = PipelineColorBlendStateCreateRasterizationOrderAttachmentAccessBitEXT
+	PipelineColorBlendStateCreateRasterizationOrderAttachmentAccessBitEXT PipelineColorBlendStateCreateFlagBits = 1 << 0
+)
+
 type PipelineCreateFlagBits uint32
 
 const (
@@ -2302,6 +2308,21 @@ const (
 	PipelineCreationFeedbackValidBitEXT                       PipelineCreationFeedbackFlagBits = PipelineCreationFeedbackValidBit
 	PipelineCreationFeedbackApplicationPipelineCacheHitBitEXT PipelineCreationFeedbackFlagBits = PipelineCreationFeedbackApplicationPipelineCacheHitBit
 	PipelineCreationFeedbackBasePipelineAccelerationBitEXT    PipelineCreationFeedbackFlagBits = PipelineCreationFeedbackBasePipelineAccelerationBit
+)
+
+type PipelineDepthStencilStateCreateFlagBits uint32
+
+const (
+	PipelineDepthStencilStateCreateRasterizationOrderAttachmentDepthAccessBitARM   PipelineDepthStencilStateCreateFlagBits = PipelineDepthStencilStateCreateRasterizationOrderAttachmentDepthAccessBitEXT
+	PipelineDepthStencilStateCreateRasterizationOrderAttachmentStencilAccessBitARM PipelineDepthStencilStateCreateFlagBits = PipelineDepthStencilStateCreateRasterizationOrderAttachmentStencilAccessBitEXT
+	PipelineDepthStencilStateCreateRasterizationOrderAttachmentDepthAccessBitEXT   PipelineDepthStencilStateCreateFlagBits = 1 << 0
+	PipelineDepthStencilStateCreateRasterizationOrderAttachmentStencilAccessBitEXT PipelineDepthStencilStateCreateFlagBits = 1 << 1
+)
+
+type PipelineLayoutCreateFlagBits uint32
+
+const (
+	PipelineLayoutCreateIndependentSetsBitEXT PipelineLayoutCreateFlagBits = 1 << 1
 )
 
 type PipelineRobustnessBufferBehavior uint32
@@ -3964,6 +3985,22 @@ const (
 	StructureTypeDescriptorBufferBindingInfoEXT                               StructureType = 1000316011
 	StructureTypeDescriptorBufferBindingPushDescriptorBufferHandleEXT         StructureType = 1000316012
 	StructureTypeAccelerationStructureCaptureDescriptorDataInfoEXT            StructureType = 1000316009
+	StructureTypeDeviceMemoryCopyKHR                                          StructureType = 1000318000
+	StructureTypeCopyDeviceMemoryInfoKHR                                      StructureType = 1000318001
+	StructureTypeDeviceMemoryImageCopyKHR                                     StructureType = 1000318002
+	StructureTypeCopyDeviceMemoryImageInfoKHR                                 StructureType = 1000318003
+	StructureTypeMemoryRangeBarriersInfoKHR                                   StructureType = 1000318004
+	StructureTypeMemoryRangeBarrierKHR                                        StructureType = 1000318005
+	StructureTypePhysicalDeviceDeviceAddressCommandsFeaturesKHR               StructureType = 1000318006
+	StructureTypeBindIndexBuffer3InfoKHR                                      StructureType = 1000318007
+	StructureTypeBindVertexBuffer3InfoKHR                                     StructureType = 1000318008
+	StructureTypeDrawIndirect2InfoKHR                                         StructureType = 1000318009
+	StructureTypeDrawIndirectCount2InfoKHR                                    StructureType = 1000318010
+	StructureTypeDispatchIndirect2InfoKHR                                     StructureType = 1000318011
+	StructureTypeConditionalRenderingBeginInfo2EXT                            StructureType = 1000318012
+	StructureTypeBindTransformFeedbackBuffer2InfoEXT                          StructureType = 1000318013
+	StructureTypeMemoryMarkerInfoAMD                                          StructureType = 1000318014
+	StructureTypeAccelerationStructureCreateInfo2KHR                          StructureType = 1000318015
 	StructureTypePhysicalDeviceGraphicsPipelineLibraryFeaturesEXT             StructureType = 1000320000
 	StructureTypePhysicalDeviceGraphicsPipelineLibraryPropertiesEXT           StructureType = 1000320001
 	StructureTypeGraphicsPipelineLibraryCreateInfoEXT                         StructureType = 1000320002
