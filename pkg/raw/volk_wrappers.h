@@ -1,6 +1,10 @@
 #ifndef VOLK_WRAPPERS_H
 #define VOLK_WRAPPERS_H
 
+#if defined(__APPLE__)
+#define VK_USE_PLATFORM_MACOS_MVK
+#endif
+
 #if defined(__linux__) || defined(__unix__)
 #include <wayland-client.h>
 #define VK_USE_PLATFORM_WAYLAND_KHR
@@ -19,6 +23,8 @@
 #include <stdlib.h>
 
 #include <vulkan/vulkan.h>
+
+VkResult vulkan_platform_initialize(void);
 
 VkResult fn_vkAcquireNextImage2KHR(VkDevice device, const VkAcquireNextImageInfoKHR* pAcquireInfo, uint32_t* pImageIndex);
 VkResult fn_vkAcquireNextImageKHR(VkDevice device, VkSwapchainKHR swapchain, uint64_t timeout, VkSemaphore semaphore, VkFence fence, uint32_t* pImageIndex);
@@ -318,6 +324,10 @@ void fn_vkUpdateDescriptorSetWithTemplate(VkDevice device, VkDescriptorSet descr
 void fn_vkUpdateDescriptorSets(VkDevice device, uint32_t descriptorWriteCount, const VkWriteDescriptorSet* pDescriptorWrites, uint32_t descriptorCopyCount, const VkCopyDescriptorSet* pDescriptorCopies);
 VkResult fn_vkWaitForFences(VkDevice device, uint32_t fenceCount, const VkFence* pFences, VkBool32 waitAll, uint64_t timeout);
 VkResult fn_vkWaitSemaphores(VkDevice device, const VkSemaphoreWaitInfo* pWaitInfo, uint64_t timeout);
+
+#ifdef VK_USE_PLATFORM_MACOS_MVK
+VkResult fn_vkCreateMacOSSurfaceMVK(VkInstance instance, const VkMacOSSurfaceCreateInfoMVK* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface);
+#endif // VK_USE_PLATFORM_MACOS_MVK
 
 #ifdef VK_USE_PLATFORM_WAYLAND_KHR
 VkResult fn_vkCreateWaylandSurfaceKHR(VkInstance instance, const VkWaylandSurfaceCreateInfoKHR* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface);

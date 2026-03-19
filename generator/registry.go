@@ -42,7 +42,7 @@ type Structure interface {
 // Initialize loads the Vulkan library via Volk.
 // Must be called before any other Vulkan function.
 func Initialize() error {
-	if result := C.volkInitialize(); result != C.VK_SUCCESS {
+	if result := C.vulkan_platform_initialize(); result != C.VK_SUCCESS {
 		return vkError(result)
 	}
 	return nil
@@ -84,6 +84,36 @@ func SurfaceKHRFromGLFW(glfwSurface uintptr) *SurfaceKHR {
 	handle := *(*uintptr)(unsafe.Pointer(glfwSurface))
 	return &SurfaceKHR{handle: unsafe.Pointer(handle)}
 }
+`
+
+// platformInitImpl is injected into volk_wrappers.c.
+// On macOS, volk's built-in dlopen doesn't search Homebrew paths, so we do the
+// search ourselves and call volkInitializeCustom to bypass volk's loader entirely.
+const platformInitImpl = `VkResult vulkan_platform_initialize(void) {
+#if defined(__APPLE__)
+	const char* paths[] = {
+		"libvulkan.dylib",
+		"libvulkan.1.dylib",
+		"/usr/local/lib/libvulkan.dylib",
+		"/opt/homebrew/lib/libvulkan.dylib",
+		"libMoltenVK.dylib",
+		"/opt/homebrew/lib/libMoltenVK.dylib",
+		NULL,
+	};
+	void* module = NULL;
+	for (int i = 0; paths[i] != NULL && module == NULL; i++) {
+		module = dlopen(paths[i], RTLD_NOW | RTLD_LOCAL);
+	}
+	if (!module) return VK_ERROR_INITIALIZATION_FAILED;
+	PFN_vkGetInstanceProcAddr proc = (PFN_vkGetInstanceProcAddr)dlsym(module, "vkGetInstanceProcAddr");
+	if (!proc) return VK_ERROR_INITIALIZATION_FAILED;
+	volkInitializeCustom(proc);
+	return VK_SUCCESS;
+#else
+	return volkInitialize();
+#endif
+}
+
 `
 
 // APIConstant is a single entry from the Vulkan API constants block.
@@ -365,6 +395,8 @@ func (r *Registry) GenerateCHeader() string {
 	b.WriteString("#include <stdlib.h>\n\n")
 	b.WriteString("#include <vulkan/vulkan.h>\n\n")
 
+	b.WriteString("VkResult vulkan_platform_initialize(void);\n\n")
+
 	// Non-platform commands
 	for _, k := range sortedKeys(r.Commands) {
 		cmd := r.Commands[k]
@@ -410,6 +442,8 @@ func (r *Registry) GenerateCSource() string {
 	b.WriteString("#include \"volk.h\"\n")
 	b.WriteString("#include <vulkan/vulkan.h>\n")
 	b.WriteString("#include \"volk_wrappers.h\"\n\n")
+
+	b.WriteString(platformInitImpl)
 
 	// Non-platform commands
 	for _, k := range sortedKeys(r.Commands) {

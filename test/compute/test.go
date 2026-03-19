@@ -43,8 +43,11 @@ func run() error {
 		return fmt.Errorf("initialize: %w", err)
 	}
 
+	log.Println("Loaded vulkan")
+
 	// Create instance with validation layer and debug utils extension
 	instance, err := vk.CreateInstance(&vk.InstanceCreateInfo{
+		Flags: vk.InstanceCreateFlags(vk.InstanceCreateEnumeratePortabilityBitKHR),
 		ApplicationInfo: &vk.ApplicationInfo{
 			ApplicationName:    "vulkan-go-compute-test",
 			ApplicationVersion: 1,
@@ -52,11 +55,8 @@ func run() error {
 			EngineVersion:      1,
 			ApiVersion:         vkutil.VkMakeApiVersion(0, 1, 4, 0),
 		},
-		EnabledLayerNames: []string{
-			"VK_LAYER_KHRONOS_validation",
-		},
 		EnabledExtensionNames: []string{
-			"VK_EXT_debug_utils",
+			"VK_KHR_portability_enumeration",
 		},
 	}, nil)
 	if err != nil {

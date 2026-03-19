@@ -23,7 +23,7 @@ type Structure interface {
 // Initialize loads the Vulkan library via Volk.
 // Must be called before any other Vulkan function.
 func Initialize() error {
-	if result := C.volkInitialize(); result != C.VK_SUCCESS {
+	if result := C.vulkan_platform_initialize(); result != C.VK_SUCCESS {
 		return vkError(result)
 	}
 	return nil
@@ -4828,6 +4828,8 @@ type ImageUsageFlags uint32
 type ImageViewCreateFlags uint32
 
 type InstanceCreateFlags uint32
+
+type MacOSSurfaceCreateFlagsMVK uint32
 
 type MemoryAllocateFlags uint32
 

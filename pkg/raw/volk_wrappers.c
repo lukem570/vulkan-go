@@ -1,4 +1,8 @@
 #define VOLK_IMPLEMENTATION
+#if defined(__APPLE__)
+#define VK_USE_PLATFORM_MACOS_MVK
+#endif
+
 #if defined(__linux__) || defined(__unix__)
 #include <wayland-client.h>
 #define VK_USE_PLATFORM_WAYLAND_KHR
@@ -16,6 +20,31 @@
 #include "volk.h"
 #include <vulkan/vulkan.h>
 #include "volk_wrappers.h"
+
+VkResult vulkan_platform_initialize(void) {
+#if defined(__APPLE__)
+	const char* paths[] = {
+		"libvulkan.dylib",
+		"libvulkan.1.dylib",
+		"/usr/local/lib/libvulkan.dylib",
+		"/opt/homebrew/lib/libvulkan.dylib",
+		"libMoltenVK.dylib",
+		"/opt/homebrew/lib/libMoltenVK.dylib",
+		NULL,
+	};
+	void* module = NULL;
+	for (int i = 0; paths[i] != NULL && module == NULL; i++) {
+		module = dlopen(paths[i], RTLD_NOW | RTLD_LOCAL);
+	}
+	if (!module) return VK_ERROR_INITIALIZATION_FAILED;
+	PFN_vkGetInstanceProcAddr proc = (PFN_vkGetInstanceProcAddr)dlsym(module, "vkGetInstanceProcAddr");
+	if (!proc) return VK_ERROR_INITIALIZATION_FAILED;
+	volkInitializeCustom(proc);
+	return VK_SUCCESS;
+#else
+	return volkInitialize();
+#endif
+}
 
 VkResult fn_vkAcquireNextImage2KHR(VkDevice device, const VkAcquireNextImageInfoKHR* pAcquireInfo, uint32_t* pImageIndex) {
 	return vkAcquireNextImage2KHR(device, pAcquireInfo, pImageIndex);
@@ -1209,6 +1238,13 @@ VkResult fn_vkWaitSemaphores(VkDevice device, const VkSemaphoreWaitInfo* pWaitIn
 	return vkWaitSemaphores(device, pWaitInfo, timeout);
 }
 
+
+#ifdef VK_USE_PLATFORM_MACOS_MVK
+VkResult fn_vkCreateMacOSSurfaceMVK(VkInstance instance, const VkMacOSSurfaceCreateInfoMVK* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface) {
+	return vkCreateMacOSSurfaceMVK(instance, pCreateInfo, pAllocator, pSurface);
+}
+
+#endif // VK_USE_PLATFORM_MACOS_MVK
 
 #ifdef VK_USE_PLATFORM_WAYLAND_KHR
 VkResult fn_vkCreateWaylandSurfaceKHR(VkInstance instance, const VkWaylandSurfaceCreateInfoKHR* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface) {
