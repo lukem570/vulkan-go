@@ -3807,9 +3807,13 @@ const (
 	StructureTypeRenderingFragmentShadingRateAttachmentInfoKHR                StructureType = 1000044006
 	StructureTypePhysicalDeviceShaderCoreProperties2AMD                       StructureType = 1000227000
 	StructureTypePhysicalDeviceCoherentMemoryFeaturesAMD                      StructureType = 1000229000
+	StructureTypePhysicalDeviceShaderConstantDataFeaturesKHR                  StructureType = 1000231000
 	StructureTypePhysicalDeviceDynamicRenderingLocalReadFeaturesKHR           StructureType = StructureTypePhysicalDeviceDynamicRenderingLocalReadFeatures
 	StructureTypeRenderingAttachmentLocationInfoKHR                           StructureType = StructureTypeRenderingAttachmentLocationInfo
 	StructureTypeRenderingInputAttachmentIndexInfoKHR                         StructureType = StructureTypeRenderingInputAttachmentIndexInfo
+	StructureTypePhysicalDeviceShaderAbortFeaturesKHR                         StructureType = 1000233000
+	StructureTypeDeviceFaultShaderAbortMessageInfoKHR                         StructureType = 1000233001
+	StructureTypePhysicalDeviceShaderAbortPropertiesKHR                       StructureType = 1000233002
 	StructureTypePhysicalDeviceShaderImageAtomicInt64FeaturesEXT              StructureType = 1000234000
 	StructureTypePhysicalDeviceShaderQuadControlFeaturesKHR                   StructureType = 1000235000
 	StructureTypePhysicalDeviceMemoryBudgetPropertiesEXT                      StructureType = 1000237000
@@ -4481,6 +4485,10 @@ const (
 	StructureTypeIndirectExecutionSetShaderLayoutInfoEXT                      StructureType = 1000572012
 	StructureTypeGeneratedCommandsPipelineInfoEXT                             StructureType = 1000572013
 	StructureTypeGeneratedCommandsShaderInfoEXT                               StructureType = 1000572014
+	StructureTypePhysicalDeviceFaultFeaturesKHR                               StructureType = 1000573000
+	StructureTypePhysicalDeviceFaultPropertiesKHR                             StructureType = 1000573001
+	StructureTypeDeviceFaultInfoKHR                                           StructureType = 1000573002
+	StructureTypeDeviceFaultDebugInfoKHR                                      StructureType = 1000573003
 	StructureTypePhysicalDeviceMaintenance8FeaturesKHR                        StructureType = 1000574000
 	StructureTypeMemoryBarrierAccessFlags3KHR                                 StructureType = 1000574002
 	StructureTypePhysicalDeviceImageAlignmentControlFeaturesMESA              StructureType = 1000575000
@@ -8952,7 +8960,8 @@ type DeviceCreateInfo struct {
 	Next                  Structure
 	Flags                 DeviceCreateFlags
 	QueueCreateInfos      []DeviceQueueCreateInfo
-	EnabledLayerNames     []string
+	EnabledLayerCount     uint32
+	EnabledLayerNames     string
 	EnabledExtensionNames []string
 	EnabledFeatures       *PhysicalDeviceFeatures
 }
@@ -8988,41 +8997,32 @@ func (s *DeviceCreateInfo) toC() (unsafe.Pointer, func()) {
 	}
 	p.pQueueCreateInfos = arr2
 	p.queueCreateInfoCount = C.uint32_t(len(s.QueueCreateInfos))
-	len8 := len(s.EnabledLayerNames)
+	val8 := C.uint32_t(s.EnabledLayerCount)
+	p.enabledLayerCount = val8
+	cstr9 := C.CString(s.EnabledLayerNames)
+	cancels = append(cancels, func() { C.free(unsafe.Pointer(cstr9)) })
+	p.ppEnabledLayerNames = cstr9
+	len10 := len(s.EnabledExtensionNames)
 
-	var arr9 **C.char
-	if len8 > 0 {
-		arr9 = (**C.char)(C.malloc(C.size_t(len8) * C.size_t(unsafe.Sizeof(*new(*C.char)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr9)) })
+	var arr11 **C.char
+	if len10 > 0 {
+		arr11 = (**C.char)(C.malloc(C.size_t(len10) * C.size_t(unsafe.Sizeof(*new(*C.char)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr11)) })
 	}
-	for i10, elem11 := range s.EnabledLayerNames {
-		cstr12 := C.CString(elem11)
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(cstr12)) })
-		(*[1 << 30]*C.char)(unsafe.Pointer(arr9))[i10] = cstr12
+	for i12, elem13 := range s.EnabledExtensionNames {
+		cstr14 := C.CString(elem13)
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(cstr14)) })
+		(*[1 << 30]*C.char)(unsafe.Pointer(arr11))[i12] = cstr14
 	}
-	p.ppEnabledLayerNames = arr9
-	p.enabledLayerCount = C.uint32_t(len(s.EnabledLayerNames))
-	len13 := len(s.EnabledExtensionNames)
-
-	var arr14 **C.char
-	if len13 > 0 {
-		arr14 = (**C.char)(C.malloc(C.size_t(len13) * C.size_t(unsafe.Sizeof(*new(*C.char)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr14)) })
-	}
-	for i15, elem16 := range s.EnabledExtensionNames {
-		cstr17 := C.CString(elem16)
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(cstr17)) })
-		(*[1 << 30]*C.char)(unsafe.Pointer(arr14))[i15] = cstr17
-	}
-	p.ppEnabledExtensionNames = arr14
+	p.ppEnabledExtensionNames = arr11
 	p.enabledExtensionCount = C.uint32_t(len(s.EnabledExtensionNames))
-	var ptr18 *C.VkPhysicalDeviceFeatures
+	var ptr15 *C.VkPhysicalDeviceFeatures
 	if s.EnabledFeatures != nil {
-		val19, cancel20 := s.EnabledFeatures.toC()
-		cancels = append(cancels, cancel20)
-		ptr18 = (*C.VkPhysicalDeviceFeatures)(val19)
+		val16, cancel17 := s.EnabledFeatures.toC()
+		cancels = append(cancels, cancel17)
+		ptr15 = (*C.VkPhysicalDeviceFeatures)(val16)
 	}
-	p.pEnabledFeatures = ptr18
+	p.pEnabledFeatures = ptr15
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
@@ -9040,7 +9040,10 @@ func (s *DeviceCreateInfo) fromC(p *C.VkDeviceCreateInfo) {
 			s.QueueCreateInfos[i0].fromC(&elem1)
 		}
 	}
-	// TODO: fromC for EnabledLayerNames (Slice of *generator.String)
+	s.EnabledLayerCount = uint32(p.enabledLayerCount)
+	if p.ppEnabledLayerNames != nil {
+		s.EnabledLayerNames = C.GoString(p.ppEnabledLayerNames)
+	}
 	// TODO: fromC for EnabledExtensionNames (Slice of *generator.String)
 	if p.pEnabledFeatures != nil {
 		s.EnabledFeatures.fromC(p.pEnabledFeatures)
