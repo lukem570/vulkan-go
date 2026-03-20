@@ -4885,6 +4885,10 @@ type PipelineVertexInputStateCreateFlags uint32
 
 type PipelineViewportStateCreateFlags uint32
 
+type PresentGravityFlagsKHR uint32
+
+type PresentScalingFlagsKHR uint32
+
 type PrivateDataSlotCreateFlags uint32
 
 type QueryControlFlags uint32
@@ -8960,8 +8964,7 @@ type DeviceCreateInfo struct {
 	Next                  Structure
 	Flags                 DeviceCreateFlags
 	QueueCreateInfos      []DeviceQueueCreateInfo
-	EnabledLayerCount     uint32
-	EnabledLayerNames     string
+	EnabledLayerNames     []string
 	EnabledExtensionNames []string
 	EnabledFeatures       *PhysicalDeviceFeatures
 }
@@ -8997,32 +9000,41 @@ func (s *DeviceCreateInfo) toC() (unsafe.Pointer, func()) {
 	}
 	p.pQueueCreateInfos = arr2
 	p.queueCreateInfoCount = C.uint32_t(len(s.QueueCreateInfos))
-	val8 := C.uint32_t(s.EnabledLayerCount)
-	p.enabledLayerCount = val8
-	cstr9 := C.CString(s.EnabledLayerNames)
-	cancels = append(cancels, func() { C.free(unsafe.Pointer(cstr9)) })
-	p.ppEnabledLayerNames = cstr9
-	len10 := len(s.EnabledExtensionNames)
+	len8 := len(s.EnabledLayerNames)
 
-	var arr11 **C.char
-	if len10 > 0 {
-		arr11 = (**C.char)(C.malloc(C.size_t(len10) * C.size_t(unsafe.Sizeof(*new(*C.char)))))
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr11)) })
+	var arr9 **C.char
+	if len8 > 0 {
+		arr9 = (**C.char)(C.malloc(C.size_t(len8) * C.size_t(unsafe.Sizeof(*new(*C.char)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr9)) })
 	}
-	for i12, elem13 := range s.EnabledExtensionNames {
-		cstr14 := C.CString(elem13)
-		cancels = append(cancels, func() { C.free(unsafe.Pointer(cstr14)) })
-		(*[1 << 30]*C.char)(unsafe.Pointer(arr11))[i12] = cstr14
+	for i10, elem11 := range s.EnabledLayerNames {
+		cstr12 := C.CString(elem11)
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(cstr12)) })
+		(*[1 << 30]*C.char)(unsafe.Pointer(arr9))[i10] = cstr12
 	}
-	p.ppEnabledExtensionNames = arr11
+	p.ppEnabledLayerNames = arr9
+	p.enabledLayerCount = C.uint32_t(len(s.EnabledLayerNames))
+	len13 := len(s.EnabledExtensionNames)
+
+	var arr14 **C.char
+	if len13 > 0 {
+		arr14 = (**C.char)(C.malloc(C.size_t(len13) * C.size_t(unsafe.Sizeof(*new(*C.char)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr14)) })
+	}
+	for i15, elem16 := range s.EnabledExtensionNames {
+		cstr17 := C.CString(elem16)
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(cstr17)) })
+		(*[1 << 30]*C.char)(unsafe.Pointer(arr14))[i15] = cstr17
+	}
+	p.ppEnabledExtensionNames = arr14
 	p.enabledExtensionCount = C.uint32_t(len(s.EnabledExtensionNames))
-	var ptr15 *C.VkPhysicalDeviceFeatures
+	var ptr18 *C.VkPhysicalDeviceFeatures
 	if s.EnabledFeatures != nil {
-		val16, cancel17 := s.EnabledFeatures.toC()
-		cancels = append(cancels, cancel17)
-		ptr15 = (*C.VkPhysicalDeviceFeatures)(val16)
+		val19, cancel20 := s.EnabledFeatures.toC()
+		cancels = append(cancels, cancel20)
+		ptr18 = (*C.VkPhysicalDeviceFeatures)(val19)
 	}
-	p.pEnabledFeatures = ptr15
+	p.pEnabledFeatures = ptr18
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
@@ -9040,10 +9052,7 @@ func (s *DeviceCreateInfo) fromC(p *C.VkDeviceCreateInfo) {
 			s.QueueCreateInfos[i0].fromC(&elem1)
 		}
 	}
-	s.EnabledLayerCount = uint32(p.enabledLayerCount)
-	if p.ppEnabledLayerNames != nil {
-		s.EnabledLayerNames = C.GoString(p.ppEnabledLayerNames)
-	}
+	// TODO: fromC for EnabledLayerNames (Slice of *generator.String)
 	// TODO: fromC for EnabledExtensionNames (Slice of *generator.String)
 	if p.pEnabledFeatures != nil {
 		s.EnabledFeatures.fromC(p.pEnabledFeatures)
@@ -15347,12 +15356,59 @@ func (s *PhysicalDeviceLineRasterizationFeatures) fromC(p *C.VkPhysicalDeviceLin
 }
 
 type PhysicalDeviceLineRasterizationFeaturesEXT struct {
+	Next                     Structure
+	RectangularLines         bool
+	BresenhamLines           bool
+	SmoothLines              bool
+	StippledRectangularLines bool
+	StippledBresenhamLines   bool
+	StippledSmoothLines      bool
+}
+
+func (s *PhysicalDeviceLineRasterizationFeaturesEXT) GetType() StructureType {
+	return StructureTypePhysicalDeviceLineRasterizationFeatures
 }
 
 func (s *PhysicalDeviceLineRasterizationFeaturesEXT) toC() (unsafe.Pointer, func()) {
 	cancels := make([]func(), 0)
 	p := (*C.VkPhysicalDeviceLineRasterizationFeaturesEXT)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceLineRasterizationFeaturesEXT)))
 	*p = C.VkPhysicalDeviceLineRasterizationFeaturesEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.RectangularLines {
+		val0 = C.VkBool32(1)
+	}
+	p.rectangularLines = val0
+	val1 := C.VkBool32(0)
+	if s.BresenhamLines {
+		val1 = C.VkBool32(1)
+	}
+	p.bresenhamLines = val1
+	val2 := C.VkBool32(0)
+	if s.SmoothLines {
+		val2 = C.VkBool32(1)
+	}
+	p.smoothLines = val2
+	val3 := C.VkBool32(0)
+	if s.StippledRectangularLines {
+		val3 = C.VkBool32(1)
+	}
+	p.stippledRectangularLines = val3
+	val4 := C.VkBool32(0)
+	if s.StippledBresenhamLines {
+		val4 = C.VkBool32(1)
+	}
+	p.stippledBresenhamLines = val4
+	val5 := C.VkBool32(0)
+	if s.StippledSmoothLines {
+		val5 = C.VkBool32(1)
+	}
+	p.stippledSmoothLines = val5
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
@@ -15362,6 +15418,12 @@ func (s *PhysicalDeviceLineRasterizationFeaturesEXT) toC() (unsafe.Pointer, func
 }
 
 func (s *PhysicalDeviceLineRasterizationFeaturesEXT) fromC(p *C.VkPhysicalDeviceLineRasterizationFeaturesEXT) {
+	s.RectangularLines = p.rectangularLines != 0
+	s.BresenhamLines = p.bresenhamLines != 0
+	s.SmoothLines = p.smoothLines != 0
+	s.StippledRectangularLines = p.stippledRectangularLines != 0
+	s.StippledBresenhamLines = p.stippledBresenhamLines != 0
+	s.StippledSmoothLines = p.stippledSmoothLines != 0
 }
 
 type PhysicalDeviceLineRasterizationProperties struct {
@@ -15398,12 +15460,26 @@ func (s *PhysicalDeviceLineRasterizationProperties) fromC(p *C.VkPhysicalDeviceL
 }
 
 type PhysicalDeviceLineRasterizationPropertiesEXT struct {
+	Next                      Structure
+	LineSubPixelPrecisionBits uint32
+}
+
+func (s *PhysicalDeviceLineRasterizationPropertiesEXT) GetType() StructureType {
+	return StructureTypePhysicalDeviceLineRasterizationProperties
 }
 
 func (s *PhysicalDeviceLineRasterizationPropertiesEXT) toC() (unsafe.Pointer, func()) {
 	cancels := make([]func(), 0)
 	p := (*C.VkPhysicalDeviceLineRasterizationPropertiesEXT)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceLineRasterizationPropertiesEXT)))
 	*p = C.VkPhysicalDeviceLineRasterizationPropertiesEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.uint32_t(s.LineSubPixelPrecisionBits)
+	p.lineSubPixelPrecisionBits = val0
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
@@ -15413,6 +15489,7 @@ func (s *PhysicalDeviceLineRasterizationPropertiesEXT) toC() (unsafe.Pointer, fu
 }
 
 func (s *PhysicalDeviceLineRasterizationPropertiesEXT) fromC(p *C.VkPhysicalDeviceLineRasterizationPropertiesEXT) {
+	s.LineSubPixelPrecisionBits = uint32(p.lineSubPixelPrecisionBits)
 }
 
 type PhysicalDeviceMaintenance3Properties struct {
@@ -16538,12 +16615,29 @@ func (s *PhysicalDeviceShaderDemoteToHelperInvocationFeatures) fromC(p *C.VkPhys
 }
 
 type PhysicalDeviceShaderDrawParameterFeatures struct {
+	Next                 Structure
+	ShaderDrawParameters bool
+}
+
+func (s *PhysicalDeviceShaderDrawParameterFeatures) GetType() StructureType {
+	return StructureTypePhysicalDeviceShaderDrawParametersFeatures
 }
 
 func (s *PhysicalDeviceShaderDrawParameterFeatures) toC() (unsafe.Pointer, func()) {
 	cancels := make([]func(), 0)
 	p := (*C.VkPhysicalDeviceShaderDrawParameterFeatures)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceShaderDrawParameterFeatures)))
 	*p = C.VkPhysicalDeviceShaderDrawParameterFeatures{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.ShaderDrawParameters {
+		val0 = C.VkBool32(1)
+	}
+	p.shaderDrawParameters = val0
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
@@ -16553,6 +16647,7 @@ func (s *PhysicalDeviceShaderDrawParameterFeatures) toC() (unsafe.Pointer, func(
 }
 
 func (s *PhysicalDeviceShaderDrawParameterFeatures) fromC(p *C.VkPhysicalDeviceShaderDrawParameterFeatures) {
+	s.ShaderDrawParameters = p.shaderDrawParameters != 0
 }
 
 type PhysicalDeviceShaderDrawParametersFeatures struct {
@@ -17413,6 +17508,42 @@ func (s *PhysicalDeviceSubgroupSizeControlProperties) fromC(p *C.VkPhysicalDevic
 	s.RequiredSubgroupSizeStages = ShaderStageFlags(p.requiredSubgroupSizeStages)
 }
 
+type PhysicalDeviceSwapchainMaintenance1FeaturesEXT struct {
+	Next                  Structure
+	SwapchainMaintenance1 bool
+}
+
+func (s *PhysicalDeviceSwapchainMaintenance1FeaturesEXT) GetType() StructureType {
+	return StructureTypePhysicalDeviceSwapchainMaintenance1FeaturesKHR
+}
+
+func (s *PhysicalDeviceSwapchainMaintenance1FeaturesEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceSwapchainMaintenance1FeaturesEXT)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceSwapchainMaintenance1FeaturesEXT)))
+	*p = C.VkPhysicalDeviceSwapchainMaintenance1FeaturesEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.SwapchainMaintenance1 {
+		val0 = C.VkBool32(1)
+	}
+	p.swapchainMaintenance1 = val0
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceSwapchainMaintenance1FeaturesEXT) fromC(p *C.VkPhysicalDeviceSwapchainMaintenance1FeaturesEXT) {
+	s.SwapchainMaintenance1 = p.swapchainMaintenance1 != 0
+}
+
 type PhysicalDeviceSynchronization2Features struct {
 	Next             Structure
 	Synchronization2 bool
@@ -17715,12 +17846,35 @@ func (s *PhysicalDeviceUniformBufferStandardLayoutFeatures) fromC(p *C.VkPhysica
 }
 
 type PhysicalDeviceVariablePointerFeatures struct {
+	Next                          Structure
+	VariablePointersStorageBuffer bool
+	VariablePointers              bool
+}
+
+func (s *PhysicalDeviceVariablePointerFeatures) GetType() StructureType {
+	return StructureTypePhysicalDeviceVariablePointersFeatures
 }
 
 func (s *PhysicalDeviceVariablePointerFeatures) toC() (unsafe.Pointer, func()) {
 	cancels := make([]func(), 0)
 	p := (*C.VkPhysicalDeviceVariablePointerFeatures)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceVariablePointerFeatures)))
 	*p = C.VkPhysicalDeviceVariablePointerFeatures{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.VariablePointersStorageBuffer {
+		val0 = C.VkBool32(1)
+	}
+	p.variablePointersStorageBuffer = val0
+	val1 := C.VkBool32(0)
+	if s.VariablePointers {
+		val1 = C.VkBool32(1)
+	}
+	p.variablePointers = val1
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
@@ -17730,6 +17884,8 @@ func (s *PhysicalDeviceVariablePointerFeatures) toC() (unsafe.Pointer, func()) {
 }
 
 func (s *PhysicalDeviceVariablePointerFeatures) fromC(p *C.VkPhysicalDeviceVariablePointerFeatures) {
+	s.VariablePointersStorageBuffer = p.variablePointersStorageBuffer != 0
+	s.VariablePointers = p.variablePointers != 0
 }
 
 type PhysicalDeviceVariablePointersFeatures struct {
@@ -20388,12 +20544,38 @@ func (s *PipelineRasterizationLineStateCreateInfo) fromC(p *C.VkPipelineRasteriz
 }
 
 type PipelineRasterizationLineStateCreateInfoEXT struct {
+	Next                  Structure
+	LineRasterizationMode LineRasterizationMode
+	StippledLineEnable    bool
+	LineStippleFactor     uint32
+	LineStipplePattern    uint16
+}
+
+func (s *PipelineRasterizationLineStateCreateInfoEXT) GetType() StructureType {
+	return StructureTypePipelineRasterizationLineStateCreateInfo
 }
 
 func (s *PipelineRasterizationLineStateCreateInfoEXT) toC() (unsafe.Pointer, func()) {
 	cancels := make([]func(), 0)
 	p := (*C.VkPipelineRasterizationLineStateCreateInfoEXT)(C.malloc(C.size_t(C.sizeof_VkPipelineRasterizationLineStateCreateInfoEXT)))
 	*p = C.VkPipelineRasterizationLineStateCreateInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkLineRasterizationMode(s.LineRasterizationMode)
+	p.lineRasterizationMode = val0
+	val1 := C.VkBool32(0)
+	if s.StippledLineEnable {
+		val1 = C.VkBool32(1)
+	}
+	p.stippledLineEnable = val1
+	val2 := C.uint32_t(s.LineStippleFactor)
+	p.lineStippleFactor = val2
+	val3 := C.uint16_t(s.LineStipplePattern)
+	p.lineStipplePattern = val3
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
@@ -20403,6 +20585,10 @@ func (s *PipelineRasterizationLineStateCreateInfoEXT) toC() (unsafe.Pointer, fun
 }
 
 func (s *PipelineRasterizationLineStateCreateInfoEXT) fromC(p *C.VkPipelineRasterizationLineStateCreateInfoEXT) {
+	s.LineRasterizationMode = LineRasterizationMode(p.lineRasterizationMode)
+	s.StippledLineEnable = p.stippledLineEnable != 0
+	s.LineStippleFactor = uint32(p.lineStippleFactor)
+	s.LineStipplePattern = uint16(p.lineStipplePattern)
 }
 
 type PipelineRasterizationStateCreateInfo struct {
@@ -21533,6 +21719,62 @@ func (s *Rect2D) toC() (unsafe.Pointer, func()) {
 func (s *Rect2D) fromC(p *C.VkRect2D) {
 	s.Offset.fromC(&p.offset)
 	s.Extent.fromC(&p.extent)
+}
+
+type ReleaseSwapchainImagesInfoEXT struct {
+	Next         Structure
+	Swapchain    *SwapchainKHR
+	ImageIndices []uint32
+}
+
+func (s *ReleaseSwapchainImagesInfoEXT) GetType() StructureType {
+	return StructureTypeReleaseSwapchainImagesInfoKHR
+}
+
+func (s *ReleaseSwapchainImagesInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkReleaseSwapchainImagesInfoEXT)(C.malloc(C.size_t(C.sizeof_VkReleaseSwapchainImagesInfoEXT)))
+	*p = C.VkReleaseSwapchainImagesInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	var h0 C.VkSwapchainKHR
+	if s.Swapchain != nil {
+		h0 = C.VkSwapchainKHR(unsafe.Pointer(s.Swapchain.handle))
+	}
+	p.swapchain = h0
+	len1 := len(s.ImageIndices)
+
+	var arr2 *C.uint32_t
+	if len1 > 0 {
+		arr2 = (*C.uint32_t)(C.malloc(C.size_t(len1) * C.size_t(unsafe.Sizeof(*new(C.uint32_t)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr2)) })
+	}
+	for i3, elem4 := range s.ImageIndices {
+		val5 := C.uint32_t(elem4)
+		(*[1 << 30]C.uint32_t)(unsafe.Pointer(arr2))[i3] = val5
+	}
+	p.pImageIndices = arr2
+	p.imageIndexCount = C.uint32_t(len(s.ImageIndices))
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *ReleaseSwapchainImagesInfoEXT) fromC(p *C.VkReleaseSwapchainImagesInfoEXT) {
+	s.Swapchain = &SwapchainKHR{handle: unsafe.Pointer(p.swapchain)}
+	if p.imageIndexCount > 0 && p.pImageIndices != nil {
+		s.ImageIndices = make([]uint32, p.imageIndexCount)
+		for i0 := range s.ImageIndices {
+			s.ImageIndices[i0] = uint32((*[1 << 30]C.uint32_t)(unsafe.Pointer(p.pImageIndices))[i0])
+		}
+	}
 }
 
 type RenderPassAttachmentBeginInfo struct {
@@ -23117,12 +23359,26 @@ func (s *ShaderModuleCreateInfo) fromC(p *C.VkShaderModuleCreateInfo) {
 }
 
 type ShaderRequiredSubgroupSizeCreateInfoEXT struct {
+	Next                 Structure
+	RequiredSubgroupSize uint32
+}
+
+func (s *ShaderRequiredSubgroupSizeCreateInfoEXT) GetType() StructureType {
+	return StructureTypePipelineShaderStageRequiredSubgroupSizeCreateInfo
 }
 
 func (s *ShaderRequiredSubgroupSizeCreateInfoEXT) toC() (unsafe.Pointer, func()) {
 	cancels := make([]func(), 0)
 	p := (*C.VkShaderRequiredSubgroupSizeCreateInfoEXT)(C.malloc(C.size_t(C.sizeof_VkShaderRequiredSubgroupSizeCreateInfoEXT)))
 	*p = C.VkShaderRequiredSubgroupSizeCreateInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.uint32_t(s.RequiredSubgroupSize)
+	p.requiredSubgroupSize = val0
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
@@ -23132,6 +23388,7 @@ func (s *ShaderRequiredSubgroupSizeCreateInfoEXT) toC() (unsafe.Pointer, func())
 }
 
 func (s *ShaderRequiredSubgroupSizeCreateInfoEXT) fromC(p *C.VkShaderRequiredSubgroupSizeCreateInfoEXT) {
+	s.RequiredSubgroupSize = uint32(p.requiredSubgroupSize)
 }
 
 type SparseBufferMemoryBindInfo struct {
@@ -24540,6 +24797,139 @@ func (s *SurfaceFormatKHR) fromC(p *C.VkSurfaceFormatKHR) {
 	s.ColorSpace = ColorSpaceKHR(p.colorSpace)
 }
 
+type SurfacePresentModeCompatibilityEXT struct {
+	Next             Structure
+	PresentModeCount uint32
+	PresentModes     []PresentModeKHR
+}
+
+func (s *SurfacePresentModeCompatibilityEXT) GetType() StructureType {
+	return StructureTypeSurfacePresentModeCompatibilityKHR
+}
+
+func (s *SurfacePresentModeCompatibilityEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkSurfacePresentModeCompatibilityEXT)(C.malloc(C.size_t(C.sizeof_VkSurfacePresentModeCompatibilityEXT)))
+	*p = C.VkSurfacePresentModeCompatibilityEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.uint32_t(s.PresentModeCount)
+	p.presentModeCount = val0
+	len1 := len(s.PresentModes)
+
+	var arr2 *C.VkPresentModeKHR
+	if len1 > 0 {
+		arr2 = (*C.VkPresentModeKHR)(C.malloc(C.size_t(len1) * C.size_t(unsafe.Sizeof(*new(C.VkPresentModeKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr2)) })
+	}
+	for i3, elem4 := range s.PresentModes {
+		val5 := C.VkPresentModeKHR(elem4)
+		(*[1 << 30]C.VkPresentModeKHR)(unsafe.Pointer(arr2))[i3] = val5
+	}
+	p.pPresentModes = arr2
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *SurfacePresentModeCompatibilityEXT) fromC(p *C.VkSurfacePresentModeCompatibilityEXT) {
+	s.PresentModeCount = uint32(p.presentModeCount)
+	// TODO: fromC for PresentModes (Slice of *generator.NamedType)
+}
+
+type SurfacePresentModeEXT struct {
+	Next        Structure
+	PresentMode PresentModeKHR
+}
+
+func (s *SurfacePresentModeEXT) GetType() StructureType {
+	return StructureTypeSurfacePresentModeKHR
+}
+
+func (s *SurfacePresentModeEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkSurfacePresentModeEXT)(C.malloc(C.size_t(C.sizeof_VkSurfacePresentModeEXT)))
+	*p = C.VkSurfacePresentModeEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkPresentModeKHR(s.PresentMode)
+	p.presentMode = val0
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *SurfacePresentModeEXT) fromC(p *C.VkSurfacePresentModeEXT) {
+	s.PresentMode = PresentModeKHR(p.presentMode)
+}
+
+type SurfacePresentScalingCapabilitiesEXT struct {
+	Next                     Structure
+	SupportedPresentScaling  PresentScalingFlagsKHR
+	SupportedPresentGravityX PresentGravityFlagsKHR
+	SupportedPresentGravityY PresentGravityFlagsKHR
+	MinScaledImageExtent     Extent2D
+	MaxScaledImageExtent     Extent2D
+}
+
+func (s *SurfacePresentScalingCapabilitiesEXT) GetType() StructureType {
+	return StructureTypeSurfacePresentScalingCapabilitiesKHR
+}
+
+func (s *SurfacePresentScalingCapabilitiesEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkSurfacePresentScalingCapabilitiesEXT)(C.malloc(C.size_t(C.sizeof_VkSurfacePresentScalingCapabilitiesEXT)))
+	*p = C.VkSurfacePresentScalingCapabilitiesEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkPresentScalingFlagsKHR(s.SupportedPresentScaling)
+	p.supportedPresentScaling = val0
+	val1 := C.VkPresentGravityFlagsKHR(s.SupportedPresentGravityX)
+	p.supportedPresentGravityX = val1
+	val2 := C.VkPresentGravityFlagsKHR(s.SupportedPresentGravityY)
+	p.supportedPresentGravityY = val2
+	val3, cancel4 := s.MinScaledImageExtent.toC()
+	cancels = append(cancels, cancel4)
+	cast5 := (*C.VkExtent2D)(val3)
+	p.minScaledImageExtent = *cast5
+	val6, cancel7 := s.MaxScaledImageExtent.toC()
+	cancels = append(cancels, cancel7)
+	cast8 := (*C.VkExtent2D)(val6)
+	p.maxScaledImageExtent = *cast8
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *SurfacePresentScalingCapabilitiesEXT) fromC(p *C.VkSurfacePresentScalingCapabilitiesEXT) {
+	s.SupportedPresentScaling = PresentScalingFlagsKHR(p.supportedPresentScaling)
+	s.SupportedPresentGravityX = PresentGravityFlagsKHR(p.supportedPresentGravityX)
+	s.SupportedPresentGravityY = PresentGravityFlagsKHR(p.supportedPresentGravityY)
+	s.MinScaledImageExtent.fromC(&p.minScaledImageExtent)
+	s.MaxScaledImageExtent.fromC(&p.maxScaledImageExtent)
+}
+
 type SwapchainCreateInfoKHR struct {
 	Next               Structure
 	Flags              SwapchainCreateFlagsKHR
@@ -24654,6 +25044,187 @@ func (s *SwapchainCreateInfoKHR) fromC(p *C.VkSwapchainCreateInfoKHR) {
 	s.PresentMode = PresentModeKHR(p.presentMode)
 	s.Clipped = p.clipped != 0
 	s.OldSwapchain = &SwapchainKHR{handle: unsafe.Pointer(p.oldSwapchain)}
+}
+
+type SwapchainPresentFenceInfoEXT struct {
+	Next   Structure
+	Fences []*Fence
+}
+
+func (s *SwapchainPresentFenceInfoEXT) GetType() StructureType {
+	return StructureTypeSwapchainPresentFenceInfoKHR
+}
+
+func (s *SwapchainPresentFenceInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkSwapchainPresentFenceInfoEXT)(C.malloc(C.size_t(C.sizeof_VkSwapchainPresentFenceInfoEXT)))
+	*p = C.VkSwapchainPresentFenceInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	len0 := len(s.Fences)
+
+	var arr1 *C.VkFence
+	if len0 > 0 {
+		arr1 = (*C.VkFence)(C.malloc(C.size_t(len0) * C.size_t(unsafe.Sizeof(*new(C.VkFence)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr1)) })
+	}
+	for i2, elem3 := range s.Fences {
+		var h4 C.VkFence
+		if elem3 != nil {
+			h4 = C.VkFence(unsafe.Pointer(elem3.handle))
+		}
+		(*[1 << 30]C.VkFence)(unsafe.Pointer(arr1))[i2] = h4
+	}
+	p.pFences = arr1
+	p.swapchainCount = C.uint32_t(len(s.Fences))
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *SwapchainPresentFenceInfoEXT) fromC(p *C.VkSwapchainPresentFenceInfoEXT) {
+	if p.swapchainCount > 0 && p.pFences != nil {
+		s.Fences = make([]*Fence, p.swapchainCount)
+		for i0 := range s.Fences {
+			s.Fences[i0] = &Fence{handle: unsafe.Pointer((*[1 << 30]C.VkFence)(unsafe.Pointer(p.pFences))[i0])}
+		}
+	}
+}
+
+type SwapchainPresentModeInfoEXT struct {
+	Next         Structure
+	PresentModes []PresentModeKHR
+}
+
+func (s *SwapchainPresentModeInfoEXT) GetType() StructureType {
+	return StructureTypeSwapchainPresentModeInfoKHR
+}
+
+func (s *SwapchainPresentModeInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkSwapchainPresentModeInfoEXT)(C.malloc(C.size_t(C.sizeof_VkSwapchainPresentModeInfoEXT)))
+	*p = C.VkSwapchainPresentModeInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	len0 := len(s.PresentModes)
+
+	var arr1 *C.VkPresentModeKHR
+	if len0 > 0 {
+		arr1 = (*C.VkPresentModeKHR)(C.malloc(C.size_t(len0) * C.size_t(unsafe.Sizeof(*new(C.VkPresentModeKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr1)) })
+	}
+	for i2, elem3 := range s.PresentModes {
+		val4 := C.VkPresentModeKHR(elem3)
+		(*[1 << 30]C.VkPresentModeKHR)(unsafe.Pointer(arr1))[i2] = val4
+	}
+	p.pPresentModes = arr1
+	p.swapchainCount = C.uint32_t(len(s.PresentModes))
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *SwapchainPresentModeInfoEXT) fromC(p *C.VkSwapchainPresentModeInfoEXT) {
+	// TODO: fromC for PresentModes (Slice of *generator.NamedType)
+}
+
+type SwapchainPresentModesCreateInfoEXT struct {
+	Next         Structure
+	PresentModes []PresentModeKHR
+}
+
+func (s *SwapchainPresentModesCreateInfoEXT) GetType() StructureType {
+	return StructureTypeSwapchainPresentModesCreateInfoKHR
+}
+
+func (s *SwapchainPresentModesCreateInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkSwapchainPresentModesCreateInfoEXT)(C.malloc(C.size_t(C.sizeof_VkSwapchainPresentModesCreateInfoEXT)))
+	*p = C.VkSwapchainPresentModesCreateInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	len0 := len(s.PresentModes)
+
+	var arr1 *C.VkPresentModeKHR
+	if len0 > 0 {
+		arr1 = (*C.VkPresentModeKHR)(C.malloc(C.size_t(len0) * C.size_t(unsafe.Sizeof(*new(C.VkPresentModeKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr1)) })
+	}
+	for i2, elem3 := range s.PresentModes {
+		val4 := C.VkPresentModeKHR(elem3)
+		(*[1 << 30]C.VkPresentModeKHR)(unsafe.Pointer(arr1))[i2] = val4
+	}
+	p.pPresentModes = arr1
+	p.presentModeCount = C.uint32_t(len(s.PresentModes))
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *SwapchainPresentModesCreateInfoEXT) fromC(p *C.VkSwapchainPresentModesCreateInfoEXT) {
+	// TODO: fromC for PresentModes (Slice of *generator.NamedType)
+}
+
+type SwapchainPresentScalingCreateInfoEXT struct {
+	Next            Structure
+	ScalingBehavior PresentScalingFlagsKHR
+	PresentGravityX PresentGravityFlagsKHR
+	PresentGravityY PresentGravityFlagsKHR
+}
+
+func (s *SwapchainPresentScalingCreateInfoEXT) GetType() StructureType {
+	return StructureTypeSwapchainPresentScalingCreateInfoKHR
+}
+
+func (s *SwapchainPresentScalingCreateInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkSwapchainPresentScalingCreateInfoEXT)(C.malloc(C.size_t(C.sizeof_VkSwapchainPresentScalingCreateInfoEXT)))
+	*p = C.VkSwapchainPresentScalingCreateInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkPresentScalingFlagsKHR(s.ScalingBehavior)
+	p.scalingBehavior = val0
+	val1 := C.VkPresentGravityFlagsKHR(s.PresentGravityX)
+	p.presentGravityX = val1
+	val2 := C.VkPresentGravityFlagsKHR(s.PresentGravityY)
+	p.presentGravityY = val2
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *SwapchainPresentScalingCreateInfoEXT) fromC(p *C.VkSwapchainPresentScalingCreateInfoEXT) {
+	s.ScalingBehavior = PresentScalingFlagsKHR(p.scalingBehavior)
+	s.PresentGravityX = PresentGravityFlagsKHR(p.presentGravityX)
+	s.PresentGravityY = PresentGravityFlagsKHR(p.presentGravityY)
 }
 
 type TimelineSemaphoreSubmitInfo struct {

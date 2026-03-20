@@ -169,12 +169,38 @@ func (x *XMLRegistry) parseTypes(r *generator.Registry) {
 	}
 
 	// Fifth pass: fully parse struct fields (all struct names now registered)
+	// Skip alias types — they are resolved in the sixth pass.
 	for _, t := range x.Types.Types {
 		switch t.Category {
 		case "struct", "union":
+			if t.Alias != "" {
+				continue
+			}
 			s := parseStruct(t, r.Handles, r.FuncPointers, r.Structs, r.STypes)
 			if s != nil {
 				r.Structs[s.GoName] = s
+			}
+		}
+	}
+
+	// Sixth pass: resolve struct/union aliases by copying fields from the aliased type.
+	for _, t := range x.Types.Types {
+		if (t.Category == "struct" || t.Category == "union") && t.Alias != "" {
+			aliasedGoName := stripVk(t.Alias)
+			aliased, ok := r.Structs[aliasedGoName]
+			if !ok {
+				continue
+			}
+			fields := make([]generator.StructField, len(aliased.Fields))
+			copy(fields, aliased.Fields)
+			r.Structs[stripVk(t.Name)] = &generator.Structured{
+				CName:    t.Name,
+				GoName:   stripVk(t.Name),
+				Fields:   fields,
+				IsUnion:  aliased.IsUnion,
+				HasSType: aliased.HasSType,
+				SType:    aliased.SType,
+				Platform: aliased.Platform,
 			}
 		}
 	}
@@ -237,6 +263,11 @@ func parseStruct(
 	// Build a map of countField → fieldItCounts so we can mark them
 	// e.g. descriptorSetCount → pDescriptorSets
 	countMap := buildCountMap(t.Members)
+	// Reverse map: arrayField → countField (for implicit arrays without len=)
+	reverseCountMap := map[string]string{}
+	for countField, entry := range countMap {
+		reverseCountMap[entry.arrayField] = countField
+	}
 	seen := map[string]bool{}
 
 	for _, m := range t.Members {
@@ -276,6 +307,11 @@ func parseStruct(
 		isArr := fixedSize == 0 && (m.Len != "" && m.Len != "null-terminated" || m.AltLen != "")
 
 		isDblPtr := strings.Count(m.InnerXML, "*") >= 2
+		// Double-pointer to char with no len= is an implicit array of strings
+		// (e.g. deprecated ppEnabledLayerNames in VkDeviceCreateInfo).
+		if isDblPtr && m.Type == "char" && !isArr {
+			isArr = true
+		}
 		ft := resolveFieldType(m.Type, isPtr, isArr, handles, funcPointers, structs, isDblPtr)
 
 		// Wrap in FixedArray if this is a fixed-size array (e.g. [2])
@@ -294,6 +330,11 @@ func parseStruct(
 					countCName = field
 					countScale = divisor
 				}
+			}
+			// Fallback: for implicit arrays that have no len= at all,
+			// look up the count field from the reverse map.
+			if countCName == "" && m.Len == "" && m.AltLen == "" {
+				countCName = reverseCountMap[m.Name]
 			}
 		}
 
@@ -360,7 +401,31 @@ func buildCountMap(members []XMLMember) map[string]countEntry {
 			}
 		}
 	}
-	// Only collapse when exactly one array uses the count.
+	// Also pair double-pointer char members that have no len= with their implicit
+	// count field (e.g. deprecated ppEnabledLayerNames + enabledLayerCount).
+	for i, m := range members {
+		if m.Len != "" || m.AltLen != "" {
+			continue // already handled via len attribute
+		}
+		if m.Type != "char" || strings.Count(m.InnerXML, "*") < 2 {
+			continue
+		}
+		// Search backwards for an unclaimed uint32 count member
+		for j := i - 1; j >= 0; j-- {
+			prev := members[j]
+			if _, alreadyRef := refs[prev.Name]; alreadyRef {
+				break
+			}
+			if prev.Type == "uint32_t" && strings.HasSuffix(prev.Name, "Count") {
+				refs[prev.Name] = []arrayRef{{name: m.Name, scale: 1}}
+				break
+			}
+		}
+	}
+
+	// Only collapse when exactly one array uses the count and it is not optional.
+	// Optional arrays (e.g. pImmutableSamplers) mean the count has independent
+	// semantic meaning — keep it visible in the Go struct.
 	result := map[string]countEntry{}
 	for countField, arrayFields := range refs {
 		if len(arrayFields) == 1 && !arrayFields[0].optional {
