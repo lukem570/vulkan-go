@@ -107,6 +107,13 @@ var (
 	ComputeOccupancyPriorityHighNV                         float32 = 0.75
 )
 
+type AccelerationStructureKHR struct {
+	handle  unsafe.Pointer
+	cleanup func()
+}
+
+func (h *AccelerationStructureKHR) Handle() unsafe.Pointer { return h.handle }
+
 type Buffer struct {
 	handle  unsafe.Pointer
 	cleanup func()
@@ -141,6 +148,13 @@ type DebugUtilsMessengerEXT struct {
 }
 
 func (h *DebugUtilsMessengerEXT) Handle() unsafe.Pointer { return h.handle }
+
+type DeferredOperationKHR struct {
+	handle  unsafe.Pointer
+	cleanup func()
+}
+
+func (h *DeferredOperationKHR) Handle() unsafe.Pointer { return h.handle }
 
 type DescriptorPool struct {
 	handle  unsafe.Pointer
@@ -218,6 +232,20 @@ type ImageView struct {
 }
 
 func (h *ImageView) Handle() unsafe.Pointer { return h.handle }
+
+type IndirectCommandsLayoutEXT struct {
+	handle  unsafe.Pointer
+	cleanup func()
+}
+
+func (h *IndirectCommandsLayoutEXT) Handle() unsafe.Pointer { return h.handle }
+
+type IndirectExecutionSetEXT struct {
+	handle  unsafe.Pointer
+	cleanup func()
+}
+
+func (h *IndirectExecutionSetEXT) Handle() unsafe.Pointer { return h.handle }
 
 type Instance struct {
 	handle  unsafe.Pointer
@@ -346,6 +374,39 @@ type InternalFreeNotification func(UserData unsafe.Pointer, size uintptr, alloca
 type ReallocationFunction func(UserData unsafe.Pointer, Original unsafe.Pointer, size uintptr, alignment uintptr, allocationScope SystemAllocationScope) unsafe.Pointer
 
 type VoidFunction func()
+
+type AccelerationStructureBuildTypeKHR uint32
+
+const (
+	AccelerationStructureBuildTypeHostKHR         AccelerationStructureBuildTypeKHR = 0
+	AccelerationStructureBuildTypeDeviceKHR       AccelerationStructureBuildTypeKHR = 1
+	AccelerationStructureBuildTypeHostOrDeviceKHR AccelerationStructureBuildTypeKHR = 2
+)
+
+type AccelerationStructureCompatibilityKHR uint32
+
+const (
+	AccelerationStructureCompatibilityCompatibleKHR   AccelerationStructureCompatibilityKHR = 0
+	AccelerationStructureCompatibilityIncompatibleKHR AccelerationStructureCompatibilityKHR = 1
+)
+
+type AccelerationStructureCreateFlagBitsKHR uint32
+
+const (
+	AccelerationStructureCreateDeviceAddressCaptureReplayBitKHR    AccelerationStructureCreateFlagBitsKHR = 1 << 0
+	AccelerationStructureCreateDescriptorBufferCaptureReplayBitEXT AccelerationStructureCreateFlagBitsKHR = 1 << 3
+	AccelerationStructureCreateMotionBitNV                         AccelerationStructureCreateFlagBitsKHR = 1 << 2
+)
+
+type AccelerationStructureTypeKHR uint32
+
+const (
+	AccelerationStructureTypeTopLevelKHR    AccelerationStructureTypeKHR = 0
+	AccelerationStructureTypeBottomLevelKHR AccelerationStructureTypeKHR = 1
+	AccelerationStructureTypeGenericKHR     AccelerationStructureTypeKHR = 2
+	AccelerationStructureTypeTopLevelNV     AccelerationStructureTypeKHR = AccelerationStructureTypeTopLevelKHR
+	AccelerationStructureTypeBottomLevelNV  AccelerationStructureTypeKHR = AccelerationStructureTypeBottomLevelKHR
+)
 
 type AccessFlagBits uint32
 
@@ -710,6 +771,41 @@ const (
 	BufferUsage2Reserved37BitHUAWEI                           BufferUsageFlagBits2 = 1 << 37
 )
 
+type BuildAccelerationStructureFlagBitsKHR uint32
+
+const (
+	BuildAccelerationStructureAllowUpdateBitKHR                    BuildAccelerationStructureFlagBitsKHR = 1 << 0
+	BuildAccelerationStructureAllowCompactionBitKHR                BuildAccelerationStructureFlagBitsKHR = 1 << 1
+	BuildAccelerationStructurePreferFastTraceBitKHR                BuildAccelerationStructureFlagBitsKHR = 1 << 2
+	BuildAccelerationStructurePreferFastBuildBitKHR                BuildAccelerationStructureFlagBitsKHR = 1 << 3
+	BuildAccelerationStructureLowMemoryBitKHR                      BuildAccelerationStructureFlagBitsKHR = 1 << 4
+	BuildAccelerationStructureAllowUpdateBitNV                     BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureAllowUpdateBitKHR
+	BuildAccelerationStructureAllowCompactionBitNV                 BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureAllowCompactionBitKHR
+	BuildAccelerationStructurePreferFastTraceBitNV                 BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructurePreferFastTraceBitKHR
+	BuildAccelerationStructurePreferFastBuildBitNV                 BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructurePreferFastBuildBitKHR
+	BuildAccelerationStructureLowMemoryBitNV                       BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureLowMemoryBitKHR
+	BuildAccelerationStructureMotionBitNV                          BuildAccelerationStructureFlagBitsKHR = 1 << 5
+	BuildAccelerationStructureAllowOpacityMicromapUpdateBitEXT     BuildAccelerationStructureFlagBitsKHR = 1 << 6
+	BuildAccelerationStructureAllowOpacityMicromapUpdateEXT        BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureAllowOpacityMicromapUpdateBitEXT
+	BuildAccelerationStructureAllowDisableOpacityMicromapsBitEXT   BuildAccelerationStructureFlagBitsKHR = 1 << 7
+	BuildAccelerationStructureAllowDisableOpacityMicromapsEXT      BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureAllowDisableOpacityMicromapsBitEXT
+	BuildAccelerationStructureAllowOpacityMicromapDataUpdateBitEXT BuildAccelerationStructureFlagBitsKHR = 1 << 8
+	BuildAccelerationStructureAllowOpacityMicromapDataUpdateEXT    BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureAllowOpacityMicromapDataUpdateBitEXT
+	BuildAccelerationStructureAllowDisplacementMicromapUpdateBitNV BuildAccelerationStructureFlagBitsKHR = 1 << 9
+	BuildAccelerationStructureAllowDisplacementMicromapUpdateNV    BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureAllowDisplacementMicromapUpdateBitNV
+	BuildAccelerationStructureAllowDataAccessBitKHR                BuildAccelerationStructureFlagBitsKHR = 1 << 11
+	BuildAccelerationStructureAllowDataAccessKHR                   BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureAllowDataAccessBitKHR
+	BuildAccelerationStructureAllowClusterOpacityMicromapsBitNV    BuildAccelerationStructureFlagBitsKHR = 1 << 12
+	BuildAccelerationStructureReserved10BitKHR                     BuildAccelerationStructureFlagBitsKHR = 1 << 10
+)
+
+type BuildAccelerationStructureModeKHR uint32
+
+const (
+	BuildAccelerationStructureModeBuildKHR  BuildAccelerationStructureModeKHR = 0
+	BuildAccelerationStructureModeUpdateKHR BuildAccelerationStructureModeKHR = 1
+)
+
 type ChromaLocation uint32
 
 const (
@@ -831,6 +927,17 @@ const (
 	ConservativeRasterizationModeUnderestimateEXT ConservativeRasterizationModeEXT = 2
 )
 
+type CopyAccelerationStructureModeKHR uint32
+
+const (
+	CopyAccelerationStructureModeCloneKHR       CopyAccelerationStructureModeKHR = 0
+	CopyAccelerationStructureModeCompactKHR     CopyAccelerationStructureModeKHR = 1
+	CopyAccelerationStructureModeSerializeKHR   CopyAccelerationStructureModeKHR = 2
+	CopyAccelerationStructureModeDeserializeKHR CopyAccelerationStructureModeKHR = 3
+	CopyAccelerationStructureModeCloneNV        CopyAccelerationStructureModeKHR = CopyAccelerationStructureModeCloneKHR
+	CopyAccelerationStructureModeCompactNV      CopyAccelerationStructureModeKHR = CopyAccelerationStructureModeCompactKHR
+)
+
 type CoverageModulationModeNV uint32
 
 const (
@@ -854,6 +961,56 @@ const (
 	CullModeFrontBit     CullModeFlagBits = 1 << 0
 	CullModeBackBit      CullModeFlagBits = 1 << 1
 	CullModeFrontAndBack CullModeFlagBits = 0x00000003
+)
+
+type DebugReportObjectTypeEXT uint32
+
+const (
+	DebugReportObjectTypeUnknownEXT                     DebugReportObjectTypeEXT = 0
+	DebugReportObjectTypeInstanceEXT                    DebugReportObjectTypeEXT = 1
+	DebugReportObjectTypePhysicalDeviceEXT              DebugReportObjectTypeEXT = 2
+	DebugReportObjectTypeDeviceEXT                      DebugReportObjectTypeEXT = 3
+	DebugReportObjectTypeQueueEXT                       DebugReportObjectTypeEXT = 4
+	DebugReportObjectTypeSemaphoreEXT                   DebugReportObjectTypeEXT = 5
+	DebugReportObjectTypeCommandBufferEXT               DebugReportObjectTypeEXT = 6
+	DebugReportObjectTypeFenceEXT                       DebugReportObjectTypeEXT = 7
+	DebugReportObjectTypeDeviceMemoryEXT                DebugReportObjectTypeEXT = 8
+	DebugReportObjectTypeBufferEXT                      DebugReportObjectTypeEXT = 9
+	DebugReportObjectTypeImageEXT                       DebugReportObjectTypeEXT = 10
+	DebugReportObjectTypeEventEXT                       DebugReportObjectTypeEXT = 11
+	DebugReportObjectTypeQueryPoolEXT                   DebugReportObjectTypeEXT = 12
+	DebugReportObjectTypeBufferViewEXT                  DebugReportObjectTypeEXT = 13
+	DebugReportObjectTypeImageViewEXT                   DebugReportObjectTypeEXT = 14
+	DebugReportObjectTypeShaderModuleEXT                DebugReportObjectTypeEXT = 15
+	DebugReportObjectTypePipelineCacheEXT               DebugReportObjectTypeEXT = 16
+	DebugReportObjectTypePipelineLayoutEXT              DebugReportObjectTypeEXT = 17
+	DebugReportObjectTypeRenderPassEXT                  DebugReportObjectTypeEXT = 18
+	DebugReportObjectTypePipelineEXT                    DebugReportObjectTypeEXT = 19
+	DebugReportObjectTypeDescriptorSetLayoutEXT         DebugReportObjectTypeEXT = 20
+	DebugReportObjectTypeSamplerEXT                     DebugReportObjectTypeEXT = 21
+	DebugReportObjectTypeDescriptorPoolEXT              DebugReportObjectTypeEXT = 22
+	DebugReportObjectTypeDescriptorSetEXT               DebugReportObjectTypeEXT = 23
+	DebugReportObjectTypeFramebufferEXT                 DebugReportObjectTypeEXT = 24
+	DebugReportObjectTypeCommandPoolEXT                 DebugReportObjectTypeEXT = 25
+	DebugReportObjectTypeSurfaceKHREXT                  DebugReportObjectTypeEXT = 26
+	DebugReportObjectTypeSwapchainKHREXT                DebugReportObjectTypeEXT = 27
+	DebugReportObjectTypeDebugReportCallbackEXTEXT      DebugReportObjectTypeEXT = 28
+	DebugReportObjectTypeDebugReportEXT                 DebugReportObjectTypeEXT = 0 // TODO: unknown value
+	DebugReportObjectTypeDisplayKHREXT                  DebugReportObjectTypeEXT = 29
+	DebugReportObjectTypeDisplayModeKHREXT              DebugReportObjectTypeEXT = 30
+	DebugReportObjectTypeValidationCacheEXTEXT          DebugReportObjectTypeEXT = 33
+	DebugReportObjectTypeValidationCacheEXT             DebugReportObjectTypeEXT = 0 // TODO: unknown value
+	DebugReportObjectTypeSamplerYcbcrConversionEXT      DebugReportObjectTypeEXT = 1000156000
+	DebugReportObjectTypeDescriptorUpdateTemplateEXT    DebugReportObjectTypeEXT = 1000085000
+	DebugReportObjectTypeCuModuleNVXEXT                 DebugReportObjectTypeEXT = 1000029000
+	DebugReportObjectTypeCuFunctionNVXEXT               DebugReportObjectTypeEXT = 1000029001
+	DebugReportObjectTypeDescriptorUpdateTemplateKHREXT DebugReportObjectTypeEXT = DebugReportObjectTypeDescriptorUpdateTemplateEXT
+	DebugReportObjectTypeAccelerationStructureKHREXT    DebugReportObjectTypeEXT = 1000150000
+	DebugReportObjectTypeSamplerYcbcrConversionKHREXT   DebugReportObjectTypeEXT = DebugReportObjectTypeSamplerYcbcrConversionEXT
+	DebugReportObjectTypeAccelerationStructureNVEXT     DebugReportObjectTypeEXT = 1000165000
+	DebugReportObjectTypeCudaModuleNVEXT                DebugReportObjectTypeEXT = 1000307000
+	DebugReportObjectTypeCudaFunctionNVEXT              DebugReportObjectTypeEXT = 1000307001
+	DebugReportObjectTypeBufferCollectionFuchsiaEXT     DebugReportObjectTypeEXT = 1000366000
 )
 
 type DebugUtilsMessageSeverityFlagBitsEXT uint32
@@ -1765,6 +1922,46 @@ const (
 	FrontFaceClockwise        FrontFace = 1
 )
 
+type GeometryFlagBitsKHR uint32
+
+const (
+	GeometryOpaqueBitKHR                      GeometryFlagBitsKHR = 1 << 0
+	GeometryNoDuplicateAnyHitInvocationBitKHR GeometryFlagBitsKHR = 1 << 1
+	GeometryOpaqueBitNV                       GeometryFlagBitsKHR = GeometryOpaqueBitKHR
+	GeometryNoDuplicateAnyHitInvocationBitNV  GeometryFlagBitsKHR = GeometryNoDuplicateAnyHitInvocationBitKHR
+)
+
+type GeometryInstanceFlagBitsKHR uint32
+
+const (
+	GeometryInstanceTriangleFacingCullDisableBitKHR     GeometryInstanceFlagBitsKHR = 1 << 0
+	GeometryInstanceTriangleFlipFacingBitKHR            GeometryInstanceFlagBitsKHR = 1 << 1
+	GeometryInstanceForceOpaqueBitKHR                   GeometryInstanceFlagBitsKHR = 1 << 2
+	GeometryInstanceForceNoOpaqueBitKHR                 GeometryInstanceFlagBitsKHR = 1 << 3
+	GeometryInstanceTriangleFrontCounterclockwiseBitKHR GeometryInstanceFlagBitsKHR = 0 // TODO: unknown value
+	GeometryInstanceTriangleCullDisableBitNV            GeometryInstanceFlagBitsKHR = GeometryInstanceTriangleFacingCullDisableBitKHR
+	GeometryInstanceTriangleFrontCounterclockwiseBitNV  GeometryInstanceFlagBitsKHR = GeometryInstanceTriangleFrontCounterclockwiseBitKHR
+	GeometryInstanceForceOpaqueBitNV                    GeometryInstanceFlagBitsKHR = GeometryInstanceForceOpaqueBitKHR
+	GeometryInstanceForceNoOpaqueBitNV                  GeometryInstanceFlagBitsKHR = GeometryInstanceForceNoOpaqueBitKHR
+	GeometryInstanceForceOpacityMicromap2StateBitEXT    GeometryInstanceFlagBitsKHR = 1 << 4
+	GeometryInstanceForceOpacityMicromap2StateEXT       GeometryInstanceFlagBitsKHR = GeometryInstanceForceOpacityMicromap2StateBitEXT
+	GeometryInstanceDisableOpacityMicromapsBitEXT       GeometryInstanceFlagBitsKHR = 1 << 5
+	GeometryInstanceDisableOpacityMicromapsEXT          GeometryInstanceFlagBitsKHR = GeometryInstanceDisableOpacityMicromapsBitEXT
+)
+
+type GeometryTypeKHR uint32
+
+const (
+	GeometryTypeTrianglesKHR                     GeometryTypeKHR = 0
+	GeometryTypeAabbsKHR                         GeometryTypeKHR = 1
+	GeometryTypeInstancesKHR                     GeometryTypeKHR = 2
+	GeometryTypeTrianglesNV                      GeometryTypeKHR = GeometryTypeTrianglesKHR
+	GeometryTypeAabbsNV                          GeometryTypeKHR = GeometryTypeAabbsKHR
+	GeometryTypeSpheresNV                        GeometryTypeKHR = 1000429004
+	GeometryTypeLinearSweptSpheresNV             GeometryTypeKHR = 1000429005
+	GeometryTypeDenseGeometryFormatTrianglesAmdx GeometryTypeKHR = 1000478000
+)
+
 type HostImageCopyFlagBits uint32
 
 const (
@@ -1962,6 +2159,49 @@ const (
 	IndexTypeNoneNV   IndexType = IndexTypeNoneKHR
 	IndexTypeUint8EXT IndexType = IndexTypeUint8
 	IndexTypeUint8KHR IndexType = IndexTypeUint8
+)
+
+type IndirectCommandsInputModeFlagBitsEXT uint32
+
+const (
+	IndirectCommandsInputModeVulkanIndexBufferEXT IndirectCommandsInputModeFlagBitsEXT = 1 << 0
+	IndirectCommandsInputModeDxgiIndexBufferEXT   IndirectCommandsInputModeFlagBitsEXT = 1 << 1
+)
+
+type IndirectCommandsLayoutUsageFlagBitsEXT uint32
+
+const (
+	IndirectCommandsLayoutUsageExplicitPreprocessBitEXT IndirectCommandsLayoutUsageFlagBitsEXT = 1 << 0
+	IndirectCommandsLayoutUsageUnorderedSequencesBitEXT IndirectCommandsLayoutUsageFlagBitsEXT = 1 << 1
+)
+
+type IndirectCommandsTokenTypeEXT uint32
+
+const (
+	IndirectCommandsTokenTypeExecutionSetEXT          IndirectCommandsTokenTypeEXT = 0
+	IndirectCommandsTokenTypePushConstantEXT          IndirectCommandsTokenTypeEXT = 1
+	IndirectCommandsTokenTypeSequenceIndexEXT         IndirectCommandsTokenTypeEXT = 2
+	IndirectCommandsTokenTypeIndexBufferEXT           IndirectCommandsTokenTypeEXT = 3
+	IndirectCommandsTokenTypeVertexBufferEXT          IndirectCommandsTokenTypeEXT = 4
+	IndirectCommandsTokenTypeDrawIndexedEXT           IndirectCommandsTokenTypeEXT = 5
+	IndirectCommandsTokenTypeDrawEXT                  IndirectCommandsTokenTypeEXT = 6
+	IndirectCommandsTokenTypeDrawIndexedCountEXT      IndirectCommandsTokenTypeEXT = 7
+	IndirectCommandsTokenTypeDrawCountEXT             IndirectCommandsTokenTypeEXT = 8
+	IndirectCommandsTokenTypeDispatchEXT              IndirectCommandsTokenTypeEXT = 9
+	IndirectCommandsTokenTypePushDataEXT              IndirectCommandsTokenTypeEXT = 1000135000
+	IndirectCommandsTokenTypePushDataSequenceIndexEXT IndirectCommandsTokenTypeEXT = 1000135001
+	IndirectCommandsTokenTypeDrawMeshTasksNVEXT       IndirectCommandsTokenTypeEXT = 1000202002
+	IndirectCommandsTokenTypeDrawMeshTasksCountNVEXT  IndirectCommandsTokenTypeEXT = 1000202003
+	IndirectCommandsTokenTypeDrawMeshTasksEXT         IndirectCommandsTokenTypeEXT = 1000328000
+	IndirectCommandsTokenTypeDrawMeshTasksCountEXT    IndirectCommandsTokenTypeEXT = 1000328001
+	IndirectCommandsTokenTypeTraceRays2EXT            IndirectCommandsTokenTypeEXT = 1000386004
+)
+
+type IndirectExecutionSetInfoTypeEXT uint32
+
+const (
+	IndirectExecutionSetInfoTypePipelinesEXT     IndirectExecutionSetInfoTypeEXT = 0
+	IndirectExecutionSetInfoTypeShaderObjectsEXT IndirectExecutionSetInfoTypeEXT = 1
 )
 
 type InstanceCreateFlagBits uint32
@@ -2642,6 +2882,17 @@ const (
 	QueueGlobalPriorityRealtimeKHR QueueGlobalPriority = QueueGlobalPriorityRealtime
 )
 
+type RayTracingShaderGroupTypeKHR uint32
+
+const (
+	RayTracingShaderGroupTypeGeneralKHR            RayTracingShaderGroupTypeKHR = 0
+	RayTracingShaderGroupTypeTrianglesHitGroupKHR  RayTracingShaderGroupTypeKHR = 1
+	RayTracingShaderGroupTypeProceduralHitGroupKHR RayTracingShaderGroupTypeKHR = 2
+	RayTracingShaderGroupTypeGeneralNV             RayTracingShaderGroupTypeKHR = RayTracingShaderGroupTypeGeneralKHR
+	RayTracingShaderGroupTypeTrianglesHitGroupNV   RayTracingShaderGroupTypeKHR = RayTracingShaderGroupTypeTrianglesHitGroupKHR
+	RayTracingShaderGroupTypeProceduralHitGroupNV  RayTracingShaderGroupTypeKHR = RayTracingShaderGroupTypeProceduralHitGroupKHR
+)
+
 type RenderPassCreateFlagBits uint32
 
 const (
@@ -3004,6 +3255,15 @@ const (
 	ShaderFloatControlsIndependence32BitOnlyKHR ShaderFloatControlsIndependence = ShaderFloatControlsIndependence32BitOnly
 	ShaderFloatControlsIndependenceAllKHR       ShaderFloatControlsIndependence = ShaderFloatControlsIndependenceAll
 	ShaderFloatControlsIndependenceNoneKHR      ShaderFloatControlsIndependence = ShaderFloatControlsIndependenceNone
+)
+
+type ShaderGroupShaderKHR uint32
+
+const (
+	ShaderGroupShaderGeneralKHR      ShaderGroupShaderKHR = 0
+	ShaderGroupShaderClosestHitKHR   ShaderGroupShaderKHR = 1
+	ShaderGroupShaderAnyHitKHR       ShaderGroupShaderKHR = 2
+	ShaderGroupShaderIntersectionKHR ShaderGroupShaderKHR = 3
 )
 
 type ShaderStageFlagBits uint32
@@ -4745,6 +5005,8 @@ const (
 	ViewportCoordinateSwizzleNegativeWNV ViewportCoordinateSwizzleNV = 7
 )
 
+type AccelerationStructureCreateFlagsKHR uint32
+
 type AccessFlags uint32
 
 type AccessFlags2 uint32
@@ -4758,6 +5020,8 @@ type BufferUsageFlags uint32
 type BufferUsageFlags2 uint32
 
 type BufferViewCreateFlags uint32
+
+type BuildAccelerationStructureFlagsKHR uint32
 
 type ColorComponentFlags uint32
 
@@ -4825,6 +5089,10 @@ type FormatFeatureFlags2 uint32
 
 type FramebufferCreateFlags uint32
 
+type GeometryFlagsKHR uint32
+
+type GeometryInstanceFlagsKHR uint32
+
 type HostImageCopyFlags uint32
 
 type ImageAspectFlags uint32
@@ -4834,6 +5102,10 @@ type ImageCreateFlags uint32
 type ImageUsageFlags uint32
 
 type ImageViewCreateFlags uint32
+
+type IndirectCommandsInputModeFlagsEXT uint32
+
+type IndirectCommandsLayoutUsageFlagsEXT uint32
 
 type InstanceCreateFlags uint32
 
@@ -4948,6 +5220,642 @@ type Win32SurfaceCreateFlagsKHR uint32
 type XcbSurfaceCreateFlagsKHR uint32
 
 type XlibSurfaceCreateFlagsKHR uint32
+
+type AabbPositionsKHR struct {
+	MinX float32
+	MinY float32
+	MinZ float32
+	MaxX float32
+	MaxY float32
+	MaxZ float32
+}
+
+func (s *AabbPositionsKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkAabbPositionsKHR)(C.malloc(C.size_t(C.sizeof_VkAabbPositionsKHR)))
+	*p = C.VkAabbPositionsKHR{}
+	val0 := C.float(s.MinX)
+	p.minX = val0
+	val1 := C.float(s.MinY)
+	p.minY = val1
+	val2 := C.float(s.MinZ)
+	p.minZ = val2
+	val3 := C.float(s.MaxX)
+	p.maxX = val3
+	val4 := C.float(s.MaxY)
+	p.maxY = val4
+	val5 := C.float(s.MaxZ)
+	p.maxZ = val5
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *AabbPositionsKHR) fromC(p *C.VkAabbPositionsKHR) {
+	s.MinX = float32(p.minX)
+	s.MinY = float32(p.minY)
+	s.MinZ = float32(p.minZ)
+	s.MaxX = float32(p.maxX)
+	s.MaxY = float32(p.maxY)
+	s.MaxZ = float32(p.maxZ)
+}
+
+type AccelerationStructureBuildGeometryInfoKHR struct {
+	Next                     Structure
+	Type                     AccelerationStructureTypeKHR
+	Flags                    BuildAccelerationStructureFlagsKHR
+	Mode                     BuildAccelerationStructureModeKHR
+	SrcAccelerationStructure *AccelerationStructureKHR
+	DstAccelerationStructure *AccelerationStructureKHR
+	GeometryCount            uint32
+	Geometries               []AccelerationStructureGeometryKHR
+	PpGeometries             []*AccelerationStructureGeometryKHR
+	ScratchData              DeviceOrHostAddressKHR
+}
+
+func (s *AccelerationStructureBuildGeometryInfoKHR) GetType() StructureType {
+	return StructureTypeAccelerationStructureBuildGeometryInfoKHR
+}
+
+func (s *AccelerationStructureBuildGeometryInfoKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkAccelerationStructureBuildGeometryInfoKHR)(C.malloc(C.size_t(C.sizeof_VkAccelerationStructureBuildGeometryInfoKHR)))
+	*p = C.VkAccelerationStructureBuildGeometryInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkAccelerationStructureTypeKHR(s.Type)
+	p._type = val0
+	val1 := C.VkBuildAccelerationStructureFlagsKHR(s.Flags)
+	p.flags = val1
+	val2 := C.VkBuildAccelerationStructureModeKHR(s.Mode)
+	p.mode = val2
+	var h3 C.VkAccelerationStructureKHR
+	if s.SrcAccelerationStructure != nil {
+		h3 = C.VkAccelerationStructureKHR(unsafe.Pointer(s.SrcAccelerationStructure.handle))
+	}
+	p.srcAccelerationStructure = h3
+	var h4 C.VkAccelerationStructureKHR
+	if s.DstAccelerationStructure != nil {
+		h4 = C.VkAccelerationStructureKHR(unsafe.Pointer(s.DstAccelerationStructure.handle))
+	}
+	p.dstAccelerationStructure = h4
+	val5 := C.uint32_t(s.GeometryCount)
+	p.geometryCount = val5
+	len6 := len(s.Geometries)
+
+	var arr7 *C.VkAccelerationStructureGeometryKHR
+	if len6 > 0 {
+		arr7 = (*C.VkAccelerationStructureGeometryKHR)(C.malloc(C.size_t(len6) * C.size_t(unsafe.Sizeof(*new(C.VkAccelerationStructureGeometryKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr7)) })
+	}
+	for i8, elem9 := range s.Geometries {
+		val10, cancel11 := elem9.toC()
+		cancels = append(cancels, cancel11)
+		cast12 := (*C.VkAccelerationStructureGeometryKHR)(val10)
+		(*[1 << 30]C.VkAccelerationStructureGeometryKHR)(unsafe.Pointer(arr7))[i8] = *cast12
+	}
+	p.pGeometries = arr7
+	len13 := len(s.PpGeometries)
+
+	var ptrArr14 **C.VkAccelerationStructureGeometryKHR
+	if len13 > 0 {
+		ptrArr14 = (**C.VkAccelerationStructureGeometryKHR)(C.malloc(C.size_t(len13) * C.size_t(unsafe.Sizeof(*new(*C.VkAccelerationStructureGeometryKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(ptrArr14)) })
+	}
+	for i15, elem16 := range s.PpGeometries {
+		val17, cancel18 := elem16.toC()
+		cancels = append(cancels, cancel18)
+		(*[1 << 30]*C.VkAccelerationStructureGeometryKHR)(unsafe.Pointer(ptrArr14))[i15] = (*C.VkAccelerationStructureGeometryKHR)(val17)
+	}
+	p.ppGeometries = ptrArr14
+	val19, cancel20 := s.ScratchData.toC()
+	cancels = append(cancels, cancel20)
+	cast21 := (*C.VkDeviceOrHostAddressKHR)(val19)
+	p.scratchData = *cast21
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *AccelerationStructureBuildGeometryInfoKHR) fromC(p *C.VkAccelerationStructureBuildGeometryInfoKHR) {
+	s.Type = AccelerationStructureTypeKHR(p._type)
+	s.Flags = BuildAccelerationStructureFlagsKHR(p.flags)
+	s.Mode = BuildAccelerationStructureModeKHR(p.mode)
+	s.SrcAccelerationStructure = &AccelerationStructureKHR{handle: unsafe.Pointer(p.srcAccelerationStructure)}
+	s.DstAccelerationStructure = &AccelerationStructureKHR{handle: unsafe.Pointer(p.dstAccelerationStructure)}
+	s.GeometryCount = uint32(p.geometryCount)
+	if p.geometryCount > 0 && p.pGeometries != nil {
+		s.Geometries = make([]AccelerationStructureGeometryKHR, p.geometryCount)
+		for i0 := range s.Geometries {
+			elem1 := (*[1 << 30]C.VkAccelerationStructureGeometryKHR)(unsafe.Pointer(p.pGeometries))[i0]
+			s.Geometries[i0].fromC(&elem1)
+		}
+	}
+	if p.geometryCount > 0 && p.ppGeometries != nil {
+		s.PpGeometries = make([]*AccelerationStructureGeometryKHR, p.geometryCount)
+		for i2 := range s.PpGeometries {
+			elem3 := (*[1 << 30]*C.VkAccelerationStructureGeometryKHR)(unsafe.Pointer(p.ppGeometries))[i2]
+			if elem3 != nil {
+				var goElem4 AccelerationStructureGeometryKHR
+				goElem4.fromC(elem3)
+				s.PpGeometries[i2] = &goElem4
+			}
+		}
+	}
+	s.ScratchData.fromC(&p.scratchData)
+}
+
+type AccelerationStructureBuildRangeInfoKHR struct {
+	PrimitiveCount  uint32
+	PrimitiveOffset uint32
+	FirstVertex     uint32
+	TransformOffset uint32
+}
+
+func (s *AccelerationStructureBuildRangeInfoKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkAccelerationStructureBuildRangeInfoKHR)(C.malloc(C.size_t(C.sizeof_VkAccelerationStructureBuildRangeInfoKHR)))
+	*p = C.VkAccelerationStructureBuildRangeInfoKHR{}
+	val0 := C.uint32_t(s.PrimitiveCount)
+	p.primitiveCount = val0
+	val1 := C.uint32_t(s.PrimitiveOffset)
+	p.primitiveOffset = val1
+	val2 := C.uint32_t(s.FirstVertex)
+	p.firstVertex = val2
+	val3 := C.uint32_t(s.TransformOffset)
+	p.transformOffset = val3
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *AccelerationStructureBuildRangeInfoKHR) fromC(p *C.VkAccelerationStructureBuildRangeInfoKHR) {
+	s.PrimitiveCount = uint32(p.primitiveCount)
+	s.PrimitiveOffset = uint32(p.primitiveOffset)
+	s.FirstVertex = uint32(p.firstVertex)
+	s.TransformOffset = uint32(p.transformOffset)
+}
+
+type AccelerationStructureBuildSizesInfoKHR struct {
+	Next                      Structure
+	AccelerationStructureSize uint64
+	UpdateScratchSize         uint64
+	BuildScratchSize          uint64
+}
+
+func (s *AccelerationStructureBuildSizesInfoKHR) GetType() StructureType {
+	return StructureTypeAccelerationStructureBuildSizesInfoKHR
+}
+
+func (s *AccelerationStructureBuildSizesInfoKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkAccelerationStructureBuildSizesInfoKHR)(C.malloc(C.size_t(C.sizeof_VkAccelerationStructureBuildSizesInfoKHR)))
+	*p = C.VkAccelerationStructureBuildSizesInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkDeviceSize(s.AccelerationStructureSize)
+	p.accelerationStructureSize = val0
+	val1 := C.VkDeviceSize(s.UpdateScratchSize)
+	p.updateScratchSize = val1
+	val2 := C.VkDeviceSize(s.BuildScratchSize)
+	p.buildScratchSize = val2
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *AccelerationStructureBuildSizesInfoKHR) fromC(p *C.VkAccelerationStructureBuildSizesInfoKHR) {
+	s.AccelerationStructureSize = uint64(p.accelerationStructureSize)
+	s.UpdateScratchSize = uint64(p.updateScratchSize)
+	s.BuildScratchSize = uint64(p.buildScratchSize)
+}
+
+type AccelerationStructureCreateInfoKHR struct {
+	Next          Structure
+	CreateFlags   AccelerationStructureCreateFlagsKHR
+	Buffer        *Buffer
+	Offset        uint64
+	Size          uint64
+	Type          AccelerationStructureTypeKHR
+	DeviceAddress uint64
+}
+
+func (s *AccelerationStructureCreateInfoKHR) GetType() StructureType {
+	return StructureTypeAccelerationStructureCreateInfoKHR
+}
+
+func (s *AccelerationStructureCreateInfoKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkAccelerationStructureCreateInfoKHR)(C.malloc(C.size_t(C.sizeof_VkAccelerationStructureCreateInfoKHR)))
+	*p = C.VkAccelerationStructureCreateInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkAccelerationStructureCreateFlagsKHR(s.CreateFlags)
+	p.createFlags = val0
+	var h1 C.VkBuffer
+	if s.Buffer != nil {
+		h1 = C.VkBuffer(unsafe.Pointer(s.Buffer.handle))
+	}
+	p.buffer = h1
+	val2 := C.VkDeviceSize(s.Offset)
+	p.offset = val2
+	val3 := C.VkDeviceSize(s.Size)
+	p.size = val3
+	val4 := C.VkAccelerationStructureTypeKHR(s.Type)
+	p._type = val4
+	val5 := C.VkDeviceAddress(s.DeviceAddress)
+	p.deviceAddress = val5
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *AccelerationStructureCreateInfoKHR) fromC(p *C.VkAccelerationStructureCreateInfoKHR) {
+	s.CreateFlags = AccelerationStructureCreateFlagsKHR(p.createFlags)
+	s.Buffer = &Buffer{handle: unsafe.Pointer(p.buffer)}
+	s.Offset = uint64(p.offset)
+	s.Size = uint64(p.size)
+	s.Type = AccelerationStructureTypeKHR(p._type)
+	s.DeviceAddress = uint64(p.deviceAddress)
+}
+
+type AccelerationStructureDeviceAddressInfoKHR struct {
+	Next                  Structure
+	AccelerationStructure *AccelerationStructureKHR
+}
+
+func (s *AccelerationStructureDeviceAddressInfoKHR) GetType() StructureType {
+	return StructureTypeAccelerationStructureDeviceAddressInfoKHR
+}
+
+func (s *AccelerationStructureDeviceAddressInfoKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkAccelerationStructureDeviceAddressInfoKHR)(C.malloc(C.size_t(C.sizeof_VkAccelerationStructureDeviceAddressInfoKHR)))
+	*p = C.VkAccelerationStructureDeviceAddressInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	var h0 C.VkAccelerationStructureKHR
+	if s.AccelerationStructure != nil {
+		h0 = C.VkAccelerationStructureKHR(unsafe.Pointer(s.AccelerationStructure.handle))
+	}
+	p.accelerationStructure = h0
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *AccelerationStructureDeviceAddressInfoKHR) fromC(p *C.VkAccelerationStructureDeviceAddressInfoKHR) {
+	s.AccelerationStructure = &AccelerationStructureKHR{handle: unsafe.Pointer(p.accelerationStructure)}
+}
+
+type AccelerationStructureGeometryAabbsDataKHR struct {
+	Next   Structure
+	Data   DeviceOrHostAddressConstKHR
+	Stride uint64
+}
+
+func (s *AccelerationStructureGeometryAabbsDataKHR) GetType() StructureType {
+	return StructureTypeAccelerationStructureGeometryAabbsDataKHR
+}
+
+func (s *AccelerationStructureGeometryAabbsDataKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkAccelerationStructureGeometryAabbsDataKHR)(C.malloc(C.size_t(C.sizeof_VkAccelerationStructureGeometryAabbsDataKHR)))
+	*p = C.VkAccelerationStructureGeometryAabbsDataKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0, cancel1 := s.Data.toC()
+	cancels = append(cancels, cancel1)
+	cast2 := (*C.VkDeviceOrHostAddressConstKHR)(val0)
+	p.data = *cast2
+	val3 := C.VkDeviceSize(s.Stride)
+	p.stride = val3
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *AccelerationStructureGeometryAabbsDataKHR) fromC(p *C.VkAccelerationStructureGeometryAabbsDataKHR) {
+	s.Data.fromC(&p.data)
+	s.Stride = uint64(p.stride)
+}
+
+type AccelerationStructureGeometryDataKHR [C.sizeof_VkAccelerationStructureGeometryDataKHR]byte
+
+func NewAccelerationStructureGeometryDataKHRTriangles(val AccelerationStructureGeometryTrianglesDataKHR) AccelerationStructureGeometryDataKHR {
+	var u AccelerationStructureGeometryDataKHR
+	*(*AccelerationStructureGeometryTrianglesDataKHR)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func NewAccelerationStructureGeometryDataKHRAabbs(val AccelerationStructureGeometryAabbsDataKHR) AccelerationStructureGeometryDataKHR {
+	var u AccelerationStructureGeometryDataKHR
+	*(*AccelerationStructureGeometryAabbsDataKHR)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func NewAccelerationStructureGeometryDataKHRInstances(val AccelerationStructureGeometryInstancesDataKHR) AccelerationStructureGeometryDataKHR {
+	var u AccelerationStructureGeometryDataKHR
+	*(*AccelerationStructureGeometryInstancesDataKHR)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func (u *AccelerationStructureGeometryDataKHR) Triangles() AccelerationStructureGeometryTrianglesDataKHR {
+	return *(*AccelerationStructureGeometryTrianglesDataKHR)(unsafe.Pointer(&u[0]))
+}
+
+func (u *AccelerationStructureGeometryDataKHR) Aabbs() AccelerationStructureGeometryAabbsDataKHR {
+	return *(*AccelerationStructureGeometryAabbsDataKHR)(unsafe.Pointer(&u[0]))
+}
+
+func (u *AccelerationStructureGeometryDataKHR) Instances() AccelerationStructureGeometryInstancesDataKHR {
+	return *(*AccelerationStructureGeometryInstancesDataKHR)(unsafe.Pointer(&u[0]))
+}
+
+func (s *AccelerationStructureGeometryDataKHR) toC() (*C.VkAccelerationStructureGeometryDataKHR, func()) {
+	p := (*C.VkAccelerationStructureGeometryDataKHR)(C.malloc(C.size_t(C.sizeof_VkAccelerationStructureGeometryDataKHR)))
+	C.memcpy(unsafe.Pointer(p), unsafe.Pointer(&s[0]), C.sizeof_VkAccelerationStructureGeometryDataKHR)
+	return p, func() { C.free(unsafe.Pointer(p)) }
+}
+
+func (s *AccelerationStructureGeometryDataKHR) fromC(p *C.VkAccelerationStructureGeometryDataKHR) {
+	C.memcpy(unsafe.Pointer(&s[0]), unsafe.Pointer(p), C.sizeof_VkAccelerationStructureGeometryDataKHR)
+}
+
+type AccelerationStructureGeometryInstancesDataKHR struct {
+	Next            Structure
+	ArrayOfPointers bool
+	Data            DeviceOrHostAddressConstKHR
+}
+
+func (s *AccelerationStructureGeometryInstancesDataKHR) GetType() StructureType {
+	return StructureTypeAccelerationStructureGeometryInstancesDataKHR
+}
+
+func (s *AccelerationStructureGeometryInstancesDataKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkAccelerationStructureGeometryInstancesDataKHR)(C.malloc(C.size_t(C.sizeof_VkAccelerationStructureGeometryInstancesDataKHR)))
+	*p = C.VkAccelerationStructureGeometryInstancesDataKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.ArrayOfPointers {
+		val0 = C.VkBool32(1)
+	}
+	p.arrayOfPointers = val0
+	val1, cancel2 := s.Data.toC()
+	cancels = append(cancels, cancel2)
+	cast3 := (*C.VkDeviceOrHostAddressConstKHR)(val1)
+	p.data = *cast3
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *AccelerationStructureGeometryInstancesDataKHR) fromC(p *C.VkAccelerationStructureGeometryInstancesDataKHR) {
+	s.ArrayOfPointers = p.arrayOfPointers != 0
+	s.Data.fromC(&p.data)
+}
+
+type AccelerationStructureGeometryKHR struct {
+	Next         Structure
+	GeometryType GeometryTypeKHR
+	Geometry     AccelerationStructureGeometryDataKHR
+	Flags        GeometryFlagsKHR
+}
+
+func (s *AccelerationStructureGeometryKHR) GetType() StructureType {
+	return StructureTypeAccelerationStructureGeometryKHR
+}
+
+func (s *AccelerationStructureGeometryKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkAccelerationStructureGeometryKHR)(C.malloc(C.size_t(C.sizeof_VkAccelerationStructureGeometryKHR)))
+	*p = C.VkAccelerationStructureGeometryKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkGeometryTypeKHR(s.GeometryType)
+	p.geometryType = val0
+	val1, cancel2 := s.Geometry.toC()
+	cancels = append(cancels, cancel2)
+	cast3 := (*C.VkAccelerationStructureGeometryDataKHR)(val1)
+	p.geometry = *cast3
+	val4 := C.VkGeometryFlagsKHR(s.Flags)
+	p.flags = val4
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *AccelerationStructureGeometryKHR) fromC(p *C.VkAccelerationStructureGeometryKHR) {
+	s.GeometryType = GeometryTypeKHR(p.geometryType)
+	s.Geometry.fromC(&p.geometry)
+	s.Flags = GeometryFlagsKHR(p.flags)
+}
+
+type AccelerationStructureGeometryTrianglesDataKHR struct {
+	Next          Structure
+	VertexFormat  Format
+	VertexData    DeviceOrHostAddressConstKHR
+	VertexStride  uint64
+	MaxVertex     uint32
+	IndexType     IndexType
+	IndexData     DeviceOrHostAddressConstKHR
+	TransformData DeviceOrHostAddressConstKHR
+}
+
+func (s *AccelerationStructureGeometryTrianglesDataKHR) GetType() StructureType {
+	return StructureTypeAccelerationStructureGeometryTrianglesDataKHR
+}
+
+func (s *AccelerationStructureGeometryTrianglesDataKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkAccelerationStructureGeometryTrianglesDataKHR)(C.malloc(C.size_t(C.sizeof_VkAccelerationStructureGeometryTrianglesDataKHR)))
+	*p = C.VkAccelerationStructureGeometryTrianglesDataKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkFormat(s.VertexFormat)
+	p.vertexFormat = val0
+	val1, cancel2 := s.VertexData.toC()
+	cancels = append(cancels, cancel2)
+	cast3 := (*C.VkDeviceOrHostAddressConstKHR)(val1)
+	p.vertexData = *cast3
+	val4 := C.VkDeviceSize(s.VertexStride)
+	p.vertexStride = val4
+	val5 := C.uint32_t(s.MaxVertex)
+	p.maxVertex = val5
+	val6 := C.VkIndexType(s.IndexType)
+	p.indexType = val6
+	val7, cancel8 := s.IndexData.toC()
+	cancels = append(cancels, cancel8)
+	cast9 := (*C.VkDeviceOrHostAddressConstKHR)(val7)
+	p.indexData = *cast9
+	val10, cancel11 := s.TransformData.toC()
+	cancels = append(cancels, cancel11)
+	cast12 := (*C.VkDeviceOrHostAddressConstKHR)(val10)
+	p.transformData = *cast12
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *AccelerationStructureGeometryTrianglesDataKHR) fromC(p *C.VkAccelerationStructureGeometryTrianglesDataKHR) {
+	s.VertexFormat = Format(p.vertexFormat)
+	s.VertexData.fromC(&p.vertexData)
+	s.VertexStride = uint64(p.vertexStride)
+	s.MaxVertex = uint32(p.maxVertex)
+	s.IndexType = IndexType(p.indexType)
+	s.IndexData.fromC(&p.indexData)
+	s.TransformData.fromC(&p.transformData)
+}
+
+type AccelerationStructureInstanceKHR struct {
+	Transform                              TransformMatrixKHR
+	InstanceCustomIndex                    uint32
+	Mask                                   uint32
+	InstanceShaderBindingTableRecordOffset uint32
+	Flags                                  GeometryInstanceFlagsKHR
+	AccelerationStructureReference         uint64
+}
+
+func (s *AccelerationStructureInstanceKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkAccelerationStructureInstanceKHR)(C.malloc(C.size_t(C.sizeof_VkAccelerationStructureInstanceKHR)))
+	*p = C.VkAccelerationStructureInstanceKHR{}
+	val0, cancel1 := s.Transform.toC()
+	cancels = append(cancels, cancel1)
+	cast2 := (*C.VkTransformMatrixKHR)(val0)
+	p.transform = *cast2
+	val3 := C.uint32_t(s.InstanceCustomIndex)
+	C.vk_set_VkAccelerationStructureInstanceKHR_instanceCustomIndex(p, val3)
+	val4 := C.uint32_t(s.Mask)
+	C.vk_set_VkAccelerationStructureInstanceKHR_mask(p, val4)
+	val5 := C.uint32_t(s.InstanceShaderBindingTableRecordOffset)
+	C.vk_set_VkAccelerationStructureInstanceKHR_instanceShaderBindingTableRecordOffset(p, val5)
+	val6 := C.VkGeometryInstanceFlagsKHR(s.Flags)
+	C.vk_set_VkAccelerationStructureInstanceKHR_flags(p, val6)
+	val7 := C.uint64_t(s.AccelerationStructureReference)
+	p.accelerationStructureReference = val7
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *AccelerationStructureInstanceKHR) fromC(p *C.VkAccelerationStructureInstanceKHR) {
+	s.Transform.fromC(&p.transform)
+	s.InstanceCustomIndex = uint32(C.vk_get_VkAccelerationStructureInstanceKHR_instanceCustomIndex(p))
+	s.Mask = uint32(C.vk_get_VkAccelerationStructureInstanceKHR_mask(p))
+	s.InstanceShaderBindingTableRecordOffset = uint32(C.vk_get_VkAccelerationStructureInstanceKHR_instanceShaderBindingTableRecordOffset(p))
+	s.Flags = GeometryInstanceFlagsKHR(C.vk_get_VkAccelerationStructureInstanceKHR_flags(p))
+	s.AccelerationStructureReference = uint64(p.accelerationStructureReference)
+}
+
+type AccelerationStructureVersionInfoKHR struct {
+	Next        Structure
+	VersionData []uint8
+}
+
+func (s *AccelerationStructureVersionInfoKHR) GetType() StructureType {
+	return StructureTypeAccelerationStructureVersionInfoKHR
+}
+
+func (s *AccelerationStructureVersionInfoKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkAccelerationStructureVersionInfoKHR)(C.malloc(C.size_t(C.sizeof_VkAccelerationStructureVersionInfoKHR)))
+	*p = C.VkAccelerationStructureVersionInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	len0 := len(s.VersionData)
+
+	var arr1 *C.uint8_t
+	if len0 > 0 {
+		arr1 = (*C.uint8_t)(C.malloc(C.size_t(len0) * C.size_t(unsafe.Sizeof(*new(C.uint8_t)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr1)) })
+	}
+	for i2, elem3 := range s.VersionData {
+		val4 := C.uint8_t(elem3)
+		(*[1 << 30]C.uint8_t)(unsafe.Pointer(arr1))[i2] = val4
+	}
+	p.pVersionData = arr1
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *AccelerationStructureVersionInfoKHR) fromC(p *C.VkAccelerationStructureVersionInfoKHR) {
+}
 
 type AcquireNextImageInfoKHR struct {
 	Next       Structure
@@ -5786,6 +6694,36 @@ func (s *BindImagePlaneMemoryInfo) fromC(p *C.VkBindImagePlaneMemoryInfo) {
 	s.PlaneAspect = ImageAspectFlagBits(p.planeAspect)
 }
 
+type BindIndexBufferIndirectCommandEXT struct {
+	BufferAddress uint64
+	Size          uint32
+	IndexType     IndexType
+}
+
+func (s *BindIndexBufferIndirectCommandEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkBindIndexBufferIndirectCommandEXT)(C.malloc(C.size_t(C.sizeof_VkBindIndexBufferIndirectCommandEXT)))
+	*p = C.VkBindIndexBufferIndirectCommandEXT{}
+	val0 := C.VkDeviceAddress(s.BufferAddress)
+	p.bufferAddress = val0
+	val1 := C.uint32_t(s.Size)
+	p.size = val1
+	val2 := C.VkIndexType(s.IndexType)
+	p.indexType = val2
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *BindIndexBufferIndirectCommandEXT) fromC(p *C.VkBindIndexBufferIndirectCommandEXT) {
+	s.BufferAddress = uint64(p.bufferAddress)
+	s.Size = uint32(p.size)
+	s.IndexType = IndexType(p.indexType)
+}
+
 type BindMemoryStatus struct {
 	Next   Structure
 	Result *Result
@@ -5965,6 +6903,36 @@ func (s *BindSparseInfo) fromC(p *C.VkBindSparseInfo) {
 			s.SignalSemaphores[i8] = &Semaphore{handle: unsafe.Pointer((*[1 << 30]C.VkSemaphore)(unsafe.Pointer(p.pSignalSemaphores))[i8])}
 		}
 	}
+}
+
+type BindVertexBufferIndirectCommandEXT struct {
+	BufferAddress uint64
+	Size          uint32
+	Stride        uint32
+}
+
+func (s *BindVertexBufferIndirectCommandEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkBindVertexBufferIndirectCommandEXT)(C.malloc(C.size_t(C.sizeof_VkBindVertexBufferIndirectCommandEXT)))
+	*p = C.VkBindVertexBufferIndirectCommandEXT{}
+	val0 := C.VkDeviceAddress(s.BufferAddress)
+	p.bufferAddress = val0
+	val1 := C.uint32_t(s.Size)
+	p.size = val1
+	val2 := C.uint32_t(s.Stride)
+	p.stride = val2
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *BindVertexBufferIndirectCommandEXT) fromC(p *C.VkBindVertexBufferIndirectCommandEXT) {
+	s.BufferAddress = uint64(p.bufferAddress)
+	s.Size = uint32(p.size)
+	s.Stride = uint32(p.stride)
 }
 
 type BlitImageInfo2 struct {
@@ -7275,6 +8243,99 @@ func (s *ConformanceVersion) fromC(p *C.VkConformanceVersion) {
 	s.Patch = uint8(p.patch)
 }
 
+type CopyAccelerationStructureInfoKHR struct {
+	Next Structure
+	Src  *AccelerationStructureKHR
+	Dst  *AccelerationStructureKHR
+	Mode CopyAccelerationStructureModeKHR
+}
+
+func (s *CopyAccelerationStructureInfoKHR) GetType() StructureType {
+	return StructureTypeCopyAccelerationStructureInfoKHR
+}
+
+func (s *CopyAccelerationStructureInfoKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkCopyAccelerationStructureInfoKHR)(C.malloc(C.size_t(C.sizeof_VkCopyAccelerationStructureInfoKHR)))
+	*p = C.VkCopyAccelerationStructureInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	var h0 C.VkAccelerationStructureKHR
+	if s.Src != nil {
+		h0 = C.VkAccelerationStructureKHR(unsafe.Pointer(s.Src.handle))
+	}
+	p.src = h0
+	var h1 C.VkAccelerationStructureKHR
+	if s.Dst != nil {
+		h1 = C.VkAccelerationStructureKHR(unsafe.Pointer(s.Dst.handle))
+	}
+	p.dst = h1
+	val2 := C.VkCopyAccelerationStructureModeKHR(s.Mode)
+	p.mode = val2
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *CopyAccelerationStructureInfoKHR) fromC(p *C.VkCopyAccelerationStructureInfoKHR) {
+	s.Src = &AccelerationStructureKHR{handle: unsafe.Pointer(p.src)}
+	s.Dst = &AccelerationStructureKHR{handle: unsafe.Pointer(p.dst)}
+	s.Mode = CopyAccelerationStructureModeKHR(p.mode)
+}
+
+type CopyAccelerationStructureToMemoryInfoKHR struct {
+	Next Structure
+	Src  *AccelerationStructureKHR
+	Dst  DeviceOrHostAddressKHR
+	Mode CopyAccelerationStructureModeKHR
+}
+
+func (s *CopyAccelerationStructureToMemoryInfoKHR) GetType() StructureType {
+	return StructureTypeCopyAccelerationStructureToMemoryInfoKHR
+}
+
+func (s *CopyAccelerationStructureToMemoryInfoKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkCopyAccelerationStructureToMemoryInfoKHR)(C.malloc(C.size_t(C.sizeof_VkCopyAccelerationStructureToMemoryInfoKHR)))
+	*p = C.VkCopyAccelerationStructureToMemoryInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	var h0 C.VkAccelerationStructureKHR
+	if s.Src != nil {
+		h0 = C.VkAccelerationStructureKHR(unsafe.Pointer(s.Src.handle))
+	}
+	p.src = h0
+	val1, cancel2 := s.Dst.toC()
+	cancels = append(cancels, cancel2)
+	cast3 := (*C.VkDeviceOrHostAddressKHR)(val1)
+	p.dst = *cast3
+	val4 := C.VkCopyAccelerationStructureModeKHR(s.Mode)
+	p.mode = val4
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *CopyAccelerationStructureToMemoryInfoKHR) fromC(p *C.VkCopyAccelerationStructureToMemoryInfoKHR) {
+	s.Src = &AccelerationStructureKHR{handle: unsafe.Pointer(p.src)}
+	s.Dst.fromC(&p.dst)
+	s.Mode = CopyAccelerationStructureModeKHR(p.mode)
+}
+
 type CopyBufferInfo2 struct {
 	Next      Structure
 	SrcBuffer *Buffer
@@ -7761,6 +8822,52 @@ func (s *CopyImageToMemoryInfo) fromC(p *C.VkCopyImageToMemoryInfo) {
 			s.Regions[i0].fromC(&elem1)
 		}
 	}
+}
+
+type CopyMemoryToAccelerationStructureInfoKHR struct {
+	Next Structure
+	Src  DeviceOrHostAddressConstKHR
+	Dst  *AccelerationStructureKHR
+	Mode CopyAccelerationStructureModeKHR
+}
+
+func (s *CopyMemoryToAccelerationStructureInfoKHR) GetType() StructureType {
+	return StructureTypeCopyMemoryToAccelerationStructureInfoKHR
+}
+
+func (s *CopyMemoryToAccelerationStructureInfoKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkCopyMemoryToAccelerationStructureInfoKHR)(C.malloc(C.size_t(C.sizeof_VkCopyMemoryToAccelerationStructureInfoKHR)))
+	*p = C.VkCopyMemoryToAccelerationStructureInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0, cancel1 := s.Src.toC()
+	cancels = append(cancels, cancel1)
+	cast2 := (*C.VkDeviceOrHostAddressConstKHR)(val0)
+	p.src = *cast2
+	var h3 C.VkAccelerationStructureKHR
+	if s.Dst != nil {
+		h3 = C.VkAccelerationStructureKHR(unsafe.Pointer(s.Dst.handle))
+	}
+	p.dst = h3
+	val4 := C.VkCopyAccelerationStructureModeKHR(s.Mode)
+	p.mode = val4
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *CopyMemoryToAccelerationStructureInfoKHR) fromC(p *C.VkCopyMemoryToAccelerationStructureInfoKHR) {
+	s.Src.fromC(&p.src)
+	s.Dst = &AccelerationStructureKHR{handle: unsafe.Pointer(p.dst)}
+	s.Mode = CopyAccelerationStructureModeKHR(p.mode)
 }
 
 type CopyMemoryToImageInfo struct {
@@ -9586,6 +10693,70 @@ func (s *DeviceMemoryOpaqueCaptureAddressInfo) fromC(p *C.VkDeviceMemoryOpaqueCa
 	s.Memory = &DeviceMemory{handle: unsafe.Pointer(p.memory)}
 }
 
+type DeviceOrHostAddressConstKHR [C.sizeof_VkDeviceOrHostAddressConstKHR]byte
+
+func NewDeviceOrHostAddressConstKHRDeviceAddress(val uint64) DeviceOrHostAddressConstKHR {
+	var u DeviceOrHostAddressConstKHR
+	*(*uint64)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func NewDeviceOrHostAddressConstKHRHostAddress(val unsafe.Pointer) DeviceOrHostAddressConstKHR {
+	var u DeviceOrHostAddressConstKHR
+	*(*unsafe.Pointer)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func (u *DeviceOrHostAddressConstKHR) DeviceAddress() uint64 {
+	return *(*uint64)(unsafe.Pointer(&u[0]))
+}
+
+func (u *DeviceOrHostAddressConstKHR) HostAddress() unsafe.Pointer {
+	return *(*unsafe.Pointer)(unsafe.Pointer(&u[0]))
+}
+
+func (s *DeviceOrHostAddressConstKHR) toC() (*C.VkDeviceOrHostAddressConstKHR, func()) {
+	p := (*C.VkDeviceOrHostAddressConstKHR)(C.malloc(C.size_t(C.sizeof_VkDeviceOrHostAddressConstKHR)))
+	C.memcpy(unsafe.Pointer(p), unsafe.Pointer(&s[0]), C.sizeof_VkDeviceOrHostAddressConstKHR)
+	return p, func() { C.free(unsafe.Pointer(p)) }
+}
+
+func (s *DeviceOrHostAddressConstKHR) fromC(p *C.VkDeviceOrHostAddressConstKHR) {
+	C.memcpy(unsafe.Pointer(&s[0]), unsafe.Pointer(p), C.sizeof_VkDeviceOrHostAddressConstKHR)
+}
+
+type DeviceOrHostAddressKHR [C.sizeof_VkDeviceOrHostAddressKHR]byte
+
+func NewDeviceOrHostAddressKHRDeviceAddress(val uint64) DeviceOrHostAddressKHR {
+	var u DeviceOrHostAddressKHR
+	*(*uint64)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func NewDeviceOrHostAddressKHRHostAddress(val unsafe.Pointer) DeviceOrHostAddressKHR {
+	var u DeviceOrHostAddressKHR
+	*(*unsafe.Pointer)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func (u *DeviceOrHostAddressKHR) DeviceAddress() uint64 {
+	return *(*uint64)(unsafe.Pointer(&u[0]))
+}
+
+func (u *DeviceOrHostAddressKHR) HostAddress() unsafe.Pointer {
+	return *(*unsafe.Pointer)(unsafe.Pointer(&u[0]))
+}
+
+func (s *DeviceOrHostAddressKHR) toC() (*C.VkDeviceOrHostAddressKHR, func()) {
+	p := (*C.VkDeviceOrHostAddressKHR)(C.malloc(C.size_t(C.sizeof_VkDeviceOrHostAddressKHR)))
+	C.memcpy(unsafe.Pointer(p), unsafe.Pointer(&s[0]), C.sizeof_VkDeviceOrHostAddressKHR)
+	return p, func() { C.free(unsafe.Pointer(p)) }
+}
+
+func (s *DeviceOrHostAddressKHR) fromC(p *C.VkDeviceOrHostAddressKHR) {
+	C.memcpy(unsafe.Pointer(&s[0]), unsafe.Pointer(p), C.sizeof_VkDeviceOrHostAddressKHR)
+}
+
 type DevicePrivateDataCreateInfo struct {
 	Next                        Structure
 	PrivateDataSlotRequestCount uint32
@@ -9850,6 +11021,36 @@ func (s *DrawIndirectCommand) fromC(p *C.VkDrawIndirectCommand) {
 	s.InstanceCount = uint32(p.instanceCount)
 	s.FirstVertex = uint32(p.firstVertex)
 	s.FirstInstance = uint32(p.firstInstance)
+}
+
+type DrawIndirectCountIndirectCommandEXT struct {
+	BufferAddress uint64
+	Stride        uint32
+	CommandCount  uint32
+}
+
+func (s *DrawIndirectCountIndirectCommandEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkDrawIndirectCountIndirectCommandEXT)(C.malloc(C.size_t(C.sizeof_VkDrawIndirectCountIndirectCommandEXT)))
+	*p = C.VkDrawIndirectCountIndirectCommandEXT{}
+	val0 := C.VkDeviceAddress(s.BufferAddress)
+	p.bufferAddress = val0
+	val1 := C.uint32_t(s.Stride)
+	p.stride = val1
+	val2 := C.uint32_t(s.CommandCount)
+	p.commandCount = val2
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *DrawIndirectCountIndirectCommandEXT) fromC(p *C.VkDrawIndirectCountIndirectCommandEXT) {
+	s.BufferAddress = uint64(p.bufferAddress)
+	s.Stride = uint32(p.stride)
+	s.CommandCount = uint32(p.commandCount)
 }
 
 type EventCreateInfo struct {
@@ -10648,6 +11849,220 @@ func (s *FramebufferCreateInfo) fromC(p *C.VkFramebufferCreateInfo) {
 	s.Width = uint32(p.width)
 	s.Height = uint32(p.height)
 	s.Layers = uint32(p.layers)
+}
+
+type GeneratedCommandsInfoEXT struct {
+	Next                   Structure
+	ShaderStages           ShaderStageFlags
+	IndirectExecutionSet   *IndirectExecutionSetEXT
+	IndirectCommandsLayout *IndirectCommandsLayoutEXT
+	IndirectAddress        uint64
+	IndirectAddressSize    uint64
+	PreprocessAddress      uint64
+	PreprocessSize         uint64
+	MaxSequenceCount       uint32
+	SequenceCountAddress   uint64
+	MaxDrawCount           uint32
+}
+
+func (s *GeneratedCommandsInfoEXT) GetType() StructureType {
+	return StructureTypeGeneratedCommandsInfoEXT
+}
+
+func (s *GeneratedCommandsInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkGeneratedCommandsInfoEXT)(C.malloc(C.size_t(C.sizeof_VkGeneratedCommandsInfoEXT)))
+	*p = C.VkGeneratedCommandsInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkShaderStageFlags(s.ShaderStages)
+	p.shaderStages = val0
+	var h1 C.VkIndirectExecutionSetEXT
+	if s.IndirectExecutionSet != nil {
+		h1 = C.VkIndirectExecutionSetEXT(unsafe.Pointer(s.IndirectExecutionSet.handle))
+	}
+	p.indirectExecutionSet = h1
+	var h2 C.VkIndirectCommandsLayoutEXT
+	if s.IndirectCommandsLayout != nil {
+		h2 = C.VkIndirectCommandsLayoutEXT(unsafe.Pointer(s.IndirectCommandsLayout.handle))
+	}
+	p.indirectCommandsLayout = h2
+	val3 := C.VkDeviceAddress(s.IndirectAddress)
+	p.indirectAddress = val3
+	val4 := C.VkDeviceSize(s.IndirectAddressSize)
+	p.indirectAddressSize = val4
+	val5 := C.VkDeviceAddress(s.PreprocessAddress)
+	p.preprocessAddress = val5
+	val6 := C.VkDeviceSize(s.PreprocessSize)
+	p.preprocessSize = val6
+	val7 := C.uint32_t(s.MaxSequenceCount)
+	p.maxSequenceCount = val7
+	val8 := C.VkDeviceAddress(s.SequenceCountAddress)
+	p.sequenceCountAddress = val8
+	val9 := C.uint32_t(s.MaxDrawCount)
+	p.maxDrawCount = val9
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *GeneratedCommandsInfoEXT) fromC(p *C.VkGeneratedCommandsInfoEXT) {
+	s.ShaderStages = ShaderStageFlags(p.shaderStages)
+	s.IndirectExecutionSet = &IndirectExecutionSetEXT{handle: unsafe.Pointer(p.indirectExecutionSet)}
+	s.IndirectCommandsLayout = &IndirectCommandsLayoutEXT{handle: unsafe.Pointer(p.indirectCommandsLayout)}
+	s.IndirectAddress = uint64(p.indirectAddress)
+	s.IndirectAddressSize = uint64(p.indirectAddressSize)
+	s.PreprocessAddress = uint64(p.preprocessAddress)
+	s.PreprocessSize = uint64(p.preprocessSize)
+	s.MaxSequenceCount = uint32(p.maxSequenceCount)
+	s.SequenceCountAddress = uint64(p.sequenceCountAddress)
+	s.MaxDrawCount = uint32(p.maxDrawCount)
+}
+
+type GeneratedCommandsMemoryRequirementsInfoEXT struct {
+	Next                   Structure
+	IndirectExecutionSet   *IndirectExecutionSetEXT
+	IndirectCommandsLayout *IndirectCommandsLayoutEXT
+	MaxSequenceCount       uint32
+	MaxDrawCount           uint32
+}
+
+func (s *GeneratedCommandsMemoryRequirementsInfoEXT) GetType() StructureType {
+	return StructureTypeGeneratedCommandsMemoryRequirementsInfoEXT
+}
+
+func (s *GeneratedCommandsMemoryRequirementsInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkGeneratedCommandsMemoryRequirementsInfoEXT)(C.malloc(C.size_t(C.sizeof_VkGeneratedCommandsMemoryRequirementsInfoEXT)))
+	*p = C.VkGeneratedCommandsMemoryRequirementsInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	var h0 C.VkIndirectExecutionSetEXT
+	if s.IndirectExecutionSet != nil {
+		h0 = C.VkIndirectExecutionSetEXT(unsafe.Pointer(s.IndirectExecutionSet.handle))
+	}
+	p.indirectExecutionSet = h0
+	var h1 C.VkIndirectCommandsLayoutEXT
+	if s.IndirectCommandsLayout != nil {
+		h1 = C.VkIndirectCommandsLayoutEXT(unsafe.Pointer(s.IndirectCommandsLayout.handle))
+	}
+	p.indirectCommandsLayout = h1
+	val2 := C.uint32_t(s.MaxSequenceCount)
+	p.maxSequenceCount = val2
+	val3 := C.uint32_t(s.MaxDrawCount)
+	p.maxDrawCount = val3
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *GeneratedCommandsMemoryRequirementsInfoEXT) fromC(p *C.VkGeneratedCommandsMemoryRequirementsInfoEXT) {
+	s.IndirectExecutionSet = &IndirectExecutionSetEXT{handle: unsafe.Pointer(p.indirectExecutionSet)}
+	s.IndirectCommandsLayout = &IndirectCommandsLayoutEXT{handle: unsafe.Pointer(p.indirectCommandsLayout)}
+	s.MaxSequenceCount = uint32(p.maxSequenceCount)
+	s.MaxDrawCount = uint32(p.maxDrawCount)
+}
+
+type GeneratedCommandsPipelineInfoEXT struct {
+	Next     Structure
+	Pipeline *Pipeline
+}
+
+func (s *GeneratedCommandsPipelineInfoEXT) GetType() StructureType {
+	return StructureTypeGeneratedCommandsPipelineInfoEXT
+}
+
+func (s *GeneratedCommandsPipelineInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkGeneratedCommandsPipelineInfoEXT)(C.malloc(C.size_t(C.sizeof_VkGeneratedCommandsPipelineInfoEXT)))
+	*p = C.VkGeneratedCommandsPipelineInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	var h0 C.VkPipeline
+	if s.Pipeline != nil {
+		h0 = C.VkPipeline(unsafe.Pointer(s.Pipeline.handle))
+	}
+	p.pipeline = h0
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *GeneratedCommandsPipelineInfoEXT) fromC(p *C.VkGeneratedCommandsPipelineInfoEXT) {
+	s.Pipeline = &Pipeline{handle: unsafe.Pointer(p.pipeline)}
+}
+
+type GeneratedCommandsShaderInfoEXT struct {
+	Next    Structure
+	Shaders []*ShaderEXT
+}
+
+func (s *GeneratedCommandsShaderInfoEXT) GetType() StructureType {
+	return StructureTypeGeneratedCommandsShaderInfoEXT
+}
+
+func (s *GeneratedCommandsShaderInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkGeneratedCommandsShaderInfoEXT)(C.malloc(C.size_t(C.sizeof_VkGeneratedCommandsShaderInfoEXT)))
+	*p = C.VkGeneratedCommandsShaderInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	len0 := len(s.Shaders)
+
+	var arr1 *C.VkShaderEXT
+	if len0 > 0 {
+		arr1 = (*C.VkShaderEXT)(C.malloc(C.size_t(len0) * C.size_t(unsafe.Sizeof(*new(C.VkShaderEXT)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr1)) })
+	}
+	for i2, elem3 := range s.Shaders {
+		var h4 C.VkShaderEXT
+		if elem3 != nil {
+			h4 = C.VkShaderEXT(unsafe.Pointer(elem3.handle))
+		}
+		(*[1 << 30]C.VkShaderEXT)(unsafe.Pointer(arr1))[i2] = h4
+	}
+	p.pShaders = arr1
+	p.shaderCount = C.uint32_t(len(s.Shaders))
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *GeneratedCommandsShaderInfoEXT) fromC(p *C.VkGeneratedCommandsShaderInfoEXT) {
+	if p.shaderCount > 0 && p.pShaders != nil {
+		s.Shaders = make([]*ShaderEXT, p.shaderCount)
+		for i0 := range s.Shaders {
+			s.Shaders[i0] = &ShaderEXT{handle: unsafe.Pointer((*[1 << 30]C.VkShaderEXT)(unsafe.Pointer(p.pShaders))[i0])}
+		}
+	}
 }
 
 type GraphicsPipelineCreateInfo struct {
@@ -12079,6 +13494,533 @@ func (s *ImageViewUsageCreateInfo) fromC(p *C.VkImageViewUsageCreateInfo) {
 	s.Usage = ImageUsageFlags(p.usage)
 }
 
+type IndirectCommandsExecutionSetTokenEXT struct {
+	Type         IndirectExecutionSetInfoTypeEXT
+	ShaderStages ShaderStageFlags
+}
+
+func (s *IndirectCommandsExecutionSetTokenEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkIndirectCommandsExecutionSetTokenEXT)(C.malloc(C.size_t(C.sizeof_VkIndirectCommandsExecutionSetTokenEXT)))
+	*p = C.VkIndirectCommandsExecutionSetTokenEXT{}
+	val0 := C.VkIndirectExecutionSetInfoTypeEXT(s.Type)
+	p._type = val0
+	val1 := C.VkShaderStageFlags(s.ShaderStages)
+	p.shaderStages = val1
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *IndirectCommandsExecutionSetTokenEXT) fromC(p *C.VkIndirectCommandsExecutionSetTokenEXT) {
+	s.Type = IndirectExecutionSetInfoTypeEXT(p._type)
+	s.ShaderStages = ShaderStageFlags(p.shaderStages)
+}
+
+type IndirectCommandsIndexBufferTokenEXT struct {
+	Mode IndirectCommandsInputModeFlagBitsEXT
+}
+
+func (s *IndirectCommandsIndexBufferTokenEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkIndirectCommandsIndexBufferTokenEXT)(C.malloc(C.size_t(C.sizeof_VkIndirectCommandsIndexBufferTokenEXT)))
+	*p = C.VkIndirectCommandsIndexBufferTokenEXT{}
+	val0 := C.VkIndirectCommandsInputModeFlagBitsEXT(s.Mode)
+	p.mode = val0
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *IndirectCommandsIndexBufferTokenEXT) fromC(p *C.VkIndirectCommandsIndexBufferTokenEXT) {
+	s.Mode = IndirectCommandsInputModeFlagBitsEXT(p.mode)
+}
+
+type IndirectCommandsLayoutCreateInfoEXT struct {
+	Next           Structure
+	Flags          IndirectCommandsLayoutUsageFlagsEXT
+	ShaderStages   ShaderStageFlags
+	IndirectStride uint32
+	PipelineLayout *PipelineLayout
+	Tokens         []IndirectCommandsLayoutTokenEXT
+}
+
+func (s *IndirectCommandsLayoutCreateInfoEXT) GetType() StructureType {
+	return StructureTypeIndirectCommandsLayoutCreateInfoEXT
+}
+
+func (s *IndirectCommandsLayoutCreateInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkIndirectCommandsLayoutCreateInfoEXT)(C.malloc(C.size_t(C.sizeof_VkIndirectCommandsLayoutCreateInfoEXT)))
+	*p = C.VkIndirectCommandsLayoutCreateInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkIndirectCommandsLayoutUsageFlagsEXT(s.Flags)
+	p.flags = val0
+	val1 := C.VkShaderStageFlags(s.ShaderStages)
+	p.shaderStages = val1
+	val2 := C.uint32_t(s.IndirectStride)
+	p.indirectStride = val2
+	var h3 C.VkPipelineLayout
+	if s.PipelineLayout != nil {
+		h3 = C.VkPipelineLayout(unsafe.Pointer(s.PipelineLayout.handle))
+	}
+	p.pipelineLayout = h3
+	len4 := len(s.Tokens)
+
+	var arr5 *C.VkIndirectCommandsLayoutTokenEXT
+	if len4 > 0 {
+		arr5 = (*C.VkIndirectCommandsLayoutTokenEXT)(C.malloc(C.size_t(len4) * C.size_t(unsafe.Sizeof(*new(C.VkIndirectCommandsLayoutTokenEXT)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr5)) })
+	}
+	for i6, elem7 := range s.Tokens {
+		val8, cancel9 := elem7.toC()
+		cancels = append(cancels, cancel9)
+		cast10 := (*C.VkIndirectCommandsLayoutTokenEXT)(val8)
+		(*[1 << 30]C.VkIndirectCommandsLayoutTokenEXT)(unsafe.Pointer(arr5))[i6] = *cast10
+	}
+	p.pTokens = arr5
+	p.tokenCount = C.uint32_t(len(s.Tokens))
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *IndirectCommandsLayoutCreateInfoEXT) fromC(p *C.VkIndirectCommandsLayoutCreateInfoEXT) {
+	s.Flags = IndirectCommandsLayoutUsageFlagsEXT(p.flags)
+	s.ShaderStages = ShaderStageFlags(p.shaderStages)
+	s.IndirectStride = uint32(p.indirectStride)
+	s.PipelineLayout = &PipelineLayout{handle: unsafe.Pointer(p.pipelineLayout)}
+	if p.tokenCount > 0 && p.pTokens != nil {
+		s.Tokens = make([]IndirectCommandsLayoutTokenEXT, p.tokenCount)
+		for i0 := range s.Tokens {
+			elem1 := (*[1 << 30]C.VkIndirectCommandsLayoutTokenEXT)(unsafe.Pointer(p.pTokens))[i0]
+			s.Tokens[i0].fromC(&elem1)
+		}
+	}
+}
+
+type IndirectCommandsLayoutTokenEXT struct {
+	Next   Structure
+	Type   IndirectCommandsTokenTypeEXT
+	Data   IndirectCommandsTokenDataEXT
+	Offset uint32
+}
+
+func (s *IndirectCommandsLayoutTokenEXT) GetType() StructureType {
+	return StructureTypeIndirectCommandsLayoutTokenEXT
+}
+
+func (s *IndirectCommandsLayoutTokenEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkIndirectCommandsLayoutTokenEXT)(C.malloc(C.size_t(C.sizeof_VkIndirectCommandsLayoutTokenEXT)))
+	*p = C.VkIndirectCommandsLayoutTokenEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkIndirectCommandsTokenTypeEXT(s.Type)
+	p._type = val0
+	val1, cancel2 := s.Data.toC()
+	cancels = append(cancels, cancel2)
+	cast3 := (*C.VkIndirectCommandsTokenDataEXT)(val1)
+	p.data = *cast3
+	val4 := C.uint32_t(s.Offset)
+	p.offset = val4
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *IndirectCommandsLayoutTokenEXT) fromC(p *C.VkIndirectCommandsLayoutTokenEXT) {
+	s.Type = IndirectCommandsTokenTypeEXT(p._type)
+	s.Data.fromC(&p.data)
+	s.Offset = uint32(p.offset)
+}
+
+type IndirectCommandsPushConstantTokenEXT struct {
+	UpdateRange PushConstantRange
+}
+
+func (s *IndirectCommandsPushConstantTokenEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkIndirectCommandsPushConstantTokenEXT)(C.malloc(C.size_t(C.sizeof_VkIndirectCommandsPushConstantTokenEXT)))
+	*p = C.VkIndirectCommandsPushConstantTokenEXT{}
+	val0, cancel1 := s.UpdateRange.toC()
+	cancels = append(cancels, cancel1)
+	cast2 := (*C.VkPushConstantRange)(val0)
+	p.updateRange = *cast2
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *IndirectCommandsPushConstantTokenEXT) fromC(p *C.VkIndirectCommandsPushConstantTokenEXT) {
+	s.UpdateRange.fromC(&p.updateRange)
+}
+
+type IndirectCommandsTokenDataEXT [C.sizeof_VkIndirectCommandsTokenDataEXT]byte
+
+func NewIndirectCommandsTokenDataEXTPushConstant(val *IndirectCommandsPushConstantTokenEXT) IndirectCommandsTokenDataEXT {
+	var u IndirectCommandsTokenDataEXT
+	*(**IndirectCommandsPushConstantTokenEXT)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func NewIndirectCommandsTokenDataEXTVertexBuffer(val *IndirectCommandsVertexBufferTokenEXT) IndirectCommandsTokenDataEXT {
+	var u IndirectCommandsTokenDataEXT
+	*(**IndirectCommandsVertexBufferTokenEXT)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func NewIndirectCommandsTokenDataEXTIndexBuffer(val *IndirectCommandsIndexBufferTokenEXT) IndirectCommandsTokenDataEXT {
+	var u IndirectCommandsTokenDataEXT
+	*(**IndirectCommandsIndexBufferTokenEXT)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func NewIndirectCommandsTokenDataEXTExecutionSet(val *IndirectCommandsExecutionSetTokenEXT) IndirectCommandsTokenDataEXT {
+	var u IndirectCommandsTokenDataEXT
+	*(**IndirectCommandsExecutionSetTokenEXT)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func (u *IndirectCommandsTokenDataEXT) PushConstant() *IndirectCommandsPushConstantTokenEXT {
+	return *(**IndirectCommandsPushConstantTokenEXT)(unsafe.Pointer(&u[0]))
+}
+
+func (u *IndirectCommandsTokenDataEXT) VertexBuffer() *IndirectCommandsVertexBufferTokenEXT {
+	return *(**IndirectCommandsVertexBufferTokenEXT)(unsafe.Pointer(&u[0]))
+}
+
+func (u *IndirectCommandsTokenDataEXT) IndexBuffer() *IndirectCommandsIndexBufferTokenEXT {
+	return *(**IndirectCommandsIndexBufferTokenEXT)(unsafe.Pointer(&u[0]))
+}
+
+func (u *IndirectCommandsTokenDataEXT) ExecutionSet() *IndirectCommandsExecutionSetTokenEXT {
+	return *(**IndirectCommandsExecutionSetTokenEXT)(unsafe.Pointer(&u[0]))
+}
+
+func (s *IndirectCommandsTokenDataEXT) toC() (*C.VkIndirectCommandsTokenDataEXT, func()) {
+	p := (*C.VkIndirectCommandsTokenDataEXT)(C.malloc(C.size_t(C.sizeof_VkIndirectCommandsTokenDataEXT)))
+	C.memcpy(unsafe.Pointer(p), unsafe.Pointer(&s[0]), C.sizeof_VkIndirectCommandsTokenDataEXT)
+	return p, func() { C.free(unsafe.Pointer(p)) }
+}
+
+func (s *IndirectCommandsTokenDataEXT) fromC(p *C.VkIndirectCommandsTokenDataEXT) {
+	C.memcpy(unsafe.Pointer(&s[0]), unsafe.Pointer(p), C.sizeof_VkIndirectCommandsTokenDataEXT)
+}
+
+type IndirectCommandsVertexBufferTokenEXT struct {
+	VertexBindingUnit uint32
+}
+
+func (s *IndirectCommandsVertexBufferTokenEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkIndirectCommandsVertexBufferTokenEXT)(C.malloc(C.size_t(C.sizeof_VkIndirectCommandsVertexBufferTokenEXT)))
+	*p = C.VkIndirectCommandsVertexBufferTokenEXT{}
+	val0 := C.uint32_t(s.VertexBindingUnit)
+	p.vertexBindingUnit = val0
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *IndirectCommandsVertexBufferTokenEXT) fromC(p *C.VkIndirectCommandsVertexBufferTokenEXT) {
+	s.VertexBindingUnit = uint32(p.vertexBindingUnit)
+}
+
+type IndirectExecutionSetCreateInfoEXT struct {
+	Next Structure
+	Type IndirectExecutionSetInfoTypeEXT
+	Info IndirectExecutionSetInfoEXT
+}
+
+func (s *IndirectExecutionSetCreateInfoEXT) GetType() StructureType {
+	return StructureTypeIndirectExecutionSetCreateInfoEXT
+}
+
+func (s *IndirectExecutionSetCreateInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkIndirectExecutionSetCreateInfoEXT)(C.malloc(C.size_t(C.sizeof_VkIndirectExecutionSetCreateInfoEXT)))
+	*p = C.VkIndirectExecutionSetCreateInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkIndirectExecutionSetInfoTypeEXT(s.Type)
+	p._type = val0
+	val1, cancel2 := s.Info.toC()
+	cancels = append(cancels, cancel2)
+	cast3 := (*C.VkIndirectExecutionSetInfoEXT)(val1)
+	p.info = *cast3
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *IndirectExecutionSetCreateInfoEXT) fromC(p *C.VkIndirectExecutionSetCreateInfoEXT) {
+	s.Type = IndirectExecutionSetInfoTypeEXT(p._type)
+	s.Info.fromC(&p.info)
+}
+
+type IndirectExecutionSetInfoEXT [C.sizeof_VkIndirectExecutionSetInfoEXT]byte
+
+func NewIndirectExecutionSetInfoEXTPipelineInfo(val *IndirectExecutionSetPipelineInfoEXT) IndirectExecutionSetInfoEXT {
+	var u IndirectExecutionSetInfoEXT
+	*(**IndirectExecutionSetPipelineInfoEXT)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func NewIndirectExecutionSetInfoEXTShaderInfo(val *IndirectExecutionSetShaderInfoEXT) IndirectExecutionSetInfoEXT {
+	var u IndirectExecutionSetInfoEXT
+	*(**IndirectExecutionSetShaderInfoEXT)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func (u *IndirectExecutionSetInfoEXT) PipelineInfo() *IndirectExecutionSetPipelineInfoEXT {
+	return *(**IndirectExecutionSetPipelineInfoEXT)(unsafe.Pointer(&u[0]))
+}
+
+func (u *IndirectExecutionSetInfoEXT) ShaderInfo() *IndirectExecutionSetShaderInfoEXT {
+	return *(**IndirectExecutionSetShaderInfoEXT)(unsafe.Pointer(&u[0]))
+}
+
+func (s *IndirectExecutionSetInfoEXT) toC() (*C.VkIndirectExecutionSetInfoEXT, func()) {
+	p := (*C.VkIndirectExecutionSetInfoEXT)(C.malloc(C.size_t(C.sizeof_VkIndirectExecutionSetInfoEXT)))
+	C.memcpy(unsafe.Pointer(p), unsafe.Pointer(&s[0]), C.sizeof_VkIndirectExecutionSetInfoEXT)
+	return p, func() { C.free(unsafe.Pointer(p)) }
+}
+
+func (s *IndirectExecutionSetInfoEXT) fromC(p *C.VkIndirectExecutionSetInfoEXT) {
+	C.memcpy(unsafe.Pointer(&s[0]), unsafe.Pointer(p), C.sizeof_VkIndirectExecutionSetInfoEXT)
+}
+
+type IndirectExecutionSetPipelineInfoEXT struct {
+	Next             Structure
+	InitialPipeline  *Pipeline
+	MaxPipelineCount uint32
+}
+
+func (s *IndirectExecutionSetPipelineInfoEXT) GetType() StructureType {
+	return StructureTypeIndirectExecutionSetPipelineInfoEXT
+}
+
+func (s *IndirectExecutionSetPipelineInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkIndirectExecutionSetPipelineInfoEXT)(C.malloc(C.size_t(C.sizeof_VkIndirectExecutionSetPipelineInfoEXT)))
+	*p = C.VkIndirectExecutionSetPipelineInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	var h0 C.VkPipeline
+	if s.InitialPipeline != nil {
+		h0 = C.VkPipeline(unsafe.Pointer(s.InitialPipeline.handle))
+	}
+	p.initialPipeline = h0
+	val1 := C.uint32_t(s.MaxPipelineCount)
+	p.maxPipelineCount = val1
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *IndirectExecutionSetPipelineInfoEXT) fromC(p *C.VkIndirectExecutionSetPipelineInfoEXT) {
+	s.InitialPipeline = &Pipeline{handle: unsafe.Pointer(p.initialPipeline)}
+	s.MaxPipelineCount = uint32(p.maxPipelineCount)
+}
+
+type IndirectExecutionSetShaderInfoEXT struct {
+	Next               Structure
+	ShaderCount        uint32
+	InitialShaders     []*ShaderEXT
+	SetLayoutInfos     []IndirectExecutionSetShaderLayoutInfoEXT
+	MaxShaderCount     uint32
+	PushConstantRanges []PushConstantRange
+}
+
+func (s *IndirectExecutionSetShaderInfoEXT) GetType() StructureType {
+	return StructureTypeIndirectExecutionSetShaderInfoEXT
+}
+
+func (s *IndirectExecutionSetShaderInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkIndirectExecutionSetShaderInfoEXT)(C.malloc(C.size_t(C.sizeof_VkIndirectExecutionSetShaderInfoEXT)))
+	*p = C.VkIndirectExecutionSetShaderInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.uint32_t(s.ShaderCount)
+	p.shaderCount = val0
+	len1 := len(s.InitialShaders)
+
+	var arr2 *C.VkShaderEXT
+	if len1 > 0 {
+		arr2 = (*C.VkShaderEXT)(C.malloc(C.size_t(len1) * C.size_t(unsafe.Sizeof(*new(C.VkShaderEXT)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr2)) })
+	}
+	for i3, elem4 := range s.InitialShaders {
+		var h5 C.VkShaderEXT
+		if elem4 != nil {
+			h5 = C.VkShaderEXT(unsafe.Pointer(elem4.handle))
+		}
+		(*[1 << 30]C.VkShaderEXT)(unsafe.Pointer(arr2))[i3] = h5
+	}
+	p.pInitialShaders = arr2
+	len6 := len(s.SetLayoutInfos)
+
+	var arr7 *C.VkIndirectExecutionSetShaderLayoutInfoEXT
+	if len6 > 0 {
+		arr7 = (*C.VkIndirectExecutionSetShaderLayoutInfoEXT)(C.malloc(C.size_t(len6) * C.size_t(unsafe.Sizeof(*new(C.VkIndirectExecutionSetShaderLayoutInfoEXT)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr7)) })
+	}
+	for i8, elem9 := range s.SetLayoutInfos {
+		val10, cancel11 := elem9.toC()
+		cancels = append(cancels, cancel11)
+		cast12 := (*C.VkIndirectExecutionSetShaderLayoutInfoEXT)(val10)
+		(*[1 << 30]C.VkIndirectExecutionSetShaderLayoutInfoEXT)(unsafe.Pointer(arr7))[i8] = *cast12
+	}
+	p.pSetLayoutInfos = arr7
+	val13 := C.uint32_t(s.MaxShaderCount)
+	p.maxShaderCount = val13
+	len14 := len(s.PushConstantRanges)
+
+	var arr15 *C.VkPushConstantRange
+	if len14 > 0 {
+		arr15 = (*C.VkPushConstantRange)(C.malloc(C.size_t(len14) * C.size_t(unsafe.Sizeof(*new(C.VkPushConstantRange)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr15)) })
+	}
+	for i16, elem17 := range s.PushConstantRanges {
+		val18, cancel19 := elem17.toC()
+		cancels = append(cancels, cancel19)
+		cast20 := (*C.VkPushConstantRange)(val18)
+		(*[1 << 30]C.VkPushConstantRange)(unsafe.Pointer(arr15))[i16] = *cast20
+	}
+	p.pPushConstantRanges = arr15
+	p.pushConstantRangeCount = C.uint32_t(len(s.PushConstantRanges))
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *IndirectExecutionSetShaderInfoEXT) fromC(p *C.VkIndirectExecutionSetShaderInfoEXT) {
+	s.ShaderCount = uint32(p.shaderCount)
+	if p.shaderCount > 0 && p.pInitialShaders != nil {
+		s.InitialShaders = make([]*ShaderEXT, p.shaderCount)
+		for i0 := range s.InitialShaders {
+			s.InitialShaders[i0] = &ShaderEXT{handle: unsafe.Pointer((*[1 << 30]C.VkShaderEXT)(unsafe.Pointer(p.pInitialShaders))[i0])}
+		}
+	}
+	if p.shaderCount > 0 && p.pSetLayoutInfos != nil {
+		s.SetLayoutInfos = make([]IndirectExecutionSetShaderLayoutInfoEXT, p.shaderCount)
+		for i2 := range s.SetLayoutInfos {
+			elem3 := (*[1 << 30]C.VkIndirectExecutionSetShaderLayoutInfoEXT)(unsafe.Pointer(p.pSetLayoutInfos))[i2]
+			s.SetLayoutInfos[i2].fromC(&elem3)
+		}
+	}
+	s.MaxShaderCount = uint32(p.maxShaderCount)
+	if p.pushConstantRangeCount > 0 && p.pPushConstantRanges != nil {
+		s.PushConstantRanges = make([]PushConstantRange, p.pushConstantRangeCount)
+		for i4 := range s.PushConstantRanges {
+			elem5 := (*[1 << 30]C.VkPushConstantRange)(unsafe.Pointer(p.pPushConstantRanges))[i4]
+			s.PushConstantRanges[i4].fromC(&elem5)
+		}
+	}
+}
+
+type IndirectExecutionSetShaderLayoutInfoEXT struct {
+	Next       Structure
+	SetLayouts []*DescriptorSetLayout
+}
+
+func (s *IndirectExecutionSetShaderLayoutInfoEXT) GetType() StructureType {
+	return StructureTypeIndirectExecutionSetShaderLayoutInfoEXT
+}
+
+func (s *IndirectExecutionSetShaderLayoutInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkIndirectExecutionSetShaderLayoutInfoEXT)(C.malloc(C.size_t(C.sizeof_VkIndirectExecutionSetShaderLayoutInfoEXT)))
+	*p = C.VkIndirectExecutionSetShaderLayoutInfoEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	len0 := len(s.SetLayouts)
+
+	var arr1 *C.VkDescriptorSetLayout
+	if len0 > 0 {
+		arr1 = (*C.VkDescriptorSetLayout)(C.malloc(C.size_t(len0) * C.size_t(unsafe.Sizeof(*new(C.VkDescriptorSetLayout)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr1)) })
+	}
+	for i2, elem3 := range s.SetLayouts {
+		var h4 C.VkDescriptorSetLayout
+		if elem3 != nil {
+			h4 = C.VkDescriptorSetLayout(unsafe.Pointer(elem3.handle))
+		}
+		(*[1 << 30]C.VkDescriptorSetLayout)(unsafe.Pointer(arr1))[i2] = h4
+	}
+	p.pSetLayouts = arr1
+	p.setLayoutCount = C.uint32_t(len(s.SetLayouts))
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *IndirectExecutionSetShaderLayoutInfoEXT) fromC(p *C.VkIndirectExecutionSetShaderLayoutInfoEXT) {
+	if p.setLayoutCount > 0 && p.pSetLayouts != nil {
+		s.SetLayouts = make([]*DescriptorSetLayout, p.setLayoutCount)
+		for i0 := range s.SetLayouts {
+			s.SetLayouts[i0] = &DescriptorSetLayout{handle: unsafe.Pointer((*[1 << 30]C.VkDescriptorSetLayout)(unsafe.Pointer(p.pSetLayouts))[i0])}
+		}
+	}
+}
+
 type InputAttachmentAspectReference struct {
 	Subpass              uint32
 	InputAttachmentIndex uint32
@@ -12813,6 +14755,62 @@ func (s *MemoryUnmapInfo) fromC(p *C.VkMemoryUnmapInfo) {
 	s.Memory = &DeviceMemory{handle: unsafe.Pointer(p.memory)}
 }
 
+type MultiDrawIndexedInfoEXT struct {
+	FirstIndex   uint32
+	IndexCount   uint32
+	VertexOffset int32
+}
+
+func (s *MultiDrawIndexedInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkMultiDrawIndexedInfoEXT)(C.malloc(C.size_t(C.sizeof_VkMultiDrawIndexedInfoEXT)))
+	*p = C.VkMultiDrawIndexedInfoEXT{}
+	val0 := C.uint32_t(s.FirstIndex)
+	p.firstIndex = val0
+	val1 := C.uint32_t(s.IndexCount)
+	p.indexCount = val1
+	val2 := C.int32_t(s.VertexOffset)
+	p.vertexOffset = val2
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *MultiDrawIndexedInfoEXT) fromC(p *C.VkMultiDrawIndexedInfoEXT) {
+	s.FirstIndex = uint32(p.firstIndex)
+	s.IndexCount = uint32(p.indexCount)
+	s.VertexOffset = int32(p.vertexOffset)
+}
+
+type MultiDrawInfoEXT struct {
+	FirstVertex uint32
+	VertexCount uint32
+}
+
+func (s *MultiDrawInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkMultiDrawInfoEXT)(C.malloc(C.size_t(C.sizeof_VkMultiDrawInfoEXT)))
+	*p = C.VkMultiDrawInfoEXT{}
+	val0 := C.uint32_t(s.FirstVertex)
+	p.firstVertex = val0
+	val1 := C.uint32_t(s.VertexCount)
+	p.vertexCount = val1
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *MultiDrawInfoEXT) fromC(p *C.VkMultiDrawInfoEXT) {
+	s.FirstVertex = uint32(p.firstVertex)
+	s.VertexCount = uint32(p.vertexCount)
+}
+
 type Offset2D struct {
 	X int32
 	Y int32
@@ -12974,6 +14972,131 @@ func (s *PhysicalDevice8BitStorageFeatures) fromC(p *C.VkPhysicalDevice8BitStora
 	s.StorageBuffer8BitAccess = p.storageBuffer8BitAccess != 0
 	s.UniformAndStorageBuffer8BitAccess = p.uniformAndStorageBuffer8BitAccess != 0
 	s.StoragePushConstant8 = p.storagePushConstant8 != 0
+}
+
+type PhysicalDeviceAccelerationStructureFeaturesKHR struct {
+	Next                                                  Structure
+	AccelerationStructure                                 bool
+	AccelerationStructureCaptureReplay                    bool
+	AccelerationStructureIndirectBuild                    bool
+	AccelerationStructureHostCommands                     bool
+	DescriptorBindingAccelerationStructureUpdateAfterBind bool
+}
+
+func (s *PhysicalDeviceAccelerationStructureFeaturesKHR) GetType() StructureType {
+	return StructureTypePhysicalDeviceAccelerationStructureFeaturesKHR
+}
+
+func (s *PhysicalDeviceAccelerationStructureFeaturesKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceAccelerationStructureFeaturesKHR)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceAccelerationStructureFeaturesKHR)))
+	*p = C.VkPhysicalDeviceAccelerationStructureFeaturesKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.AccelerationStructure {
+		val0 = C.VkBool32(1)
+	}
+	p.accelerationStructure = val0
+	val1 := C.VkBool32(0)
+	if s.AccelerationStructureCaptureReplay {
+		val1 = C.VkBool32(1)
+	}
+	p.accelerationStructureCaptureReplay = val1
+	val2 := C.VkBool32(0)
+	if s.AccelerationStructureIndirectBuild {
+		val2 = C.VkBool32(1)
+	}
+	p.accelerationStructureIndirectBuild = val2
+	val3 := C.VkBool32(0)
+	if s.AccelerationStructureHostCommands {
+		val3 = C.VkBool32(1)
+	}
+	p.accelerationStructureHostCommands = val3
+	val4 := C.VkBool32(0)
+	if s.DescriptorBindingAccelerationStructureUpdateAfterBind {
+		val4 = C.VkBool32(1)
+	}
+	p.descriptorBindingAccelerationStructureUpdateAfterBind = val4
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceAccelerationStructureFeaturesKHR) fromC(p *C.VkPhysicalDeviceAccelerationStructureFeaturesKHR) {
+	s.AccelerationStructure = p.accelerationStructure != 0
+	s.AccelerationStructureCaptureReplay = p.accelerationStructureCaptureReplay != 0
+	s.AccelerationStructureIndirectBuild = p.accelerationStructureIndirectBuild != 0
+	s.AccelerationStructureHostCommands = p.accelerationStructureHostCommands != 0
+	s.DescriptorBindingAccelerationStructureUpdateAfterBind = p.descriptorBindingAccelerationStructureUpdateAfterBind != 0
+}
+
+type PhysicalDeviceAccelerationStructurePropertiesKHR struct {
+	Next                                                       Structure
+	MaxGeometryCount                                           uint64
+	MaxInstanceCount                                           uint64
+	MaxPrimitiveCount                                          uint64
+	MaxPerStageDescriptorAccelerationStructures                uint32
+	MaxPerStageDescriptorUpdateAfterBindAccelerationStructures uint32
+	MaxDescriptorSetAccelerationStructures                     uint32
+	MaxDescriptorSetUpdateAfterBindAccelerationStructures      uint32
+	MinAccelerationStructureScratchOffsetAlignment             uint32
+}
+
+func (s *PhysicalDeviceAccelerationStructurePropertiesKHR) GetType() StructureType {
+	return StructureTypePhysicalDeviceAccelerationStructurePropertiesKHR
+}
+
+func (s *PhysicalDeviceAccelerationStructurePropertiesKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceAccelerationStructurePropertiesKHR)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceAccelerationStructurePropertiesKHR)))
+	*p = C.VkPhysicalDeviceAccelerationStructurePropertiesKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.uint64_t(s.MaxGeometryCount)
+	p.maxGeometryCount = val0
+	val1 := C.uint64_t(s.MaxInstanceCount)
+	p.maxInstanceCount = val1
+	val2 := C.uint64_t(s.MaxPrimitiveCount)
+	p.maxPrimitiveCount = val2
+	val3 := C.uint32_t(s.MaxPerStageDescriptorAccelerationStructures)
+	p.maxPerStageDescriptorAccelerationStructures = val3
+	val4 := C.uint32_t(s.MaxPerStageDescriptorUpdateAfterBindAccelerationStructures)
+	p.maxPerStageDescriptorUpdateAfterBindAccelerationStructures = val4
+	val5 := C.uint32_t(s.MaxDescriptorSetAccelerationStructures)
+	p.maxDescriptorSetAccelerationStructures = val5
+	val6 := C.uint32_t(s.MaxDescriptorSetUpdateAfterBindAccelerationStructures)
+	p.maxDescriptorSetUpdateAfterBindAccelerationStructures = val6
+	val7 := C.uint32_t(s.MinAccelerationStructureScratchOffsetAlignment)
+	p.minAccelerationStructureScratchOffsetAlignment = val7
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceAccelerationStructurePropertiesKHR) fromC(p *C.VkPhysicalDeviceAccelerationStructurePropertiesKHR) {
+	s.MaxGeometryCount = uint64(p.maxGeometryCount)
+	s.MaxInstanceCount = uint64(p.maxInstanceCount)
+	s.MaxPrimitiveCount = uint64(p.maxPrimitiveCount)
+	s.MaxPerStageDescriptorAccelerationStructures = uint32(p.maxPerStageDescriptorAccelerationStructures)
+	s.MaxPerStageDescriptorUpdateAfterBindAccelerationStructures = uint32(p.maxPerStageDescriptorUpdateAfterBindAccelerationStructures)
+	s.MaxDescriptorSetAccelerationStructures = uint32(p.maxDescriptorSetAccelerationStructures)
+	s.MaxDescriptorSetUpdateAfterBindAccelerationStructures = uint32(p.maxDescriptorSetUpdateAfterBindAccelerationStructures)
+	s.MinAccelerationStructureScratchOffsetAlignment = uint32(p.minAccelerationStructureScratchOffsetAlignment)
 }
 
 type PhysicalDeviceBufferDeviceAddressFeatures struct {
@@ -13388,6 +15511,132 @@ func (s *PhysicalDeviceDescriptorIndexingProperties) fromC(p *C.VkPhysicalDevice
 	s.MaxDescriptorSetUpdateAfterBindInputAttachments = uint32(p.maxDescriptorSetUpdateAfterBindInputAttachments)
 }
 
+type PhysicalDeviceDeviceGeneratedCommandsFeaturesEXT struct {
+	Next                           Structure
+	DeviceGeneratedCommands        bool
+	DynamicGeneratedPipelineLayout bool
+}
+
+func (s *PhysicalDeviceDeviceGeneratedCommandsFeaturesEXT) GetType() StructureType {
+	return StructureTypePhysicalDeviceDeviceGeneratedCommandsFeaturesEXT
+}
+
+func (s *PhysicalDeviceDeviceGeneratedCommandsFeaturesEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceDeviceGeneratedCommandsFeaturesEXT)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceDeviceGeneratedCommandsFeaturesEXT)))
+	*p = C.VkPhysicalDeviceDeviceGeneratedCommandsFeaturesEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.DeviceGeneratedCommands {
+		val0 = C.VkBool32(1)
+	}
+	p.deviceGeneratedCommands = val0
+	val1 := C.VkBool32(0)
+	if s.DynamicGeneratedPipelineLayout {
+		val1 = C.VkBool32(1)
+	}
+	p.dynamicGeneratedPipelineLayout = val1
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceDeviceGeneratedCommandsFeaturesEXT) fromC(p *C.VkPhysicalDeviceDeviceGeneratedCommandsFeaturesEXT) {
+	s.DeviceGeneratedCommands = p.deviceGeneratedCommands != 0
+	s.DynamicGeneratedPipelineLayout = p.dynamicGeneratedPipelineLayout != 0
+}
+
+type PhysicalDeviceDeviceGeneratedCommandsPropertiesEXT struct {
+	Next                                                 Structure
+	MaxIndirectPipelineCount                             uint32
+	MaxIndirectShaderObjectCount                         uint32
+	MaxIndirectSequenceCount                             uint32
+	MaxIndirectCommandsTokenCount                        uint32
+	MaxIndirectCommandsTokenOffset                       uint32
+	MaxIndirectCommandsIndirectStride                    uint32
+	SupportedIndirectCommandsInputModes                  IndirectCommandsInputModeFlagsEXT
+	SupportedIndirectCommandsShaderStages                ShaderStageFlags
+	SupportedIndirectCommandsShaderStagesPipelineBinding ShaderStageFlags
+	SupportedIndirectCommandsShaderStagesShaderBinding   ShaderStageFlags
+	DeviceGeneratedCommandsTransformFeedback             bool
+	DeviceGeneratedCommandsMultiDrawIndirectCount        bool
+}
+
+func (s *PhysicalDeviceDeviceGeneratedCommandsPropertiesEXT) GetType() StructureType {
+	return StructureTypePhysicalDeviceDeviceGeneratedCommandsPropertiesEXT
+}
+
+func (s *PhysicalDeviceDeviceGeneratedCommandsPropertiesEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceDeviceGeneratedCommandsPropertiesEXT)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceDeviceGeneratedCommandsPropertiesEXT)))
+	*p = C.VkPhysicalDeviceDeviceGeneratedCommandsPropertiesEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.uint32_t(s.MaxIndirectPipelineCount)
+	p.maxIndirectPipelineCount = val0
+	val1 := C.uint32_t(s.MaxIndirectShaderObjectCount)
+	p.maxIndirectShaderObjectCount = val1
+	val2 := C.uint32_t(s.MaxIndirectSequenceCount)
+	p.maxIndirectSequenceCount = val2
+	val3 := C.uint32_t(s.MaxIndirectCommandsTokenCount)
+	p.maxIndirectCommandsTokenCount = val3
+	val4 := C.uint32_t(s.MaxIndirectCommandsTokenOffset)
+	p.maxIndirectCommandsTokenOffset = val4
+	val5 := C.uint32_t(s.MaxIndirectCommandsIndirectStride)
+	p.maxIndirectCommandsIndirectStride = val5
+	val6 := C.VkIndirectCommandsInputModeFlagsEXT(s.SupportedIndirectCommandsInputModes)
+	p.supportedIndirectCommandsInputModes = val6
+	val7 := C.VkShaderStageFlags(s.SupportedIndirectCommandsShaderStages)
+	p.supportedIndirectCommandsShaderStages = val7
+	val8 := C.VkShaderStageFlags(s.SupportedIndirectCommandsShaderStagesPipelineBinding)
+	p.supportedIndirectCommandsShaderStagesPipelineBinding = val8
+	val9 := C.VkShaderStageFlags(s.SupportedIndirectCommandsShaderStagesShaderBinding)
+	p.supportedIndirectCommandsShaderStagesShaderBinding = val9
+	val10 := C.VkBool32(0)
+	if s.DeviceGeneratedCommandsTransformFeedback {
+		val10 = C.VkBool32(1)
+	}
+	p.deviceGeneratedCommandsTransformFeedback = val10
+	val11 := C.VkBool32(0)
+	if s.DeviceGeneratedCommandsMultiDrawIndirectCount {
+		val11 = C.VkBool32(1)
+	}
+	p.deviceGeneratedCommandsMultiDrawIndirectCount = val11
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceDeviceGeneratedCommandsPropertiesEXT) fromC(p *C.VkPhysicalDeviceDeviceGeneratedCommandsPropertiesEXT) {
+	s.MaxIndirectPipelineCount = uint32(p.maxIndirectPipelineCount)
+	s.MaxIndirectShaderObjectCount = uint32(p.maxIndirectShaderObjectCount)
+	s.MaxIndirectSequenceCount = uint32(p.maxIndirectSequenceCount)
+	s.MaxIndirectCommandsTokenCount = uint32(p.maxIndirectCommandsTokenCount)
+	s.MaxIndirectCommandsTokenOffset = uint32(p.maxIndirectCommandsTokenOffset)
+	s.MaxIndirectCommandsIndirectStride = uint32(p.maxIndirectCommandsIndirectStride)
+	s.SupportedIndirectCommandsInputModes = IndirectCommandsInputModeFlagsEXT(p.supportedIndirectCommandsInputModes)
+	s.SupportedIndirectCommandsShaderStages = ShaderStageFlags(p.supportedIndirectCommandsShaderStages)
+	s.SupportedIndirectCommandsShaderStagesPipelineBinding = ShaderStageFlags(p.supportedIndirectCommandsShaderStagesPipelineBinding)
+	s.SupportedIndirectCommandsShaderStagesShaderBinding = ShaderStageFlags(p.supportedIndirectCommandsShaderStagesShaderBinding)
+	s.DeviceGeneratedCommandsTransformFeedback = p.deviceGeneratedCommandsTransformFeedback != 0
+	s.DeviceGeneratedCommandsMultiDrawIndirectCount = p.deviceGeneratedCommandsMultiDrawIndirectCount != 0
+}
+
 type PhysicalDeviceDriverProperties struct {
 	Next               Structure
 	DriverID           DriverId
@@ -13517,6 +15766,338 @@ func (s *PhysicalDeviceDynamicRenderingLocalReadFeatures) toC() (unsafe.Pointer,
 
 func (s *PhysicalDeviceDynamicRenderingLocalReadFeatures) fromC(p *C.VkPhysicalDeviceDynamicRenderingLocalReadFeatures) {
 	s.DynamicRenderingLocalRead = p.dynamicRenderingLocalRead != 0
+}
+
+type PhysicalDeviceExtendedDynamicState2FeaturesEXT struct {
+	Next                                    Structure
+	ExtendedDynamicState2                   bool
+	ExtendedDynamicState2LogicOp            bool
+	ExtendedDynamicState2PatchControlPoints bool
+}
+
+func (s *PhysicalDeviceExtendedDynamicState2FeaturesEXT) GetType() StructureType {
+	return StructureTypePhysicalDeviceExtendedDynamicState2FeaturesEXT
+}
+
+func (s *PhysicalDeviceExtendedDynamicState2FeaturesEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceExtendedDynamicState2FeaturesEXT)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceExtendedDynamicState2FeaturesEXT)))
+	*p = C.VkPhysicalDeviceExtendedDynamicState2FeaturesEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.ExtendedDynamicState2 {
+		val0 = C.VkBool32(1)
+	}
+	p.extendedDynamicState2 = val0
+	val1 := C.VkBool32(0)
+	if s.ExtendedDynamicState2LogicOp {
+		val1 = C.VkBool32(1)
+	}
+	p.extendedDynamicState2LogicOp = val1
+	val2 := C.VkBool32(0)
+	if s.ExtendedDynamicState2PatchControlPoints {
+		val2 = C.VkBool32(1)
+	}
+	p.extendedDynamicState2PatchControlPoints = val2
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceExtendedDynamicState2FeaturesEXT) fromC(p *C.VkPhysicalDeviceExtendedDynamicState2FeaturesEXT) {
+	s.ExtendedDynamicState2 = p.extendedDynamicState2 != 0
+	s.ExtendedDynamicState2LogicOp = p.extendedDynamicState2LogicOp != 0
+	s.ExtendedDynamicState2PatchControlPoints = p.extendedDynamicState2PatchControlPoints != 0
+}
+
+type PhysicalDeviceExtendedDynamicState3FeaturesEXT struct {
+	Next                                                  Structure
+	ExtendedDynamicState3TessellationDomainOrigin         bool
+	ExtendedDynamicState3DepthClampEnable                 bool
+	ExtendedDynamicState3PolygonMode                      bool
+	ExtendedDynamicState3RasterizationSamples             bool
+	ExtendedDynamicState3SampleMask                       bool
+	ExtendedDynamicState3AlphaToCoverageEnable            bool
+	ExtendedDynamicState3AlphaToOneEnable                 bool
+	ExtendedDynamicState3LogicOpEnable                    bool
+	ExtendedDynamicState3ColorBlendEnable                 bool
+	ExtendedDynamicState3ColorBlendEquation               bool
+	ExtendedDynamicState3ColorWriteMask                   bool
+	ExtendedDynamicState3RasterizationStream              bool
+	ExtendedDynamicState3ConservativeRasterizationMode    bool
+	ExtendedDynamicState3ExtraPrimitiveOverestimationSize bool
+	ExtendedDynamicState3DepthClipEnable                  bool
+	ExtendedDynamicState3SampleLocationsEnable            bool
+	ExtendedDynamicState3ColorBlendAdvanced               bool
+	ExtendedDynamicState3ProvokingVertexMode              bool
+	ExtendedDynamicState3LineRasterizationMode            bool
+	ExtendedDynamicState3LineStippleEnable                bool
+	ExtendedDynamicState3DepthClipNegativeOneToOne        bool
+	ExtendedDynamicState3ViewportWScalingEnable           bool
+	ExtendedDynamicState3ViewportSwizzle                  bool
+	ExtendedDynamicState3CoverageToColorEnable            bool
+	ExtendedDynamicState3CoverageToColorLocation          bool
+	ExtendedDynamicState3CoverageModulationMode           bool
+	ExtendedDynamicState3CoverageModulationTableEnable    bool
+	ExtendedDynamicState3CoverageModulationTable          bool
+	ExtendedDynamicState3CoverageReductionMode            bool
+	ExtendedDynamicState3RepresentativeFragmentTestEnable bool
+	ExtendedDynamicState3ShadingRateImageEnable           bool
+}
+
+func (s *PhysicalDeviceExtendedDynamicState3FeaturesEXT) GetType() StructureType {
+	return StructureTypePhysicalDeviceExtendedDynamicState3FeaturesEXT
+}
+
+func (s *PhysicalDeviceExtendedDynamicState3FeaturesEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceExtendedDynamicState3FeaturesEXT)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceExtendedDynamicState3FeaturesEXT)))
+	*p = C.VkPhysicalDeviceExtendedDynamicState3FeaturesEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.ExtendedDynamicState3TessellationDomainOrigin {
+		val0 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3TessellationDomainOrigin = val0
+	val1 := C.VkBool32(0)
+	if s.ExtendedDynamicState3DepthClampEnable {
+		val1 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3DepthClampEnable = val1
+	val2 := C.VkBool32(0)
+	if s.ExtendedDynamicState3PolygonMode {
+		val2 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3PolygonMode = val2
+	val3 := C.VkBool32(0)
+	if s.ExtendedDynamicState3RasterizationSamples {
+		val3 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3RasterizationSamples = val3
+	val4 := C.VkBool32(0)
+	if s.ExtendedDynamicState3SampleMask {
+		val4 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3SampleMask = val4
+	val5 := C.VkBool32(0)
+	if s.ExtendedDynamicState3AlphaToCoverageEnable {
+		val5 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3AlphaToCoverageEnable = val5
+	val6 := C.VkBool32(0)
+	if s.ExtendedDynamicState3AlphaToOneEnable {
+		val6 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3AlphaToOneEnable = val6
+	val7 := C.VkBool32(0)
+	if s.ExtendedDynamicState3LogicOpEnable {
+		val7 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3LogicOpEnable = val7
+	val8 := C.VkBool32(0)
+	if s.ExtendedDynamicState3ColorBlendEnable {
+		val8 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3ColorBlendEnable = val8
+	val9 := C.VkBool32(0)
+	if s.ExtendedDynamicState3ColorBlendEquation {
+		val9 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3ColorBlendEquation = val9
+	val10 := C.VkBool32(0)
+	if s.ExtendedDynamicState3ColorWriteMask {
+		val10 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3ColorWriteMask = val10
+	val11 := C.VkBool32(0)
+	if s.ExtendedDynamicState3RasterizationStream {
+		val11 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3RasterizationStream = val11
+	val12 := C.VkBool32(0)
+	if s.ExtendedDynamicState3ConservativeRasterizationMode {
+		val12 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3ConservativeRasterizationMode = val12
+	val13 := C.VkBool32(0)
+	if s.ExtendedDynamicState3ExtraPrimitiveOverestimationSize {
+		val13 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3ExtraPrimitiveOverestimationSize = val13
+	val14 := C.VkBool32(0)
+	if s.ExtendedDynamicState3DepthClipEnable {
+		val14 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3DepthClipEnable = val14
+	val15 := C.VkBool32(0)
+	if s.ExtendedDynamicState3SampleLocationsEnable {
+		val15 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3SampleLocationsEnable = val15
+	val16 := C.VkBool32(0)
+	if s.ExtendedDynamicState3ColorBlendAdvanced {
+		val16 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3ColorBlendAdvanced = val16
+	val17 := C.VkBool32(0)
+	if s.ExtendedDynamicState3ProvokingVertexMode {
+		val17 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3ProvokingVertexMode = val17
+	val18 := C.VkBool32(0)
+	if s.ExtendedDynamicState3LineRasterizationMode {
+		val18 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3LineRasterizationMode = val18
+	val19 := C.VkBool32(0)
+	if s.ExtendedDynamicState3LineStippleEnable {
+		val19 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3LineStippleEnable = val19
+	val20 := C.VkBool32(0)
+	if s.ExtendedDynamicState3DepthClipNegativeOneToOne {
+		val20 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3DepthClipNegativeOneToOne = val20
+	val21 := C.VkBool32(0)
+	if s.ExtendedDynamicState3ViewportWScalingEnable {
+		val21 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3ViewportWScalingEnable = val21
+	val22 := C.VkBool32(0)
+	if s.ExtendedDynamicState3ViewportSwizzle {
+		val22 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3ViewportSwizzle = val22
+	val23 := C.VkBool32(0)
+	if s.ExtendedDynamicState3CoverageToColorEnable {
+		val23 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3CoverageToColorEnable = val23
+	val24 := C.VkBool32(0)
+	if s.ExtendedDynamicState3CoverageToColorLocation {
+		val24 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3CoverageToColorLocation = val24
+	val25 := C.VkBool32(0)
+	if s.ExtendedDynamicState3CoverageModulationMode {
+		val25 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3CoverageModulationMode = val25
+	val26 := C.VkBool32(0)
+	if s.ExtendedDynamicState3CoverageModulationTableEnable {
+		val26 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3CoverageModulationTableEnable = val26
+	val27 := C.VkBool32(0)
+	if s.ExtendedDynamicState3CoverageModulationTable {
+		val27 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3CoverageModulationTable = val27
+	val28 := C.VkBool32(0)
+	if s.ExtendedDynamicState3CoverageReductionMode {
+		val28 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3CoverageReductionMode = val28
+	val29 := C.VkBool32(0)
+	if s.ExtendedDynamicState3RepresentativeFragmentTestEnable {
+		val29 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3RepresentativeFragmentTestEnable = val29
+	val30 := C.VkBool32(0)
+	if s.ExtendedDynamicState3ShadingRateImageEnable {
+		val30 = C.VkBool32(1)
+	}
+	p.extendedDynamicState3ShadingRateImageEnable = val30
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceExtendedDynamicState3FeaturesEXT) fromC(p *C.VkPhysicalDeviceExtendedDynamicState3FeaturesEXT) {
+	s.ExtendedDynamicState3TessellationDomainOrigin = p.extendedDynamicState3TessellationDomainOrigin != 0
+	s.ExtendedDynamicState3DepthClampEnable = p.extendedDynamicState3DepthClampEnable != 0
+	s.ExtendedDynamicState3PolygonMode = p.extendedDynamicState3PolygonMode != 0
+	s.ExtendedDynamicState3RasterizationSamples = p.extendedDynamicState3RasterizationSamples != 0
+	s.ExtendedDynamicState3SampleMask = p.extendedDynamicState3SampleMask != 0
+	s.ExtendedDynamicState3AlphaToCoverageEnable = p.extendedDynamicState3AlphaToCoverageEnable != 0
+	s.ExtendedDynamicState3AlphaToOneEnable = p.extendedDynamicState3AlphaToOneEnable != 0
+	s.ExtendedDynamicState3LogicOpEnable = p.extendedDynamicState3LogicOpEnable != 0
+	s.ExtendedDynamicState3ColorBlendEnable = p.extendedDynamicState3ColorBlendEnable != 0
+	s.ExtendedDynamicState3ColorBlendEquation = p.extendedDynamicState3ColorBlendEquation != 0
+	s.ExtendedDynamicState3ColorWriteMask = p.extendedDynamicState3ColorWriteMask != 0
+	s.ExtendedDynamicState3RasterizationStream = p.extendedDynamicState3RasterizationStream != 0
+	s.ExtendedDynamicState3ConservativeRasterizationMode = p.extendedDynamicState3ConservativeRasterizationMode != 0
+	s.ExtendedDynamicState3ExtraPrimitiveOverestimationSize = p.extendedDynamicState3ExtraPrimitiveOverestimationSize != 0
+	s.ExtendedDynamicState3DepthClipEnable = p.extendedDynamicState3DepthClipEnable != 0
+	s.ExtendedDynamicState3SampleLocationsEnable = p.extendedDynamicState3SampleLocationsEnable != 0
+	s.ExtendedDynamicState3ColorBlendAdvanced = p.extendedDynamicState3ColorBlendAdvanced != 0
+	s.ExtendedDynamicState3ProvokingVertexMode = p.extendedDynamicState3ProvokingVertexMode != 0
+	s.ExtendedDynamicState3LineRasterizationMode = p.extendedDynamicState3LineRasterizationMode != 0
+	s.ExtendedDynamicState3LineStippleEnable = p.extendedDynamicState3LineStippleEnable != 0
+	s.ExtendedDynamicState3DepthClipNegativeOneToOne = p.extendedDynamicState3DepthClipNegativeOneToOne != 0
+	s.ExtendedDynamicState3ViewportWScalingEnable = p.extendedDynamicState3ViewportWScalingEnable != 0
+	s.ExtendedDynamicState3ViewportSwizzle = p.extendedDynamicState3ViewportSwizzle != 0
+	s.ExtendedDynamicState3CoverageToColorEnable = p.extendedDynamicState3CoverageToColorEnable != 0
+	s.ExtendedDynamicState3CoverageToColorLocation = p.extendedDynamicState3CoverageToColorLocation != 0
+	s.ExtendedDynamicState3CoverageModulationMode = p.extendedDynamicState3CoverageModulationMode != 0
+	s.ExtendedDynamicState3CoverageModulationTableEnable = p.extendedDynamicState3CoverageModulationTableEnable != 0
+	s.ExtendedDynamicState3CoverageModulationTable = p.extendedDynamicState3CoverageModulationTable != 0
+	s.ExtendedDynamicState3CoverageReductionMode = p.extendedDynamicState3CoverageReductionMode != 0
+	s.ExtendedDynamicState3RepresentativeFragmentTestEnable = p.extendedDynamicState3RepresentativeFragmentTestEnable != 0
+	s.ExtendedDynamicState3ShadingRateImageEnable = p.extendedDynamicState3ShadingRateImageEnable != 0
+}
+
+type PhysicalDeviceExtendedDynamicState3PropertiesEXT struct {
+	Next                                 Structure
+	DynamicPrimitiveTopologyUnrestricted bool
+}
+
+func (s *PhysicalDeviceExtendedDynamicState3PropertiesEXT) GetType() StructureType {
+	return StructureTypePhysicalDeviceExtendedDynamicState3PropertiesEXT
+}
+
+func (s *PhysicalDeviceExtendedDynamicState3PropertiesEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceExtendedDynamicState3PropertiesEXT)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceExtendedDynamicState3PropertiesEXT)))
+	*p = C.VkPhysicalDeviceExtendedDynamicState3PropertiesEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.DynamicPrimitiveTopologyUnrestricted {
+		val0 = C.VkBool32(1)
+	}
+	p.dynamicPrimitiveTopologyUnrestricted = val0
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceExtendedDynamicState3PropertiesEXT) fromC(p *C.VkPhysicalDeviceExtendedDynamicState3PropertiesEXT) {
+	s.DynamicPrimitiveTopologyUnrestricted = p.dynamicPrimitiveTopologyUnrestricted != 0
 }
 
 type PhysicalDeviceExternalBufferInfo struct {
@@ -15865,6 +18446,75 @@ func (s *PhysicalDeviceMemoryProperties2) fromC(p *C.VkPhysicalDeviceMemoryPrope
 	s.MemoryProperties.fromC(&p.memoryProperties)
 }
 
+type PhysicalDeviceMultiDrawFeaturesEXT struct {
+	Next      Structure
+	MultiDraw bool
+}
+
+func (s *PhysicalDeviceMultiDrawFeaturesEXT) GetType() StructureType {
+	return StructureTypePhysicalDeviceMultiDrawFeaturesEXT
+}
+
+func (s *PhysicalDeviceMultiDrawFeaturesEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceMultiDrawFeaturesEXT)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceMultiDrawFeaturesEXT)))
+	*p = C.VkPhysicalDeviceMultiDrawFeaturesEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.MultiDraw {
+		val0 = C.VkBool32(1)
+	}
+	p.multiDraw = val0
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceMultiDrawFeaturesEXT) fromC(p *C.VkPhysicalDeviceMultiDrawFeaturesEXT) {
+	s.MultiDraw = p.multiDraw != 0
+}
+
+type PhysicalDeviceMultiDrawPropertiesEXT struct {
+	Next              Structure
+	MaxMultiDrawCount uint32
+}
+
+func (s *PhysicalDeviceMultiDrawPropertiesEXT) GetType() StructureType {
+	return StructureTypePhysicalDeviceMultiDrawPropertiesEXT
+}
+
+func (s *PhysicalDeviceMultiDrawPropertiesEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceMultiDrawPropertiesEXT)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceMultiDrawPropertiesEXT)))
+	*p = C.VkPhysicalDeviceMultiDrawPropertiesEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.uint32_t(s.MaxMultiDrawCount)
+	p.maxMultiDrawCount = val0
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceMultiDrawPropertiesEXT) fromC(p *C.VkPhysicalDeviceMultiDrawPropertiesEXT) {
+	s.MaxMultiDrawCount = uint32(p.maxMultiDrawCount)
+}
+
 type PhysicalDeviceMultiviewFeatures struct {
 	Next                        Structure
 	Multiview                   bool
@@ -16382,6 +19032,246 @@ func (s *PhysicalDevicePushDescriptorProperties) toC() (unsafe.Pointer, func()) 
 
 func (s *PhysicalDevicePushDescriptorProperties) fromC(p *C.VkPhysicalDevicePushDescriptorProperties) {
 	s.MaxPushDescriptors = uint32(p.maxPushDescriptors)
+}
+
+type PhysicalDeviceRayQueryFeaturesKHR struct {
+	Next     Structure
+	RayQuery bool
+}
+
+func (s *PhysicalDeviceRayQueryFeaturesKHR) GetType() StructureType {
+	return StructureTypePhysicalDeviceRayQueryFeaturesKHR
+}
+
+func (s *PhysicalDeviceRayQueryFeaturesKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceRayQueryFeaturesKHR)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceRayQueryFeaturesKHR)))
+	*p = C.VkPhysicalDeviceRayQueryFeaturesKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.RayQuery {
+		val0 = C.VkBool32(1)
+	}
+	p.rayQuery = val0
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceRayQueryFeaturesKHR) fromC(p *C.VkPhysicalDeviceRayQueryFeaturesKHR) {
+	s.RayQuery = p.rayQuery != 0
+}
+
+type PhysicalDeviceRayTracingMaintenance1FeaturesKHR struct {
+	Next                                 Structure
+	RayTracingMaintenance1               bool
+	RayTracingPipelineTraceRaysIndirect2 bool
+}
+
+func (s *PhysicalDeviceRayTracingMaintenance1FeaturesKHR) GetType() StructureType {
+	return StructureTypePhysicalDeviceRayTracingMaintenance1FeaturesKHR
+}
+
+func (s *PhysicalDeviceRayTracingMaintenance1FeaturesKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceRayTracingMaintenance1FeaturesKHR)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceRayTracingMaintenance1FeaturesKHR)))
+	*p = C.VkPhysicalDeviceRayTracingMaintenance1FeaturesKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.RayTracingMaintenance1 {
+		val0 = C.VkBool32(1)
+	}
+	p.rayTracingMaintenance1 = val0
+	val1 := C.VkBool32(0)
+	if s.RayTracingPipelineTraceRaysIndirect2 {
+		val1 = C.VkBool32(1)
+	}
+	p.rayTracingPipelineTraceRaysIndirect2 = val1
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceRayTracingMaintenance1FeaturesKHR) fromC(p *C.VkPhysicalDeviceRayTracingMaintenance1FeaturesKHR) {
+	s.RayTracingMaintenance1 = p.rayTracingMaintenance1 != 0
+	s.RayTracingPipelineTraceRaysIndirect2 = p.rayTracingPipelineTraceRaysIndirect2 != 0
+}
+
+type PhysicalDeviceRayTracingPipelineFeaturesKHR struct {
+	Next                                                  Structure
+	RayTracingPipeline                                    bool
+	RayTracingPipelineShaderGroupHandleCaptureReplay      bool
+	RayTracingPipelineShaderGroupHandleCaptureReplayMixed bool
+	RayTracingPipelineTraceRaysIndirect                   bool
+	RayTraversalPrimitiveCulling                          bool
+}
+
+func (s *PhysicalDeviceRayTracingPipelineFeaturesKHR) GetType() StructureType {
+	return StructureTypePhysicalDeviceRayTracingPipelineFeaturesKHR
+}
+
+func (s *PhysicalDeviceRayTracingPipelineFeaturesKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceRayTracingPipelineFeaturesKHR)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceRayTracingPipelineFeaturesKHR)))
+	*p = C.VkPhysicalDeviceRayTracingPipelineFeaturesKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.RayTracingPipeline {
+		val0 = C.VkBool32(1)
+	}
+	p.rayTracingPipeline = val0
+	val1 := C.VkBool32(0)
+	if s.RayTracingPipelineShaderGroupHandleCaptureReplay {
+		val1 = C.VkBool32(1)
+	}
+	p.rayTracingPipelineShaderGroupHandleCaptureReplay = val1
+	val2 := C.VkBool32(0)
+	if s.RayTracingPipelineShaderGroupHandleCaptureReplayMixed {
+		val2 = C.VkBool32(1)
+	}
+	p.rayTracingPipelineShaderGroupHandleCaptureReplayMixed = val2
+	val3 := C.VkBool32(0)
+	if s.RayTracingPipelineTraceRaysIndirect {
+		val3 = C.VkBool32(1)
+	}
+	p.rayTracingPipelineTraceRaysIndirect = val3
+	val4 := C.VkBool32(0)
+	if s.RayTraversalPrimitiveCulling {
+		val4 = C.VkBool32(1)
+	}
+	p.rayTraversalPrimitiveCulling = val4
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceRayTracingPipelineFeaturesKHR) fromC(p *C.VkPhysicalDeviceRayTracingPipelineFeaturesKHR) {
+	s.RayTracingPipeline = p.rayTracingPipeline != 0
+	s.RayTracingPipelineShaderGroupHandleCaptureReplay = p.rayTracingPipelineShaderGroupHandleCaptureReplay != 0
+	s.RayTracingPipelineShaderGroupHandleCaptureReplayMixed = p.rayTracingPipelineShaderGroupHandleCaptureReplayMixed != 0
+	s.RayTracingPipelineTraceRaysIndirect = p.rayTracingPipelineTraceRaysIndirect != 0
+	s.RayTraversalPrimitiveCulling = p.rayTraversalPrimitiveCulling != 0
+}
+
+type PhysicalDeviceRayTracingPipelinePropertiesKHR struct {
+	Next                               Structure
+	ShaderGroupHandleSize              uint32
+	MaxRayRecursionDepth               uint32
+	MaxShaderGroupStride               uint32
+	ShaderGroupBaseAlignment           uint32
+	ShaderGroupHandleCaptureReplaySize uint32
+	MaxRayDispatchInvocationCount      uint32
+	ShaderGroupHandleAlignment         uint32
+	MaxRayHitAttributeSize             uint32
+}
+
+func (s *PhysicalDeviceRayTracingPipelinePropertiesKHR) GetType() StructureType {
+	return StructureTypePhysicalDeviceRayTracingPipelinePropertiesKHR
+}
+
+func (s *PhysicalDeviceRayTracingPipelinePropertiesKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceRayTracingPipelinePropertiesKHR)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceRayTracingPipelinePropertiesKHR)))
+	*p = C.VkPhysicalDeviceRayTracingPipelinePropertiesKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.uint32_t(s.ShaderGroupHandleSize)
+	p.shaderGroupHandleSize = val0
+	val1 := C.uint32_t(s.MaxRayRecursionDepth)
+	p.maxRayRecursionDepth = val1
+	val2 := C.uint32_t(s.MaxShaderGroupStride)
+	p.maxShaderGroupStride = val2
+	val3 := C.uint32_t(s.ShaderGroupBaseAlignment)
+	p.shaderGroupBaseAlignment = val3
+	val4 := C.uint32_t(s.ShaderGroupHandleCaptureReplaySize)
+	p.shaderGroupHandleCaptureReplaySize = val4
+	val5 := C.uint32_t(s.MaxRayDispatchInvocationCount)
+	p.maxRayDispatchInvocationCount = val5
+	val6 := C.uint32_t(s.ShaderGroupHandleAlignment)
+	p.shaderGroupHandleAlignment = val6
+	val7 := C.uint32_t(s.MaxRayHitAttributeSize)
+	p.maxRayHitAttributeSize = val7
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceRayTracingPipelinePropertiesKHR) fromC(p *C.VkPhysicalDeviceRayTracingPipelinePropertiesKHR) {
+	s.ShaderGroupHandleSize = uint32(p.shaderGroupHandleSize)
+	s.MaxRayRecursionDepth = uint32(p.maxRayRecursionDepth)
+	s.MaxShaderGroupStride = uint32(p.maxShaderGroupStride)
+	s.ShaderGroupBaseAlignment = uint32(p.shaderGroupBaseAlignment)
+	s.ShaderGroupHandleCaptureReplaySize = uint32(p.shaderGroupHandleCaptureReplaySize)
+	s.MaxRayDispatchInvocationCount = uint32(p.maxRayDispatchInvocationCount)
+	s.ShaderGroupHandleAlignment = uint32(p.shaderGroupHandleAlignment)
+	s.MaxRayHitAttributeSize = uint32(p.maxRayHitAttributeSize)
+}
+
+type PhysicalDeviceRayTracingPositionFetchFeaturesKHR struct {
+	Next                    Structure
+	RayTracingPositionFetch bool
+}
+
+func (s *PhysicalDeviceRayTracingPositionFetchFeaturesKHR) GetType() StructureType {
+	return StructureTypePhysicalDeviceRayTracingPositionFetchFeaturesKHR
+}
+
+func (s *PhysicalDeviceRayTracingPositionFetchFeaturesKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR)(C.malloc(C.size_t(C.sizeof_VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR)))
+	*p = C.VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkBool32(0)
+	if s.RayTracingPositionFetch {
+		val0 = C.VkBool32(1)
+	}
+	p.rayTracingPositionFetch = val0
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PhysicalDeviceRayTracingPositionFetchFeaturesKHR) fromC(p *C.VkPhysicalDeviceRayTracingPositionFetchFeaturesKHR) {
+	s.RayTracingPositionFetch = p.rayTracingPositionFetch != 0
 }
 
 type PhysicalDeviceSamplerFilterMinmaxProperties struct {
@@ -20420,6 +23310,58 @@ func (s *PipelineLayoutCreateInfo) fromC(p *C.VkPipelineLayoutCreateInfo) {
 	}
 }
 
+type PipelineLibraryCreateInfoKHR struct {
+	Next      Structure
+	Libraries []*Pipeline
+}
+
+func (s *PipelineLibraryCreateInfoKHR) GetType() StructureType {
+	return StructureTypePipelineLibraryCreateInfoKHR
+}
+
+func (s *PipelineLibraryCreateInfoKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkPipelineLibraryCreateInfoKHR)(C.malloc(C.size_t(C.sizeof_VkPipelineLibraryCreateInfoKHR)))
+	*p = C.VkPipelineLibraryCreateInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	len0 := len(s.Libraries)
+
+	var arr1 *C.VkPipeline
+	if len0 > 0 {
+		arr1 = (*C.VkPipeline)(C.malloc(C.size_t(len0) * C.size_t(unsafe.Sizeof(*new(C.VkPipeline)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr1)) })
+	}
+	for i2, elem3 := range s.Libraries {
+		var h4 C.VkPipeline
+		if elem3 != nil {
+			h4 = C.VkPipeline(unsafe.Pointer(elem3.handle))
+		}
+		(*[1 << 30]C.VkPipeline)(unsafe.Pointer(arr1))[i2] = h4
+	}
+	p.pLibraries = arr1
+	p.libraryCount = C.uint32_t(len(s.Libraries))
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *PipelineLibraryCreateInfoKHR) fromC(p *C.VkPipelineLibraryCreateInfoKHR) {
+	if p.libraryCount > 0 && p.pLibraries != nil {
+		s.Libraries = make([]*Pipeline, p.libraryCount)
+		for i0 := range s.Libraries {
+			s.Libraries[i0] = &Pipeline{handle: unsafe.Pointer((*[1 << 30]C.VkPipeline)(unsafe.Pointer(p.pLibraries))[i0])}
+		}
+	}
+}
+
 type PipelineMultisampleStateCreateInfo struct {
 	Next                  Structure
 	Flags                 PipelineMultisampleStateCreateFlags
@@ -21689,6 +24631,229 @@ func (s *QueueFamilyProperties2) toC() (unsafe.Pointer, func()) {
 
 func (s *QueueFamilyProperties2) fromC(p *C.VkQueueFamilyProperties2) {
 	s.QueueFamilyProperties.fromC(&p.queueFamilyProperties)
+}
+
+type RayTracingPipelineCreateInfoKHR struct {
+	Next                         Structure
+	Flags                        PipelineCreateFlags
+	Stages                       []PipelineShaderStageCreateInfo
+	Groups                       []RayTracingShaderGroupCreateInfoKHR
+	MaxPipelineRayRecursionDepth uint32
+	LibraryInfo                  *PipelineLibraryCreateInfoKHR
+	LibraryInterface             *RayTracingPipelineInterfaceCreateInfoKHR
+	DynamicState                 *PipelineDynamicStateCreateInfo
+	Layout                       *PipelineLayout
+	BasePipelineHandle           *Pipeline
+	BasePipelineIndex            int32
+}
+
+func (s *RayTracingPipelineCreateInfoKHR) GetType() StructureType {
+	return StructureTypeRayTracingPipelineCreateInfoKHR
+}
+
+func (s *RayTracingPipelineCreateInfoKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkRayTracingPipelineCreateInfoKHR)(C.malloc(C.size_t(C.sizeof_VkRayTracingPipelineCreateInfoKHR)))
+	*p = C.VkRayTracingPipelineCreateInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkPipelineCreateFlags(s.Flags)
+	p.flags = val0
+	len1 := len(s.Stages)
+
+	var arr2 *C.VkPipelineShaderStageCreateInfo
+	if len1 > 0 {
+		arr2 = (*C.VkPipelineShaderStageCreateInfo)(C.malloc(C.size_t(len1) * C.size_t(unsafe.Sizeof(*new(C.VkPipelineShaderStageCreateInfo)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr2)) })
+	}
+	for i3, elem4 := range s.Stages {
+		val5, cancel6 := elem4.toC()
+		cancels = append(cancels, cancel6)
+		cast7 := (*C.VkPipelineShaderStageCreateInfo)(val5)
+		(*[1 << 30]C.VkPipelineShaderStageCreateInfo)(unsafe.Pointer(arr2))[i3] = *cast7
+	}
+	p.pStages = arr2
+	p.stageCount = C.uint32_t(len(s.Stages))
+	len8 := len(s.Groups)
+
+	var arr9 *C.VkRayTracingShaderGroupCreateInfoKHR
+	if len8 > 0 {
+		arr9 = (*C.VkRayTracingShaderGroupCreateInfoKHR)(C.malloc(C.size_t(len8) * C.size_t(unsafe.Sizeof(*new(C.VkRayTracingShaderGroupCreateInfoKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr9)) })
+	}
+	for i10, elem11 := range s.Groups {
+		val12, cancel13 := elem11.toC()
+		cancels = append(cancels, cancel13)
+		cast14 := (*C.VkRayTracingShaderGroupCreateInfoKHR)(val12)
+		(*[1 << 30]C.VkRayTracingShaderGroupCreateInfoKHR)(unsafe.Pointer(arr9))[i10] = *cast14
+	}
+	p.pGroups = arr9
+	p.groupCount = C.uint32_t(len(s.Groups))
+	val15 := C.uint32_t(s.MaxPipelineRayRecursionDepth)
+	p.maxPipelineRayRecursionDepth = val15
+	var ptr16 *C.VkPipelineLibraryCreateInfoKHR
+	if s.LibraryInfo != nil {
+		val17, cancel18 := s.LibraryInfo.toC()
+		cancels = append(cancels, cancel18)
+		ptr16 = (*C.VkPipelineLibraryCreateInfoKHR)(val17)
+	}
+	p.pLibraryInfo = ptr16
+	var ptr19 *C.VkRayTracingPipelineInterfaceCreateInfoKHR
+	if s.LibraryInterface != nil {
+		val20, cancel21 := s.LibraryInterface.toC()
+		cancels = append(cancels, cancel21)
+		ptr19 = (*C.VkRayTracingPipelineInterfaceCreateInfoKHR)(val20)
+	}
+	p.pLibraryInterface = ptr19
+	var ptr22 *C.VkPipelineDynamicStateCreateInfo
+	if s.DynamicState != nil {
+		val23, cancel24 := s.DynamicState.toC()
+		cancels = append(cancels, cancel24)
+		ptr22 = (*C.VkPipelineDynamicStateCreateInfo)(val23)
+	}
+	p.pDynamicState = ptr22
+	var h25 C.VkPipelineLayout
+	if s.Layout != nil {
+		h25 = C.VkPipelineLayout(unsafe.Pointer(s.Layout.handle))
+	}
+	p.layout = h25
+	var h26 C.VkPipeline
+	if s.BasePipelineHandle != nil {
+		h26 = C.VkPipeline(unsafe.Pointer(s.BasePipelineHandle.handle))
+	}
+	p.basePipelineHandle = h26
+	val27 := C.int32_t(s.BasePipelineIndex)
+	p.basePipelineIndex = val27
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *RayTracingPipelineCreateInfoKHR) fromC(p *C.VkRayTracingPipelineCreateInfoKHR) {
+	s.Flags = PipelineCreateFlags(p.flags)
+	if p.stageCount > 0 && p.pStages != nil {
+		s.Stages = make([]PipelineShaderStageCreateInfo, p.stageCount)
+		for i0 := range s.Stages {
+			elem1 := (*[1 << 30]C.VkPipelineShaderStageCreateInfo)(unsafe.Pointer(p.pStages))[i0]
+			s.Stages[i0].fromC(&elem1)
+		}
+	}
+	if p.groupCount > 0 && p.pGroups != nil {
+		s.Groups = make([]RayTracingShaderGroupCreateInfoKHR, p.groupCount)
+		for i2 := range s.Groups {
+			elem3 := (*[1 << 30]C.VkRayTracingShaderGroupCreateInfoKHR)(unsafe.Pointer(p.pGroups))[i2]
+			s.Groups[i2].fromC(&elem3)
+		}
+	}
+	s.MaxPipelineRayRecursionDepth = uint32(p.maxPipelineRayRecursionDepth)
+	if p.pLibraryInfo != nil {
+		s.LibraryInfo.fromC(p.pLibraryInfo)
+	}
+	if p.pLibraryInterface != nil {
+		s.LibraryInterface.fromC(p.pLibraryInterface)
+	}
+	if p.pDynamicState != nil {
+		s.DynamicState.fromC(p.pDynamicState)
+	}
+	s.Layout = &PipelineLayout{handle: unsafe.Pointer(p.layout)}
+	s.BasePipelineHandle = &Pipeline{handle: unsafe.Pointer(p.basePipelineHandle)}
+	s.BasePipelineIndex = int32(p.basePipelineIndex)
+}
+
+type RayTracingPipelineInterfaceCreateInfoKHR struct {
+	Next                           Structure
+	MaxPipelineRayPayloadSize      uint32
+	MaxPipelineRayHitAttributeSize uint32
+}
+
+func (s *RayTracingPipelineInterfaceCreateInfoKHR) GetType() StructureType {
+	return StructureTypeRayTracingPipelineInterfaceCreateInfoKHR
+}
+
+func (s *RayTracingPipelineInterfaceCreateInfoKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkRayTracingPipelineInterfaceCreateInfoKHR)(C.malloc(C.size_t(C.sizeof_VkRayTracingPipelineInterfaceCreateInfoKHR)))
+	*p = C.VkRayTracingPipelineInterfaceCreateInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.uint32_t(s.MaxPipelineRayPayloadSize)
+	p.maxPipelineRayPayloadSize = val0
+	val1 := C.uint32_t(s.MaxPipelineRayHitAttributeSize)
+	p.maxPipelineRayHitAttributeSize = val1
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *RayTracingPipelineInterfaceCreateInfoKHR) fromC(p *C.VkRayTracingPipelineInterfaceCreateInfoKHR) {
+	s.MaxPipelineRayPayloadSize = uint32(p.maxPipelineRayPayloadSize)
+	s.MaxPipelineRayHitAttributeSize = uint32(p.maxPipelineRayHitAttributeSize)
+}
+
+type RayTracingShaderGroupCreateInfoKHR struct {
+	Next                           Structure
+	Type                           RayTracingShaderGroupTypeKHR
+	GeneralShader                  uint32
+	ClosestHitShader               uint32
+	AnyHitShader                   uint32
+	IntersectionShader             uint32
+	ShaderGroupCaptureReplayHandle unsafe.Pointer
+}
+
+func (s *RayTracingShaderGroupCreateInfoKHR) GetType() StructureType {
+	return StructureTypeRayTracingShaderGroupCreateInfoKHR
+}
+
+func (s *RayTracingShaderGroupCreateInfoKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkRayTracingShaderGroupCreateInfoKHR)(C.malloc(C.size_t(C.sizeof_VkRayTracingShaderGroupCreateInfoKHR)))
+	*p = C.VkRayTracingShaderGroupCreateInfoKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.VkRayTracingShaderGroupTypeKHR(s.Type)
+	p._type = val0
+	val1 := C.uint32_t(s.GeneralShader)
+	p.generalShader = val1
+	val2 := C.uint32_t(s.ClosestHitShader)
+	p.closestHitShader = val2
+	val3 := C.uint32_t(s.AnyHitShader)
+	p.anyHitShader = val3
+	val4 := C.uint32_t(s.IntersectionShader)
+	p.intersectionShader = val4
+	p.pShaderGroupCaptureReplayHandle = s.ShaderGroupCaptureReplayHandle
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *RayTracingShaderGroupCreateInfoKHR) fromC(p *C.VkRayTracingShaderGroupCreateInfoKHR) {
+	s.Type = RayTracingShaderGroupTypeKHR(p._type)
+	s.GeneralShader = uint32(p.generalShader)
+	s.ClosestHitShader = uint32(p.closestHitShader)
+	s.AnyHitShader = uint32(p.anyHitShader)
+	s.IntersectionShader = uint32(p.intersectionShader)
+	s.ShaderGroupCaptureReplayHandle = unsafe.Pointer(p.pShaderGroupCaptureReplayHandle)
 }
 
 type Rect2D struct {
@@ -23896,6 +27061,36 @@ func (s *StencilOpState) fromC(p *C.VkStencilOpState) {
 	s.Reference = uint32(p.reference)
 }
 
+type StridedDeviceAddressRegionKHR struct {
+	DeviceAddress uint64
+	Stride        uint64
+	Size          uint64
+}
+
+func (s *StridedDeviceAddressRegionKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkStridedDeviceAddressRegionKHR)(C.malloc(C.size_t(C.sizeof_VkStridedDeviceAddressRegionKHR)))
+	*p = C.VkStridedDeviceAddressRegionKHR{}
+	val0 := C.VkDeviceAddress(s.DeviceAddress)
+	p.deviceAddress = val0
+	val1 := C.VkDeviceSize(s.Stride)
+	p.stride = val1
+	val2 := C.VkDeviceSize(s.Size)
+	p.size = val2
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *StridedDeviceAddressRegionKHR) fromC(p *C.VkStridedDeviceAddressRegionKHR) {
+	s.DeviceAddress = uint64(p.deviceAddress)
+	s.Stride = uint64(p.stride)
+	s.Size = uint64(p.size)
+}
+
 type SubmitInfo struct {
 	Next               Structure
 	WaitSemaphoreCount uint32
@@ -25302,6 +28497,144 @@ func (s *TimelineSemaphoreSubmitInfo) fromC(p *C.VkTimelineSemaphoreSubmitInfo) 
 	}
 }
 
+type TraceRaysIndirectCommand2KHR struct {
+	RaygenShaderRecordAddress         uint64
+	RaygenShaderRecordSize            uint64
+	MissShaderBindingTableAddress     uint64
+	MissShaderBindingTableSize        uint64
+	MissShaderBindingTableStride      uint64
+	HitShaderBindingTableAddress      uint64
+	HitShaderBindingTableSize         uint64
+	HitShaderBindingTableStride       uint64
+	CallableShaderBindingTableAddress uint64
+	CallableShaderBindingTableSize    uint64
+	CallableShaderBindingTableStride  uint64
+	Width                             uint32
+	Height                            uint32
+	Depth                             uint32
+}
+
+func (s *TraceRaysIndirectCommand2KHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkTraceRaysIndirectCommand2KHR)(C.malloc(C.size_t(C.sizeof_VkTraceRaysIndirectCommand2KHR)))
+	*p = C.VkTraceRaysIndirectCommand2KHR{}
+	val0 := C.VkDeviceAddress(s.RaygenShaderRecordAddress)
+	p.raygenShaderRecordAddress = val0
+	val1 := C.VkDeviceSize(s.RaygenShaderRecordSize)
+	p.raygenShaderRecordSize = val1
+	val2 := C.VkDeviceAddress(s.MissShaderBindingTableAddress)
+	p.missShaderBindingTableAddress = val2
+	val3 := C.VkDeviceSize(s.MissShaderBindingTableSize)
+	p.missShaderBindingTableSize = val3
+	val4 := C.VkDeviceSize(s.MissShaderBindingTableStride)
+	p.missShaderBindingTableStride = val4
+	val5 := C.VkDeviceAddress(s.HitShaderBindingTableAddress)
+	p.hitShaderBindingTableAddress = val5
+	val6 := C.VkDeviceSize(s.HitShaderBindingTableSize)
+	p.hitShaderBindingTableSize = val6
+	val7 := C.VkDeviceSize(s.HitShaderBindingTableStride)
+	p.hitShaderBindingTableStride = val7
+	val8 := C.VkDeviceAddress(s.CallableShaderBindingTableAddress)
+	p.callableShaderBindingTableAddress = val8
+	val9 := C.VkDeviceSize(s.CallableShaderBindingTableSize)
+	p.callableShaderBindingTableSize = val9
+	val10 := C.VkDeviceSize(s.CallableShaderBindingTableStride)
+	p.callableShaderBindingTableStride = val10
+	val11 := C.uint32_t(s.Width)
+	p.width = val11
+	val12 := C.uint32_t(s.Height)
+	p.height = val12
+	val13 := C.uint32_t(s.Depth)
+	p.depth = val13
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *TraceRaysIndirectCommand2KHR) fromC(p *C.VkTraceRaysIndirectCommand2KHR) {
+	s.RaygenShaderRecordAddress = uint64(p.raygenShaderRecordAddress)
+	s.RaygenShaderRecordSize = uint64(p.raygenShaderRecordSize)
+	s.MissShaderBindingTableAddress = uint64(p.missShaderBindingTableAddress)
+	s.MissShaderBindingTableSize = uint64(p.missShaderBindingTableSize)
+	s.MissShaderBindingTableStride = uint64(p.missShaderBindingTableStride)
+	s.HitShaderBindingTableAddress = uint64(p.hitShaderBindingTableAddress)
+	s.HitShaderBindingTableSize = uint64(p.hitShaderBindingTableSize)
+	s.HitShaderBindingTableStride = uint64(p.hitShaderBindingTableStride)
+	s.CallableShaderBindingTableAddress = uint64(p.callableShaderBindingTableAddress)
+	s.CallableShaderBindingTableSize = uint64(p.callableShaderBindingTableSize)
+	s.CallableShaderBindingTableStride = uint64(p.callableShaderBindingTableStride)
+	s.Width = uint32(p.width)
+	s.Height = uint32(p.height)
+	s.Depth = uint32(p.depth)
+}
+
+type TraceRaysIndirectCommandKHR struct {
+	Width  uint32
+	Height uint32
+	Depth  uint32
+}
+
+func (s *TraceRaysIndirectCommandKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkTraceRaysIndirectCommandKHR)(C.malloc(C.size_t(C.sizeof_VkTraceRaysIndirectCommandKHR)))
+	*p = C.VkTraceRaysIndirectCommandKHR{}
+	val0 := C.uint32_t(s.Width)
+	p.width = val0
+	val1 := C.uint32_t(s.Height)
+	p.height = val1
+	val2 := C.uint32_t(s.Depth)
+	p.depth = val2
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *TraceRaysIndirectCommandKHR) fromC(p *C.VkTraceRaysIndirectCommandKHR) {
+	s.Width = uint32(p.width)
+	s.Height = uint32(p.height)
+	s.Depth = uint32(p.depth)
+}
+
+type TransformMatrixKHR struct {
+	Matrix [3][4]float32
+}
+
+func (s *TransformMatrixKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkTransformMatrixKHR)(C.malloc(C.size_t(C.sizeof_VkTransformMatrixKHR)))
+	*p = C.VkTransformMatrixKHR{}
+	var arr0 [3][4]C.float
+	for i1, elem2 := range s.Matrix {
+		var arr3 [4]C.float
+		for i4, elem5 := range elem2 {
+			val6 := C.float(elem5)
+			arr3[i4] = val6
+		}
+		arr0[i1] = arr3
+	}
+	p.matrix = arr0
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *TransformMatrixKHR) fromC(p *C.VkTransformMatrixKHR) {
+	for _i := range s.Matrix {
+		for _j := range s.Matrix[_i] {
+			s.Matrix[_i][_j] = float32(p.matrix[_i][_j])
+		}
+	}
+}
+
 type ValidationFeaturesEXT struct {
 	Next                       Structure
 	EnabledValidationFeatures  []ValidationFeatureEnableEXT
@@ -25735,6 +29068,58 @@ func (s *WriteDescriptorSet) fromC(p *C.VkWriteDescriptorSet) {
 	}
 }
 
+type WriteDescriptorSetAccelerationStructureKHR struct {
+	Next                   Structure
+	AccelerationStructures []*AccelerationStructureKHR
+}
+
+func (s *WriteDescriptorSetAccelerationStructureKHR) GetType() StructureType {
+	return StructureTypeWriteDescriptorSetAccelerationStructureKHR
+}
+
+func (s *WriteDescriptorSetAccelerationStructureKHR) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkWriteDescriptorSetAccelerationStructureKHR)(C.malloc(C.size_t(C.sizeof_VkWriteDescriptorSetAccelerationStructureKHR)))
+	*p = C.VkWriteDescriptorSetAccelerationStructureKHR{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	len0 := len(s.AccelerationStructures)
+
+	var arr1 *C.VkAccelerationStructureKHR
+	if len0 > 0 {
+		arr1 = (*C.VkAccelerationStructureKHR)(C.malloc(C.size_t(len0) * C.size_t(unsafe.Sizeof(*new(C.VkAccelerationStructureKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr1)) })
+	}
+	for i2, elem3 := range s.AccelerationStructures {
+		var h4 C.VkAccelerationStructureKHR
+		if elem3 != nil {
+			h4 = C.VkAccelerationStructureKHR(unsafe.Pointer(elem3.handle))
+		}
+		(*[1 << 30]C.VkAccelerationStructureKHR)(unsafe.Pointer(arr1))[i2] = h4
+	}
+	p.pAccelerationStructures = arr1
+	p.accelerationStructureCount = C.uint32_t(len(s.AccelerationStructures))
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *WriteDescriptorSetAccelerationStructureKHR) fromC(p *C.VkWriteDescriptorSetAccelerationStructureKHR) {
+	if p.accelerationStructureCount > 0 && p.pAccelerationStructures != nil {
+		s.AccelerationStructures = make([]*AccelerationStructureKHR, p.accelerationStructureCount)
+		for i0 := range s.AccelerationStructures {
+			s.AccelerationStructures[i0] = &AccelerationStructureKHR{handle: unsafe.Pointer((*[1 << 30]C.VkAccelerationStructureKHR)(unsafe.Pointer(p.pAccelerationStructures))[i0])}
+		}
+	}
+}
+
 type WriteDescriptorSetInlineUniformBlock struct {
 	Next Structure
 	Data []byte
@@ -25772,6 +29157,86 @@ func (s *WriteDescriptorSetInlineUniformBlock) fromC(p *C.VkWriteDescriptorSetIn
 	if p.dataSize > 0 && p.pData != nil {
 		s.Data = C.GoBytes(p.pData, C.int(p.dataSize))
 	}
+}
+
+type WriteIndirectExecutionSetPipelineEXT struct {
+	Next     Structure
+	Index    uint32
+	Pipeline *Pipeline
+}
+
+func (s *WriteIndirectExecutionSetPipelineEXT) GetType() StructureType {
+	return StructureTypeWriteIndirectExecutionSetPipelineEXT
+}
+
+func (s *WriteIndirectExecutionSetPipelineEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkWriteIndirectExecutionSetPipelineEXT)(C.malloc(C.size_t(C.sizeof_VkWriteIndirectExecutionSetPipelineEXT)))
+	*p = C.VkWriteIndirectExecutionSetPipelineEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.uint32_t(s.Index)
+	p.index = val0
+	var h1 C.VkPipeline
+	if s.Pipeline != nil {
+		h1 = C.VkPipeline(unsafe.Pointer(s.Pipeline.handle))
+	}
+	p.pipeline = h1
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *WriteIndirectExecutionSetPipelineEXT) fromC(p *C.VkWriteIndirectExecutionSetPipelineEXT) {
+	s.Index = uint32(p.index)
+	s.Pipeline = &Pipeline{handle: unsafe.Pointer(p.pipeline)}
+}
+
+type WriteIndirectExecutionSetShaderEXT struct {
+	Next   Structure
+	Index  uint32
+	Shader *ShaderEXT
+}
+
+func (s *WriteIndirectExecutionSetShaderEXT) GetType() StructureType {
+	return StructureTypeWriteIndirectExecutionSetShaderEXT
+}
+
+func (s *WriteIndirectExecutionSetShaderEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := (*C.VkWriteIndirectExecutionSetShaderEXT)(C.malloc(C.size_t(C.sizeof_VkWriteIndirectExecutionSetShaderEXT)))
+	*p = C.VkWriteIndirectExecutionSetShaderEXT{}
+	p.sType = C.VkStructureType(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := C.uint32_t(s.Index)
+	p.index = val0
+	var h1 C.VkShaderEXT
+	if s.Shader != nil {
+		h1 = C.VkShaderEXT(unsafe.Pointer(s.Shader.handle))
+	}
+	p.shader = h1
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+		C.free(unsafe.Pointer(p))
+	}
+}
+
+func (s *WriteIndirectExecutionSetShaderEXT) fromC(p *C.VkWriteIndirectExecutionSetShaderEXT) {
+	s.Index = uint32(p.index)
+	s.Shader = &ShaderEXT{handle: unsafe.Pointer(p.shader)}
 }
 
 func (h Device) AcquireNextImage2KHR(
@@ -26079,6 +29544,58 @@ func (h Device) BindImageMemory2(
 		(*[1 << 30]C.VkBindImageMemoryInfo)(unsafe.Pointer(arr2))[i3] = *cast7
 	}
 	_result := C.fn_vkBindImageMemory2(C.VkDevice(unsafe.Pointer(h.handle)), C.uint32_t(bindInfoCount), arr2)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Device) BuildAccelerationStructuresKHR(
+	deferredOperation *DeferredOperationKHR,
+	Infos []AccelerationStructureBuildGeometryInfoKHR,
+	BuildRangeInfos []*AccelerationStructureBuildRangeInfoKHR,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param deferredOperation
+	var h1 C.VkDeferredOperationKHR
+	if deferredOperation != nil {
+		h1 = C.VkDeferredOperationKHR(unsafe.Pointer(deferredOperation.handle))
+	}
+	// param Infos
+	infoCount := len(Infos)
+	len3 := len(Infos)
+
+	var arr4 *C.VkAccelerationStructureBuildGeometryInfoKHR
+	if len3 > 0 {
+		arr4 = (*C.VkAccelerationStructureBuildGeometryInfoKHR)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkAccelerationStructureBuildGeometryInfoKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
+	}
+	for i5, elem6 := range Infos {
+		val7, cancel8 := elem6.toC()
+		cancels = append(cancels, cancel8)
+		cast9 := (*C.VkAccelerationStructureBuildGeometryInfoKHR)(val7)
+		(*[1 << 30]C.VkAccelerationStructureBuildGeometryInfoKHR)(unsafe.Pointer(arr4))[i5] = *cast9
+	}
+	// param BuildRangeInfos
+	len11 := len(BuildRangeInfos)
+
+	var ptrArr12 **C.VkAccelerationStructureBuildRangeInfoKHR
+	if len11 > 0 {
+		ptrArr12 = (**C.VkAccelerationStructureBuildRangeInfoKHR)(C.malloc(C.size_t(len11) * C.size_t(unsafe.Sizeof(*new(*C.VkAccelerationStructureBuildRangeInfoKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(ptrArr12)) })
+	}
+	for i13, elem14 := range BuildRangeInfos {
+		val15, cancel16 := elem14.toC()
+		cancels = append(cancels, cancel16)
+		(*[1 << 30]*C.VkAccelerationStructureBuildRangeInfoKHR)(unsafe.Pointer(ptrArr12))[i13] = (*C.VkAccelerationStructureBuildRangeInfoKHR)(val15)
+	}
+	_result := C.fn_vkBuildAccelerationStructuresKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, C.uint32_t(infoCount), arr4, ptrArr12)
 	if _result != C.VK_SUCCESS {
 		return vkError(_result)
 	}
@@ -26574,6 +30091,104 @@ func (h CommandBuffer) BlitImage2(
 	C.fn_vkCmdBlitImage2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
 }
 
+func (h CommandBuffer) BuildAccelerationStructuresIndirectKHR(
+	Infos []AccelerationStructureBuildGeometryInfoKHR,
+	IndirectDeviceAddresses []uint64,
+	IndirectStrides []uint32,
+	MaxPrimitiveCounts unsafe.Pointer,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param Infos
+	infoCount := len(Infos)
+	len1 := len(Infos)
+
+	var arr2 *C.VkAccelerationStructureBuildGeometryInfoKHR
+	if len1 > 0 {
+		arr2 = (*C.VkAccelerationStructureBuildGeometryInfoKHR)(C.malloc(C.size_t(len1) * C.size_t(unsafe.Sizeof(*new(C.VkAccelerationStructureBuildGeometryInfoKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr2)) })
+	}
+	for i3, elem4 := range Infos {
+		val5, cancel6 := elem4.toC()
+		cancels = append(cancels, cancel6)
+		cast7 := (*C.VkAccelerationStructureBuildGeometryInfoKHR)(val5)
+		(*[1 << 30]C.VkAccelerationStructureBuildGeometryInfoKHR)(unsafe.Pointer(arr2))[i3] = *cast7
+	}
+	// param IndirectDeviceAddresses
+	len9 := len(IndirectDeviceAddresses)
+
+	var arr10 *C.VkDeviceAddress
+	if len9 > 0 {
+		arr10 = (*C.VkDeviceAddress)(C.malloc(C.size_t(len9) * C.size_t(unsafe.Sizeof(*new(C.VkDeviceAddress)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr10)) })
+	}
+	for i11, elem12 := range IndirectDeviceAddresses {
+		val13 := C.VkDeviceAddress(elem12)
+		(*[1 << 30]C.VkDeviceAddress)(unsafe.Pointer(arr10))[i11] = val13
+	}
+	// param IndirectStrides
+	len15 := len(IndirectStrides)
+
+	var arr16 *C.uint32_t
+	if len15 > 0 {
+		arr16 = (*C.uint32_t)(C.malloc(C.size_t(len15) * C.size_t(unsafe.Sizeof(*new(C.uint32_t)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr16)) })
+	}
+	for i17, elem18 := range IndirectStrides {
+		val19 := C.uint32_t(elem18)
+		(*[1 << 30]C.uint32_t)(unsafe.Pointer(arr16))[i17] = val19
+	}
+	// param MaxPrimitiveCounts
+	C.fn_vkCmdBuildAccelerationStructuresIndirectKHR(C.VkCommandBuffer(unsafe.Pointer(h.handle)), C.uint32_t(infoCount), arr2, arr10, arr16, MaxPrimitiveCounts)
+}
+
+func (h CommandBuffer) BuildAccelerationStructuresKHR(
+	Infos []AccelerationStructureBuildGeometryInfoKHR,
+	BuildRangeInfos []*AccelerationStructureBuildRangeInfoKHR,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param Infos
+	infoCount := len(Infos)
+	len1 := len(Infos)
+
+	var arr2 *C.VkAccelerationStructureBuildGeometryInfoKHR
+	if len1 > 0 {
+		arr2 = (*C.VkAccelerationStructureBuildGeometryInfoKHR)(C.malloc(C.size_t(len1) * C.size_t(unsafe.Sizeof(*new(C.VkAccelerationStructureBuildGeometryInfoKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr2)) })
+	}
+	for i3, elem4 := range Infos {
+		val5, cancel6 := elem4.toC()
+		cancels = append(cancels, cancel6)
+		cast7 := (*C.VkAccelerationStructureBuildGeometryInfoKHR)(val5)
+		(*[1 << 30]C.VkAccelerationStructureBuildGeometryInfoKHR)(unsafe.Pointer(arr2))[i3] = *cast7
+	}
+	// param BuildRangeInfos
+	len9 := len(BuildRangeInfos)
+
+	var ptrArr10 **C.VkAccelerationStructureBuildRangeInfoKHR
+	if len9 > 0 {
+		ptrArr10 = (**C.VkAccelerationStructureBuildRangeInfoKHR)(C.malloc(C.size_t(len9) * C.size_t(unsafe.Sizeof(*new(*C.VkAccelerationStructureBuildRangeInfoKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(ptrArr10)) })
+	}
+	for i11, elem12 := range BuildRangeInfos {
+		val13, cancel14 := elem12.toC()
+		cancels = append(cancels, cancel14)
+		(*[1 << 30]*C.VkAccelerationStructureBuildRangeInfoKHR)(unsafe.Pointer(ptrArr10))[i11] = (*C.VkAccelerationStructureBuildRangeInfoKHR)(val13)
+	}
+	C.fn_vkCmdBuildAccelerationStructuresKHR(C.VkCommandBuffer(unsafe.Pointer(h.handle)), C.uint32_t(infoCount), arr2, ptrArr10)
+}
+
 func (h CommandBuffer) ClearAttachments(
 	Attachments []ClearAttachment,
 	Rects []ClearRect,
@@ -26706,6 +30321,46 @@ func (h CommandBuffer) ClearDepthStencilImage(
 		(*[1 << 30]C.VkImageSubresourceRange)(unsafe.Pointer(arr10))[i11] = *cast15
 	}
 	C.fn_vkCmdClearDepthStencilImage(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, ptr5, C.uint32_t(rangeCount), arr10)
+}
+
+func (h CommandBuffer) CopyAccelerationStructureKHR(
+	Info *CopyAccelerationStructureInfoKHR,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param Info
+	var ptr1 *C.VkCopyAccelerationStructureInfoKHR
+	if Info != nil {
+		val2, cancel3 := Info.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkCopyAccelerationStructureInfoKHR)(val2)
+	}
+	C.fn_vkCmdCopyAccelerationStructureKHR(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+}
+
+func (h CommandBuffer) CopyAccelerationStructureToMemoryKHR(
+	Info *CopyAccelerationStructureToMemoryInfoKHR,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param Info
+	var ptr1 *C.VkCopyAccelerationStructureToMemoryInfoKHR
+	if Info != nil {
+		val2, cancel3 := Info.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkCopyAccelerationStructureToMemoryInfoKHR)(val2)
+	}
+	C.fn_vkCmdCopyAccelerationStructureToMemoryKHR(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
 }
 
 func (h CommandBuffer) CopyBuffer(
@@ -26958,6 +30613,26 @@ func (h CommandBuffer) CopyImageToBuffer2(
 		ptr1 = (*C.VkCopyImageToBufferInfo2)(val2)
 	}
 	C.fn_vkCmdCopyImageToBuffer2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+}
+
+func (h CommandBuffer) CopyMemoryToAccelerationStructureKHR(
+	Info *CopyMemoryToAccelerationStructureInfoKHR,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param Info
+	var ptr1 *C.VkCopyMemoryToAccelerationStructureInfoKHR
+	if Info != nil {
+		val2, cancel3 := Info.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkCopyMemoryToAccelerationStructureInfoKHR)(val2)
+	}
+	C.fn_vkCmdCopyMemoryToAccelerationStructureKHR(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
 }
 
 func (h CommandBuffer) CopyQueryPoolResults(
@@ -27248,6 +30923,87 @@ func (h CommandBuffer) DrawIndirectCount(
 	C.fn_vkCmdDrawIndirectCount(C.VkCommandBuffer(unsafe.Pointer(h.handle)), h1, val3, h5, val7, val9, val11)
 }
 
+func (h CommandBuffer) DrawMultiEXT(
+	VertexInfo []MultiDrawInfoEXT,
+	instanceCount uint32,
+	firstInstance uint32,
+	stride uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param VertexInfo
+	drawCount := len(VertexInfo)
+	len1 := len(VertexInfo)
+
+	var arr2 *C.VkMultiDrawInfoEXT
+	if len1 > 0 {
+		arr2 = (*C.VkMultiDrawInfoEXT)(C.malloc(C.size_t(len1) * C.size_t(unsafe.Sizeof(*new(C.VkMultiDrawInfoEXT)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr2)) })
+	}
+	for i3, elem4 := range VertexInfo {
+		val5, cancel6 := elem4.toC()
+		cancels = append(cancels, cancel6)
+		cast7 := (*C.VkMultiDrawInfoEXT)(val5)
+		(*[1 << 30]C.VkMultiDrawInfoEXT)(unsafe.Pointer(arr2))[i3] = *cast7
+	}
+	// param instanceCount
+	val9 := C.uint32_t(instanceCount)
+	// param firstInstance
+	val11 := C.uint32_t(firstInstance)
+	// param stride
+	val13 := C.uint32_t(stride)
+	C.fn_vkCmdDrawMultiEXT(C.VkCommandBuffer(unsafe.Pointer(h.handle)), C.uint32_t(drawCount), arr2, val9, val11, val13)
+}
+
+func (h CommandBuffer) DrawMultiIndexedEXT(
+	IndexInfo []MultiDrawIndexedInfoEXT,
+	instanceCount uint32,
+	firstInstance uint32,
+	stride uint32,
+	VertexOffset *int32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param IndexInfo
+	drawCount := len(IndexInfo)
+	len1 := len(IndexInfo)
+
+	var arr2 *C.VkMultiDrawIndexedInfoEXT
+	if len1 > 0 {
+		arr2 = (*C.VkMultiDrawIndexedInfoEXT)(C.malloc(C.size_t(len1) * C.size_t(unsafe.Sizeof(*new(C.VkMultiDrawIndexedInfoEXT)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr2)) })
+	}
+	for i3, elem4 := range IndexInfo {
+		val5, cancel6 := elem4.toC()
+		cancels = append(cancels, cancel6)
+		cast7 := (*C.VkMultiDrawIndexedInfoEXT)(val5)
+		(*[1 << 30]C.VkMultiDrawIndexedInfoEXT)(unsafe.Pointer(arr2))[i3] = *cast7
+	}
+	// param instanceCount
+	val9 := C.uint32_t(instanceCount)
+	// param firstInstance
+	val11 := C.uint32_t(firstInstance)
+	// param stride
+	val13 := C.uint32_t(stride)
+	// param VertexOffset
+	var ptr15 *C.int32_t
+	if VertexOffset != nil {
+		val16 := C.int32_t(*VertexOffset)
+		ptr15 = &val16
+	}
+	C.fn_vkCmdDrawMultiIndexedEXT(C.VkCommandBuffer(unsafe.Pointer(h.handle)), C.uint32_t(drawCount), arr2, val9, val11, val13, ptr15)
+}
+
 func (h CommandBuffer) EndDebugUtilsLabelEXT() {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -27349,6 +31105,32 @@ func (h CommandBuffer) ExecuteCommands(
 		(*[1 << 30]C.VkCommandBuffer)(unsafe.Pointer(arr2))[i3] = h5
 	}
 	C.fn_vkCmdExecuteCommands(C.VkCommandBuffer(unsafe.Pointer(h.handle)), C.uint32_t(commandBufferCount), arr2)
+}
+
+func (h CommandBuffer) ExecuteGeneratedCommandsEXT(
+	isPreprocessed bool,
+	GeneratedCommandsInfo *GeneratedCommandsInfoEXT,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param isPreprocessed
+	val1 := C.VkBool32(0)
+	if isPreprocessed {
+		val1 = C.VkBool32(1)
+	}
+	// param GeneratedCommandsInfo
+	var ptr3 *C.VkGeneratedCommandsInfoEXT
+	if GeneratedCommandsInfo != nil {
+		val4, cancel5 := GeneratedCommandsInfo.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = (*C.VkGeneratedCommandsInfoEXT)(val4)
+	}
+	C.fn_vkCmdExecuteGeneratedCommandsEXT(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, ptr3)
 }
 
 func (h CommandBuffer) FillBuffer(
@@ -27528,6 +31310,32 @@ func (h CommandBuffer) PipelineBarrier2(
 		ptr1 = (*C.VkDependencyInfo)(val2)
 	}
 	C.fn_vkCmdPipelineBarrier2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
+}
+
+func (h CommandBuffer) PreprocessGeneratedCommandsEXT(
+	GeneratedCommandsInfo *GeneratedCommandsInfoEXT,
+	stateCommandBuffer *CommandBuffer,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param GeneratedCommandsInfo
+	var ptr1 *C.VkGeneratedCommandsInfoEXT
+	if GeneratedCommandsInfo != nil {
+		val2, cancel3 := GeneratedCommandsInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkGeneratedCommandsInfoEXT)(val2)
+	}
+	// param stateCommandBuffer
+	var h5 C.VkCommandBuffer
+	if stateCommandBuffer != nil {
+		h5 = C.VkCommandBuffer(unsafe.Pointer(stateCommandBuffer.handle))
+	}
+	C.fn_vkCmdPreprocessGeneratedCommandsEXT(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1, h5)
 }
 
 func (h CommandBuffer) PushConstants(
@@ -28659,6 +32467,21 @@ func (h CommandBuffer) SetRasterizerDiscardEnable(
 	C.fn_vkCmdSetRasterizerDiscardEnable(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
 }
 
+func (h CommandBuffer) SetRayTracingPipelineStackSizeKHR(
+	pipelineStackSize uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pipelineStackSize
+	val1 := C.uint32_t(pipelineStackSize)
+	C.fn_vkCmdSetRayTracingPipelineStackSizeKHR(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
 func (h CommandBuffer) SetRenderingAttachmentLocations(
 	LocationInfo *RenderingAttachmentLocationInfo,
 ) {
@@ -29106,6 +32929,121 @@ func (h CommandBuffer) SetViewportWithCount(
 	C.fn_vkCmdSetViewportWithCount(C.VkCommandBuffer(unsafe.Pointer(h.handle)), C.uint32_t(viewportCount), arr2)
 }
 
+func (h CommandBuffer) TraceRaysIndirect2KHR(
+	indirectDeviceAddress uint64,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param indirectDeviceAddress
+	val1 := C.VkDeviceAddress(indirectDeviceAddress)
+	C.fn_vkCmdTraceRaysIndirect2KHR(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
+}
+
+func (h CommandBuffer) TraceRaysIndirectKHR(
+	RaygenShaderBindingTable *StridedDeviceAddressRegionKHR,
+	MissShaderBindingTable *StridedDeviceAddressRegionKHR,
+	HitShaderBindingTable *StridedDeviceAddressRegionKHR,
+	CallableShaderBindingTable *StridedDeviceAddressRegionKHR,
+	indirectDeviceAddress uint64,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param RaygenShaderBindingTable
+	var ptr1 *C.VkStridedDeviceAddressRegionKHR
+	if RaygenShaderBindingTable != nil {
+		val2, cancel3 := RaygenShaderBindingTable.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkStridedDeviceAddressRegionKHR)(val2)
+	}
+	// param MissShaderBindingTable
+	var ptr5 *C.VkStridedDeviceAddressRegionKHR
+	if MissShaderBindingTable != nil {
+		val6, cancel7 := MissShaderBindingTable.toC()
+		cancels = append(cancels, cancel7)
+		ptr5 = (*C.VkStridedDeviceAddressRegionKHR)(val6)
+	}
+	// param HitShaderBindingTable
+	var ptr9 *C.VkStridedDeviceAddressRegionKHR
+	if HitShaderBindingTable != nil {
+		val10, cancel11 := HitShaderBindingTable.toC()
+		cancels = append(cancels, cancel11)
+		ptr9 = (*C.VkStridedDeviceAddressRegionKHR)(val10)
+	}
+	// param CallableShaderBindingTable
+	var ptr13 *C.VkStridedDeviceAddressRegionKHR
+	if CallableShaderBindingTable != nil {
+		val14, cancel15 := CallableShaderBindingTable.toC()
+		cancels = append(cancels, cancel15)
+		ptr13 = (*C.VkStridedDeviceAddressRegionKHR)(val14)
+	}
+	// param indirectDeviceAddress
+	val17 := C.VkDeviceAddress(indirectDeviceAddress)
+	C.fn_vkCmdTraceRaysIndirectKHR(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1, ptr5, ptr9, ptr13, val17)
+}
+
+func (h CommandBuffer) TraceRaysKHR(
+	RaygenShaderBindingTable *StridedDeviceAddressRegionKHR,
+	MissShaderBindingTable *StridedDeviceAddressRegionKHR,
+	HitShaderBindingTable *StridedDeviceAddressRegionKHR,
+	CallableShaderBindingTable *StridedDeviceAddressRegionKHR,
+	width uint32,
+	height uint32,
+	depth uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param RaygenShaderBindingTable
+	var ptr1 *C.VkStridedDeviceAddressRegionKHR
+	if RaygenShaderBindingTable != nil {
+		val2, cancel3 := RaygenShaderBindingTable.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkStridedDeviceAddressRegionKHR)(val2)
+	}
+	// param MissShaderBindingTable
+	var ptr5 *C.VkStridedDeviceAddressRegionKHR
+	if MissShaderBindingTable != nil {
+		val6, cancel7 := MissShaderBindingTable.toC()
+		cancels = append(cancels, cancel7)
+		ptr5 = (*C.VkStridedDeviceAddressRegionKHR)(val6)
+	}
+	// param HitShaderBindingTable
+	var ptr9 *C.VkStridedDeviceAddressRegionKHR
+	if HitShaderBindingTable != nil {
+		val10, cancel11 := HitShaderBindingTable.toC()
+		cancels = append(cancels, cancel11)
+		ptr9 = (*C.VkStridedDeviceAddressRegionKHR)(val10)
+	}
+	// param CallableShaderBindingTable
+	var ptr13 *C.VkStridedDeviceAddressRegionKHR
+	if CallableShaderBindingTable != nil {
+		val14, cancel15 := CallableShaderBindingTable.toC()
+		cancels = append(cancels, cancel15)
+		ptr13 = (*C.VkStridedDeviceAddressRegionKHR)(val14)
+	}
+	// param width
+	val17 := C.uint32_t(width)
+	// param height
+	val19 := C.uint32_t(height)
+	// param depth
+	val21 := C.uint32_t(depth)
+	C.fn_vkCmdTraceRaysKHR(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1, ptr5, ptr9, ptr13, val17, val19, val21)
+}
+
 func (h CommandBuffer) UpdateBuffer(
 	dstBuffer *Buffer,
 	dstOffset uint64,
@@ -29263,6 +33201,47 @@ func (h CommandBuffer) WaitEvents2(
 	C.fn_vkCmdWaitEvents2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), C.uint32_t(eventCount), arr2, arr8)
 }
 
+func (h CommandBuffer) WriteAccelerationStructuresPropertiesKHR(
+	AccelerationStructures []*AccelerationStructureKHR,
+	queryType QueryType,
+	queryPool *QueryPool,
+	firstQuery uint32,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param AccelerationStructures
+	accelerationStructureCount := len(AccelerationStructures)
+	len1 := len(AccelerationStructures)
+
+	var arr2 *C.VkAccelerationStructureKHR
+	if len1 > 0 {
+		arr2 = (*C.VkAccelerationStructureKHR)(C.malloc(C.size_t(len1) * C.size_t(unsafe.Sizeof(*new(C.VkAccelerationStructureKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr2)) })
+	}
+	for i3, elem4 := range AccelerationStructures {
+		var h5 C.VkAccelerationStructureKHR
+		if elem4 != nil {
+			h5 = C.VkAccelerationStructureKHR(unsafe.Pointer(elem4.handle))
+		}
+		(*[1 << 30]C.VkAccelerationStructureKHR)(unsafe.Pointer(arr2))[i3] = h5
+	}
+	// param queryType
+	val7 := C.VkQueryType(queryType)
+	// param queryPool
+	var h9 C.VkQueryPool
+	if queryPool != nil {
+		h9 = C.VkQueryPool(unsafe.Pointer(queryPool.handle))
+	}
+	// param firstQuery
+	val11 := C.uint32_t(firstQuery)
+	C.fn_vkCmdWriteAccelerationStructuresPropertiesKHR(C.VkCommandBuffer(unsafe.Pointer(h.handle)), C.uint32_t(accelerationStructureCount), arr2, val7, h9, val11)
+}
+
 func (h CommandBuffer) WriteTimestamp(
 	pipelineStage PipelineStageFlagBits,
 	queryPool *QueryPool,
@@ -29309,6 +33288,66 @@ func (h CommandBuffer) WriteTimestamp2(
 	// param query
 	val5 := C.uint32_t(query)
 	C.fn_vkCmdWriteTimestamp2(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1, h3, val5)
+}
+
+func (h Device) CopyAccelerationStructureKHR(
+	deferredOperation *DeferredOperationKHR,
+	Info *CopyAccelerationStructureInfoKHR,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param deferredOperation
+	var h1 C.VkDeferredOperationKHR
+	if deferredOperation != nil {
+		h1 = C.VkDeferredOperationKHR(unsafe.Pointer(deferredOperation.handle))
+	}
+	// param Info
+	var ptr3 *C.VkCopyAccelerationStructureInfoKHR
+	if Info != nil {
+		val4, cancel5 := Info.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = (*C.VkCopyAccelerationStructureInfoKHR)(val4)
+	}
+	_result := C.fn_vkCopyAccelerationStructureKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Device) CopyAccelerationStructureToMemoryKHR(
+	deferredOperation *DeferredOperationKHR,
+	Info *CopyAccelerationStructureToMemoryInfoKHR,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param deferredOperation
+	var h1 C.VkDeferredOperationKHR
+	if deferredOperation != nil {
+		h1 = C.VkDeferredOperationKHR(unsafe.Pointer(deferredOperation.handle))
+	}
+	// param Info
+	var ptr3 *C.VkCopyAccelerationStructureToMemoryInfoKHR
+	if Info != nil {
+		val4, cancel5 := Info.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = (*C.VkCopyAccelerationStructureToMemoryInfoKHR)(val4)
+	}
+	_result := C.fn_vkCopyAccelerationStructureToMemoryKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
 }
 
 func (h Device) CopyImageToImage(
@@ -29359,6 +33398,36 @@ func (h Device) CopyImageToMemory(
 	return nil
 }
 
+func (h Device) CopyMemoryToAccelerationStructureKHR(
+	deferredOperation *DeferredOperationKHR,
+	Info *CopyMemoryToAccelerationStructureInfoKHR,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param deferredOperation
+	var h1 C.VkDeferredOperationKHR
+	if deferredOperation != nil {
+		h1 = C.VkDeferredOperationKHR(unsafe.Pointer(deferredOperation.handle))
+	}
+	// param Info
+	var ptr3 *C.VkCopyMemoryToAccelerationStructureInfoKHR
+	if Info != nil {
+		val4, cancel5 := Info.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = (*C.VkCopyMemoryToAccelerationStructureInfoKHR)(val4)
+	}
+	_result := C.fn_vkCopyMemoryToAccelerationStructureKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
 func (h Device) CopyMemoryToImage(
 	CopyMemoryToImageInfo *CopyMemoryToImageInfo,
 ) error {
@@ -29381,6 +33450,40 @@ func (h Device) CopyMemoryToImage(
 		return vkError(_result)
 	}
 	return nil
+}
+
+func (h Device) CreateAccelerationStructureKHR(
+	CreateInfo *AccelerationStructureCreateInfoKHR,
+	Allocator *AllocationCallbacks,
+) (*AccelerationStructureKHR, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param CreateInfo
+	var ptr1 *C.VkAccelerationStructureCreateInfoKHR
+	if CreateInfo != nil {
+		val2, cancel3 := CreateInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkAccelerationStructureCreateInfoKHR)(val2)
+	}
+	// param Allocator
+	var ptr5 *C.VkAllocationCallbacks
+	if Allocator != nil {
+		val6, cancel7 := Allocator.toC()
+		cancels = append(cancels, cancel7)
+		ptr5 = (*C.VkAllocationCallbacks)(val6)
+	}
+	var accelerationStructureOut C.VkAccelerationStructureKHR
+	_result := C.fn_vkCreateAccelerationStructureKHR(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &accelerationStructureOut)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+	h8 := &AccelerationStructureKHR{handle: unsafe.Pointer(accelerationStructureOut)}
+	return h8, nil
 }
 
 func (h Device) CreateBuffer(
@@ -29573,6 +33676,32 @@ func (h Instance) CreateDebugUtilsMessengerEXT(
 		h8.cleanup = CreateInfo.callbackCleanupFn
 	}
 	return h8, nil
+}
+
+func (h Device) CreateDeferredOperationKHR(
+	Allocator *AllocationCallbacks,
+) (*DeferredOperationKHR, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param Allocator
+	var ptr1 *C.VkAllocationCallbacks
+	if Allocator != nil {
+		val2, cancel3 := Allocator.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkAllocationCallbacks)(val2)
+	}
+	var deferredOperationOut C.VkDeferredOperationKHR
+	_result := C.fn_vkCreateDeferredOperationKHR(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &deferredOperationOut)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+	h4 := &DeferredOperationKHR{handle: unsafe.Pointer(deferredOperationOut)}
+	return h4, nil
 }
 
 func (h Device) CreateDescriptorPool(
@@ -29934,6 +34063,74 @@ func (h Device) CreateImageView(
 	return h8, nil
 }
 
+func (h Device) CreateIndirectCommandsLayoutEXT(
+	CreateInfo *IndirectCommandsLayoutCreateInfoEXT,
+	Allocator *AllocationCallbacks,
+) (*IndirectCommandsLayoutEXT, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param CreateInfo
+	var ptr1 *C.VkIndirectCommandsLayoutCreateInfoEXT
+	if CreateInfo != nil {
+		val2, cancel3 := CreateInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkIndirectCommandsLayoutCreateInfoEXT)(val2)
+	}
+	// param Allocator
+	var ptr5 *C.VkAllocationCallbacks
+	if Allocator != nil {
+		val6, cancel7 := Allocator.toC()
+		cancels = append(cancels, cancel7)
+		ptr5 = (*C.VkAllocationCallbacks)(val6)
+	}
+	var indirectCommandsLayoutOut C.VkIndirectCommandsLayoutEXT
+	_result := C.fn_vkCreateIndirectCommandsLayoutEXT(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &indirectCommandsLayoutOut)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+	h8 := &IndirectCommandsLayoutEXT{handle: unsafe.Pointer(indirectCommandsLayoutOut)}
+	return h8, nil
+}
+
+func (h Device) CreateIndirectExecutionSetEXT(
+	CreateInfo *IndirectExecutionSetCreateInfoEXT,
+	Allocator *AllocationCallbacks,
+) (*IndirectExecutionSetEXT, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param CreateInfo
+	var ptr1 *C.VkIndirectExecutionSetCreateInfoEXT
+	if CreateInfo != nil {
+		val2, cancel3 := CreateInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkIndirectExecutionSetCreateInfoEXT)(val2)
+	}
+	// param Allocator
+	var ptr5 *C.VkAllocationCallbacks
+	if Allocator != nil {
+		val6, cancel7 := Allocator.toC()
+		cancels = append(cancels, cancel7)
+		ptr5 = (*C.VkAllocationCallbacks)(val6)
+	}
+	var indirectExecutionSetOut C.VkIndirectExecutionSetEXT
+	_result := C.fn_vkCreateIndirectExecutionSetEXT(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &indirectExecutionSetOut)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+	h8 := &IndirectExecutionSetEXT{handle: unsafe.Pointer(indirectExecutionSetOut)}
+	return h8, nil
+}
+
 func CreateInstance(
 	CreateInfo *InstanceCreateInfo,
 	Allocator *AllocationCallbacks,
@@ -30102,6 +34299,65 @@ func (h Device) CreateQueryPool(
 	}
 	h8 := &QueryPool{handle: unsafe.Pointer(queryPoolOut)}
 	return h8, nil
+}
+
+func (h Device) CreateRayTracingPipelinesKHR(
+	deferredOperation *DeferredOperationKHR,
+	pipelineCache *PipelineCache,
+	CreateInfos []RayTracingPipelineCreateInfoKHR,
+	Allocator *AllocationCallbacks,
+) ([]*Pipeline, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param deferredOperation
+	var h1 C.VkDeferredOperationKHR
+	if deferredOperation != nil {
+		h1 = C.VkDeferredOperationKHR(unsafe.Pointer(deferredOperation.handle))
+	}
+	// param pipelineCache
+	var h3 C.VkPipelineCache
+	if pipelineCache != nil {
+		h3 = C.VkPipelineCache(unsafe.Pointer(pipelineCache.handle))
+	}
+	// param CreateInfos
+	createInfoCount := len(CreateInfos)
+	len5 := len(CreateInfos)
+
+	var arr6 *C.VkRayTracingPipelineCreateInfoKHR
+	if len5 > 0 {
+		arr6 = (*C.VkRayTracingPipelineCreateInfoKHR)(C.malloc(C.size_t(len5) * C.size_t(unsafe.Sizeof(*new(C.VkRayTracingPipelineCreateInfoKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr6)) })
+	}
+	for i7, elem8 := range CreateInfos {
+		val9, cancel10 := elem8.toC()
+		cancels = append(cancels, cancel10)
+		cast11 := (*C.VkRayTracingPipelineCreateInfoKHR)(val9)
+		(*[1 << 30]C.VkRayTracingPipelineCreateInfoKHR)(unsafe.Pointer(arr6))[i7] = *cast11
+	}
+	// param Allocator
+	var ptr13 *C.VkAllocationCallbacks
+	if Allocator != nil {
+		val14, cancel15 := Allocator.toC()
+		cancels = append(cancels, cancel15)
+		ptr13 = (*C.VkAllocationCallbacks)(val14)
+	}
+	pipelinesOut := (*C.VkPipeline)(C.malloc(C.size_t(createInfoCount) * C.size_t(unsafe.Sizeof(*new(C.VkPipeline)))))
+	defer C.free(unsafe.Pointer(pipelinesOut))
+	_result := C.fn_vkCreateRayTracingPipelinesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, h3, C.uint32_t(createInfoCount), arr6, ptr13, pipelinesOut)
+	if _result != C.VK_SUCCESS {
+		return nil, vkError(_result)
+	}
+	out16 := make([]*Pipeline, createInfoCount)
+	for i17 := range out16 {
+		h18 := &Pipeline{handle: unsafe.Pointer((*[1 << 30]C.VkPipeline)(unsafe.Pointer(pipelinesOut))[i17])}
+		out16[i17] = h18
+	}
+	return out16, nil
 }
 
 func (h Device) CreateRenderPass(
@@ -30389,6 +34645,57 @@ func (h Device) CreateSwapchainKHR(
 	return h8, nil
 }
 
+func (h Device) DeferredOperationJoinKHR(
+	operation *DeferredOperationKHR,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param operation
+	var h1 C.VkDeferredOperationKHR
+	if operation != nil {
+		h1 = C.VkDeferredOperationKHR(unsafe.Pointer(operation.handle))
+	}
+	_result := C.fn_vkDeferredOperationJoinKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Device) DestroyAccelerationStructureKHR(
+	accelerationStructure *AccelerationStructureKHR,
+	Allocator *AllocationCallbacks,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param accelerationStructure
+	var h1 C.VkAccelerationStructureKHR
+	if accelerationStructure != nil {
+		h1 = C.VkAccelerationStructureKHR(unsafe.Pointer(accelerationStructure.handle))
+	}
+	// param Allocator
+	var ptr3 *C.VkAllocationCallbacks
+	if Allocator != nil {
+		val4, cancel5 := Allocator.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = (*C.VkAllocationCallbacks)(val4)
+	}
+	if accelerationStructure != nil && accelerationStructure.cleanup != nil {
+		accelerationStructure.cleanup()
+	}
+	C.fn_vkDestroyAccelerationStructureKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
+}
+
 func (h Device) DestroyBuffer(
 	buffer *Buffer,
 	Allocator *AllocationCallbacks,
@@ -30503,6 +34810,35 @@ func (h Instance) DestroyDebugUtilsMessengerEXT(
 		messenger.cleanup()
 	}
 	C.fn_vkDestroyDebugUtilsMessengerEXT(C.VkInstance(unsafe.Pointer(h.handle)), h1, ptr3)
+}
+
+func (h Device) DestroyDeferredOperationKHR(
+	operation *DeferredOperationKHR,
+	Allocator *AllocationCallbacks,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param operation
+	var h1 C.VkDeferredOperationKHR
+	if operation != nil {
+		h1 = C.VkDeferredOperationKHR(unsafe.Pointer(operation.handle))
+	}
+	// param Allocator
+	var ptr3 *C.VkAllocationCallbacks
+	if Allocator != nil {
+		val4, cancel5 := Allocator.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = (*C.VkAllocationCallbacks)(val4)
+	}
+	if operation != nil && operation.cleanup != nil {
+		operation.cleanup()
+	}
+	C.fn_vkDestroyDeferredOperationKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
 }
 
 func (h Device) DestroyDescriptorPool(
@@ -30755,6 +35091,64 @@ func (h Device) DestroyImageView(
 		imageView.cleanup()
 	}
 	C.fn_vkDestroyImageView(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
+}
+
+func (h Device) DestroyIndirectCommandsLayoutEXT(
+	indirectCommandsLayout *IndirectCommandsLayoutEXT,
+	Allocator *AllocationCallbacks,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param indirectCommandsLayout
+	var h1 C.VkIndirectCommandsLayoutEXT
+	if indirectCommandsLayout != nil {
+		h1 = C.VkIndirectCommandsLayoutEXT(unsafe.Pointer(indirectCommandsLayout.handle))
+	}
+	// param Allocator
+	var ptr3 *C.VkAllocationCallbacks
+	if Allocator != nil {
+		val4, cancel5 := Allocator.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = (*C.VkAllocationCallbacks)(val4)
+	}
+	if indirectCommandsLayout != nil && indirectCommandsLayout.cleanup != nil {
+		indirectCommandsLayout.cleanup()
+	}
+	C.fn_vkDestroyIndirectCommandsLayoutEXT(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
+}
+
+func (h Device) DestroyIndirectExecutionSetEXT(
+	indirectExecutionSet *IndirectExecutionSetEXT,
+	Allocator *AllocationCallbacks,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param indirectExecutionSet
+	var h1 C.VkIndirectExecutionSetEXT
+	if indirectExecutionSet != nil {
+		h1 = C.VkIndirectExecutionSetEXT(unsafe.Pointer(indirectExecutionSet.handle))
+	}
+	// param Allocator
+	var ptr3 *C.VkAllocationCallbacks
+	if Allocator != nil {
+		val4, cancel5 := Allocator.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = (*C.VkAllocationCallbacks)(val4)
+	}
+	if indirectExecutionSet != nil && indirectExecutionSet.cleanup != nil {
+		indirectExecutionSet.cleanup()
+	}
+	C.fn_vkDestroyIndirectExecutionSetEXT(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
 }
 
 func (h Instance) Destroy(
@@ -31561,6 +35955,69 @@ func (h Device) FreeMemory(
 	C.fn_vkFreeMemory(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
 }
 
+func (h Device) GetAccelerationStructureBuildSizesKHR(
+	buildType AccelerationStructureBuildTypeKHR,
+	BuildInfo *AccelerationStructureBuildGeometryInfoKHR,
+	MaxPrimitiveCounts []uint32,
+) AccelerationStructureBuildSizesInfoKHR {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param buildType
+	val1 := C.VkAccelerationStructureBuildTypeKHR(buildType)
+	// param BuildInfo
+	var ptr3 *C.VkAccelerationStructureBuildGeometryInfoKHR
+	if BuildInfo != nil {
+		val4, cancel5 := BuildInfo.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = (*C.VkAccelerationStructureBuildGeometryInfoKHR)(val4)
+	}
+	// param MaxPrimitiveCounts
+	len7 := len(MaxPrimitiveCounts)
+
+	var arr8 *C.uint32_t
+	if len7 > 0 {
+		arr8 = (*C.uint32_t)(C.malloc(C.size_t(len7) * C.size_t(unsafe.Sizeof(*new(C.uint32_t)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr8)) })
+	}
+	for i9, elem10 := range MaxPrimitiveCounts {
+		val11 := C.uint32_t(elem10)
+		(*[1 << 30]C.uint32_t)(unsafe.Pointer(arr8))[i9] = val11
+	}
+	var sizeInfoOut C.VkAccelerationStructureBuildSizesInfoKHR
+	sizeInfoOut.sType = (C.VkStructureType)(StructureTypeAccelerationStructureBuildSizesInfoKHR)
+	C.fn_vkGetAccelerationStructureBuildSizesKHR(C.VkDevice(unsafe.Pointer(h.handle)), val1, ptr3, arr8, &sizeInfoOut)
+	var val12 AccelerationStructureBuildSizesInfoKHR
+	val12.fromC(&sizeInfoOut)
+	return val12
+}
+
+func (h Device) GetAccelerationStructureAddressKHR(
+	Info *AccelerationStructureDeviceAddressInfoKHR,
+) uint64 {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param Info
+	var ptr1 *C.VkAccelerationStructureDeviceAddressInfoKHR
+	if Info != nil {
+		val2, cancel3 := Info.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkAccelerationStructureDeviceAddressInfoKHR)(val2)
+	}
+	_result := C.fn_vkGetAccelerationStructureDeviceAddressKHR(C.VkDevice(unsafe.Pointer(h.handle)), ptr1)
+	val4 := uint64(_result)
+	return val4
+}
+
 func (h Device) GetBufferAddress(
 	Info *BufferDeviceAddressInfo,
 ) uint64 {
@@ -31652,6 +36109,48 @@ func (h Device) GetBufferOpaqueCaptureAddress(
 	return val4
 }
 
+func (h Device) GetDeferredOperationMaxConcurrencyKHR(
+	operation *DeferredOperationKHR,
+) uint32 {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param operation
+	var h1 C.VkDeferredOperationKHR
+	if operation != nil {
+		h1 = C.VkDeferredOperationKHR(unsafe.Pointer(operation.handle))
+	}
+	_result := C.fn_vkGetDeferredOperationMaxConcurrencyKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1)
+	val2 := uint32(_result)
+	return val2
+}
+
+func (h Device) GetDeferredOperationResultKHR(
+	operation *DeferredOperationKHR,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param operation
+	var h1 C.VkDeferredOperationKHR
+	if operation != nil {
+		h1 = C.VkDeferredOperationKHR(unsafe.Pointer(operation.handle))
+	}
+	_result := C.fn_vkGetDeferredOperationResultKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
 func (h Device) GetDescriptorSetLayoutSupport(
 	CreateInfo *DescriptorSetLayoutCreateInfo,
 ) DescriptorSetLayoutSupport {
@@ -31675,6 +36174,33 @@ func (h Device) GetDescriptorSetLayoutSupport(
 	var val4 DescriptorSetLayoutSupport
 	val4.fromC(&supportOut)
 	return val4
+}
+
+func (h Device) GetAccelerationStructureCompatibilityKHR(
+	VersionInfo *AccelerationStructureVersionInfoKHR,
+	Compatibility *AccelerationStructureCompatibilityKHR,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param VersionInfo
+	var ptr1 *C.VkAccelerationStructureVersionInfoKHR
+	if VersionInfo != nil {
+		val2, cancel3 := VersionInfo.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkAccelerationStructureVersionInfoKHR)(val2)
+	}
+	// param Compatibility
+	var ptr5 *C.VkAccelerationStructureCompatibilityKHR
+	if Compatibility != nil {
+		val6 := C.VkAccelerationStructureCompatibilityKHR(*Compatibility)
+		ptr5 = &val6
+	}
+	C.fn_vkGetDeviceAccelerationStructureCompatibilityKHR(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5)
 }
 
 func (h Device) GetGroupPeerMemoryFeatures(
@@ -31988,6 +36514,31 @@ func (h Device) GetFenceStatus(
 		return vkError(_result)
 	}
 	return nil
+}
+
+func (h Device) GetGeneratedCommandsMemoryRequirementsEXT(
+	Info *GeneratedCommandsMemoryRequirementsInfoEXT,
+) MemoryRequirements2 {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param Info
+	var ptr1 *C.VkGeneratedCommandsMemoryRequirementsInfoEXT
+	if Info != nil {
+		val2, cancel3 := Info.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = (*C.VkGeneratedCommandsMemoryRequirementsInfoEXT)(val2)
+	}
+	var memoryRequirementsOut C.VkMemoryRequirements2
+	memoryRequirementsOut.sType = (C.VkStructureType)(StructureTypeMemoryRequirements2)
+	C.fn_vkGetGeneratedCommandsMemoryRequirementsEXT(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &memoryRequirementsOut)
+	var val4 MemoryRequirements2
+	val4.fromC(&memoryRequirementsOut)
+	return val4
 }
 
 func (h Device) GetImageMemoryRequirements2(
@@ -32823,6 +37374,106 @@ func (h Device) GetQueryPoolResults(
 		return vkError(_result)
 	}
 	return nil
+}
+
+func (h Device) GetRayTracingCaptureReplayShaderGroupHandlesKHR(
+	pipeline *Pipeline,
+	firstGroup uint32,
+	groupCount uint32,
+	dataSize uintptr,
+	Data []byte,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pipeline
+	var h1 C.VkPipeline
+	if pipeline != nil {
+		h1 = C.VkPipeline(unsafe.Pointer(pipeline.handle))
+	}
+	// param firstGroup
+	val3 := C.uint32_t(firstGroup)
+	// param groupCount
+	val5 := C.uint32_t(groupCount)
+	// param dataSize
+	val7 := C.size_t(dataSize)
+	// param Data
+	var ptr9 unsafe.Pointer
+	if len(Data) > 0 {
+		ptr9 = unsafe.Pointer(&Data[0])
+	}
+	_result := C.fn_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, val5, val7, ptr9)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Device) GetRayTracingShaderGroupHandlesKHR(
+	pipeline *Pipeline,
+	firstGroup uint32,
+	groupCount uint32,
+	dataSize uintptr,
+	Data []byte,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pipeline
+	var h1 C.VkPipeline
+	if pipeline != nil {
+		h1 = C.VkPipeline(unsafe.Pointer(pipeline.handle))
+	}
+	// param firstGroup
+	val3 := C.uint32_t(firstGroup)
+	// param groupCount
+	val5 := C.uint32_t(groupCount)
+	// param dataSize
+	val7 := C.size_t(dataSize)
+	// param Data
+	var ptr9 unsafe.Pointer
+	if len(Data) > 0 {
+		ptr9 = unsafe.Pointer(&Data[0])
+	}
+	_result := C.fn_vkGetRayTracingShaderGroupHandlesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, val5, val7, ptr9)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Device) GetRayTracingShaderGroupStackSizeKHR(
+	pipeline *Pipeline,
+	group uint32,
+	groupShader ShaderGroupShaderKHR,
+) uint64 {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param pipeline
+	var h1 C.VkPipeline
+	if pipeline != nil {
+		h1 = C.VkPipeline(unsafe.Pointer(pipeline.handle))
+	}
+	// param group
+	val3 := C.uint32_t(group)
+	// param groupShader
+	val5 := C.VkShaderGroupShaderKHR(groupShader)
+	_result := C.fn_vkGetRayTracingShaderGroupStackSizeKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, val5)
+	val6 := uint64(_result)
+	return val6
 }
 
 func (h Device) GetRenderAreaGranularity(
@@ -33767,6 +38418,74 @@ func (h Device) UpdateDescriptorSets(
 	C.fn_vkUpdateDescriptorSets(C.VkDevice(unsafe.Pointer(h.handle)), C.uint32_t(descriptorWriteCount), arr2, C.uint32_t(descriptorCopyCount), arr10)
 }
 
+func (h Device) UpdateIndirectExecutionSetPipelineEXT(
+	indirectExecutionSet *IndirectExecutionSetEXT,
+	ExecutionSetWrites []WriteIndirectExecutionSetPipelineEXT,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param indirectExecutionSet
+	var h1 C.VkIndirectExecutionSetEXT
+	if indirectExecutionSet != nil {
+		h1 = C.VkIndirectExecutionSetEXT(unsafe.Pointer(indirectExecutionSet.handle))
+	}
+	// param ExecutionSetWrites
+	executionSetWriteCount := len(ExecutionSetWrites)
+	len3 := len(ExecutionSetWrites)
+
+	var arr4 *C.VkWriteIndirectExecutionSetPipelineEXT
+	if len3 > 0 {
+		arr4 = (*C.VkWriteIndirectExecutionSetPipelineEXT)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkWriteIndirectExecutionSetPipelineEXT)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
+	}
+	for i5, elem6 := range ExecutionSetWrites {
+		val7, cancel8 := elem6.toC()
+		cancels = append(cancels, cancel8)
+		cast9 := (*C.VkWriteIndirectExecutionSetPipelineEXT)(val7)
+		(*[1 << 30]C.VkWriteIndirectExecutionSetPipelineEXT)(unsafe.Pointer(arr4))[i5] = *cast9
+	}
+	C.fn_vkUpdateIndirectExecutionSetPipelineEXT(C.VkDevice(unsafe.Pointer(h.handle)), h1, C.uint32_t(executionSetWriteCount), arr4)
+}
+
+func (h Device) UpdateIndirectExecutionSetShaderEXT(
+	indirectExecutionSet *IndirectExecutionSetEXT,
+	ExecutionSetWrites []WriteIndirectExecutionSetShaderEXT,
+) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param indirectExecutionSet
+	var h1 C.VkIndirectExecutionSetEXT
+	if indirectExecutionSet != nil {
+		h1 = C.VkIndirectExecutionSetEXT(unsafe.Pointer(indirectExecutionSet.handle))
+	}
+	// param ExecutionSetWrites
+	executionSetWriteCount := len(ExecutionSetWrites)
+	len3 := len(ExecutionSetWrites)
+
+	var arr4 *C.VkWriteIndirectExecutionSetShaderEXT
+	if len3 > 0 {
+		arr4 = (*C.VkWriteIndirectExecutionSetShaderEXT)(C.malloc(C.size_t(len3) * C.size_t(unsafe.Sizeof(*new(C.VkWriteIndirectExecutionSetShaderEXT)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr4)) })
+	}
+	for i5, elem6 := range ExecutionSetWrites {
+		val7, cancel8 := elem6.toC()
+		cancels = append(cancels, cancel8)
+		cast9 := (*C.VkWriteIndirectExecutionSetShaderEXT)(val7)
+		(*[1 << 30]C.VkWriteIndirectExecutionSetShaderEXT)(unsafe.Pointer(arr4))[i5] = *cast9
+	}
+	C.fn_vkUpdateIndirectExecutionSetShaderEXT(C.VkDevice(unsafe.Pointer(h.handle)), h1, C.uint32_t(executionSetWriteCount), arr4)
+}
+
 func (h Device) WaitForFences(
 	Fences []*Fence,
 	waitAll bool,
@@ -33830,6 +38549,54 @@ func (h Device) WaitSemaphores(
 	// param timeout
 	val5 := C.uint64_t(timeout)
 	_result := C.fn_vkWaitSemaphores(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, val5)
+	if _result != C.VK_SUCCESS {
+		return vkError(_result)
+	}
+	return nil
+}
+
+func (h Device) WriteAccelerationStructuresPropertiesKHR(
+	AccelerationStructures []*AccelerationStructureKHR,
+	queryType QueryType,
+	dataSize uintptr,
+	Data []byte,
+	stride uintptr,
+) error {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	// param AccelerationStructures
+	accelerationStructureCount := len(AccelerationStructures)
+	len1 := len(AccelerationStructures)
+
+	var arr2 *C.VkAccelerationStructureKHR
+	if len1 > 0 {
+		arr2 = (*C.VkAccelerationStructureKHR)(C.malloc(C.size_t(len1) * C.size_t(unsafe.Sizeof(*new(C.VkAccelerationStructureKHR)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(arr2)) })
+	}
+	for i3, elem4 := range AccelerationStructures {
+		var h5 C.VkAccelerationStructureKHR
+		if elem4 != nil {
+			h5 = C.VkAccelerationStructureKHR(unsafe.Pointer(elem4.handle))
+		}
+		(*[1 << 30]C.VkAccelerationStructureKHR)(unsafe.Pointer(arr2))[i3] = h5
+	}
+	// param queryType
+	val7 := C.VkQueryType(queryType)
+	// param dataSize
+	val9 := C.size_t(dataSize)
+	// param Data
+	var ptr11 unsafe.Pointer
+	if len(Data) > 0 {
+		ptr11 = unsafe.Pointer(&Data[0])
+	}
+	// param stride
+	val13 := C.size_t(stride)
+	_result := C.fn_vkWriteAccelerationStructuresPropertiesKHR(C.VkDevice(unsafe.Pointer(h.handle)), C.uint32_t(accelerationStructureCount), arr2, val7, val9, ptr11, val13)
 	if _result != C.VK_SUCCESS {
 		return vkError(_result)
 	}

@@ -257,6 +257,53 @@ func (t *FixedArray) CName() string  { return fmt.Sprintf("[%d]%s", t.Size, t.Ch
 func (t *FixedArray) GoName() string { return fmt.Sprintf("[%d]%s", t.Size, t.Child.GoName()) }
 
 // ---------------------------------------------------------------------------
+// PtrSlice  (double-pointer array: **T in C, []*T in Go)
+// Used for ppXxx Vulkan fields like ppGeometries.
+// ---------------------------------------------------------------------------
+
+type PtrSlice struct {
+	Child FieldType // always *StructType in practice
+}
+
+func (t *PtrSlice) GenerateToC(g *CodeGen, input string) string {
+	lengthVar := g.Var("len")
+	ptrVar := g.Var("ptrArr")
+
+	dblPtrType := t.CName()          // "**C.VkAccelerationStructureGeometryKHR"
+	elemPtrType := "*" + t.Child.CName() // "*C.VkAccelerationStructureGeometryKHR"
+
+	g.Line(fmt.Sprintf("\t%s := len(%s)", lengthVar, input))
+	g.Line(fmt.Sprintf(`
+	var %s %s
+	if %s > 0 {
+		%s = (%s)(C.malloc(C.size_t(%s) * C.size_t(unsafe.Sizeof(*new(%s)))))
+		cancels = append(cancels, func() { C.free(unsafe.Pointer(%s)) })
+	}`, ptrVar, dblPtrType,
+		lengthVar,
+		ptrVar, dblPtrType, lengthVar, elemPtrType,
+		ptrVar))
+
+	indexVar := g.Var("i")
+	elemVar := g.Var("elem")
+	g.Line(fmt.Sprintf("\tfor %s, %s := range %s {", indexVar, elemVar, input))
+	if st, ok := t.Child.(*StructType); ok {
+		outVar := g.Var("val")
+		cancelVar := g.Var("cancel")
+		g.Line(fmt.Sprintf("\t\t%s, %s := %s.toC()", outVar, cancelVar, elemVar))
+		g.Line(fmt.Sprintf("\t\tcancels = append(cancels, %s)", cancelVar))
+		g.Line(fmt.Sprintf("\t\t(*[1<<30]%s)(unsafe.Pointer(%s))[%s] = (*C.%s)(%s)",
+			elemPtrType, ptrVar, indexVar, st.CTypeName, outVar))
+	}
+	g.Line("\t}")
+
+	return ptrVar
+}
+
+func (t *PtrSlice) GenerateFromC(_ *CodeGen, _ string) string { return "nil" }
+func (t *PtrSlice) CName() string                             { return "**" + t.Child.CName() }
+func (t *PtrSlice) GoName() string                            { return "[]*" + t.Child.GoName() }
+
+// ---------------------------------------------------------------------------
 // String
 // ---------------------------------------------------------------------------
 
@@ -461,6 +508,8 @@ func ToCTypeName(ft FieldType) string {
 		return t.CTypeName
 	case *GoFuncPointer:
 		return t.CTypeName
+	case *PtrSlice:
+		return ToCTypeName(t.Child) + "**"
 	}
 	return "void*"
 }

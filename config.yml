@@ -15,6 +15,16 @@ extensions:
   - VK_EXT_shader_object
   - VK_EXT_swapchain_maintenance1
   - VK_EXT_surface_maintenance1
+  - VK_EXT_multi_draw
+  - VK_EXT_device_generated_commands
+  - VK_EXT_extended_dynamic_state2
+  - VK_EXT_extended_dynamic_state3
+  - VK_KHR_acceleration_structure
+  - VK_KHR_ray_tracing_pipeline
+  - VK_KHR_deferred_host_operations
+  - VK_KHR_ray_query
+  - VK_KHR_ray_tracing_position_fetch
+  - VK_KHR_ray_tracing_maintenance1
 
 platforms:
   - xlib

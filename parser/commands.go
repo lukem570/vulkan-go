@@ -117,8 +117,27 @@ func buildCommand(
 			continue
 		}
 		seen[p.Name] = true
+		cType := extractCType(p.InnerXML)
+		// For double-pointer non-struct/non-handle array params (e.g. const uint32_t* const*),
+		// use const void* in the C wrapper so that Go's unsafe.Pointer is accepted by CGo.
+		// Struct double-pointer params (ppGeometries, ppBuildRangeInfos) use PtrSlice instead
+		// and keep their correct C types.
+		{
+			cutoff := strings.Index(p.InnerXML, "<name>")
+			if cutoff < 0 {
+				cutoff = len(p.InnerXML)
+			}
+			if strings.Count(p.InnerXML[:cutoff], "*") >= 2 && p.Len != "" {
+				goName := stripVk(p.Type)
+				_, isStruct := structs[goName]
+				_, isHandle := handles[goName]
+				if !isStruct && !isHandle && primitiveType(p.Type) != nil {
+					cType = "const void*"
+				}
+			}
+		}
 		c.CParams = append(c.CParams, generator.CParam{
-			Type: extractCType(p.InnerXML),
+			Type: cType,
 			Name: p.Name,
 		})
 	}
@@ -247,9 +266,16 @@ func buildCommand(
 		}
 		seen[p.Name] = true
 
-		isPtr := strings.Contains(p.InnerXML, "*")
+		// Only inspect the part of InnerXML before <name> so that comments
+		// (e.g. "Vk*PipelineCreateInfo") don't give false positives.
+		dblPtrCutoff := strings.Index(p.InnerXML, "<name>")
+		if dblPtrCutoff < 0 {
+			dblPtrCutoff = len(p.InnerXML)
+		}
+		beforeName := p.InnerXML[:dblPtrCutoff]
+		isPtr := strings.Contains(beforeName, "*")
 		isArr := p.Len != "" && p.Len != "null-terminated"
-		isDblPtr := strings.Contains(p.InnerXML, "**")
+		isDblPtr := strings.Count(beforeName, "*") >= 2
 
 		ft := resolveFieldType(p.Type, isPtr, isArr, handles, funcPointers, structs, isDblPtr)
 

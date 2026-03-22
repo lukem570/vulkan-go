@@ -62,39 +62,77 @@ type XMLType struct {
 }
 
 // isPointerMember checks whether the raw XML contains a * for the member type.
+// Only looks before <name> to avoid false positives from <comment> text.
 func isPointerMember(m XMLMember) bool {
-	return strings.Contains(m.InnerXML, "*")
+	cutoff := strings.Index(m.InnerXML, "<name>")
+	if cutoff < 0 {
+		return strings.Contains(m.InnerXML, "*")
+	}
+	return strings.Contains(m.InnerXML[:cutoff], "*")
 }
 
-// fixedArraySize returns the fixed array size from InnerXML (e.g. [2] after </name>), or 0 if not a fixed array.
-// Handles both numeric sizes like [4] and named constants like [<enum>VK_MAX_EXTENSION_NAME_SIZE</enum>].
-func fixedArraySize(m XMLMember) int {
+// bitfieldWidth returns the bitfield width from InnerXML (e.g. "...<name>foo</name>:24" → 24), or 0 if not a bitfield.
+func bitfieldWidth(m XMLMember) int {
 	idx := strings.Index(m.InnerXML, "</name>")
 	if idx < 0 {
 		return 0
 	}
+	after := strings.TrimSpace(m.InnerXML[idx+len("</name>"):])
+	if !strings.HasPrefix(after, ":") {
+		return 0
+	}
+	rest := after[1:]
+	var digits string
+	for _, ch := range rest {
+		if ch >= '0' && ch <= '9' {
+			digits += string(ch)
+		} else {
+			break
+		}
+	}
+	if digits == "" {
+		return 0
+	}
+	n, err := strconv.Atoi(digits)
+	if err != nil || n <= 0 {
+		return 0
+	}
+	return n
+}
+
+// fixedArraySizes returns all fixed-array dimensions from InnerXML after </name>.
+// For example, "matrix[3][4]" → [3, 4], "data[16]" → [16], non-array → nil.
+func fixedArraySizes(m XMLMember) []int {
+	idx := strings.Index(m.InnerXML, "</name>")
+	if idx < 0 {
+		return nil
+	}
 	after := m.InnerXML[idx+len("</name>"):]
 
-	// Try numeric first
-	match := fixedArrayRe.FindStringSubmatch(after)
-	if match != nil {
-		n := 0
-		for _, ch := range match[1] {
-			n = n*10 + int(ch-'0')
+	var sizes []int
+	for {
+		// Try numeric first: [N]
+		if match := fixedArrayRe.FindStringIndex(after); match != nil {
+			sub := fixedArrayRe.FindStringSubmatch(after)
+			n, _ := strconv.Atoi(sub[1])
+			sizes = append(sizes, n)
+			after = after[match[1]:]
+			continue
 		}
-		return n
-	}
-
-	// Try named constant: [<enum>VK_MAX_FOO</enum>]
-	enumMatch := namedArrayRe.FindStringSubmatch(after)
-	if enumMatch != nil {
-		if val, ok := namedArrayConstants[enumMatch[1]]; ok {
-			return val
+		// Try named constant: [<enum>VK_MAX_FOO</enum>]
+		if match := namedArrayRe.FindStringIndex(after); match != nil {
+			sub := namedArrayRe.FindStringSubmatch(after)
+			if val, ok := namedArrayConstants[sub[1]]; ok {
+				sizes = append(sizes, val)
+			}
+			after = after[match[1]:]
+			continue
 		}
+		break
 	}
-
-	return 0
+	return sizes
 }
+
 
 func (x *XMLRegistry) parseTypes(r *generator.Registry) {
 	// First pass: collect all handle names so we can reference them in structs/params
@@ -269,6 +307,9 @@ func parseStruct(
 		reverseCountMap[entry.arrayField] = countField
 	}
 	seen := map[string]bool{}
+	// seenGoNames tracks Go field names already used for visible (non-count) fields.
+	// When two C members produce the same Go name, the later one falls back to toPublic(m.Name).
+	seenGoNames := map[string]bool{}
 
 	for _, m := range t.Members {
 		if m.Name == "sType" || m.Name == "pNext" {
@@ -300,13 +341,22 @@ func parseStruct(
 		}
 
 		isPtr := isPointerMember(m)
-		fixedSize := fixedArraySize(m)
+		fixedSizes := fixedArraySizes(m)
+		fixedSize := 0
+		if len(fixedSizes) > 0 {
+			fixedSize = fixedSizes[0]
+		}
 		// If there's a len attribute that references another member, it's a slice.
 		// Also treat altlen-only fields as arrays (e.g. pCode with latexmath len).
 		// Fixed-size arrays take precedence over len-based slices.
 		isArr := fixedSize == 0 && (m.Len != "" && m.Len != "null-terminated" || m.AltLen != "")
 
-		isDblPtr := strings.Count(m.InnerXML, "*") >= 2
+		// Only count * before <name> to avoid false positives from <comment> text.
+		dblPtrCutoff := strings.Index(m.InnerXML, "<name>")
+		if dblPtrCutoff < 0 {
+			dblPtrCutoff = len(m.InnerXML)
+		}
+		isDblPtr := strings.Count(m.InnerXML[:dblPtrCutoff], "*") >= 2
 		// Double-pointer to char with no len= is an implicit array of strings
 		// (e.g. deprecated ppEnabledLayerNames in VkDeviceCreateInfo).
 		if isDblPtr && m.Type == "char" && !isArr {
@@ -314,9 +364,12 @@ func parseStruct(
 		}
 		ft := resolveFieldType(m.Type, isPtr, isArr, handles, funcPointers, structs, isDblPtr)
 
-		// Wrap in FixedArray if this is a fixed-size array (e.g. [2])
-		if fixedSize > 0 {
-			ft = &generator.FixedArray{Child: ft, Size: fixedSize}
+		// Wrap in FixedArray for each dimension (e.g. [3][4] → FixedArray{3, FixedArray{4, ft}}).
+		// Dimensions are applied innermost-first so matrix[3][4] becomes [3][4]T in Go.
+		if len(fixedSizes) > 0 {
+			for i := len(fixedSizes) - 1; i >= 0; i-- {
+				ft = &generator.FixedArray{Child: ft, Size: fixedSizes[i]}
+			}
 		}
 
 		// Find the C name of the count field for this slice.
@@ -339,12 +392,19 @@ func parseStruct(
 		}
 
 		goFieldName := toPublic(stripP(m.Name))
+		if seenGoNames[goFieldName] {
+			// Collision: two C members map to the same Go name (e.g. pGeometries and
+			// ppGeometries both strip to "Geometries"). Fall back to the raw C name.
+			goFieldName = toPublic(m.Name)
+		}
+		seenGoNames[goFieldName] = true
 		field := generator.StructField{
 			GoName:     goFieldName,
 			CName:      m.Name,
 			CountCName: countCName,
 			CountScale: countScale,
 			Type:       ft,
+			BitWidth:   bitfieldWidth(m),
 		}
 		s.Fields = append(s.Fields, field)
 	}

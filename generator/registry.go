@@ -395,6 +395,12 @@ func (r *Registry) GenerateCHeader() string {
 	b.WriteString("#include <stdlib.h>\n\n")
 	b.WriteString("#include <vulkan/vulkan.h>\n\n")
 
+	// Bitfield helpers: static inline getters/setters for structs with C bitfields.
+	// These are needed because CGo cannot access C bitfield members directly.
+	for _, k := range sortedKeys(r.Structs) {
+		b.WriteString(r.Structs[k].GenerateCBitfieldHelpers())
+	}
+
 	b.WriteString("VkResult vulkan_platform_initialize(void);\n\n")
 
 	// Non-platform commands

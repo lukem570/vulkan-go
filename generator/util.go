@@ -89,7 +89,7 @@ func sanitizeIdent(s string) string {
 // zeroValue returns the Go zero-value expression for a FieldType.
 func zeroValue(t FieldType) string {
 	switch t.(type) {
-	case *Pointer, *Handle, *VoidPtr, *ByteSlice, *Slice:
+	case *Pointer, *Handle, *VoidPtr, *ByteSlice, *Slice, *PtrSlice:
 		return "nil"
 	case *StructType:
 		return t.GoName() + "{}"

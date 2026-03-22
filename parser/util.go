@@ -112,6 +112,10 @@ func resolveFieldType(
 	}
 	if ft := primitiveType(typeName); ft != nil {
 		if isArray {
+			if isDoublePointer {
+				// **T (array of pointers to T): represent as unsafe.Pointer in Go.
+				return &generator.VoidPtr{}
+			}
 			return &generator.Slice{Child: ft}
 		}
 		if isPointer {
@@ -147,6 +151,9 @@ func resolveFieldType(
 		if _, ok := structs[goName]; ok {
 			st := &generator.StructType{Name: goName, CTypeName: typeName}
 			if isArray {
+				if isDoublePointer {
+					return &generator.PtrSlice{Child: st}
+				}
 				return &generator.Slice{Child: st}
 			}
 			if isPointer {

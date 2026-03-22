@@ -12,6 +12,7 @@ type StructField struct {
 	CountCName string // C name of the count field
 	CountScale int    // if > 1, C count = len(slice) * CountScale (e.g. codeSize = len(Code)*4)
 	Type       FieldType
+	BitWidth   int // non-zero for C bitfield members (e.g. instanceCustomIndex:24)
 }
 
 type Structured struct {
@@ -171,8 +172,12 @@ func (s *Structured) GenerateToC() string {
 		input := "s." + field.GoName
 		output := field.Type.GenerateToC(g, input)
 
-		cFieldName := sanitizeCField(field.CName)
-		g.Line(fmt.Sprintf("\tp.%s = %s", cFieldName, output))
+		if field.BitWidth > 0 {
+			g.Line(fmt.Sprintf("\tC.vk_set_%s_%s(p, %s)", s.CName, field.CName, output))
+		} else {
+			cFieldName := sanitizeCField(field.CName)
+			g.Line(fmt.Sprintf("\tp.%s = %s", cFieldName, output))
+		}
 
 		// If this is a slice/byte-slice field and the count field was collapsed, auto-set it
 		_, isSliceField := field.Type.(*Slice)
@@ -233,7 +238,12 @@ func (s *Structured) GenerateFromC() string {
 			continue
 		}
 		cFieldName := sanitizeCField(field.CName)
-		input := "p." + cFieldName
+		var input string
+		if field.BitWidth > 0 {
+			input = fmt.Sprintf("C.vk_get_%s_%s(p)", s.CName, field.CName)
+		} else {
+			input = "p." + cFieldName
+		}
 		goField := "s." + field.GoName
 
 		switch ft := field.Type.(type) {
@@ -263,6 +273,18 @@ func (s *Structured) GenerateFromC() string {
 				g.Line(fmt.Sprintf("\tfor _i := range %s {", goField))
 				g.Line(fmt.Sprintf("\t\t%s[_i] = &%s{handle: unsafe.Pointer(%s[_i])}", goField, child.Name, input))
 				g.Line("\t}")
+			case *FixedArray:
+				// Nested fixed array (e.g. float matrix[3][4] → [3][4]float32)
+				switch inner := child.Child.(type) {
+				case *Primitive:
+					g.Line(fmt.Sprintf("\tfor _i := range %s {", goField))
+					g.Line(fmt.Sprintf("\t\tfor _j := range %s[_i] {", goField))
+					g.Line(fmt.Sprintf("\t\t\t%s[_i][_j] = %s(%s[_i][_j])", goField, inner.GoName(), input))
+					g.Line("\t\t}")
+					g.Line("\t}")
+				default:
+					g.Line(fmt.Sprintf("\t// TODO: fromC for %s (FixedArray[FixedArray[%T]])", field.GoName, inner))
+				}
 			default:
 				g.Line(fmt.Sprintf("\t// TODO: fromC for %s (FixedArray of %T)", field.GoName, child))
 			}
@@ -333,6 +355,26 @@ func (s *Structured) GenerateFromC() string {
 					g.Line(fmt.Sprintf("\t// TODO: fromC for %s (Slice of %T)", field.GoName, ft.Child))
 				}
 			}
+		case *PtrSlice:
+			if field.CountCName != "" {
+				countCField := sanitizeCField(field.CountCName)
+				if st, ok := ft.Child.(*StructType); ok {
+					indexVar := g.Var("i")
+					elemVar := g.Var("elem")
+					goElemVar := g.Var("goElem")
+					g.Line(fmt.Sprintf("\tif p.%s > 0 && %s != nil {", countCField, input))
+					g.Line(fmt.Sprintf("\t\t%s = make([]*%s, p.%s)", goField, st.Name, countCField))
+					g.Line(fmt.Sprintf("\t\tfor %s := range %s {", indexVar, goField))
+					g.Line(fmt.Sprintf("\t\t\t%s := (*[1<<30]*C.%s)(unsafe.Pointer(%s))[%s]", elemVar, st.CTypeName, input, indexVar))
+					g.Line(fmt.Sprintf("\t\t\tif %s != nil {", elemVar))
+					g.Line(fmt.Sprintf("\t\t\t\tvar %s %s", goElemVar, st.Name))
+					g.Line(fmt.Sprintf("\t\t\t\t%s.fromC(%s)", goElemVar, elemVar))
+					g.Line(fmt.Sprintf("\t\t\t\t%s[%s] = &%s", goField, indexVar, goElemVar))
+					g.Line("\t\t\t}")
+					g.Line("\t\t}")
+					g.Line("\t}")
+				}
+			}
 		default:
 			g.Line(fmt.Sprintf("\t// TODO: fromC for %s (%T)", field.GoName, ft))
 		}
@@ -348,6 +390,38 @@ func (s *Structured) generateUnionFromC() string {
 	b.WriteString(fmt.Sprintf("func (s *%s) fromC(p *C.%s) {\n", s.GoName, s.CName))
 	b.WriteString(fmt.Sprintf("\tC.memcpy(unsafe.Pointer(&s[0]), unsafe.Pointer(p), C.sizeof_%s)\n", s.CName))
 	b.WriteString("}\n\n")
+	return b.String()
+}
+
+// GenerateCBitfieldHelpers generates static inline C getter/setter functions
+// for each bitfield member of this struct (placed in the header).
+// CGo cannot access C bitfield members directly, so Go code calls these instead.
+func (s *Structured) GenerateCBitfieldHelpers() string {
+	var hasBitfields bool
+	for _, f := range s.Fields {
+		if f.BitWidth > 0 {
+			hasBitfields = true
+			break
+		}
+	}
+	if !hasBitfields {
+		return ""
+	}
+
+	var b strings.Builder
+	for _, f := range s.Fields {
+		if f.BitWidth == 0 {
+			continue
+		}
+		cType := ToCTypeName(f.Type)
+		b.WriteString(fmt.Sprintf(
+			"static inline void vk_set_%s_%s(%s* s, %s v) { s->%s = v; }\n",
+			s.CName, f.CName, s.CName, cType, f.CName))
+		b.WriteString(fmt.Sprintf(
+			"static inline %s vk_get_%s_%s(const %s* s) { return (%s)s->%s; }\n",
+			cType, s.CName, f.CName, s.CName, cType, f.CName))
+	}
+	b.WriteString("\n")
 	return b.String()
 }
 
