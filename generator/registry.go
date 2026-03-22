@@ -502,7 +502,7 @@ func (r *Registry) generatePlatformCIncludes() string {
 	}
 
 	osGuards := map[string]string{
-		"linux":   "defined(__linux__) || defined(__unix__)",
+		"linux":   "defined(__linux__)",
 		"windows": "defined(_WIN32)",
 		"darwin":  "defined(__APPLE__)",
 		"android": "defined(__ANDROID__)",

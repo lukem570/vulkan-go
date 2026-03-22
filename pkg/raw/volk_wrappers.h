@@ -5,7 +5,7 @@
 #define VK_USE_PLATFORM_MACOS_MVK
 #endif
 
-#if defined(__linux__) || defined(__unix__)
+#if defined(__linux__)
 #include <wayland-client.h>
 #define VK_USE_PLATFORM_WAYLAND_KHR
 #include <xcb/xcb.h>
