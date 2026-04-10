@@ -1902,9 +1902,9 @@ const (
 	FormatFeature2DepthCopyOnTransferQueueBitKHR                                         FormatFeatureFlagBits2 = 1 << 53
 	FormatFeature2StencilCopyOnComputeQueueBitKHR                                        FormatFeatureFlagBits2 = 1 << 54
 	FormatFeature2StencilCopyOnTransferQueueBitKHR                                       FormatFeatureFlagBits2 = 1 << 55
-	FormatFeature2Reserved56BitARM                                                       FormatFeatureFlagBits2 = 1 << 56
-	FormatFeature2Reserved57BitARM                                                       FormatFeatureFlagBits2 = 1 << 57
-	FormatFeature2Reserved58BitARM                                                       FormatFeatureFlagBits2 = 1 << 58
+	FormatFeature2DataGraphOpticalFlowImageBitARM                                        FormatFeatureFlagBits2 = 1 << 56
+	FormatFeature2DataGraphOpticalFlowVectorBitARM                                       FormatFeatureFlagBits2 = 1 << 57
+	FormatFeature2DataGraphOpticalFlowCostBitARM                                         FormatFeatureFlagBits2 = 1 << 58
 	FormatFeature2Reserved47BitARM                                                       FormatFeatureFlagBits2 = 1 << 47
 	FormatFeature2Reserved61BitHUAWEI                                                    FormatFeatureFlagBits2 = 1 << 61
 )
@@ -4828,6 +4828,15 @@ const (
 	StructureTypeRenderingAttachmentFlagsInfoKHR                                 StructureType = 1000630002
 	StructureTypeRenderingEndInfoKHR                                             StructureType = 1000619003
 	StructureTypeResolveImageModeInfoKHR                                         StructureType = 1000630004
+	StructureTypePhysicalDeviceDataGraphOpticalFlowFeaturesARM                   StructureType = 1000631000
+	StructureTypeQueueFamilyDataGraphOpticalFlowPropertiesARM                    StructureType = 1000631001
+	StructureTypeDataGraphOpticalFlowImageFormatInfoARM                          StructureType = 1000631003
+	StructureTypeDataGraphOpticalFlowImageFormatPropertiesARM                    StructureType = 1000631004
+	StructureTypeDataGraphPipelineOpticalFlowDispatchInfoARM                     StructureType = 1000631005
+	StructureTypeDataGraphPipelineOpticalFlowCreateInfoARM                       StructureType = 1000631002
+	StructureTypeDataGraphPipelineResourceInfoImageLayoutARM                     StructureType = 1000631006
+	StructureTypeDataGraphPipelineSingleNodeCreateInfoARM                        StructureType = 1000631007
+	StructureTypeDataGraphPipelineSingleNodeConnectionARM                        StructureType = 1000631008
 	StructureTypePhysicalDeviceShaderLongVectorFeaturesEXT                       StructureType = 1000635000
 	StructureTypePhysicalDeviceShaderLongVectorPropertiesEXT                     StructureType = 1000635001
 	StructureTypePhysicalDevicePipelineCacheIncrementalModeFeaturesSEC           StructureType = 1000637000
