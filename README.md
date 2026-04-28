@@ -5,13 +5,16 @@ Unofficial Go bindings for Vulkan, auto-generated from `vk.xml`.
 ## Installation
 
 ```sh
-go get github.com/lukem570/vulkan-go/pkg/raw
+go get github.com/lukem570/vulkan-go
 ```
 
 ## Quick Start
 
 ```go
-import vk "github.com/lukem570/vulkan-go/pkg/raw"
+import (
+		"github.com/lukem570/vulkan-go/pkg/raw"
+		"github.com/lukem570/vulkan-go/pkg/util"
+)
 
 // Initialize Vulkan (must be called first)
 if err := vk.Initialize(); err != nil {
@@ -21,7 +24,7 @@ if err := vk.Initialize(); err != nil {
 instance, err := vk.CreateInstance(&vk.InstanceCreateInfo{
     ApplicationInfo: &vk.ApplicationInfo{
         ApplicationName: "my-app",
-        ApiVersion:      vk.MakeApiVersion(0, 1, 4, 0),
+        ApiVersion:      vkutil.MakeApiVersion(0, 1, 4, 0),
     },
 }, nil)
 if err != nil {

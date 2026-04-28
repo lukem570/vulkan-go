@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/lukem570/vulkan-go/generator"
-	"github.com/lukem570/vulkan-go/parser"
+	"github.com/lukem570/vulkan-go/internal/generator"
+	"github.com/lukem570/vulkan-go/internal/parser"
 )
 
 func main() {
@@ -27,22 +27,24 @@ func main() {
 	}
 
 	reduced := linker.Link()
+	
+	const pkgName string = "vk"
 
-	output := reduced.GeneratePackage("vulkan")
+	output := reduced.GeneratePackage(pkgName)
 
 	err = generator.WriteFile("pkg/raw/vulkan.go", output)
 	if err != nil {
 		log.Fatalf("WriteFile (base): %v", err)
 	}
 
-	callbacksOutput := reduced.GenerateCallbacksFile("vulkan")
+	callbacksOutput := reduced.GenerateCallbacksFile(pkgName)
 	err = generator.WriteFile("pkg/raw/callbacks.go", callbacksOutput)
 	if err != nil {
 		log.Fatalf("WriteFile (callbacks): %v", err)
 	}
 
 	// Generate platform-specific Go files
-	platformFiles := reduced.GeneratePlatformFiles("vulkan")
+	platformFiles := reduced.GeneratePlatformFiles(pkgName)
 	for _, pf := range platformFiles {
 		path := fmt.Sprintf("pkg/raw/vulkan_%s.go", pf.BuildTag)
 		err = generator.WriteFile(path, pf.Content)

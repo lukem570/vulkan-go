@@ -1,6 +1,6 @@
 //go:build linux
 
-package vulkan
+package vk
 
 /*
 #cgo CFLAGS: -I./../../mod/cp-Vulkan-Headers/include -I./../../mod/cp-volk
@@ -163,7 +163,7 @@ func (h Instance) CreateWaylandSurfaceKHR(
 	var surfaceOut C.VkSurfaceKHR
 	_result := C.fn_vkCreateWaylandSurfaceKHR(C.VkInstance(unsafe.Pointer(h.handle)), ptr1, ptr5, &surfaceOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &SurfaceKHR{handle: unsafe.Pointer(surfaceOut)}
 	return h8, nil
@@ -197,7 +197,7 @@ func (h Instance) CreateXcbSurfaceKHR(
 	var surfaceOut C.VkSurfaceKHR
 	_result := C.fn_vkCreateXcbSurfaceKHR(C.VkInstance(unsafe.Pointer(h.handle)), ptr1, ptr5, &surfaceOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &SurfaceKHR{handle: unsafe.Pointer(surfaceOut)}
 	return h8, nil
@@ -231,7 +231,7 @@ func (h Instance) CreateXlibSurfaceKHR(
 	var surfaceOut C.VkSurfaceKHR
 	_result := C.fn_vkCreateXlibSurfaceKHR(C.VkInstance(unsafe.Pointer(h.handle)), ptr1, ptr5, &surfaceOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &SurfaceKHR{handle: unsafe.Pointer(surfaceOut)}
 	return h8, nil

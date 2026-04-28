@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
-	vk "github.com/lukem570/vulkan-go/pkg/raw"
+	"github.com/lukem570/vulkan-go/pkg/raw"
 	"github.com/lukem570/vulkan-go/pkg/util"
 )
 

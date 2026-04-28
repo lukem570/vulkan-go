@@ -1,4 +1,4 @@
-package vulkan
+package vk
 
 /*
 #cgo CFLAGS: -I./../../mod/Vulkan-Headers/include -I./../../mod/volk

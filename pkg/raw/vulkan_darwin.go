@@ -1,6 +1,6 @@
 //go:build darwin
 
-package vulkan
+package vk
 
 /*
 #cgo CFLAGS: -I./../../mod/cp-Vulkan-Headers/include -I./../../mod/cp-volk
@@ -76,7 +76,7 @@ func (h Instance) CreateMacOSSurfaceMVK(
 	var surfaceOut C.VkSurfaceKHR
 	_result := C.fn_vkCreateMacOSSurfaceMVK(C.VkInstance(unsafe.Pointer(h.handle)), ptr1, ptr5, &surfaceOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &SurfaceKHR{handle: unsafe.Pointer(surfaceOut)}
 	return h8, nil

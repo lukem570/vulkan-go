@@ -1,4 +1,4 @@
-package vulkan
+package vk
 
 /*
 #cgo CFLAGS: -I./../../mod/cp-Vulkan-Headers/include -I./../../mod/cp-volk
@@ -24,13 +24,9 @@ type Structure interface {
 // Must be called before any other Vulkan function.
 func Initialize() error {
 	if result := C.vulkan_platform_initialize(); result != C.VK_SUCCESS {
-		return vkError(result)
+		return Result(result)
 	}
 	return nil
-}
-
-func vkError(r C.VkResult) error {
-	return fmt.Errorf("vulkan error: %s", Result(r).String())
 }
 
 // LoadInstance loads instance-level Vulkan function pointers via Volk.
@@ -3011,7 +3007,7 @@ const (
 	ErrorNotEnoughSpaceKHR                      Result = -1000483000
 )
 
-func (v Result) String() string {
+func (v Result) Error() string {
 	switch v {
 	case Success:
 		return "Success"
@@ -29279,7 +29275,7 @@ func (h Device) AcquireNextImage2KHR(
 	var imageIndexOut C.uint32_t
 	_result := C.fn_vkAcquireNextImage2KHR(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &imageIndexOut)
 	if _result != C.VK_SUCCESS {
-		return 0, vkError(_result)
+		return 0, Result(_result)
 	}
 	val4 := uint32(imageIndexOut)
 	return val4, nil
@@ -29318,7 +29314,7 @@ func (h Device) AcquireNextImageKHR(
 	var imageIndexOut C.uint32_t
 	_result := C.fn_vkAcquireNextImageKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, h5, h7, &imageIndexOut)
 	if _result != C.VK_SUCCESS {
-		return 0, vkError(_result)
+		return 0, Result(_result)
 	}
 	val8 := uint32(imageIndexOut)
 	return val8, nil
@@ -29345,7 +29341,7 @@ func (h Device) AllocateCommandBuffers(
 	defer C.free(unsafe.Pointer(commandBuffersOut))
 	_result := C.fn_vkAllocateCommandBuffers(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, commandBuffersOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	out4 := make([]*CommandBuffer, AllocateInfo.CommandBufferCount)
 	for i5 := range out4 {
@@ -29376,7 +29372,7 @@ func (h Device) AllocateDescriptorSets(
 	defer C.free(unsafe.Pointer(descriptorSetsOut))
 	_result := C.fn_vkAllocateDescriptorSets(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, descriptorSetsOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	out4 := make([]*DescriptorSet, uint32(len(AllocateInfo.SetLayouts)))
 	for i5 := range out4 {
@@ -29414,7 +29410,7 @@ func (h Device) AllocateMemory(
 	var memoryOut C.VkDeviceMemory
 	_result := C.fn_vkAllocateMemory(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &memoryOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &DeviceMemory{handle: unsafe.Pointer(memoryOut)}
 	return h8, nil
@@ -29439,7 +29435,7 @@ func (h CommandBuffer) Begin(
 	}
 	_result := C.fn_vkBeginCommandBuffer(C.VkCommandBuffer(unsafe.Pointer(h.handle)), ptr1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -29470,7 +29466,7 @@ func (h Device) BindBufferMemory(
 	val5 := C.VkDeviceSize(memoryOffset)
 	_result := C.fn_vkBindBufferMemory(C.VkDevice(unsafe.Pointer(h.handle)), h1, h3, val5)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -29502,7 +29498,7 @@ func (h Device) BindBufferMemory2(
 	}
 	_result := C.fn_vkBindBufferMemory2(C.VkDevice(unsafe.Pointer(h.handle)), C.uint32_t(bindInfoCount), arr2)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -29533,7 +29529,7 @@ func (h Device) BindImageMemory(
 	val5 := C.VkDeviceSize(memoryOffset)
 	_result := C.fn_vkBindImageMemory(C.VkDevice(unsafe.Pointer(h.handle)), h1, h3, val5)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -29565,7 +29561,7 @@ func (h Device) BindImageMemory2(
 	}
 	_result := C.fn_vkBindImageMemory2(C.VkDevice(unsafe.Pointer(h.handle)), C.uint32_t(bindInfoCount), arr2)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -29617,7 +29613,7 @@ func (h Device) BuildAccelerationStructuresKHR(
 	}
 	_result := C.fn_vkBuildAccelerationStructuresKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, C.uint32_t(infoCount), arr4, ptrArr12)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -33335,7 +33331,7 @@ func (h Device) CopyAccelerationStructureKHR(
 	}
 	_result := C.fn_vkCopyAccelerationStructureKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -33365,7 +33361,7 @@ func (h Device) CopyAccelerationStructureToMemoryKHR(
 	}
 	_result := C.fn_vkCopyAccelerationStructureToMemoryKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -33389,7 +33385,7 @@ func (h Device) CopyImageToImage(
 	}
 	_result := C.fn_vkCopyImageToImage(C.VkDevice(unsafe.Pointer(h.handle)), ptr1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -33413,7 +33409,7 @@ func (h Device) CopyImageToMemory(
 	}
 	_result := C.fn_vkCopyImageToMemory(C.VkDevice(unsafe.Pointer(h.handle)), ptr1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -33443,7 +33439,7 @@ func (h Device) CopyMemoryToAccelerationStructureKHR(
 	}
 	_result := C.fn_vkCopyMemoryToAccelerationStructureKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -33467,7 +33463,7 @@ func (h Device) CopyMemoryToImage(
 	}
 	_result := C.fn_vkCopyMemoryToImage(C.VkDevice(unsafe.Pointer(h.handle)), ptr1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -33500,7 +33496,7 @@ func (h Device) CreateAccelerationStructureKHR(
 	var accelerationStructureOut C.VkAccelerationStructureKHR
 	_result := C.fn_vkCreateAccelerationStructureKHR(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &accelerationStructureOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &AccelerationStructureKHR{handle: unsafe.Pointer(accelerationStructureOut)}
 	return h8, nil
@@ -33534,7 +33530,7 @@ func (h Device) CreateBuffer(
 	var bufferOut C.VkBuffer
 	_result := C.fn_vkCreateBuffer(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &bufferOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &Buffer{handle: unsafe.Pointer(bufferOut)}
 	return h8, nil
@@ -33568,7 +33564,7 @@ func (h Device) CreateBufferView(
 	var viewOut C.VkBufferView
 	_result := C.fn_vkCreateBufferView(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &viewOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &BufferView{handle: unsafe.Pointer(viewOut)}
 	return h8, nil
@@ -33602,7 +33598,7 @@ func (h Device) CreateCommandPool(
 	var commandPoolOut C.VkCommandPool
 	_result := C.fn_vkCreateCommandPool(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &commandPoolOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &CommandPool{handle: unsafe.Pointer(commandPoolOut)}
 	return h8, nil
@@ -33651,7 +33647,7 @@ func (h Device) CreateComputePipelines(
 	defer C.free(unsafe.Pointer(pipelinesOut))
 	_result := C.fn_vkCreateComputePipelines(C.VkDevice(unsafe.Pointer(h.handle)), h1, C.uint32_t(createInfoCount), arr4, ptr11, pipelinesOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	out14 := make([]*Pipeline, createInfoCount)
 	for i15 := range out14 {
@@ -33689,7 +33685,7 @@ func (h Instance) CreateDebugUtilsMessengerEXT(
 	var messengerOut C.VkDebugUtilsMessengerEXT
 	_result := C.fn_vkCreateDebugUtilsMessengerEXT(C.VkInstance(unsafe.Pointer(h.handle)), ptr1, ptr5, &messengerOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &DebugUtilsMessengerEXT{handle: unsafe.Pointer(messengerOut)}
 	if CreateInfo.callbackCleanupFn != nil {
@@ -33718,7 +33714,7 @@ func (h Device) CreateDeferredOperationKHR(
 	var deferredOperationOut C.VkDeferredOperationKHR
 	_result := C.fn_vkCreateDeferredOperationKHR(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &deferredOperationOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h4 := &DeferredOperationKHR{handle: unsafe.Pointer(deferredOperationOut)}
 	return h4, nil
@@ -33752,7 +33748,7 @@ func (h Device) CreateDescriptorPool(
 	var descriptorPoolOut C.VkDescriptorPool
 	_result := C.fn_vkCreateDescriptorPool(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &descriptorPoolOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &DescriptorPool{handle: unsafe.Pointer(descriptorPoolOut)}
 	return h8, nil
@@ -33786,7 +33782,7 @@ func (h Device) CreateDescriptorSetLayout(
 	var setLayoutOut C.VkDescriptorSetLayout
 	_result := C.fn_vkCreateDescriptorSetLayout(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &setLayoutOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &DescriptorSetLayout{handle: unsafe.Pointer(setLayoutOut)}
 	return h8, nil
@@ -33820,7 +33816,7 @@ func (h Device) CreateDescriptorUpdateTemplate(
 	var descriptorUpdateTemplateOut C.VkDescriptorUpdateTemplate
 	_result := C.fn_vkCreateDescriptorUpdateTemplate(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &descriptorUpdateTemplateOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &DescriptorUpdateTemplate{handle: unsafe.Pointer(descriptorUpdateTemplateOut)}
 	return h8, nil
@@ -33854,7 +33850,7 @@ func (h PhysicalDevice) CreateDevice(
 	var deviceOut C.VkDevice
 	_result := C.fn_vkCreateDevice(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &deviceOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &Device{handle: unsafe.Pointer(deviceOut)}
 	return h8, nil
@@ -33888,7 +33884,7 @@ func (h Device) CreateEvent(
 	var eventOut C.VkEvent
 	_result := C.fn_vkCreateEvent(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &eventOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &Event{handle: unsafe.Pointer(eventOut)}
 	return h8, nil
@@ -33922,7 +33918,7 @@ func (h Device) CreateFence(
 	var fenceOut C.VkFence
 	_result := C.fn_vkCreateFence(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &fenceOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &Fence{handle: unsafe.Pointer(fenceOut)}
 	return h8, nil
@@ -33956,7 +33952,7 @@ func (h Device) CreateFramebuffer(
 	var framebufferOut C.VkFramebuffer
 	_result := C.fn_vkCreateFramebuffer(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &framebufferOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &Framebuffer{handle: unsafe.Pointer(framebufferOut)}
 	return h8, nil
@@ -34005,7 +34001,7 @@ func (h Device) CreateGraphicsPipelines(
 	defer C.free(unsafe.Pointer(pipelinesOut))
 	_result := C.fn_vkCreateGraphicsPipelines(C.VkDevice(unsafe.Pointer(h.handle)), h1, C.uint32_t(createInfoCount), arr4, ptr11, pipelinesOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	out14 := make([]*Pipeline, createInfoCount)
 	for i15 := range out14 {
@@ -34043,7 +34039,7 @@ func (h Device) CreateImage(
 	var imageOut C.VkImage
 	_result := C.fn_vkCreateImage(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &imageOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &Image{handle: unsafe.Pointer(imageOut)}
 	return h8, nil
@@ -34077,7 +34073,7 @@ func (h Device) CreateImageView(
 	var viewOut C.VkImageView
 	_result := C.fn_vkCreateImageView(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &viewOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &ImageView{handle: unsafe.Pointer(viewOut)}
 	return h8, nil
@@ -34111,7 +34107,7 @@ func (h Device) CreateIndirectCommandsLayoutEXT(
 	var indirectCommandsLayoutOut C.VkIndirectCommandsLayoutEXT
 	_result := C.fn_vkCreateIndirectCommandsLayoutEXT(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &indirectCommandsLayoutOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &IndirectCommandsLayoutEXT{handle: unsafe.Pointer(indirectCommandsLayoutOut)}
 	return h8, nil
@@ -34145,7 +34141,7 @@ func (h Device) CreateIndirectExecutionSetEXT(
 	var indirectExecutionSetOut C.VkIndirectExecutionSetEXT
 	_result := C.fn_vkCreateIndirectExecutionSetEXT(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &indirectExecutionSetOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &IndirectExecutionSetEXT{handle: unsafe.Pointer(indirectExecutionSetOut)}
 	return h8, nil
@@ -34179,7 +34175,7 @@ func CreateInstance(
 	var instanceOut C.VkInstance
 	_result := C.fn_vkCreateInstance(ptr1, ptr5, &instanceOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &Instance{handle: unsafe.Pointer(instanceOut)}
 	return h8, nil
@@ -34213,7 +34209,7 @@ func (h Device) CreatePipelineCache(
 	var pipelineCacheOut C.VkPipelineCache
 	_result := C.fn_vkCreatePipelineCache(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &pipelineCacheOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &PipelineCache{handle: unsafe.Pointer(pipelineCacheOut)}
 	return h8, nil
@@ -34247,7 +34243,7 @@ func (h Device) CreatePipelineLayout(
 	var pipelineLayoutOut C.VkPipelineLayout
 	_result := C.fn_vkCreatePipelineLayout(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &pipelineLayoutOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &PipelineLayout{handle: unsafe.Pointer(pipelineLayoutOut)}
 	return h8, nil
@@ -34281,7 +34277,7 @@ func (h Device) CreatePrivateDataSlot(
 	var privateDataSlotOut C.VkPrivateDataSlot
 	_result := C.fn_vkCreatePrivateDataSlot(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &privateDataSlotOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &PrivateDataSlot{handle: unsafe.Pointer(privateDataSlotOut)}
 	return h8, nil
@@ -34315,7 +34311,7 @@ func (h Device) CreateQueryPool(
 	var queryPoolOut C.VkQueryPool
 	_result := C.fn_vkCreateQueryPool(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &queryPoolOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &QueryPool{handle: unsafe.Pointer(queryPoolOut)}
 	return h8, nil
@@ -34370,7 +34366,7 @@ func (h Device) CreateRayTracingPipelinesKHR(
 	defer C.free(unsafe.Pointer(pipelinesOut))
 	_result := C.fn_vkCreateRayTracingPipelinesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, h3, C.uint32_t(createInfoCount), arr6, ptr13, pipelinesOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	out16 := make([]*Pipeline, createInfoCount)
 	for i17 := range out16 {
@@ -34408,7 +34404,7 @@ func (h Device) CreateRenderPass(
 	var renderPassOut C.VkRenderPass
 	_result := C.fn_vkCreateRenderPass(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &renderPassOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &RenderPass{handle: unsafe.Pointer(renderPassOut)}
 	return h8, nil
@@ -34442,7 +34438,7 @@ func (h Device) CreateRenderPass2(
 	var renderPassOut C.VkRenderPass
 	_result := C.fn_vkCreateRenderPass2(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &renderPassOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &RenderPass{handle: unsafe.Pointer(renderPassOut)}
 	return h8, nil
@@ -34476,7 +34472,7 @@ func (h Device) CreateSampler(
 	var samplerOut C.VkSampler
 	_result := C.fn_vkCreateSampler(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &samplerOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &Sampler{handle: unsafe.Pointer(samplerOut)}
 	return h8, nil
@@ -34510,7 +34506,7 @@ func (h Device) CreateSamplerYcbcrConversion(
 	var ycbcrConversionOut C.VkSamplerYcbcrConversion
 	_result := C.fn_vkCreateSamplerYcbcrConversion(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &ycbcrConversionOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &SamplerYcbcrConversion{handle: unsafe.Pointer(ycbcrConversionOut)}
 	return h8, nil
@@ -34544,7 +34540,7 @@ func (h Device) CreateSemaphore(
 	var semaphoreOut C.VkSemaphore
 	_result := C.fn_vkCreateSemaphore(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &semaphoreOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &Semaphore{handle: unsafe.Pointer(semaphoreOut)}
 	return h8, nil
@@ -34578,7 +34574,7 @@ func (h Device) CreateShaderModule(
 	var shaderModuleOut C.VkShaderModule
 	_result := C.fn_vkCreateShaderModule(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &shaderModuleOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &ShaderModule{handle: unsafe.Pointer(shaderModuleOut)}
 	return h8, nil
@@ -34621,7 +34617,7 @@ func (h Device) CreateShadersEXT(
 	defer C.free(unsafe.Pointer(shadersOut))
 	_result := C.fn_vkCreateShadersEXT(C.VkDevice(unsafe.Pointer(h.handle)), C.uint32_t(createInfoCount), arr2, ptr9, shadersOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	out12 := make([]*ShaderEXT, createInfoCount)
 	for i13 := range out12 {
@@ -34659,7 +34655,7 @@ func (h Device) CreateSwapchainKHR(
 	var swapchainOut C.VkSwapchainKHR
 	_result := C.fn_vkCreateSwapchainKHR(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, ptr5, &swapchainOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	h8 := &SwapchainKHR{handle: unsafe.Pointer(swapchainOut)}
 	return h8, nil
@@ -34682,7 +34678,7 @@ func (h Device) DeferredOperationJoinKHR(
 	}
 	_result := C.fn_vkDeferredOperationJoinKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -35578,7 +35574,7 @@ func (h Device) WaitIdle() error {
 
 	_result := C.fn_vkDeviceWaitIdle(C.VkDevice(unsafe.Pointer(h.handle)))
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -35593,7 +35589,7 @@ func (h CommandBuffer) End() error {
 
 	_result := C.fn_vkEndCommandBuffer(C.VkCommandBuffer(unsafe.Pointer(h.handle)))
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -35614,7 +35610,7 @@ func (h PhysicalDevice) EnumerateDeviceExtensionProperties(
 	var count C.uint32_t
 	_result := C.fn_vkEnumerateDeviceExtensionProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), cstr0, &count, nil)
 	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	if count == 0 {
 		return nil, nil
@@ -35625,7 +35621,7 @@ func (h PhysicalDevice) EnumerateDeviceExtensionProperties(
 
 	_result = C.fn_vkEnumerateDeviceExtensionProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), cstr0, &count, cArr)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 
 	out := make([]ExtensionProperties, int(count))
@@ -35649,7 +35645,7 @@ func (h PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, err
 	var count C.uint32_t
 	_result := C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, nil)
 	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	if count == 0 {
 		return nil, nil
@@ -35660,7 +35656,7 @@ func (h PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, err
 
 	_result = C.fn_vkEnumerateDeviceLayerProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, cArr)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 
 	out := make([]LayerProperties, int(count))
@@ -35689,7 +35685,7 @@ func EnumerateInstanceExtensionProperties(
 	var count C.uint32_t
 	_result := C.fn_vkEnumerateInstanceExtensionProperties(cstr0, &count, nil)
 	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	if count == 0 {
 		return nil, nil
@@ -35700,7 +35696,7 @@ func EnumerateInstanceExtensionProperties(
 
 	_result = C.fn_vkEnumerateInstanceExtensionProperties(cstr0, &count, cArr)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 
 	out := make([]ExtensionProperties, int(count))
@@ -35724,7 +35720,7 @@ func EnumerateInstanceLayerProperties() ([]LayerProperties, error) {
 	var count C.uint32_t
 	_result := C.fn_vkEnumerateInstanceLayerProperties(&count, nil)
 	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	if count == 0 {
 		return nil, nil
@@ -35735,7 +35731,7 @@ func EnumerateInstanceLayerProperties() ([]LayerProperties, error) {
 
 	_result = C.fn_vkEnumerateInstanceLayerProperties(&count, cArr)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 
 	out := make([]LayerProperties, int(count))
@@ -35759,7 +35755,7 @@ func EnumerateInstanceVersion() (uint32, error) {
 	var apiVersionOut C.uint32_t
 	_result := C.fn_vkEnumerateInstanceVersion(&apiVersionOut)
 	if _result != C.VK_SUCCESS {
-		return 0, vkError(_result)
+		return 0, Result(_result)
 	}
 	val0 := uint32(apiVersionOut)
 	return val0, nil
@@ -35776,7 +35772,7 @@ func (h Instance) EnumeratePhysicalDeviceGroups() ([]PhysicalDeviceGroupProperti
 	var count C.uint32_t
 	_result := C.fn_vkEnumeratePhysicalDeviceGroups(C.VkInstance(unsafe.Pointer(h.handle)), &count, nil)
 	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	if count == 0 {
 		return nil, nil
@@ -35787,7 +35783,7 @@ func (h Instance) EnumeratePhysicalDeviceGroups() ([]PhysicalDeviceGroupProperti
 
 	_result = C.fn_vkEnumeratePhysicalDeviceGroups(C.VkInstance(unsafe.Pointer(h.handle)), &count, cArr)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 
 	out := make([]PhysicalDeviceGroupProperties, int(count))
@@ -35811,7 +35807,7 @@ func (h Instance) EnumeratePhysicalDevices() ([]*PhysicalDevice, error) {
 	var count C.uint32_t
 	_result := C.fn_vkEnumeratePhysicalDevices(C.VkInstance(unsafe.Pointer(h.handle)), &count, nil)
 	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	if count == 0 {
 		return nil, nil
@@ -35822,7 +35818,7 @@ func (h Instance) EnumeratePhysicalDevices() ([]*PhysicalDevice, error) {
 
 	_result = C.fn_vkEnumeratePhysicalDevices(C.VkInstance(unsafe.Pointer(h.handle)), &count, cArr)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 
 	out := make([]*PhysicalDevice, int(count))
@@ -35861,7 +35857,7 @@ func (h Device) FlushMappedMemoryRanges(
 	}
 	_result := C.fn_vkFlushMappedMemoryRanges(C.VkDevice(unsafe.Pointer(h.handle)), C.uint32_t(memoryRangeCount), arr2)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -35941,7 +35937,7 @@ func (h Device) FreeDescriptorSets(
 	}
 	_result := C.fn_vkFreeDescriptorSets(C.VkDevice(unsafe.Pointer(h.handle)), h1, C.uint32_t(descriptorSetCount), arr4)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -36166,7 +36162,7 @@ func (h Device) GetDeferredOperationResultKHR(
 	}
 	_result := C.fn_vkGetDeferredOperationResultKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -36263,7 +36259,7 @@ func (h Device) GetGroupPresentCapabilitiesKHR() (DeviceGroupPresentCapabilities
 	deviceGroupPresentCapabilitiesOut.sType = (C.VkStructureType)(StructureTypeDeviceGroupPresentCapabilitiesKHR)
 	_result := C.fn_vkGetDeviceGroupPresentCapabilitiesKHR(C.VkDevice(unsafe.Pointer(h.handle)), &deviceGroupPresentCapabilitiesOut)
 	if _result != C.VK_SUCCESS {
-		return DeviceGroupPresentCapabilitiesKHR{}, vkError(_result)
+		return DeviceGroupPresentCapabilitiesKHR{}, Result(_result)
 	}
 	var val0 DeviceGroupPresentCapabilitiesKHR
 	val0.fromC(&deviceGroupPresentCapabilitiesOut)
@@ -36294,7 +36290,7 @@ func (h Device) GetGroupSurfacePresentModesKHR(
 	}
 	_result := C.fn_vkGetDeviceGroupSurfacePresentModesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, ptr3)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -36509,7 +36505,7 @@ func (h Device) GetEventStatus(
 	}
 	_result := C.fn_vkGetEventStatus(C.VkDevice(unsafe.Pointer(h.handle)), h1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -36531,7 +36527,7 @@ func (h Device) GetFenceStatus(
 	}
 	_result := C.fn_vkGetFenceStatus(C.VkDevice(unsafe.Pointer(h.handle)), h1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -36845,7 +36841,7 @@ func (h PhysicalDevice) GetImageFormatProperties(
 	var imageFormatPropertiesOut C.VkImageFormatProperties
 	_result := C.fn_vkGetPhysicalDeviceImageFormatProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), val1, val3, val5, val7, val9, &imageFormatPropertiesOut)
 	if _result != C.VK_SUCCESS {
-		return ImageFormatProperties{}, vkError(_result)
+		return ImageFormatProperties{}, Result(_result)
 	}
 	var val10 ImageFormatProperties
 	val10.fromC(&imageFormatPropertiesOut)
@@ -36873,7 +36869,7 @@ func (h PhysicalDevice) GetImageFormatProperties2(
 	imageFormatPropertiesOut.sType = (C.VkStructureType)(StructureTypeImageFormatProperties2)
 	_result := C.fn_vkGetPhysicalDeviceImageFormatProperties2(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), ptr1, &imageFormatPropertiesOut)
 	if _result != C.VK_SUCCESS {
-		return ImageFormatProperties2{}, vkError(_result)
+		return ImageFormatProperties2{}, Result(_result)
 	}
 	var val4 ImageFormatProperties2
 	val4.fromC(&imageFormatPropertiesOut)
@@ -36929,7 +36925,7 @@ func (h PhysicalDevice) GetPresentRectanglesKHR(
 	var count C.uint32_t
 	_result := C.fn_vkGetPhysicalDevicePresentRectanglesKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h0, &count, nil)
 	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	if count == 0 {
 		return nil, nil
@@ -36940,7 +36936,7 @@ func (h PhysicalDevice) GetPresentRectanglesKHR(
 
 	_result = C.fn_vkGetPhysicalDevicePresentRectanglesKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h0, &count, cArr)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 
 	out := make([]Rect2D, int(count))
@@ -37139,7 +37135,7 @@ func (h PhysicalDevice) GetSurfaceCapabilitiesKHR(
 	var surfaceCapabilitiesOut C.VkSurfaceCapabilitiesKHR
 	_result := C.fn_vkGetPhysicalDeviceSurfaceCapabilitiesKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h1, &surfaceCapabilitiesOut)
 	if _result != C.VK_SUCCESS {
-		return SurfaceCapabilitiesKHR{}, vkError(_result)
+		return SurfaceCapabilitiesKHR{}, Result(_result)
 	}
 	var val2 SurfaceCapabilitiesKHR
 	val2.fromC(&surfaceCapabilitiesOut)
@@ -37164,7 +37160,7 @@ func (h PhysicalDevice) GetSurfaceFormatsKHR(
 	var count C.uint32_t
 	_result := C.fn_vkGetPhysicalDeviceSurfaceFormatsKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h0, &count, nil)
 	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	if count == 0 {
 		return nil, nil
@@ -37175,7 +37171,7 @@ func (h PhysicalDevice) GetSurfaceFormatsKHR(
 
 	_result = C.fn_vkGetPhysicalDeviceSurfaceFormatsKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h0, &count, cArr)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 
 	out := make([]SurfaceFormatKHR, int(count))
@@ -37206,7 +37202,7 @@ func (h PhysicalDevice) GetSurfacePresentModesKHR(
 	var count C.uint32_t
 	_result := C.fn_vkGetPhysicalDeviceSurfacePresentModesKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h0, &count, nil)
 	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	if count == 0 {
 		return nil, nil
@@ -37217,7 +37213,7 @@ func (h PhysicalDevice) GetSurfacePresentModesKHR(
 
 	_result = C.fn_vkGetPhysicalDeviceSurfacePresentModesKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), h0, &count, cArr)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 
 	out := make([]PresentModeKHR, int(count))
@@ -37250,7 +37246,7 @@ func (h PhysicalDevice) GetSurfaceSupportKHR(
 	var supportedOut C.VkBool32
 	_result := C.fn_vkGetPhysicalDeviceSurfaceSupportKHR(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), val1, h3, &supportedOut)
 	if _result != C.VK_SUCCESS {
-		return false, vkError(_result)
+		return false, Result(_result)
 	}
 	val4 := supportedOut != 0
 	return val4, nil
@@ -37267,7 +37263,7 @@ func (h PhysicalDevice) GetToolProperties() ([]PhysicalDeviceToolProperties, err
 	var count C.uint32_t
 	_result := C.fn_vkGetPhysicalDeviceToolProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, nil)
 	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	if count == 0 {
 		return nil, nil
@@ -37278,7 +37274,7 @@ func (h PhysicalDevice) GetToolProperties() ([]PhysicalDeviceToolProperties, err
 
 	_result = C.fn_vkGetPhysicalDeviceToolProperties(C.VkPhysicalDevice(unsafe.Pointer(h.handle)), &count, cArr)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 
 	out := make([]PhysicalDeviceToolProperties, int(count))
@@ -37309,7 +37305,7 @@ func (h Device) GetPipelineCacheData(
 	var dataSize C.size_t
 	_result := C.fn_vkGetPipelineCacheData(C.VkDevice(unsafe.Pointer(h.handle)), h0, &dataSize, nil)
 	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	if dataSize == 0 {
 		return nil, nil
@@ -37320,7 +37316,7 @@ func (h Device) GetPipelineCacheData(
 
 	_result = C.fn_vkGetPipelineCacheData(C.VkDevice(unsafe.Pointer(h.handle)), h0, &dataSize, buf)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 
 	return C.GoBytes(buf, C.int(dataSize)), nil
@@ -37391,7 +37387,7 @@ func (h Device) GetQueryPoolResults(
 	val13 := C.VkQueryResultFlags(flags)
 	_result := C.fn_vkGetQueryPoolResults(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, val5, val7, ptr9, val11, val13)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -37428,7 +37424,7 @@ func (h Device) GetRayTracingCaptureReplayShaderGroupHandlesKHR(
 	}
 	_result := C.fn_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, val5, val7, ptr9)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -37465,7 +37461,7 @@ func (h Device) GetRayTracingShaderGroupHandlesKHR(
 	}
 	_result := C.fn_vkGetRayTracingShaderGroupHandlesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, val5, val7, ptr9)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -37560,7 +37556,7 @@ func (h Device) GetSemaphoreCounterValue(
 	var valueOut C.uint64_t
 	_result := C.fn_vkGetSemaphoreCounterValue(C.VkDevice(unsafe.Pointer(h.handle)), h1, &valueOut)
 	if _result != C.VK_SUCCESS {
-		return 0, vkError(_result)
+		return 0, Result(_result)
 	}
 	val2 := uint64(valueOut)
 	return val2, nil
@@ -37584,7 +37580,7 @@ func (h Device) GetShaderBinaryDataEXT(
 	var dataSize C.size_t
 	_result := C.fn_vkGetShaderBinaryDataEXT(C.VkDevice(unsafe.Pointer(h.handle)), h0, &dataSize, nil)
 	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	if dataSize == 0 {
 		return nil, nil
@@ -37595,7 +37591,7 @@ func (h Device) GetShaderBinaryDataEXT(
 
 	_result = C.fn_vkGetShaderBinaryDataEXT(C.VkDevice(unsafe.Pointer(h.handle)), h0, &dataSize, buf)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 
 	return C.GoBytes(buf, C.int(dataSize)), nil
@@ -37619,7 +37615,7 @@ func (h Device) GetSwapchainImagesKHR(
 	var count C.uint32_t
 	_result := C.fn_vkGetSwapchainImagesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h0, &count, nil)
 	if _result != C.VK_SUCCESS && _result != C.VK_INCOMPLETE {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	if count == 0 {
 		return nil, nil
@@ -37630,7 +37626,7 @@ func (h Device) GetSwapchainImagesKHR(
 
 	_result = C.fn_vkGetSwapchainImagesKHR(C.VkDevice(unsafe.Pointer(h.handle)), h0, &count, cArr)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 
 	out := make([]*Image, int(count))
@@ -37669,7 +37665,7 @@ func (h Device) InvalidateMappedMemoryRanges(
 	}
 	_result := C.fn_vkInvalidateMappedMemoryRanges(C.VkDevice(unsafe.Pointer(h.handle)), C.uint32_t(memoryRangeCount), arr2)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -37701,7 +37697,7 @@ func (h Device) MapMemory(
 	var pDataOut unsafe.Pointer
 	_result := C.fn_vkMapMemory(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3, val5, val7, &pDataOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	return pDataOut, nil
 }
@@ -37726,7 +37722,7 @@ func (h Device) MapMemory2(
 	var pDataOut unsafe.Pointer
 	_result := C.fn_vkMapMemory2(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, &pDataOut)
 	if _result != C.VK_SUCCESS {
-		return nil, vkError(_result)
+		return nil, Result(_result)
 	}
 	return pDataOut, nil
 }
@@ -37765,7 +37761,7 @@ func (h Device) MergePipelineCaches(
 	}
 	_result := C.fn_vkMergePipelineCaches(C.VkDevice(unsafe.Pointer(h.handle)), h1, C.uint32_t(srcCacheCount), arr4)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -37823,7 +37819,7 @@ func (h Queue) BindSparse(
 	}
 	_result := C.fn_vkQueueBindSparse(C.VkQueue(unsafe.Pointer(h.handle)), C.uint32_t(bindInfoCount), arr2, h9)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -37878,7 +37874,7 @@ func (h Queue) PresentKHR(
 	}
 	_result := C.fn_vkQueuePresentKHR(C.VkQueue(unsafe.Pointer(h.handle)), ptr1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -37916,7 +37912,7 @@ func (h Queue) Submit(
 	}
 	_result := C.fn_vkQueueSubmit(C.VkQueue(unsafe.Pointer(h.handle)), C.uint32_t(submitCount), arr2, h9)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -37954,7 +37950,7 @@ func (h Queue) Submit2(
 	}
 	_result := C.fn_vkQueueSubmit2(C.VkQueue(unsafe.Pointer(h.handle)), C.uint32_t(submitCount), arr2, h9)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -37969,7 +37965,7 @@ func (h Queue) WaitIdle() error {
 
 	_result := C.fn_vkQueueWaitIdle(C.VkQueue(unsafe.Pointer(h.handle)))
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -37988,7 +37984,7 @@ func (h CommandBuffer) Reset(
 	val1 := C.VkCommandBufferResetFlags(flags)
 	_result := C.fn_vkResetCommandBuffer(C.VkCommandBuffer(unsafe.Pointer(h.handle)), val1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38013,7 +38009,7 @@ func (h Device) ResetCommandPool(
 	val3 := C.VkCommandPoolResetFlags(flags)
 	_result := C.fn_vkResetCommandPool(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38038,7 +38034,7 @@ func (h Device) ResetDescriptorPool(
 	val3 := C.VkDescriptorPoolResetFlags(flags)
 	_result := C.fn_vkResetDescriptorPool(C.VkDevice(unsafe.Pointer(h.handle)), h1, val3)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38060,7 +38056,7 @@ func (h Device) ResetEvent(
 	}
 	_result := C.fn_vkResetEvent(C.VkDevice(unsafe.Pointer(h.handle)), h1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38093,7 +38089,7 @@ func (h Device) ResetFences(
 	}
 	_result := C.fn_vkResetFences(C.VkDevice(unsafe.Pointer(h.handle)), C.uint32_t(fenceCount), arr2)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38141,7 +38137,7 @@ func (h Device) SetDebugUtilsObjectNameEXT(
 	}
 	_result := C.fn_vkSetDebugUtilsObjectNameEXT(C.VkDevice(unsafe.Pointer(h.handle)), ptr1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38165,7 +38161,7 @@ func (h Device) SetDebugUtilsObjectTagEXT(
 	}
 	_result := C.fn_vkSetDebugUtilsObjectTagEXT(C.VkDevice(unsafe.Pointer(h.handle)), ptr1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38187,7 +38183,7 @@ func (h Device) SetEvent(
 	}
 	_result := C.fn_vkSetEvent(C.VkDevice(unsafe.Pointer(h.handle)), h1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38218,7 +38214,7 @@ func (h Device) SetPrivateData(
 	val7 := C.uint64_t(data)
 	_result := C.fn_vkSetPrivateData(C.VkDevice(unsafe.Pointer(h.handle)), val1, val3, h5, val7)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38242,7 +38238,7 @@ func (h Device) SignalSemaphore(
 	}
 	_result := C.fn_vkSignalSemaphore(C.VkDevice(unsafe.Pointer(h.handle)), ptr1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38300,7 +38296,7 @@ func (h Device) TransitionImageLayout(
 	}
 	_result := C.fn_vkTransitionImageLayout(C.VkDevice(unsafe.Pointer(h.handle)), C.uint32_t(transitionCount), arr2)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38363,7 +38359,7 @@ func (h Device) UnmapMemory2(
 	}
 	_result := C.fn_vkUnmapMemory2(C.VkDevice(unsafe.Pointer(h.handle)), ptr1)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38543,7 +38539,7 @@ func (h Device) WaitForFences(
 	val9 := C.uint64_t(timeout)
 	_result := C.fn_vkWaitForFences(C.VkDevice(unsafe.Pointer(h.handle)), C.uint32_t(fenceCount), arr2, val7, val9)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38570,7 +38566,7 @@ func (h Device) WaitSemaphores(
 	val5 := C.uint64_t(timeout)
 	_result := C.fn_vkWaitSemaphores(C.VkDevice(unsafe.Pointer(h.handle)), ptr1, val5)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }
@@ -38618,7 +38614,7 @@ func (h Device) WriteAccelerationStructuresPropertiesKHR(
 	val13 := C.size_t(stride)
 	_result := C.fn_vkWriteAccelerationStructuresPropertiesKHR(C.VkDevice(unsafe.Pointer(h.handle)), C.uint32_t(accelerationStructureCount), arr2, val7, val9, ptr11, val13)
 	if _result != C.VK_SUCCESS {
-		return vkError(_result)
+		return Result(_result)
 	}
 	return nil
 }

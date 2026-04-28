@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unsafe"
 
-	vk "github.com/lukem570/vulkan-go/pkg/raw"
+	"github.com/lukem570/vulkan-go/pkg/raw"
 	"github.com/lukem570/vulkan-go/pkg/util"
 )
 
