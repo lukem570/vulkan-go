@@ -65,7 +65,7 @@ func run() error {
 			vk.DebugUtilsMessageTypeValidationBitEXT |
 				vk.DebugUtilsMessageTypePerformanceBitEXT,
 		),
-		PfnUserCallback: func(messageSeverity vk.DebugUtilsMessageSeverityFlagBitsEXT, messageTypes vk.DebugUtilsMessageTypeFlagsEXT, callbackData *vk.DebugUtilsMessengerCallbackDataEXT, userData unsafe.Pointer) bool {
+		UserCallback: func(messageSeverity vk.DebugUtilsMessageSeverityFlagBitsEXT, messageTypes vk.DebugUtilsMessageTypeFlagsEXT, callbackData *vk.DebugUtilsMessengerCallbackDataEXT, userData unsafe.Pointer) bool {
 			fmt.Println("vulkan:", callbackData.Message)
 			return false
 		},

@@ -399,17 +399,17 @@ VkBool32 fn_vkGetPhysicalDeviceXlibPresentationSupportKHR(VkPhysicalDevice physi
 #endif // VK_USE_PLATFORM_XLIB_KHR
 
 /* Callback trampolines */
-extern void* go_bridge_AllocationCallbacks_PfnAllocation(void*, size_t, size_t, VkSystemAllocationScope);
-void* trampoline_AllocationCallbacks_PfnAllocation(void*, size_t, size_t, VkSystemAllocationScope);
-extern void* go_bridge_AllocationCallbacks_PfnReallocation(void*, void*, size_t, size_t, VkSystemAllocationScope);
-void* trampoline_AllocationCallbacks_PfnReallocation(void*, void*, size_t, size_t, VkSystemAllocationScope);
-extern void go_bridge_AllocationCallbacks_PfnFree(void*, void*);
-void trampoline_AllocationCallbacks_PfnFree(void*, void*);
-extern void go_bridge_AllocationCallbacks_PfnInternalAllocation(void*, size_t, VkInternalAllocationType, VkSystemAllocationScope);
-void trampoline_AllocationCallbacks_PfnInternalAllocation(void*, size_t, VkInternalAllocationType, VkSystemAllocationScope);
-extern void go_bridge_AllocationCallbacks_PfnInternalFree(void*, size_t, VkInternalAllocationType, VkSystemAllocationScope);
-void trampoline_AllocationCallbacks_PfnInternalFree(void*, size_t, VkInternalAllocationType, VkSystemAllocationScope);
-extern VkBool32 go_bridge_DebugUtilsMessengerCreateInfoEXT_PfnUserCallback(VkDebugUtilsMessageSeverityFlagBitsEXT, VkDebugUtilsMessageTypeFlagsEXT, VkDebugUtilsMessengerCallbackDataEXT*, void*);
-VkBool32 trampoline_DebugUtilsMessengerCreateInfoEXT_PfnUserCallback(VkDebugUtilsMessageSeverityFlagBitsEXT, VkDebugUtilsMessageTypeFlagsEXT, VkDebugUtilsMessengerCallbackDataEXT*, void*);
+extern void* go_bridge_AllocationCallbacks_Allocation(void*, size_t, size_t, VkSystemAllocationScope);
+void* trampoline_AllocationCallbacks_Allocation(void*, size_t, size_t, VkSystemAllocationScope);
+extern void* go_bridge_AllocationCallbacks_Reallocation(void*, void*, size_t, size_t, VkSystemAllocationScope);
+void* trampoline_AllocationCallbacks_Reallocation(void*, void*, size_t, size_t, VkSystemAllocationScope);
+extern void go_bridge_AllocationCallbacks_Free(void*, void*);
+void trampoline_AllocationCallbacks_Free(void*, void*);
+extern void go_bridge_AllocationCallbacks_InternalAllocation(void*, size_t, VkInternalAllocationType, VkSystemAllocationScope);
+void trampoline_AllocationCallbacks_InternalAllocation(void*, size_t, VkInternalAllocationType, VkSystemAllocationScope);
+extern void go_bridge_AllocationCallbacks_InternalFree(void*, size_t, VkInternalAllocationType, VkSystemAllocationScope);
+void trampoline_AllocationCallbacks_InternalFree(void*, size_t, VkInternalAllocationType, VkSystemAllocationScope);
+extern VkBool32 go_bridge_DebugUtilsMessengerCreateInfoEXT_UserCallback(VkDebugUtilsMessageSeverityFlagBitsEXT, VkDebugUtilsMessageTypeFlagsEXT, VkDebugUtilsMessengerCallbackDataEXT*, void*);
+VkBool32 trampoline_DebugUtilsMessengerCreateInfoEXT_UserCallback(VkDebugUtilsMessageSeverityFlagBitsEXT, VkDebugUtilsMessageTypeFlagsEXT, VkDebugUtilsMessengerCallbackDataEXT*, void*);
 
 #endif

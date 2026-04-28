@@ -5932,13 +5932,13 @@ func (s *AcquireNextImageInfoKHR) fromC(p *C.VkAcquireNextImageInfoKHR) {
 }
 
 type AllocationCallbacks struct {
-	UserData              unsafe.Pointer
-	PfnAllocation         AllocationFunction
-	PfnReallocation       ReallocationFunction
-	PfnFree               FreeFunction
-	PfnInternalAllocation InternalAllocationNotification
-	PfnInternalFree       InternalFreeNotification
-	callbackCleanupFn     func()
+	UserData           unsafe.Pointer
+	Allocation         AllocationFunction
+	Reallocation       ReallocationFunction
+	Free               FreeFunction
+	InternalAllocation InternalAllocationNotification
+	InternalFree       InternalFreeNotification
+	callbackCleanupFn  func()
 }
 
 func (s *AllocationCallbacks) toC() (unsafe.Pointer, func()) {
@@ -5946,31 +5946,31 @@ func (s *AllocationCallbacks) toC() (unsafe.Pointer, func()) {
 	p := (*C.VkAllocationCallbacks)(C.malloc(C.size_t(C.sizeof_VkAllocationCallbacks)))
 	*p = C.VkAllocationCallbacks{}
 	holder0 := &allocationCallbacksCallbacks{}
-	if s.PfnAllocation != nil {
-		holder0.PfnAllocation = s.PfnAllocation
+	if s.Allocation != nil {
+		holder0.Allocation = s.Allocation
 	}
-	if s.PfnReallocation != nil {
-		holder0.PfnReallocation = s.PfnReallocation
+	if s.Reallocation != nil {
+		holder0.Reallocation = s.Reallocation
 	}
-	if s.PfnFree != nil {
-		holder0.PfnFree = s.PfnFree
+	if s.Free != nil {
+		holder0.Free = s.Free
 	}
-	if s.PfnInternalAllocation != nil {
-		holder0.PfnInternalAllocation = s.PfnInternalAllocation
+	if s.InternalAllocation != nil {
+		holder0.InternalAllocation = s.InternalAllocation
 	}
-	if s.PfnInternalFree != nil {
-		holder0.PfnInternalFree = s.PfnInternalFree
+	if s.InternalFree != nil {
+		holder0.InternalFree = s.InternalFree
 	}
 	holder0.UserData = s.UserData
 	holderPtr1 := unsafe.Pointer(holder0)
 	allocationCallbacksCallbackRegistry.Store(holderPtr1, holder0)
 	s.callbackCleanupFn = func() { allocationCallbacksCallbackRegistry.Delete(holderPtr1) }
 	p.pUserData = holderPtr1
-	*(*unsafe.Pointer)(unsafe.Pointer(&p.pfnAllocation)) = C.trampoline_AllocationCallbacks_PfnAllocation
-	*(*unsafe.Pointer)(unsafe.Pointer(&p.pfnReallocation)) = C.trampoline_AllocationCallbacks_PfnReallocation
-	*(*unsafe.Pointer)(unsafe.Pointer(&p.pfnFree)) = C.trampoline_AllocationCallbacks_PfnFree
-	*(*unsafe.Pointer)(unsafe.Pointer(&p.pfnInternalAllocation)) = C.trampoline_AllocationCallbacks_PfnInternalAllocation
-	*(*unsafe.Pointer)(unsafe.Pointer(&p.pfnInternalFree)) = C.trampoline_AllocationCallbacks_PfnInternalFree
+	*(*unsafe.Pointer)(unsafe.Pointer(&p.pfnAllocation)) = C.trampoline_AllocationCallbacks_Allocation
+	*(*unsafe.Pointer)(unsafe.Pointer(&p.pfnReallocation)) = C.trampoline_AllocationCallbacks_Reallocation
+	*(*unsafe.Pointer)(unsafe.Pointer(&p.pfnFree)) = C.trampoline_AllocationCallbacks_Free
+	*(*unsafe.Pointer)(unsafe.Pointer(&p.pfnInternalAllocation)) = C.trampoline_AllocationCallbacks_InternalAllocation
+	*(*unsafe.Pointer)(unsafe.Pointer(&p.pfnInternalFree)) = C.trampoline_AllocationCallbacks_InternalFree
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
@@ -5981,11 +5981,11 @@ func (s *AllocationCallbacks) toC() (unsafe.Pointer, func()) {
 
 func (s *AllocationCallbacks) fromC(p *C.VkAllocationCallbacks) {
 	s.UserData = unsafe.Pointer(p.pUserData)
-	// TODO: fromC for PfnAllocation (*generator.GoFuncPointer)
-	// TODO: fromC for PfnReallocation (*generator.GoFuncPointer)
-	// TODO: fromC for PfnFree (*generator.GoFuncPointer)
-	// TODO: fromC for PfnInternalAllocation (*generator.GoFuncPointer)
-	// TODO: fromC for PfnInternalFree (*generator.GoFuncPointer)
+	// TODO: fromC for Allocation (*generator.GoFuncPointer)
+	// TODO: fromC for Reallocation (*generator.GoFuncPointer)
+	// TODO: fromC for Free (*generator.GoFuncPointer)
+	// TODO: fromC for InternalAllocation (*generator.GoFuncPointer)
+	// TODO: fromC for InternalFree (*generator.GoFuncPointer)
 }
 
 type ApplicationInfo struct {
@@ -9124,7 +9124,7 @@ type DebugUtilsMessengerCreateInfoEXT struct {
 	Flags             DebugUtilsMessengerCreateFlagsEXT
 	MessageSeverity   DebugUtilsMessageSeverityFlagsEXT
 	MessageType       DebugUtilsMessageTypeFlagsEXT
-	PfnUserCallback   DebugUtilsMessengerCallbackEXT
+	UserCallback      DebugUtilsMessengerCallbackEXT
 	UserData          unsafe.Pointer
 	callbackCleanupFn func()
 }
@@ -9144,8 +9144,8 @@ func (s *DebugUtilsMessengerCreateInfoEXT) toC() (unsafe.Pointer, func()) {
 		p.pNext = nextPtr
 	}
 	holder0 := &debugUtilsMessengerCreateInfoEXTCallbacks{}
-	if s.PfnUserCallback != nil {
-		holder0.PfnUserCallback = s.PfnUserCallback
+	if s.UserCallback != nil {
+		holder0.UserCallback = s.UserCallback
 	}
 	holder0.UserData = s.UserData
 	holderPtr1 := unsafe.Pointer(holder0)
@@ -9157,7 +9157,7 @@ func (s *DebugUtilsMessengerCreateInfoEXT) toC() (unsafe.Pointer, func()) {
 	p.messageSeverity = val3
 	val4 := C.VkDebugUtilsMessageTypeFlagsEXT(s.MessageType)
 	p.messageType = val4
-	*(*unsafe.Pointer)(unsafe.Pointer(&p.pfnUserCallback)) = C.trampoline_DebugUtilsMessengerCreateInfoEXT_PfnUserCallback
+	*(*unsafe.Pointer)(unsafe.Pointer(&p.pfnUserCallback)) = C.trampoline_DebugUtilsMessengerCreateInfoEXT_UserCallback
 	p.pUserData = holderPtr1
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
@@ -9171,7 +9171,7 @@ func (s *DebugUtilsMessengerCreateInfoEXT) fromC(p *C.VkDebugUtilsMessengerCreat
 	s.Flags = DebugUtilsMessengerCreateFlagsEXT(p.flags)
 	s.MessageSeverity = DebugUtilsMessageSeverityFlagsEXT(p.messageSeverity)
 	s.MessageType = DebugUtilsMessageTypeFlagsEXT(p.messageType)
-	// TODO: fromC for PfnUserCallback (*generator.GoFuncPointer)
+	// TODO: fromC for UserCallback (*generator.GoFuncPointer)
 	s.UserData = unsafe.Pointer(p.pUserData)
 }
 

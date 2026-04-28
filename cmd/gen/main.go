@@ -5,11 +5,10 @@ import (
 	"log"
 
 	"github.com/lukem570/vulkan-go/internal/generator"
-	"github.com/lukem570/vulkan-go/internal/parser"
 )
 
 func main() {
-	vkXml, err := parser.ParseXML("mod/Vulkan-Headers/registry/vk.xml")
+	vkXml, err := generator.ParseXML("mod/Vulkan-Headers/registry/vk.xml")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -19,19 +18,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	registry := parser.BuildRegistry(vkXml)
+	registry := generator.BuildRegistry(vkXml)
+	reduced := generator.Filter(registry, config)
 
-	linker := &generator.Linker{
-		Registry: registry,
-		Config:   config,
-	}
-
-	reduced := linker.Link()
-	
 	const pkgName string = "vk"
 
 	output := reduced.GeneratePackage(pkgName)
-
 	err = generator.WriteFile("pkg/raw/vulkan.go", output)
 	if err != nil {
 		log.Fatalf("WriteFile (base): %v", err)
@@ -43,7 +35,6 @@ func main() {
 		log.Fatalf("WriteFile (callbacks): %v", err)
 	}
 
-	// Generate platform-specific Go files
 	platformFiles := reduced.GeneratePlatformFiles(pkgName)
 	for _, pf := range platformFiles {
 		path := fmt.Sprintf("pkg/raw/vulkan_%s.go", pf.BuildTag)
@@ -66,9 +57,9 @@ func main() {
 
 	log.Printf(
 		"Generated pkg/raw/vulkan.go, volk_wrappers.{c,h} (%d commands, %d structs, %d enums, %d handles)",
-		len(reduced.Commands), 
-		len(reduced.Structs), 
-		len(reduced.Enums), 
+		len(reduced.Commands),
+		len(reduced.Structs),
+		len(reduced.Enums),
 		len(reduced.Handles),
 	)
 }
