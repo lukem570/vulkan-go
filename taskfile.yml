@@ -1,18 +1,19 @@
 version: '3'
 
 tasks:
-  copy-mod:
-    desc: Copy the submodules
+  setup:
+    desc: Copy headers to mod/include and compile volk static library
     cmds:
       - git submodule update --init --recursive
-      - cp -r ./mod/volk ./mod/cp-volk
-      - cp -r ./mod/Vulkan-Headers ./mod/cp-Vulkan-Headers
-      - find ./mod/cp-Vulkan-Headers -type f -name ".git" -exec rm -rf {} +
-      - find ./mod/cp-volk -type f -name ".git" -exec rm -rf {} +
+      - rm -rf ./mod/include
+      - mkdir -p ./mod/include
+      - cp -r ./mod/Vulkan-Headers/include/. ./mod/include/
+      - cp ./mod/volk/volk.h ./mod/include/
+      - cp ./mod/volk/volk.c ./mod/include/
 
   generate:
     desc: Generate the go bindings
-    deps: [ 'copy-mod' ]
+    deps: [ 'setup' ]
     cmds:
       - rm -rf ./pkg/raw
       - mkdir -p ./pkg/raw

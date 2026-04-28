@@ -1,7 +1,7 @@
 package vk
 
 /*
-#cgo CFLAGS: -I./../../mod/cp-Vulkan-Headers/include -I./../../mod/cp-volk
+#cgo CFLAGS: -I./../../mod/include
 #cgo LDFLAGS: -ldl
 #include <stdlib.h>
 #include <string.h>

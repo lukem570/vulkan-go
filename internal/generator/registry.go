@@ -7,7 +7,7 @@ import (
 )
 
 const cgoHeader = `/*
-#cgo CFLAGS: -I./../../mod/cp-Vulkan-Headers/include -I./../../mod/cp-volk
+#cgo CFLAGS: -I./../../mod/include
 #cgo LDFLAGS: -ldl
 #include <stdlib.h>
 #include <string.h>
@@ -21,7 +21,7 @@ import (
 `
 
 const cgoPlatformHeader = `/*
-#cgo CFLAGS: -I./../../mod/cp-Vulkan-Headers/include -I./../../mod/cp-volk
+#cgo CFLAGS: -I./../../mod/include
 #cgo LDFLAGS: -ldl
 #include <stdlib.h>
 #include <string.h>
@@ -349,7 +349,7 @@ func (r *Registry) GeneratePlatformFiles(pkg string) []PlatformFile {
 }
 
 const callbacksFileHeader = `/*
-#cgo CFLAGS: -I./../../mod/Vulkan-Headers/include -I./../../mod/volk
+#cgo CFLAGS: -I./../../mod/include
 #cgo LDFLAGS: -ldl
 #include <stdlib.h>
 #include "volk_wrappers.h"

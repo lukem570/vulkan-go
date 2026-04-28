@@ -48,6 +48,10 @@ jobs:
         run: |
           go install github.com/go-task/task/v3/cmd/task@latest
 
+      - name: Setup mod
+        if: steps.changes.outputs.changed == 'true'
+        run: task setup
+
       - name: Run generator
         if: steps.changes.outputs.changed == 'true'
         run: task generate
