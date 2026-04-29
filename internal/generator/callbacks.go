@@ -7,8 +7,9 @@ import "strings"
 // functions needed by the C trampolines.
 func (r *ReducedRegistry) GenerateCallbacksFile(pkg string) string {
 	var b strings.Builder
+	b.WriteString(generatedHeader)
 	b.WriteString("package " + pkg + "\n\n")
-	b.WriteString(callbacksFileHeader)
+	b.WriteString(goffiCallbacksHeader)
 
 	for _, k := range sortedKeys(r.Structs) {
 		s := r.Structs[k]

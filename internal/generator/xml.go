@@ -122,6 +122,8 @@ type XMLType struct {
 
 	// For handle/basetype types the name may be in a child <name> element.
 	NameElem string `xml:"name"`
+	// For bitmask types: the underlying typedef base type (e.g. "VkFlags" or "VkFlags64").
+	TypeElem string `xml:"type"`
 
 	// For funcpointer types
 	Proto      XMLProto   `xml:"proto"`

@@ -2,14 +2,9 @@ version: '3'
 
 tasks:
   setup:
-    desc: Copy headers to mod/include and compile volk static library
+    desc: Initialize Vulkan-Headers submodule (vk.xml is required for code generation)
     cmds:
-      - git submodule update --init --recursive
-      - rm -rf ./mod/include
-      - mkdir -p ./mod/include
-      - cp -r ./mod/Vulkan-Headers/include/. ./mod/include/
-      - cp ./mod/volk/volk.h ./mod/include/
-      - cp ./mod/volk/volk.c ./mod/include/
+      - git submodule update --init mod/Vulkan-Headers
 
   generate:
     desc: Generate the go bindings
@@ -20,10 +15,17 @@ tasks:
       - go run ./cmd/gen/main.go
       
   test:
-    desc: Test basic vulkan function
+    desc: Test Vulkan compute (no CGo required)
     deps: [ 'generate' ]
+    env:
+      CGO_ENABLED: "0"
     cmds:
       - glslc -o ./test/compute/test.spv ./test/compute/test.comp
       - go run ./test/compute/test.go
+
+  test-surface:
+    desc: Test Vulkan surface rendering (requires CGo for GLFW)
+    deps: [ 'generate' ]
+    cmds:
       - go run ./test/surface/test.go
       

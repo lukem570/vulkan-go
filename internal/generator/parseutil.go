@@ -96,6 +96,7 @@ func resolveFieldType(
 	handles map[string]*GoHandle,
 	funcPointers map[string]*GoFuncPointer,
 	structs map[string]*Structured,
+	bitmasks map[string]*Bitmask,
 	extraOpts ...bool,
 ) FieldType {
 	isDoublePointer := len(extraOpts) > 0 && extraOpts[0]
@@ -166,6 +167,20 @@ func resolveFieldType(
 			return st
 		}
 	}
+	// Check if it's a known 64-bit bitmask
+	if bitmasks != nil {
+		if bm, ok := bitmasks[goName]; ok && bm.Is64Bit {
+			named := &NamedType{Name: goName, CTypeName: typeName, Is64Bit: true}
+			if isArray {
+				return &Slice{Child: named}
+			}
+			if isPointer {
+				return &Pointer{Child: named}
+			}
+			return named
+		}
+	}
+
 	// Otherwise it's an enum/bitmask — simple cast works
 	named := &NamedType{Name: goName, CTypeName: typeName}
 	if isArray {
