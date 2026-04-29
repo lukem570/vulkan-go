@@ -174,7 +174,7 @@ func _vulkanLibName() string {
 	case "windows":
 		return "vulkan-1.dll"
 	case "darwin":
-		return "libvulkan.1.dylib"
+		return "/opt/homebrew/lib/libvulkan.1.dylib"
 	default:
 		return "libvulkan.so.1"
 	}
