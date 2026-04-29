@@ -45,18 +45,8 @@ func main() {
 		log.Printf("Generated %s", path)
 	}
 
-	err = generator.WriteCFile("pkg/raw/volk_wrappers.h", reduced.GenerateCHeader())
-	if err != nil {
-		log.Fatalf("WriteCFile (header): %v", err)
-	}
-
-	err = generator.WriteCFile("pkg/raw/volk_wrappers.c", reduced.GenerateCSource())
-	if err != nil {
-		log.Fatalf("WriteCFile (source): %v", err)
-	}
-
 	log.Printf(
-		"Generated pkg/raw/vulkan.go, volk_wrappers.{c,h} (%d commands, %d structs, %d enums, %d handles)",
+		"Generated pkg/raw/vulkan.go (%d commands, %d structs, %d enums, %d handles)",
 		len(reduced.Commands),
 		len(reduced.Structs),
 		len(reduced.Enums),

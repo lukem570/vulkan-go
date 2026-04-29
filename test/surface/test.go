@@ -5,7 +5,6 @@ import (
 	"log"
 	"unsafe"
 
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/lukem570/vulkan-go/pkg/raw"
 	"github.com/lukem570/vulkan-go/pkg/util"
 )
@@ -60,7 +59,6 @@ func run() error {
 	}
 	defer instance.Destroy(nil)
 
-	vk.LoadInstance(instance)
 	fmt.Println("instance created with validation layers")
 
 	// Create the actual window
@@ -149,7 +147,6 @@ func run() error {
 		return fmt.Errorf("create device: %w", err)
 	}
 	defer device.Destroy(nil)
-	vk.LoadDevice(device)
 	fmt.Println("device created")
 
 	// Pick a swapchain format

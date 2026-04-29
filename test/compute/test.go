@@ -42,8 +42,8 @@ func run() error {
 	if err := vk.Initialize(); err != nil {
 		return fmt.Errorf("initialize: %w", err)
 	}
-
-	log.Println("Loaded vulkan")
+	
+	fmt.Println("Loaded vulkan")
 
 	// Create instance with validation layer and debug utils extension
 	instance, err := vk.CreateInstance(&vk.InstanceCreateInfo{
@@ -64,7 +64,6 @@ func run() error {
 	}
 	defer instance.Destroy(nil)
 
-	vk.LoadInstance(instance)
 	fmt.Println("instance created with validation layers")
 
 	// Find a physical device with a compute queue
@@ -113,7 +112,6 @@ func run() error {
 	}
 	defer device.Destroy(nil)
 
-	vk.LoadDevice(device)
 	fmt.Println("device created")
 
 	queue := device.GetQueue(computeQueueFamily, 0)

@@ -19,6 +19,7 @@ type Bitmask struct {
 	GoName   string
 	Platform string // non-empty for platform-specific bitmasks
 	BitsEnum *Enum
+	Is64Bit  bool // true for VkFlags64-backed bitmasks
 }
 
 type EnumAlias struct {
@@ -173,6 +174,10 @@ func (e *Enum) GenerateError() string {
 
 func (bmask *Bitmask) Generate() string {
 	var b strings.Builder
-	b.WriteString(fmt.Sprintf("type %s uint32\n\n", bmask.GoName))
+	if bmask.Is64Bit {
+		b.WriteString(fmt.Sprintf("type %s uint64\n\n", bmask.GoName))
+	} else {
+		b.WriteString(fmt.Sprintf("type %s uint32\n\n", bmask.GoName))
+	}
 	return b.String()
 }

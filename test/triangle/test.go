@@ -7,7 +7,6 @@ import (
 	"log"
 	"unsafe"
 
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/lukem570/vulkan-go/pkg/raw"
 	"github.com/lukem570/vulkan-go/pkg/util"
 )

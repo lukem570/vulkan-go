@@ -470,7 +470,7 @@ func (x *XMLRegistry) parseTypes(r *Registry) {
 			if name == "" || t.Alias != "" {
 				continue
 			}
-			b := &Bitmask{CName: name, GoName: stripVk(name)}
+			b := &Bitmask{CName: name, GoName: stripVk(name), Is64Bit: t.TypeElem == "VkFlags64"}
 			r.Bitmasks[b.GoName] = b
 		case "enum":
 			if t.Alias == "" {
@@ -502,7 +502,7 @@ func (x *XMLRegistry) parseTypes(r *Registry) {
 			if t.Alias != "" {
 				continue
 			}
-			s := parseStruct(t, r.Handles, r.FuncPointers, r.Structs, r.STypes)
+			s := parseStruct(t, r.Handles, r.FuncPointers, r.Structs, r.Bitmasks, r.STypes)
 			if s != nil {
 				r.Structs[s.GoName] = s
 			}
@@ -545,14 +545,14 @@ func resolveFuncPointerTypes(t XMLType, handles map[string]*GoHandle, funcPointe
 	if t.Proto.Type == "void" && protoIsPtr {
 		fp.Return = &VoidPtr{}
 	} else if t.Proto.Type != "void" {
-		fp.Return = resolveFieldType(t.Proto.Type, protoIsPtr, false, handles, funcPointers, structs)
+		fp.Return = resolveFieldType(t.Proto.Type, protoIsPtr, false, handles, funcPointers, structs, nil)
 	}
 	// else: void return, fp.Return stays nil
 
 	// Resolve param types
 	for _, p := range t.FuncParams {
 		isPtr := strings.Contains(p.InnerXML, "*")
-		ft := resolveFieldType(p.Type, isPtr, false, handles, funcPointers, structs)
+		ft := resolveFieldType(p.Type, isPtr, false, handles, funcPointers, structs, nil)
 		fp.Params = append(fp.Params, FuncPointerParam{
 			Name: goParamName(p.Name),
 			Type: ft,
@@ -566,6 +566,7 @@ func parseStruct(
 	handles map[string]*GoHandle,
 	funcPointers map[string]*GoFuncPointer,
 	structs map[string]*Structured,
+	bitmasks map[string]*Bitmask,
 	sTypes map[string]string,
 ) *Structured {
 	name := t.Name
@@ -650,7 +651,7 @@ func parseStruct(
 		if isDblPtr && m.Type == "char" && !isArr {
 			isArr = true
 		}
-		ft := resolveFieldType(m.Type, isPtr, isArr, handles, funcPointers, structs, isDblPtr)
+		ft := resolveFieldType(m.Type, isPtr, isArr, handles, funcPointers, structs, bitmasks, isDblPtr)
 
 		// Wrap in FixedArray for each dimension (e.g. [3][4] → FixedArray{3, FixedArray{4, ft}}).
 		// Dimensions are applied innermost-first so matrix[3][4] becomes [3][4]T in Go.
@@ -857,7 +858,7 @@ func (x *XMLRegistry) parseCommands(r *Registry) {
 		if cmd.Alias != "" {
 			continue
 		}
-		c := buildCommand(cmd, r.Handles, r.FuncPointers, r.Structs)
+		c := buildCommand(cmd, r.Handles, r.FuncPointers, r.Structs, r.Bitmasks)
 		if c != nil {
 			r.Commands[c.CName] = c
 		}
@@ -913,6 +914,7 @@ func buildCommand(
 	handles map[string]*GoHandle,
 	funcPointers map[string]*GoFuncPointer,
 	structs map[string]*Structured,
+	bitmasks map[string]*Bitmask,
 ) *GoCommand {
 
 	rawName := cmd.Proto.Name
@@ -968,7 +970,7 @@ func buildCommand(
 	case "void", "":
 		// nothing
 	default:
-		c.ReturnType = resolveFieldType(returnTypeName, false, false, handles, funcPointers, structs)
+		c.ReturnType = resolveFieldType(returnTypeName, false, false, handles, funcPointers, structs, bitmasks)
 	}
 
 	params := cmd.Params
@@ -1028,7 +1030,7 @@ func buildCommand(
 			!strings.Contains(last.InnerXML, "const")
 
 		if isCountParam && isArrayParam {
-			elemType := resolveFieldType(last.Type, false, false, handles, funcPointers, structs)
+			elemType := resolveFieldType(last.Type, false, false, handles, funcPointers, structs, bitmasks)
 			// Only use enumerate pattern for types that have working GenerateFromC
 			switch elemType.(type) {
 			case *Handle, *Primitive, *NamedType, *Bool, *StructType:
@@ -1047,7 +1049,7 @@ func buildCommand(
 	if !enumerateDetected && !byteDataDetected && len(params) > 0 {
 		last := params[len(params)-1]
 		if isOutputParam(last, returnTypeName, handles, structs) {
-			ft := outParamType(last, handles, funcPointers, structs)
+			ft := outParamType(last, handles, funcPointers, structs, bitmasks)
 			op := OutParam{
 				Name: last.Name,
 				Type: ft,
@@ -1082,7 +1084,7 @@ func buildCommand(
 		isArr := p.Len != "" && p.Len != "null-terminated"
 		isDblPtr := strings.Count(beforeName, "*") >= 2
 
-		ft := resolveFieldType(p.Type, isPtr, isArr, handles, funcPointers, structs, isDblPtr)
+		ft := resolveFieldType(p.Type, isPtr, isArr, handles, funcPointers, structs, bitmasks, isDblPtr)
 
 		// Check for fixed-size array (e.g. blendConstants[4])
 		if fixedSize := fixedArraySizeParam(p.InnerXML); fixedSize > 0 {
@@ -1161,13 +1163,13 @@ func isOutputParam(p XMLParam, retType string, handles map[string]*GoHandle, str
 	return false
 }
 
-func outParamType(p XMLParam, handles map[string]*GoHandle, funcPointers map[string]*GoFuncPointer, structs map[string]*Structured) FieldType {
+func outParamType(p XMLParam, handles map[string]*GoHandle, funcPointers map[string]*GoFuncPointer, structs map[string]*Structured, bitmasks map[string]*Bitmask) FieldType {
 	// The output param is T* in C — the Go type is T
 	// Special case: void* output params are unsafe.Pointer
 	if p.Type == "void" {
 		return &VoidPtr{}
 	}
-	return resolveFieldType(p.Type, false, false, handles, funcPointers, structs)
+	return resolveFieldType(p.Type, false, false, handles, funcPointers, structs, bitmasks)
 }
 
 // fixedArraySizeParam returns the fixed array size from a command param's InnerXML or 0.

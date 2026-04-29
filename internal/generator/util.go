@@ -49,13 +49,6 @@ func WriteFile(path string, contents string) error {
 	return os.WriteFile(path, formatted, 0644)
 }
 
-func WriteCFile(path string, contents string) error {
-	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
-		return err
-	}
-	return os.WriteFile(path, []byte(contents), 0644)
-}
-
 // lowerFirstChar lowercases the first character of s.
 func lowerFirstChar(s string) string {
 	if s == "" {

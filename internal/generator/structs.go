@@ -26,12 +26,105 @@ type Structured struct {
 	IsUnion  bool
 }
 
-func (s *Structured) GenerateStructure() string {
+// bitpackEntry records where a bitfield member lives within a packed uint32 field.
+type bitpackEntry struct {
+	packName string // e.g. "_bitpack0"
+	offset   int    // bit offset within the pack
+}
+
+// bitfieldMap builds a map from CName → bitpackEntry for all bitfield members.
+func (s *Structured) bitfieldMap() map[string]bitpackEntry {
+	result := make(map[string]bitpackEntry)
+	packIdx := 0
+	bitOffset := 0
+	inPack := false
+
+	for _, f := range s.Fields {
+		if f.BitWidth <= 0 {
+			if inPack {
+				packIdx++
+				bitOffset = 0
+				inPack = false
+			}
+			continue
+		}
+		if !inPack {
+			bitOffset = 0
+			inPack = true
+		} else if bitOffset+f.BitWidth > 32 {
+			packIdx++
+			bitOffset = 0
+		}
+		result[f.CName] = bitpackEntry{
+			packName: fmt.Sprintf("_bitpack%d", packIdx),
+			offset:   bitOffset,
+		}
+		bitOffset += f.BitWidth
+	}
+	return result
+}
+
+// GenerateCLayoutStruct emits the unexported cVkFoo struct (or [N]byte for unions)
+// that mirrors the C memory layout used for FFI calls.
+func (s *Structured) GenerateCLayoutStruct(structs map[string]*Structured) string {
 	if s == nil {
 		return ""
 	}
 	if s.IsUnion {
-		return s.generateUnionType()
+		sz := computeUnionLayoutSize(s, structs)
+		return fmt.Sprintf("type c%s [%d]byte\n\n", s.CName, sz)
+	}
+
+	var b strings.Builder
+	b.WriteString(fmt.Sprintf("type c%s struct {\n", s.CName))
+
+	if s.HasSType {
+		b.WriteString("\tsType int32\n")
+		b.WriteString("\tpNext unsafe.Pointer\n")
+	}
+
+	packIdx := 0
+	bitOffset := 0
+	inPack := false
+	emittedPacks := make(map[string]bool)
+
+	for _, f := range s.Fields {
+		if f.BitWidth <= 0 {
+			if inPack {
+				packIdx++
+				bitOffset = 0
+				inPack = false
+			}
+			fieldName := sanitizeCField(f.CName)
+			b.WriteString(fmt.Sprintf("\t%s %s\n", fieldName, f.Type.CName()))
+			continue
+		}
+		// Bitfield member — fold into a packed uint32 field.
+		if !inPack {
+			bitOffset = 0
+			inPack = true
+		} else if bitOffset+f.BitWidth > 32 {
+			packIdx++
+			bitOffset = 0
+		}
+		packName := fmt.Sprintf("_bitpack%d", packIdx)
+		if !emittedPacks[packName] {
+			emittedPacks[packName] = true
+			b.WriteString(fmt.Sprintf("\t%s uint32\n", packName))
+		}
+		bitOffset += f.BitWidth
+	}
+
+	b.WriteString("}\n\n")
+	return b.String()
+}
+
+func (s *Structured) GenerateStructure(structs map[string]*Structured) string {
+	if s == nil {
+		return ""
+	}
+	if s.IsUnion {
+		return s.generateUnionType(structs)
 	}
 
 	var b strings.Builder
@@ -61,11 +154,13 @@ func (s *Structured) GenerateStructure() string {
 	return b.String()
 }
 
-func (s *Structured) generateUnionType() string {
+func (s *Structured) generateUnionType(structs map[string]*Structured) string {
 	var b strings.Builder
 
+	byteSize := computeUnionLayoutSize(s, structs)
+
 	// Type definition: byte array sized to the C union
-	b.WriteString(fmt.Sprintf("type %s [C.sizeof_%s]byte\n\n", s.GoName, s.CName))
+	b.WriteString(fmt.Sprintf("type %s [%d]byte\n\n", s.GoName, byteSize))
 
 	// Constructor per variant
 	for _, field := range s.Fields {
@@ -111,11 +206,10 @@ func (s *Structured) GenerateToC() string {
 	g := &CodeGen{}
 	g.Line(fmt.Sprintf("func (s *%s) toC() (unsafe.Pointer, func()) {", s.GoName))
 	g.Line("\tcancels := make([]func(), 0)")
-	g.Line(fmt.Sprintf("\tp := (*C.%s)(C.malloc(C.size_t(C.sizeof_%s)))", s.CName, s.CName))
-	g.Line(fmt.Sprintf("\t*p = C.%s{}", s.CName))
+	g.Line(fmt.Sprintf("\tp := new(c%s)", s.CName))
 
 	if s.HasSType {
-		g.Line("\tp.sType = C.VkStructureType(s.GetType())")
+		g.Line("\tp.sType = int32(s.GetType())")
 		g.Line("\tif s.Next != nil {")
 		g.Line("\t\tnextPtr, nextCancel := s.Next.toC()")
 		g.Line("\t\tcancels = append(cancels, nextCancel)")
@@ -145,24 +239,33 @@ func (s *Structured) GenerateToC() string {
 		g.Line(fmt.Sprintf("\ts.callbackCleanupFn = func() { %s.Delete(%s) }", registryName, holderPtrVar))
 	}
 
+	bfMap := s.bitfieldMap()
+
 	for _, field := range s.Fields {
 		if field.CountFor != "" {
 			continue
 		}
 
-		// PFN callback fields: use C trampoline via unsafe pointer assignment
-		// (CGo can't directly assign our trampolines to PFN fields due to type differences)
-		if _, ok := field.Type.(*GoFuncPointer); ok {
-			if hasPFN && userDataCName != "" {
-				trampolineName := "trampoline_" + s.GoName + "_" + field.GoName
-				cFieldName := sanitizeCField(field.CName)
-				g.Line(fmt.Sprintf("\t*(*unsafe.Pointer)(unsafe.Pointer(&p.%s)) = C.%s", cFieldName, trampolineName))
-			}
-			// else: no pUserData to route through — skip (leave nil)
+		// Bitfield member: pack into _bitpackN using bit manipulation.
+		if field.BitWidth > 0 {
+			info := bfMap[field.CName]
+			mask := uint32((1 << field.BitWidth) - 1)
+			input := "s." + field.GoName
+			g.Line(fmt.Sprintf("\tp.%s |= (uint32(%s) & 0x%x) << %d", info.packName, input, mask, info.offset))
 			continue
 		}
 
-		// UserData field: override with holder pointer when callbacks are present
+		// PFN callback fields: assign goffi trampoline var.
+		if _, ok := field.Type.(*GoFuncPointer); ok {
+			if hasPFN && userDataCName != "" {
+				trampolineName := "_trampoline_" + s.GoName + "_" + field.GoName
+				cFieldName := sanitizeCField(field.CName)
+				g.Line(fmt.Sprintf("\tp.%s = %s", cFieldName, trampolineName))
+			}
+			continue
+		}
+
+		// UserData field: override with holder pointer when callbacks are present.
 		if hasPFN && userDataCName != "" && field.CName == userDataCName {
 			cFieldName := sanitizeCField(field.CName)
 			g.Line(fmt.Sprintf("\tp.%s = %s", cFieldName, holderPtrVar))
@@ -171,19 +274,13 @@ func (s *Structured) GenerateToC() string {
 
 		input := "s." + field.GoName
 		output := field.Type.GenerateToC(g, input)
+		cFieldName := sanitizeCField(field.CName)
+		g.Line(fmt.Sprintf("\tp.%s = %s", cFieldName, output))
 
-		if field.BitWidth > 0 {
-			g.Line(fmt.Sprintf("\tC.vk_set_%s_%s(p, %s)", s.CName, field.CName, output))
-		} else {
-			cFieldName := sanitizeCField(field.CName)
-			g.Line(fmt.Sprintf("\tp.%s = %s", cFieldName, output))
-		}
-
-		// If this is a slice/byte-slice field and the count field was collapsed, auto-set it
+		// Auto-set collapsed count field.
 		_, isSliceField := field.Type.(*Slice)
 		_, isByteSliceField := field.Type.(*ByteSlice)
 		if (isSliceField || isByteSliceField) && field.CountCName != "" {
-			// Only auto-set the count if it was collapsed (CountFor is set)
 			var countFieldType FieldType
 			for _, f := range s.Fields {
 				if f.CName == field.CountCName && f.CountFor != "" {
@@ -192,11 +289,11 @@ func (s *Structured) GenerateToC() string {
 				}
 			}
 			if countFieldType != nil {
-				cTypeName := strings.TrimPrefix(countFieldType.CName(), "C.")
+				cTypeName := countFieldType.CName()
 				if field.CountScale > 1 {
-					g.Line(fmt.Sprintf("\tp.%s = C.%s(len(%s) * %d)", field.CountCName, cTypeName, input, field.CountScale))
+					g.Line(fmt.Sprintf("\tp.%s = %s(len(%s) * %d)", field.CountCName, cTypeName, input, field.CountScale))
 				} else {
-					g.Line(fmt.Sprintf("\tp.%s = C.%s(len(%s))", field.CountCName, cTypeName, input))
+					g.Line(fmt.Sprintf("\tp.%s = %s(len(%s))", field.CountCName, cTypeName, input))
 				}
 			}
 		}
@@ -204,7 +301,6 @@ func (s *Structured) GenerateToC() string {
 
 	g.Line("\treturn unsafe.Pointer(p), func() {")
 	g.Line("\t\tfor _, cancel := range cancels { cancel() }")
-	g.Line("\t\tC.free(unsafe.Pointer(p))")
 	g.Line("\t}")
 	g.Line("}")
 	g.Line("")
@@ -214,10 +310,11 @@ func (s *Structured) GenerateToC() string {
 
 func (s *Structured) generateUnionToC() string {
 	var b strings.Builder
-	b.WriteString(fmt.Sprintf("func (s *%s) toC() (*C.%s, func()) {\n", s.GoName, s.CName))
-	b.WriteString(fmt.Sprintf("\tp := (*C.%s)(C.malloc(C.size_t(C.sizeof_%s)))\n", s.CName, s.CName))
-	b.WriteString(fmt.Sprintf("\tC.memcpy(unsafe.Pointer(p), unsafe.Pointer(&s[0]), C.sizeof_%s)\n", s.CName))
-	b.WriteString("\treturn p, func() { C.free(unsafe.Pointer(p)) }\n")
+	cTypeName := "c" + s.CName
+	b.WriteString(fmt.Sprintf("func (s *%s) toC() (unsafe.Pointer, func()) {\n", s.GoName))
+	b.WriteString(fmt.Sprintf("\tp := new(%s)\n", cTypeName))
+	b.WriteString("\tcopy((*p)[:], s[:])\n")
+	b.WriteString("\treturn unsafe.Pointer(p), func() {}\n")
 	b.WriteString("}\n\n")
 	return b.String()
 }
@@ -231,19 +328,26 @@ func (s *Structured) GenerateFromC() string {
 	}
 
 	g := &CodeGen{}
-	g.Line(fmt.Sprintf("func (s *%s) fromC(p *C.%s) {", s.GoName, s.CName))
+	g.Line(fmt.Sprintf("func (s *%s) fromC(p *c%s) {", s.GoName, s.CName))
+
+	bfMap := s.bitfieldMap()
 
 	for _, field := range s.Fields {
 		if field.CountFor != "" {
 			continue
 		}
-		cFieldName := sanitizeCField(field.CName)
-		var input string
+
+		// Bitfield member: extract via bit mask and shift.
 		if field.BitWidth > 0 {
-			input = fmt.Sprintf("C.vk_get_%s_%s(p)", s.CName, field.CName)
-		} else {
-			input = "p." + cFieldName
+			info := bfMap[field.CName]
+			mask := uint32((1 << field.BitWidth) - 1)
+			goType := field.Type.GoName()
+			g.Line(fmt.Sprintf("\ts.%s = %s((p.%s >> %d) & 0x%x)", field.GoName, goType, info.packName, info.offset, mask))
+			continue
 		}
+
+		cFieldName := sanitizeCField(field.CName)
+		input := "p." + cFieldName
 		goField := "s." + field.GoName
 
 		switch ft := field.Type.(type) {
@@ -254,7 +358,7 @@ func (s *Structured) GenerateFromC() string {
 		case *NamedType:
 			g.Line(fmt.Sprintf("\t%s = %s(%s)", goField, ft.Name, input))
 		case *Handle:
-			g.Line(fmt.Sprintf("\t%s = &%s{handle: unsafe.Pointer(%s)}", goField, ft.Name, input))
+			g.Line(fmt.Sprintf("\t%s = &%s{handle: %s}", goField, ft.Name, input))
 		case *FixedArray:
 			switch child := ft.Child.(type) {
 			case *Primitive:
@@ -271,10 +375,9 @@ func (s *Structured) GenerateFromC() string {
 				g.Line("\t}")
 			case *Handle:
 				g.Line(fmt.Sprintf("\tfor _i := range %s {", goField))
-				g.Line(fmt.Sprintf("\t\t%s[_i] = &%s{handle: unsafe.Pointer(%s[_i])}", goField, child.Name, input))
+				g.Line(fmt.Sprintf("\t\t%s[_i] = &%s{handle: %s[_i]}", goField, child.Name, input))
 				g.Line("\t}")
 			case *FixedArray:
-				// Nested fixed array (e.g. float matrix[3][4] → [3][4]float32)
 				switch inner := child.Child.(type) {
 				case *Primitive:
 					g.Line(fmt.Sprintf("\tfor _i := range %s {", goField))
@@ -297,29 +400,29 @@ func (s *Structured) GenerateFromC() string {
 				g.Line(fmt.Sprintf("\t%s = %s(%s)", goField, ft.GoTypeName, input))
 			}
 		case *VoidPtr:
-			g.Line(fmt.Sprintf("\t%s = unsafe.Pointer(%s)", goField, input))
+			g.Line(fmt.Sprintf("\t%s = %s", goField, input))
 		case *ByteSlice:
 			if field.CountCName != "" {
 				countCField := sanitizeCField(field.CountCName)
 				g.Line(fmt.Sprintf("\tif p.%s > 0 && %s != nil {", countCField, input))
-				g.Line(fmt.Sprintf("\t\t%s = C.GoBytes(%s, C.int(p.%s))", goField, input, countCField))
+				g.Line(fmt.Sprintf("\t\t%s = make([]byte, p.%s)", goField, countCField))
+				g.Line(fmt.Sprintf("\t\tcopy(%s, unsafe.Slice((*byte)(%s), p.%s))", goField, input, countCField))
 				g.Line("\t}")
 			}
 		case *String:
-			g.Line(fmt.Sprintf("\tif %s != nil { %s = C.GoString(%s) }", input, goField, input))
+			g.Line(fmt.Sprintf("\tif %s != nil { %s = _cGoString(%s) }", input, goField, input))
 		case *Pointer:
 			switch child := ft.Child.(type) {
 			case *StructType:
-				g.Line(fmt.Sprintf("\tif %s != nil { %s.fromC(%s) }", input, goField, input))
+				g.Line(fmt.Sprintf("\tif %s != nil { %s.fromC((*c%s)(%s)) }", input, goField, child.CTypeName, input))
 			case *Handle:
-				g.Line(fmt.Sprintf("\tif %s != nil { %s = &%s{handle: unsafe.Pointer(*%s)} }", input, goField, child.Name, input))
+				g.Line(fmt.Sprintf("\tif %s != nil { %s = &%s{handle: *(*unsafe.Pointer)(%s)} }", input, goField, child.Name, input))
 			default:
 				g.Line(fmt.Sprintf("\t// TODO: fromC for %s (Pointer of %T)", field.GoName, ft.Child))
 			}
 		case *Slice:
 			if field.CountCName != "" {
 				countCField := sanitizeCField(field.CountCName)
-				// Element count expression: divide by CountScale if the C field is a byte count.
 				var countExpr string
 				if field.CountScale > 1 {
 					countExpr = fmt.Sprintf("int(p.%s) / %d", countCField, field.CountScale)
@@ -333,14 +436,14 @@ func (s *Structured) GenerateFromC() string {
 					g.Line(fmt.Sprintf("\tif p.%s > 0 && %s != nil {", countCField, input))
 					g.Line(fmt.Sprintf("\t\t%s = make([]%s, %s)", goField, child.GoName(), countExpr))
 					g.Line(fmt.Sprintf("\t\tfor %s := range %s {", indexVar, goField))
-					g.Line(fmt.Sprintf("\t\t\t%s[%s] = %s((*[1<<30]C.%s)(unsafe.Pointer(%s))[%s])", goField, indexVar, child.GoName(), child.CName()[len("C."):], input, indexVar))
+					g.Line(fmt.Sprintf("\t\t\t%s[%s] = %s((*[1<<30]%s)(unsafe.Pointer(%s))[%s])", goField, indexVar, child.GoName(), child.CName(), input, indexVar))
 					g.Line("\t\t}")
 					g.Line("\t}")
 				case *StructType:
 					g.Line(fmt.Sprintf("\tif p.%s > 0 && %s != nil {", countCField, input))
 					g.Line(fmt.Sprintf("\t\t%s = make([]%s, %s)", goField, child.Name, countExpr))
 					g.Line(fmt.Sprintf("\t\tfor %s := range %s {", indexVar, goField))
-					g.Line(fmt.Sprintf("\t\t\t%s := (*[1<<30]C.%s)(unsafe.Pointer(%s))[%s]", elemVar, child.CTypeName, input, indexVar))
+					g.Line(fmt.Sprintf("\t\t\t%s := (*[1<<30]c%s)(unsafe.Pointer(%s))[%s]", elemVar, child.CTypeName, input, indexVar))
 					g.Line(fmt.Sprintf("\t\t\t%s[%s].fromC(&%s)", goField, indexVar, elemVar))
 					g.Line("\t\t}")
 					g.Line("\t}")
@@ -348,7 +451,7 @@ func (s *Structured) GenerateFromC() string {
 					g.Line(fmt.Sprintf("\tif p.%s > 0 && %s != nil {", countCField, input))
 					g.Line(fmt.Sprintf("\t\t%s = make([]%s, %s)", goField, child.GoName(), countExpr))
 					g.Line(fmt.Sprintf("\t\tfor %s := range %s {", indexVar, goField))
-					g.Line(fmt.Sprintf("\t\t\t%s[%s] = &%s{handle: unsafe.Pointer((*[1<<30]C.%s)(unsafe.Pointer(%s))[%s])}", goField, indexVar, child.Name, child.CTypeName, input, indexVar))
+					g.Line(fmt.Sprintf("\t\t\t%s[%s] = &%s{handle: (*[1<<30]unsafe.Pointer)(unsafe.Pointer(%s))[%s]}", goField, indexVar, child.Name, input, indexVar))
 					g.Line("\t\t}")
 					g.Line("\t}")
 				default:
@@ -365,10 +468,10 @@ func (s *Structured) GenerateFromC() string {
 					g.Line(fmt.Sprintf("\tif p.%s > 0 && %s != nil {", countCField, input))
 					g.Line(fmt.Sprintf("\t\t%s = make([]*%s, p.%s)", goField, st.Name, countCField))
 					g.Line(fmt.Sprintf("\t\tfor %s := range %s {", indexVar, goField))
-					g.Line(fmt.Sprintf("\t\t\t%s := (*[1<<30]*C.%s)(unsafe.Pointer(%s))[%s]", elemVar, st.CTypeName, input, indexVar))
+					g.Line(fmt.Sprintf("\t\t\t%s := (*[1<<30]unsafe.Pointer)(unsafe.Pointer(%s))[%s]", elemVar, input, indexVar))
 					g.Line(fmt.Sprintf("\t\t\tif %s != nil {", elemVar))
 					g.Line(fmt.Sprintf("\t\t\t\tvar %s %s", goElemVar, st.Name))
-					g.Line(fmt.Sprintf("\t\t\t\t%s.fromC(%s)", goElemVar, elemVar))
+					g.Line(fmt.Sprintf("\t\t\t\t%s.fromC((*c%s)(%s))", goElemVar, st.CTypeName, elemVar))
 					g.Line(fmt.Sprintf("\t\t\t\t%s[%s] = &%s", goField, indexVar, goElemVar))
 					g.Line("\t\t\t}")
 					g.Line("\t\t}")
@@ -387,48 +490,15 @@ func (s *Structured) GenerateFromC() string {
 
 func (s *Structured) generateUnionFromC() string {
 	var b strings.Builder
-	b.WriteString(fmt.Sprintf("func (s *%s) fromC(p *C.%s) {\n", s.GoName, s.CName))
-	b.WriteString(fmt.Sprintf("\tC.memcpy(unsafe.Pointer(&s[0]), unsafe.Pointer(p), C.sizeof_%s)\n", s.CName))
+	cTypeName := "c" + s.CName
+	b.WriteString(fmt.Sprintf("func (s *%s) fromC(p *%s) {\n", s.GoName, cTypeName))
+	b.WriteString("\tcopy(s[:], (*p)[:])\n")
 	b.WriteString("}\n\n")
 	return b.String()
 }
 
-// GenerateCBitfieldHelpers generates static inline C getter/setter functions
-// for each bitfield member of this struct (placed in the header).
-// CGo cannot access C bitfield members directly, so Go code calls these instead.
-func (s *Structured) GenerateCBitfieldHelpers() string {
-	var hasBitfields bool
-	for _, f := range s.Fields {
-		if f.BitWidth > 0 {
-			hasBitfields = true
-			break
-		}
-	}
-	if !hasBitfields {
-		return ""
-	}
-
-	var b strings.Builder
-	for _, f := range s.Fields {
-		if f.BitWidth == 0 {
-			continue
-		}
-		cType := ToCTypeName(f.Type)
-		b.WriteString(fmt.Sprintf(
-			"static inline void vk_set_%s_%s(%s* s, %s v) { s->%s = v; }\n",
-			s.CName, f.CName, s.CName, cType, f.CName))
-		b.WriteString(fmt.Sprintf(
-			"static inline %s vk_get_%s_%s(const %s* s) { return (%s)s->%s; }\n",
-			cType, s.CName, f.CName, s.CName, cType, f.CName))
-	}
-	b.WriteString("\n")
-	return b.String()
-}
-
 // GenerateCallbacksSupport generates the Go callback holder struct, registry
-// sync.Map, and //export bridge functions for a struct that has PFN fields.
-// The output is written into the separate callbacks.go file so //export and
-// the main C preamble don't conflict.
+// sync.Map, and ffi.NewCallback trampolines for a struct that has PFN fields.
 func (s *Structured) GenerateCallbacksSupport() string {
 	pfnFields := s.pfnFields()
 	if len(pfnFields) == 0 {
@@ -436,7 +506,7 @@ func (s *Structured) GenerateCallbacksSupport() string {
 	}
 	_, userDataCName := s.userDataField()
 	if userDataCName == "" {
-		return "" // need pUserData to route callbacks
+		return ""
 	}
 
 	holderType := lowerFirstChar(s.GoName) + "Callbacks"
@@ -455,148 +525,59 @@ func (s *Structured) GenerateCallbacksSupport() string {
 	// Registry sync.Map
 	b.WriteString(fmt.Sprintf("var %s sync.Map\n\n", registryName))
 
-	// Bridge functions
+	// ffi.NewCallback trampolines (package-level vars)
 	for _, f := range pfnFields {
 		fp := f.Type.(*GoFuncPointer)
-		b.WriteString(s.generateBridgeFunction(f, fp, holderType, registryName))
+		b.WriteString(s.generateGoffiTrampoline(f, fp, holderType, registryName))
 	}
 
 	return b.String()
 }
 
-// GenerateCCallbackDecls generates extern + trampoline declarations for the C header.
-func (s *Structured) GenerateCCallbackDecls() string {
-	pfnFields := s.pfnFields()
-	if len(pfnFields) == 0 {
-		return ""
-	}
-	_, userDataCName := s.userDataField()
-	if userDataCName == "" {
-		return ""
-	}
+// generateGoffiTrampoline emits a package-level var holding a ffi.NewCallback
+// trampoline for a single PFN field.
+func (s *Structured) generateGoffiTrampoline(field StructField, fp *GoFuncPointer, holderType, registryName string) string {
+	trampolineName := "_trampoline_" + s.GoName + "_" + field.GoName
 
-	var b strings.Builder
-	for _, f := range pfnFields {
-		fp := f.Type.(*GoFuncPointer)
-		bridgeName := "go_bridge_" + s.GoName + "_" + f.GoName
-		trampolineName := "trampoline_" + s.GoName + "_" + f.GoName
-
-		sig := buildCFuncSig(fp)
-		b.WriteString(fmt.Sprintf("extern %s %s(%s);\n", sig.ret, bridgeName, sig.params))
-		b.WriteString(fmt.Sprintf("%s %s(%s);\n", sig.ret, trampolineName, sig.params))
-	}
-	return b.String()
-}
-
-// GenerateCCallbackImpls generates trampoline implementations for the C source.
-func (s *Structured) GenerateCCallbackImpls() string {
-	pfnFields := s.pfnFields()
-	if len(pfnFields) == 0 {
-		return ""
-	}
-	_, userDataCName := s.userDataField()
-	if userDataCName == "" {
-		return ""
-	}
-
-	var b strings.Builder
-	for _, f := range pfnFields {
-		fp := f.Type.(*GoFuncPointer)
-		bridgeName := "go_bridge_" + s.GoName + "_" + f.GoName
-		trampolineName := "trampoline_" + s.GoName + "_" + f.GoName
-
-		sig := buildCFuncSig(fp)
-		b.WriteString(fmt.Sprintf("%s %s(%s) {\n", sig.ret, trampolineName, sig.paramsNamed))
-		if sig.ret == "void" {
-			b.WriteString(fmt.Sprintf("\t%s(%s);\n", bridgeName, sig.argNames))
-		} else {
-			b.WriteString(fmt.Sprintf("\treturn %s(%s);\n", bridgeName, sig.argNames))
-		}
-		b.WriteString("}\n")
-	}
-	return b.String()
-}
-
-type cFuncSig struct {
-	ret         string // return type
-	params      string // type-only params e.g. "VkBool32, void*"
-	paramsNamed string // named params e.g. "VkBool32 p0, void* p1"
-	argNames    string // arg names only e.g. "p0, p1"
-}
-
-func buildCFuncSig(fp *GoFuncPointer) cFuncSig {
-	var retStr string
-	if fp.Return == nil {
-		retStr = "void"
-	} else {
-		retStr = ToCTypeName(fp.Return)
-	}
-
-	var typeOnly, named, args []string
-	for i, p := range fp.Params {
-		cType := ToCTypeName(p.Type)
-		argName := fmt.Sprintf("p%d", i)
-		typeOnly = append(typeOnly, cType)
-		named = append(named, cType+" "+argName)
-		args = append(args, argName)
-	}
-
-	return cFuncSig{
-		ret:         retStr,
-		params:      strings.Join(typeOnly, ", "),
-		paramsNamed: strings.Join(named, ", "),
-		argNames:    strings.Join(args, ", "),
-	}
-}
-
-// generateBridgeFunction generates the //export Go function for a single PFN field.
-func (s *Structured) generateBridgeFunction(field StructField, fp *GoFuncPointer, holderType, registryName string) string {
-	bridgeName := "go_bridge_" + s.GoName + "_" + field.GoName
-
-	// Build the Go function signature using C types
+	// Build Go func params using CName() (Go primitive types matching C ABI).
 	var goParams []string
 	for i, p := range fp.Params {
 		goParams = append(goParams, fmt.Sprintf("p%d %s", i, p.Type.CName()))
 	}
 
-	// Return type in C
+	// Return type in Go primitive form.
 	var retCType string
-	if fp.Return == nil {
-		retCType = ""
-	} else {
+	if fp.Return != nil {
 		retCType = fp.Return.CName()
 	}
 
 	var b strings.Builder
 
-	// //export + func signature
-	b.WriteString(fmt.Sprintf("//export %s\n", bridgeName))
-	sig := fmt.Sprintf("func %s(%s)", bridgeName, strings.Join(goParams, ", "))
+	funcSig := fmt.Sprintf("func(%s)", strings.Join(goParams, ", "))
 	if retCType != "" {
-		sig += " " + retCType
+		funcSig += " " + retCType
 	}
-	b.WriteString(sig + " {\n")
+	b.WriteString(fmt.Sprintf("var %s uintptr = ffi.NewCallback(%s {\n", trampolineName, funcSig))
 
-	// Look up holder
-	b.WriteString(fmt.Sprintf("\tv, ok := %s.Load(p%d)\n", registryName, pUserDataParamIndex(fp)))
+	// Look up holder via pUserData param.
+	udIdx := pUserDataParamIndex(fp)
+	b.WriteString(fmt.Sprintf("\tv, ok := %s.Load(p%d)\n", registryName, udIdx))
 	b.WriteString("\tif !ok {\n")
-	b.WriteString(returnZeroValue(fp.Return))
+	b.WriteString(returnZeroValueGo(fp.Return))
 	b.WriteString("\t}\n")
 	b.WriteString(fmt.Sprintf("\tholder := v.(*%s)\n", holderType))
 	b.WriteString(fmt.Sprintf("\tif holder.%s == nil {\n", field.GoName))
-	b.WriteString(returnZeroValue(fp.Return))
+	b.WriteString(returnZeroValueGo(fp.Return))
 	b.WriteString("\t}\n")
 
-	// Convert C params to Go and build call args
+	// Build call args converting C params to Go.
 	var callArgs []string
 	for i, p := range fp.Params {
-		paramExpr := fmt.Sprintf("p%d", i)
-		// Replace the pUserData parameter with holder.UserData
 		if p.Name == "userData" || p.Name == "pUserData" {
 			callArgs = append(callArgs, "holder.UserData")
 			continue
 		}
-		callArgs = append(callArgs, convertCParamToGo(paramExpr, p.Type))
+		callArgs = append(callArgs, convertCParamToGoGoffi(fmt.Sprintf("p%d", i), p.Type))
 	}
 
 	callExpr := fmt.Sprintf("holder.%s(%s)", field.GoName, strings.Join(callArgs, ", "))
@@ -605,10 +586,10 @@ func (s *Structured) generateBridgeFunction(field StructField, fp *GoFuncPointer
 		b.WriteString(fmt.Sprintf("\t%s\n", callExpr))
 	} else {
 		b.WriteString(fmt.Sprintf("\tresult := %s\n", callExpr))
-		b.WriteString(convertGoReturnToC(fp.Return))
+		b.WriteString(convertGoReturnToCGoffi(fp.Return))
 	}
 
-	b.WriteString("}\n\n")
+	b.WriteString("})\n\n")
 	return b.String()
 }
 
@@ -619,12 +600,12 @@ func pUserDataParamIndex(fp *GoFuncPointer) int {
 			return i
 		}
 	}
-	// Fallback: last param
 	return len(fp.Params) - 1
 }
 
-// convertCParamToGo generates a Go expression that converts a C parameter to its Go type.
-func convertCParamToGo(expr string, ft FieldType) string {
+// convertCParamToGoGoffi converts a raw C param (Go primitive type) to the Go type
+// expected by the user-facing callback signature.
+func convertCParamToGoGoffi(expr string, ft FieldType) string {
 	switch t := ft.(type) {
 	case *Primitive:
 		return fmt.Sprintf("%s(%s)", t.GoName(), expr)
@@ -633,13 +614,12 @@ func convertCParamToGo(expr string, ft FieldType) string {
 	case *NamedType:
 		return fmt.Sprintf("%s(%s)", t.Name, expr)
 	case *VoidPtr:
-		return expr // already unsafe.Pointer
+		return expr
 	case *Pointer:
 		if st, ok := t.Child.(*StructType); ok {
-			// Convert *C.VkFoo to *GoFoo via fromC
 			goVar := "_go_" + expr
-			return fmt.Sprintf("func() *%s { var %s %s; %s.fromC(%s); return &%s }()",
-				st.Name, goVar, st.Name, goVar, expr, goVar)
+			return fmt.Sprintf("func() *%s { var %s %s; %s.fromC((*c%s)(%s)); return &%s }()",
+				st.Name, goVar, st.Name, goVar, st.CTypeName, expr, goVar)
 		}
 		return expr
 	default:
@@ -647,30 +627,31 @@ func convertCParamToGo(expr string, ft FieldType) string {
 	}
 }
 
-// convertGoReturnToC generates a return statement converting a Go result to a C type.
-func convertGoReturnToC(ft FieldType) string {
+// convertGoReturnToCGoffi emits a return statement converting a Go result to the
+// C primitive type expected by the ffi.NewCallback trampoline.
+func convertGoReturnToCGoffi(ft FieldType) string {
 	switch ft.(type) {
 	case *Bool:
-		return "\tif result { return C.VkBool32(1) }\n\treturn C.VkBool32(0)\n"
+		return "\tif result { return uint32(1) }\n\treturn uint32(0)\n"
 	case *VoidPtr:
 		return "\treturn result\n"
 	default:
-		cName := strings.TrimPrefix(ft.CName(), "C.")
+		cName := ft.CName()
 		if cName == "unsafe.Pointer" {
 			return "\treturn result\n"
 		}
-		return fmt.Sprintf("\treturn C.%s(result)\n", cName)
+		return fmt.Sprintf("\treturn %s(result)\n", cName)
 	}
 }
 
-// returnZeroValue generates an early-return zero value for a return type.
-func returnZeroValue(ft FieldType) string {
+// returnZeroValueGo emits an early-return zero value for a goffi trampoline return type.
+func returnZeroValueGo(ft FieldType) string {
 	if ft == nil {
 		return "\t\treturn\n"
 	}
 	switch ft.(type) {
 	case *Bool:
-		return "\t\treturn C.VkBool32(0)\n"
+		return "\t\treturn uint32(0)\n"
 	case *VoidPtr:
 		return "\t\treturn nil\n"
 	default:
@@ -704,4 +685,3 @@ func (s *Structured) userDataField() (goName, cName string) {
 	}
 	return "", ""
 }
-
