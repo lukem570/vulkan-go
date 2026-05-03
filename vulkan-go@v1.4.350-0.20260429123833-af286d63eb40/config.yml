@@ -1,0 +1,35 @@
+api: vulkan
+version: 1.4
+
+extensions:
+  - VK_KHR_surface
+  - VK_KHR_swapchain
+  - VK_KHR_xlib_surface
+  - VK_KHR_xcb_surface
+  - VK_KHR_wayland_surface
+  - VK_KHR_win32_surface
+  - VK_MVK_macos_surface
+  - VK_EXT_debug_utils
+  - VK_EXT_validation_features
+  - VK_EXT_line_rasterization
+  - VK_EXT_shader_object
+  - VK_EXT_swapchain_maintenance1
+  - VK_EXT_surface_maintenance1
+  - VK_EXT_multi_draw
+  - VK_EXT_device_generated_commands
+  - VK_EXT_extended_dynamic_state2
+  - VK_EXT_extended_dynamic_state3
+  - VK_KHR_acceleration_structure
+  - VK_KHR_ray_tracing_pipeline
+  - VK_KHR_deferred_host_operations
+  - VK_KHR_ray_query
+  - VK_KHR_ray_tracing_position_fetch
+  - VK_KHR_ray_tracing_maintenance1
+
+platforms:
+  - xlib
+  - xcb
+  - wayland
+  - win32
+  - macos
+  - metal

@@ -78,19 +78,11 @@ func (s *Structured) GenerateCLayoutStruct(structs map[string]*Structured) strin
 	var b strings.Builder
 	b.WriteString(fmt.Sprintf("type c%s struct {\n", s.CName))
 
-	// Track byte offset to detect where explicit padding is needed.
-	// Go aligns primitives and non-union structs automatically, but union fields
-	// are represented as [N]byte (alignment 1), so Go won't pad before them.
-	offset := 0
 	if s.HasSType {
 		b.WriteString("\tsType int32\n")
-		// sType int32 at offset 0 (size 4), then pNext unsafe.Pointer
-		// Go inserts 4 bytes of implicit padding to align pNext to 8.
 		b.WriteString("\tpNext unsafe.Pointer\n")
-		offset = 16
 	}
 
-	padCount := 0
 	packIdx := 0
 	bitOffset := 0
 	inPack := false
@@ -99,35 +91,12 @@ func (s *Structured) GenerateCLayoutStruct(structs map[string]*Structured) strin
 	for _, f := range s.Fields {
 		if f.BitWidth <= 0 {
 			if inPack {
-				// Closing a bitpack: uint32 size 4, align 4.
-				offset = alignUpInt(offset, 4) + 4
 				packIdx++
 				bitOffset = 0
 				inPack = false
 			}
-
-			goAlign := goTypeAlignment(f.Type, structs)
-			cAlign := cTypeAlignment(f.Type, structs)
-
-			// Advance to where Go will place the field.
-			goOffset := alignUpInt(offset, goAlign)
-
-			// If the C alignment requirement exceeds Go's inferred alignment
-			// (only happens for union fields represented as [N]byte), emit padding.
-			if cAlign > goAlign {
-				cOffset := alignUpInt(offset, cAlign)
-				if gap := cOffset - goOffset; gap > 0 {
-					b.WriteString(fmt.Sprintf("\t_pad%d [%d]byte\n", padCount, gap))
-					padCount++
-				}
-				offset = cOffset
-			} else {
-				offset = goOffset
-			}
-
 			fieldName := sanitizeCField(f.CName)
 			b.WriteString(fmt.Sprintf("\t%s %s\n", fieldName, f.Type.CName()))
-			offset += fieldTypeLayoutSize(f.Type, structs)
 			continue
 		}
 		// Bitfield member — fold into a packed uint32 field.
@@ -135,7 +104,6 @@ func (s *Structured) GenerateCLayoutStruct(structs map[string]*Structured) strin
 			bitOffset = 0
 			inPack = true
 		} else if bitOffset+f.BitWidth > 32 {
-			offset = alignUpInt(offset, 4) + 4
 			packIdx++
 			bitOffset = 0
 		}
@@ -198,17 +166,8 @@ func (s *Structured) generateUnionType(structs map[string]*Structured) string {
 	for _, field := range s.Fields {
 		goType := field.Type.GoName()
 		b.WriteString(fmt.Sprintf("func New%s%s(val %s) %s {\n", s.GoName, field.GoName, goType, s.GoName))
-		if st, ok := field.Type.(*StructType); ok {
-			// Struct variant: Go layout differs from C layout (padding, sType header).
-			// Convert to C first, then copy the raw bytes into the union array.
-			b.WriteString("\tcPtr, cancel := val.toC()\n")
-			b.WriteString("\tdefer cancel()\n")
-			b.WriteString(fmt.Sprintf("\tvar u %s\n", s.GoName))
-			b.WriteString(fmt.Sprintf("\tcopy(u[:], unsafe.Slice((*byte)(cPtr), unsafe.Sizeof(c%s{})))\n", st.CTypeName))
-		} else {
-			b.WriteString(fmt.Sprintf("\tvar u %s\n", s.GoName))
-			b.WriteString(fmt.Sprintf("\t*(*%s)(unsafe.Pointer(&u[0])) = val\n", goType))
-		}
+		b.WriteString(fmt.Sprintf("\tvar u %s\n", s.GoName))
+		b.WriteString(fmt.Sprintf("\t*(*%s)(unsafe.Pointer(&u[0])) = val\n", goType))
 		b.WriteString("\treturn u\n")
 		b.WriteString("}\n\n")
 	}

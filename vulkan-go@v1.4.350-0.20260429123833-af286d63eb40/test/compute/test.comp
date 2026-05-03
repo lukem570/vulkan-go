@@ -1,0 +1,8 @@
+#version 450
+layout(local_size_x = 64) in;
+layout(binding = 0) buffer Data { uint values[]; } data;
+
+
+void main() { 
+    uint idx = gl_GlobalInvocationID.x; data.values[idx] *= 2; 
+}

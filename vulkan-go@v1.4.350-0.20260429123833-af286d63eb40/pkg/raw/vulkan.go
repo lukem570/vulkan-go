@@ -4,7 +4,6 @@ package vk
 
 import (
 	"fmt"
-	"os"
 	"runtime"
 	"unsafe"
 
@@ -78,21 +77,11 @@ func _loadDeviceProcVia(getDeviceProcAddrFn unsafe.Pointer, device unsafe.Pointe
 }
 
 // _vulkanLibName returns the platform-specific Vulkan shared library name.
-// On darwin, searches common install locations before falling back to a bare name.
 func _vulkanLibName() string {
 	switch runtime.GOOS {
 	case "windows":
 		return "vulkan-1.dll"
 	case "darwin":
-		candidates := []string{
-			"/opt/homebrew/lib/libvulkan.1.dylib", // Apple Silicon Homebrew
-			"/usr/local/lib/libvulkan.1.dylib",    // Intel Homebrew
-		}
-		for _, p := range candidates {
-			if _, err := os.Stat(p); err == nil {
-				return p
-			}
-		}
 		return "libvulkan.1.dylib"
 	default:
 		return "libvulkan.so.1"
@@ -970,8 +959,6 @@ const (
 	Access2Reserved63BitEXT                        AccessFlagBits2 = 1 << 63
 	Access2Reserved60BitKHR                        AccessFlagBits2 = 1 << 60
 	Access2Reserved61BitKHR                        AccessFlagBits2 = 1 << 61
-	Access2Reserved28BitAMD                        AccessFlagBits2 = 1 << 28
-	Access2Reserved29BitAMD                        AccessFlagBits2 = 1 << 29
 	Access2Reserved49BitARM                        AccessFlagBits2 = 1 << 49
 	Access2Reserved50BitARM                        AccessFlagBits2 = 1 << 50
 )
@@ -1205,8 +1192,6 @@ const (
 	BufferUsage2TileMemoryBitQCOM                             BufferUsageFlagBits2 = 1 << 27
 	BufferUsage2MemoryDecompressionBitEXT                     BufferUsageFlagBits2 = 1 << 32
 	BufferUsage2PreprocessBufferBitEXT                        BufferUsageFlagBits2 = 1 << 31
-	BufferUsage2Reserved18BitEXT                              BufferUsageFlagBits2 = 1 << 18
-	BufferUsage2Reserved30BitEXT                              BufferUsageFlagBits2 = 1 << 30
 	BufferUsage2Reserved35BitKHR                              BufferUsageFlagBits2 = 1 << 35
 	BufferUsage2Reserved36BitKHR                              BufferUsageFlagBits2 = 1 << 36
 	BufferUsage2Reserved37BitHUAWEI                           BufferUsageFlagBits2 = 1 << 37
@@ -2466,7 +2451,7 @@ const (
 	ImageCreateFragmentDensityMapOffsetBitQCOM         ImageCreateFlagBits = ImageCreateFragmentDensityMapOffsetBitEXT
 	ImageCreateVideoProfileIndependentBitKHR           ImageCreateFlagBits = 1 << 20
 	ImageCreateFragmentDensityMapOffsetBitEXT          ImageCreateFlagBits = 1 << 15
-	ImageCreateAliasSingleLayerDescriptorBitKHR        ImageCreateFlagBits = 1 << 22
+	ImageCreateReserved22BitKHR                        ImageCreateFlagBits = 1 << 22
 )
 
 type ImageLayout uint32
@@ -3004,7 +2989,6 @@ type PipelineLayoutCreateFlagBits uint32
 
 const (
 	PipelineLayoutCreateIndependentSetsBitEXT PipelineLayoutCreateFlagBits = 1 << 1
-	PipelineLayoutCreateNoTaskShaderBitKHR    PipelineLayoutCreateFlagBits = 1 << 2
 )
 
 type PipelineRobustnessBufferBehavior uint32
@@ -3167,7 +3151,6 @@ const (
 	PipelineStage2MemoryDecompressionBitEXT           PipelineStageFlagBits2 = 1 << 45
 	PipelineStage2Reserved49BitEXT                    PipelineStageFlagBits2 = 1 << 49
 	PipelineStage2Reserved47BitKHR                    PipelineStageFlagBits2 = 1 << 47
-	PipelineStage2Reserved31BitAMD                    PipelineStageFlagBits2 = 1 << 31
 	PipelineStage2Reserved43BitARM                    PipelineStageFlagBits2 = 1 << 43
 	PipelineStage2Reserved48BitHUAWEI                 PipelineStageFlagBits2 = 1 << 48
 )
@@ -3689,7 +3672,7 @@ const (
 	ShaderCreateReserved9BitEXT                     ShaderCreateFlagBitsEXT = 1 << 9
 	ShaderCreateReserved12BitEXT                    ShaderCreateFlagBitsEXT = 1 << 12
 	ShaderCreate64BitIndexingBitEXT                 ShaderCreateFlagBitsEXT = 1 << 15
-	ShaderCreateIndependentSetsBitKHR               ShaderCreateFlagBitsEXT = 1 << 18
+	ShaderCreateReserved18BitKHR                    ShaderCreateFlagBitsEXT = 1 << 18
 )
 
 type ShaderFloatControlsIndependence uint32
@@ -5285,16 +5268,9 @@ const (
 	StructureTypePhysicalDeviceShaderUniformBufferUnsizedArrayFeaturesEXT        StructureType = 1000642000
 	StructureTypeComputeOccupancyPriorityParametersNV                            StructureType = 1000645000
 	StructureTypePhysicalDeviceComputeOccupancyPriorityFeaturesNV                StructureType = 1000645001
-	StructureTypePhysicalDeviceMaintenance11FeaturesKHR                          StructureType = 1000657000
-	StructureTypeQueueFamilyOptimalImageTransferGranularityPropertiesKHR         StructureType = 1000657001
 	StructureTypePhysicalDeviceShaderSubgroupPartitionedFeaturesEXT              StructureType = 1000662000
 	StructureTypeUbmSurfaceCreateInfoSEC                                         StructureType = 1000664000
 	StructureTypePhysicalDeviceShaderMixedFloatDotProductFeaturesVALVE           StructureType = 1000673000
-	StructureTypePhysicalDeviceThrottleHintFeaturesSEC                           StructureType = 1000674000
-	StructureTypeThrottleHintSubmitInfoSEC                                       StructureType = 1000674001
-	StructureTypeDataGraphPipelineNeuralStatisticsCreateInfoARM                  StructureType = 1000676000
-	StructureTypeDataGraphPipelineSessionNeuralStatisticsCreateInfoARM           StructureType = 1000676001
-	StructureTypePhysicalDeviceDataGraphNeuralAcceleratorStatisticsFeaturesARM   StructureType = 1000676002
 	StructureTypePhysicalDevicePrimitiveRestartIndexFeaturesEXT                  StructureType = 1000678000
 )
 
@@ -6107,26 +6083,20 @@ type cVkAccelerationStructureGeometryDataKHR [64]byte
 type AccelerationStructureGeometryDataKHR [64]byte
 
 func NewAccelerationStructureGeometryDataKHRTriangles(val AccelerationStructureGeometryTrianglesDataKHR) AccelerationStructureGeometryDataKHR {
-	cPtr, cancel := val.toC()
-	defer cancel()
 	var u AccelerationStructureGeometryDataKHR
-	copy(u[:], unsafe.Slice((*byte)(cPtr), unsafe.Sizeof(cVkAccelerationStructureGeometryTrianglesDataKHR{})))
+	*(*AccelerationStructureGeometryTrianglesDataKHR)(unsafe.Pointer(&u[0])) = val
 	return u
 }
 
 func NewAccelerationStructureGeometryDataKHRAabbs(val AccelerationStructureGeometryAabbsDataKHR) AccelerationStructureGeometryDataKHR {
-	cPtr, cancel := val.toC()
-	defer cancel()
 	var u AccelerationStructureGeometryDataKHR
-	copy(u[:], unsafe.Slice((*byte)(cPtr), unsafe.Sizeof(cVkAccelerationStructureGeometryAabbsDataKHR{})))
+	*(*AccelerationStructureGeometryAabbsDataKHR)(unsafe.Pointer(&u[0])) = val
 	return u
 }
 
 func NewAccelerationStructureGeometryDataKHRInstances(val AccelerationStructureGeometryInstancesDataKHR) AccelerationStructureGeometryDataKHR {
-	cPtr, cancel := val.toC()
-	defer cancel()
 	var u AccelerationStructureGeometryDataKHR
-	copy(u[:], unsafe.Slice((*byte)(cPtr), unsafe.Sizeof(cVkAccelerationStructureGeometryInstancesDataKHR{})))
+	*(*AccelerationStructureGeometryInstancesDataKHR)(unsafe.Pointer(&u[0])) = val
 	return u
 }
 
@@ -6156,7 +6126,6 @@ type cVkAccelerationStructureGeometryInstancesDataKHR struct {
 	sType           int32
 	pNext           unsafe.Pointer
 	arrayOfPointers uint32
-	_pad0           [4]byte
 	data            cVkDeviceOrHostAddressConstKHR
 }
 
@@ -6204,7 +6173,6 @@ type cVkAccelerationStructureGeometryKHR struct {
 	sType        int32
 	pNext        unsafe.Pointer
 	geometryType uint32
-	_pad0        [4]byte
 	geometry     cVkAccelerationStructureGeometryDataKHR
 	flags        uint32
 }
@@ -6254,7 +6222,6 @@ type cVkAccelerationStructureGeometryTrianglesDataKHR struct {
 	sType         int32
 	pNext         unsafe.Pointer
 	vertexFormat  uint32
-	_pad0         [4]byte
 	vertexData    cVkDeviceOrHostAddressConstKHR
 	vertexStride  uint64
 	maxVertex     uint32
@@ -8539,18 +8506,14 @@ type cVkClearValue [16]byte
 type ClearValue [16]byte
 
 func NewClearValueColor(val ClearColorValue) ClearValue {
-	cPtr, cancel := val.toC()
-	defer cancel()
 	var u ClearValue
-	copy(u[:], unsafe.Slice((*byte)(cPtr), unsafe.Sizeof(cVkClearColorValue{})))
+	*(*ClearColorValue)(unsafe.Pointer(&u[0])) = val
 	return u
 }
 
 func NewClearValueDepthStencil(val ClearDepthStencilValue) ClearValue {
-	cPtr, cancel := val.toC()
-	defer cancel()
 	var u ClearValue
-	copy(u[:], unsafe.Slice((*byte)(cPtr), unsafe.Sizeof(cVkClearDepthStencilValue{})))
+	*(*ClearDepthStencilValue)(unsafe.Pointer(&u[0])) = val
 	return u
 }
 
@@ -15283,7 +15246,6 @@ type cVkIndirectCommandsLayoutTokenEXT struct {
 	sType  int32
 	pNext  unsafe.Pointer
 	_type  uint32
-	_pad0  [4]byte
 	data   cVkIndirectCommandsTokenDataEXT
 	offset uint32
 }
@@ -15437,7 +15399,6 @@ type cVkIndirectExecutionSetCreateInfoEXT struct {
 	sType int32
 	pNext unsafe.Pointer
 	_type uint32
-	_pad0 [4]byte
 	info  cVkIndirectExecutionSetInfoEXT
 }
 

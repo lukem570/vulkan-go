@@ -1,0 +1,31 @@
+version: '3'
+
+tasks:
+  setup:
+    desc: Initialize Vulkan-Headers submodule (vk.xml is required for code generation)
+    cmds:
+      - git submodule update --init mod/Vulkan-Headers
+
+  generate:
+    desc: Generate the go bindings
+    deps: [ 'setup' ]
+    cmds:
+      - rm -rf ./pkg/raw
+      - mkdir -p ./pkg/raw
+      - go run ./cmd/gen/main.go
+      
+  test:
+    desc: Test Vulkan compute (no CGo required)
+    deps: [ 'generate' ]
+    env:
+      CGO_ENABLED: "0"
+    cmds:
+      - glslc -o ./test/compute/test.spv ./test/compute/test.comp
+      - go run ./test/compute/test.go
+
+  test-surface:
+    desc: Test Vulkan surface rendering (requires CGo for GLFW)
+    deps: [ 'generate' ]
+    cmds:
+      - go run ./test/surface/test.go
+      
