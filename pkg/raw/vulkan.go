@@ -838,11 +838,12 @@ const (
 type AccelerationStructureTypeKHR uint32
 
 const (
-	AccelerationStructureTypeTopLevelKHR    AccelerationStructureTypeKHR = 0
-	AccelerationStructureTypeBottomLevelKHR AccelerationStructureTypeKHR = 1
-	AccelerationStructureTypeGenericKHR     AccelerationStructureTypeKHR = 2
-	AccelerationStructureTypeTopLevelNV     AccelerationStructureTypeKHR = AccelerationStructureTypeTopLevelKHR
-	AccelerationStructureTypeBottomLevelNV  AccelerationStructureTypeKHR = AccelerationStructureTypeBottomLevelKHR
+	AccelerationStructureTypeTopLevelKHR        AccelerationStructureTypeKHR = 0
+	AccelerationStructureTypeBottomLevelKHR     AccelerationStructureTypeKHR = 1
+	AccelerationStructureTypeGenericKHR         AccelerationStructureTypeKHR = 2
+	AccelerationStructureTypeTopLevelNV         AccelerationStructureTypeKHR = AccelerationStructureTypeTopLevelKHR
+	AccelerationStructureTypeBottomLevelNV      AccelerationStructureTypeKHR = AccelerationStructureTypeBottomLevelKHR
+	AccelerationStructureTypeOpacityMicromapKHR AccelerationStructureTypeKHR = 1000623000
 )
 
 type AccessFlagBits uint32
@@ -916,6 +917,8 @@ const (
 	Access2Reserved46BitINTEL                      AccessFlagBits2 = 1 << 46
 	Access2VideoEncodeReadBitKHR                   AccessFlagBits2 = 1 << 37
 	Access2VideoEncodeWriteBitKHR                  AccessFlagBits2 = 1 << 38
+	Access2Reserved53BitKHR                        AccessFlagBits2 = 1 << 53
+	Access2Reserved54BitKHR                        AccessFlagBits2 = 1 << 54
 	Access2ShaderTileAttachmentReadBitQCOM         AccessFlagBits2 = 1 << 51
 	Access2ShaderTileAttachmentWriteBitQCOM        AccessFlagBits2 = 1 << 52
 	Access2NoneKHR                                 AccessFlagBits2 = Access2None
@@ -1173,6 +1176,8 @@ const (
 	BufferUsage2ShaderDeviceAddressBit                        BufferUsageFlagBits2 = 1 << 17
 	BufferUsage2ExecutionGraphScratchBitAmdx                  BufferUsageFlagBits2 = 1 << 25
 	BufferUsage2DescriptorHeapBitEXT                          BufferUsageFlagBits2 = 1 << 28
+	BufferUsage2MicromapBuildInputReadOnlyBitEXT              BufferUsageFlagBits2 = 1 << 23
+	BufferUsage2MicromapStorageBitEXT                         BufferUsageFlagBits2 = 1 << 24
 	BufferUsage2TransferSrcBitKHR                             BufferUsageFlagBits2 = BufferUsage2TransferSrcBit
 	BufferUsage2TransferDstBitKHR                             BufferUsageFlagBits2 = BufferUsage2TransferDstBit
 	BufferUsage2UniformTexelBufferBitKHR                      BufferUsageFlagBits2 = BufferUsage2UniformTexelBufferBit
@@ -1197,8 +1202,6 @@ const (
 	BufferUsage2SamplerDescriptorBufferBitEXT                 BufferUsageFlagBits2 = 1 << 21
 	BufferUsage2ResourceDescriptorBufferBitEXT                BufferUsageFlagBits2 = 1 << 22
 	BufferUsage2PushDescriptorsDescriptorBufferBitEXT         BufferUsageFlagBits2 = 1 << 26
-	BufferUsage2MicromapBuildInputReadOnlyBitEXT              BufferUsageFlagBits2 = 1 << 23
-	BufferUsage2MicromapStorageBitEXT                         BufferUsageFlagBits2 = 1 << 24
 	BufferUsage2CompressedDataDgf1BitAmdx                     BufferUsageFlagBits2 = 1 << 33
 	BufferUsage2DataGraphForeignDescriptorBitARM              BufferUsageFlagBits2 = 1 << 29
 	BufferUsage2Reserved34BitEXT                              BufferUsageFlagBits2 = 1 << 34
@@ -1226,9 +1229,9 @@ const (
 	BuildAccelerationStructurePreferFastBuildBitNV                 BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructurePreferFastBuildBitKHR
 	BuildAccelerationStructureLowMemoryBitNV                       BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureLowMemoryBitKHR
 	BuildAccelerationStructureMotionBitNV                          BuildAccelerationStructureFlagBitsKHR = 1 << 5
-	BuildAccelerationStructureAllowOpacityMicromapUpdateBitEXT     BuildAccelerationStructureFlagBitsKHR = 1 << 6
+	BuildAccelerationStructureAllowOpacityMicromapUpdateBitEXT     BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureAllowOpacityMicromapUpdateBitKHR
 	BuildAccelerationStructureAllowOpacityMicromapUpdateEXT        BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureAllowOpacityMicromapUpdateBitEXT
-	BuildAccelerationStructureAllowDisableOpacityMicromapsBitEXT   BuildAccelerationStructureFlagBitsKHR = 1 << 7
+	BuildAccelerationStructureAllowDisableOpacityMicromapsBitEXT   BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureAllowDisableOpacityMicromapsBitKHR
 	BuildAccelerationStructureAllowDisableOpacityMicromapsEXT      BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureAllowDisableOpacityMicromapsBitEXT
 	BuildAccelerationStructureAllowOpacityMicromapDataUpdateBitEXT BuildAccelerationStructureFlagBitsKHR = 1 << 8
 	BuildAccelerationStructureAllowOpacityMicromapDataUpdateEXT    BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureAllowOpacityMicromapDataUpdateBitEXT
@@ -1237,7 +1240,9 @@ const (
 	BuildAccelerationStructureAllowDataAccessBitKHR                BuildAccelerationStructureFlagBitsKHR = 1 << 11
 	BuildAccelerationStructureAllowDataAccessKHR                   BuildAccelerationStructureFlagBitsKHR = BuildAccelerationStructureAllowDataAccessBitKHR
 	BuildAccelerationStructureAllowClusterOpacityMicromapsBitNV    BuildAccelerationStructureFlagBitsKHR = 1 << 12
-	BuildAccelerationStructureReserved10BitKHR                     BuildAccelerationStructureFlagBitsKHR = 1 << 10
+	BuildAccelerationStructureAllowOpacityMicromapUpdateBitKHR     BuildAccelerationStructureFlagBitsKHR = 1 << 6
+	BuildAccelerationStructureAllowDisableOpacityMicromapsBitKHR   BuildAccelerationStructureFlagBitsKHR = 1 << 7
+	BuildAccelerationStructureMicromapLossyBitKHR                  BuildAccelerationStructureFlagBitsKHR = 1 << 10
 )
 
 type BuildAccelerationStructureModeKHR uint32
@@ -2294,7 +2299,7 @@ const (
 	FormatFeature2HostImageTransferBitEXT                                                FormatFeatureFlagBits2 = FormatFeature2HostImageTransferBit
 	FormatFeature2VideoEncodeInputBitKHR                                                 FormatFeatureFlagBits2 = 1 << 27
 	FormatFeature2VideoEncodeDpbBitKHR                                                   FormatFeatureFlagBits2 = 1 << 28
-	FormatFeature2Reserved44BitQCOM                                                      FormatFeatureFlagBits2 = 1 << 44
+	FormatFeature2BlockMatchingSxdBitQCOM                                                FormatFeatureFlagBits2 = 1 << 44
 	FormatFeature2SampledImageBitKHR                                                     FormatFeatureFlagBits2 = FormatFeature2SampledImageBit
 	FormatFeature2StorageImageBitKHR                                                     FormatFeatureFlagBits2 = FormatFeature2StorageImageBit
 	FormatFeature2StorageImageAtomicBitKHR                                               FormatFeatureFlagBits2 = FormatFeature2StorageImageAtomicBit
@@ -2384,10 +2389,12 @@ const (
 	GeometryInstanceTriangleFrontCounterclockwiseBitNV  GeometryInstanceFlagBitsKHR = GeometryInstanceTriangleFrontCounterclockwiseBitKHR
 	GeometryInstanceForceOpaqueBitNV                    GeometryInstanceFlagBitsKHR = GeometryInstanceForceOpaqueBitKHR
 	GeometryInstanceForceNoOpaqueBitNV                  GeometryInstanceFlagBitsKHR = GeometryInstanceForceNoOpaqueBitKHR
-	GeometryInstanceForceOpacityMicromap2StateBitEXT    GeometryInstanceFlagBitsKHR = 1 << 4
+	GeometryInstanceForceOpacityMicromap2StateBitEXT    GeometryInstanceFlagBitsKHR = GeometryInstanceForceOpacityMicromap2StateBitKHR
 	GeometryInstanceForceOpacityMicromap2StateEXT       GeometryInstanceFlagBitsKHR = GeometryInstanceForceOpacityMicromap2StateBitEXT
-	GeometryInstanceDisableOpacityMicromapsBitEXT       GeometryInstanceFlagBitsKHR = 1 << 5
+	GeometryInstanceDisableOpacityMicromapsBitEXT       GeometryInstanceFlagBitsKHR = GeometryInstanceDisableOpacityMicromapsBitKHR
 	GeometryInstanceDisableOpacityMicromapsEXT          GeometryInstanceFlagBitsKHR = GeometryInstanceDisableOpacityMicromapsBitEXT
+	GeometryInstanceForceOpacityMicromap2StateBitKHR    GeometryInstanceFlagBitsKHR = 1 << 4
+	GeometryInstanceDisableOpacityMicromapsBitKHR       GeometryInstanceFlagBitsKHR = 1 << 5
 )
 
 type GeometryTypeKHR uint32
@@ -2401,6 +2408,7 @@ const (
 	GeometryTypeSpheresNV                        GeometryTypeKHR = 1000429004
 	GeometryTypeLinearSweptSpheresNV             GeometryTypeKHR = 1000429005
 	GeometryTypeDenseGeometryFormatTrianglesAmdx GeometryTypeKHR = 1000478000
+	GeometryTypeMicromapKHR                      GeometryTypeKHR = 1000623000
 )
 
 type HostImageCopyFlagBits uint32
@@ -2787,6 +2795,7 @@ const (
 	ObjectTypeCuFunctionNVX                 ObjectType = 1000029001
 	ObjectTypeDescriptorUpdateTemplateKHR   ObjectType = ObjectTypeDescriptorUpdateTemplate
 	ObjectTypeDebugUtilsMessengerEXT        ObjectType = 1000128000
+	ObjectTypeGpaSessionAMD                 ObjectType = 1000133000
 	ObjectTypeAccelerationStructureKHR      ObjectType = 1000150000
 	ObjectTypeSamplerYcbcrConversionKHR     ObjectType = ObjectTypeSamplerYcbcrConversion
 	ObjectTypeValidationCacheEXT            ObjectType = 1000160000
@@ -2911,10 +2920,11 @@ const (
 	PipelineCreateRayTracingAllowMotionBitNV                            PipelineCreateFlagBits = 1 << 20
 	PipelineCreateColorAttachmentFeedbackLoopBitEXT                     PipelineCreateFlagBits = 1 << 25
 	PipelineCreateDepthStencilAttachmentFeedbackLoopBitEXT              PipelineCreateFlagBits = 1 << 26
-	PipelineCreateRayTracingOpacityMicromapBitEXT                       PipelineCreateFlagBits = 1 << 24
+	PipelineCreateRayTracingOpacityMicromapBitEXT                       PipelineCreateFlagBits = PipelineCreateRayTracingOpacityMicromapBitKHR
 	PipelineCreateRayTracingDisplacementMicromapBitNV                   PipelineCreateFlagBits = 1 << 28
 	PipelineCreateNoProtectedAccessBitEXT                               PipelineCreateFlagBits = PipelineCreateNoProtectedAccessBit
 	PipelineCreateProtectedAccessOnlyBitEXT                             PipelineCreateFlagBits = PipelineCreateProtectedAccessOnlyBit
+	PipelineCreateRayTracingOpacityMicromapBitKHR                       PipelineCreateFlagBits = 1 << 24
 )
 
 type PipelineCreateFlagBits2 uint64
@@ -2934,6 +2944,7 @@ const (
 	PipelineCreate2DescriptorHeapBitEXT                             PipelineCreateFlagBits2 = 1 << 36
 	PipelineCreate2RayTracingSkipBuiltInPrimitivesBitKHR            PipelineCreateFlagBits2 = PipelineCreate2RayTracingSkipTrianglesBitKHR
 	PipelineCreateReserved44BitKHR                                  PipelineCreateFlagBits2 = 1 << 44
+	PipelineCreate2RayTracingOpacityMicromapBitEXT                  PipelineCreateFlagBits2 = PipelineCreate2RayTracingOpacityMicromapBitKHR
 	PipelineCreate2RayTracingAllowSpheresAndLinearSweptSpheresBitNV PipelineCreateFlagBits2 = 1 << 33
 	PipelineCreate2EnableLegacyDitheringBitEXT                      PipelineCreateFlagBits2 = 1 << 34
 	PipelineCreate2DisableOptimizationBitKHR                        PipelineCreateFlagBits2 = PipelineCreate2DisableOptimizationBit
@@ -2960,7 +2971,6 @@ const (
 	PipelineCreate2RayTracingAllowMotionBitNV                       PipelineCreateFlagBits2 = 1 << 20
 	PipelineCreate2RenderingFragmentShadingRateAttachmentBitKHR     PipelineCreateFlagBits2 = 1 << 21
 	PipelineCreate2RenderingFragmentDensityMapAttachmentBitEXT      PipelineCreateFlagBits2 = 1 << 22
-	PipelineCreate2RayTracingOpacityMicromapBitEXT                  PipelineCreateFlagBits2 = 1 << 24
 	PipelineCreate2ColorAttachmentFeedbackLoopBitEXT                PipelineCreateFlagBits2 = 1 << 25
 	PipelineCreate2DepthStencilAttachmentFeedbackLoopBitEXT         PipelineCreateFlagBits2 = 1 << 26
 	PipelineCreate2NoProtectedAccessBitEXT                          PipelineCreateFlagBits2 = PipelineCreate2NoProtectedAccessBit
@@ -2973,7 +2983,8 @@ const (
 	PipelineCreate2IndirectBindableBitEXT                           PipelineCreateFlagBits2 = 1 << 38
 	PipelineCreate2Reserved35BitKHR                                 PipelineCreateFlagBits2 = 1 << 35
 	PipelineCreate2PerLayerFragmentDensityBitVALVE                  PipelineCreateFlagBits2 = 1 << 40
-	PipelineCreate2Reserved41BitKHR                                 PipelineCreateFlagBits2 = 1 << 41
+	PipelineCreate2RayTracingOpacityMicromapBitKHR                  PipelineCreateFlagBits2 = 1 << 24
+	PipelineCreate2OpacityMicromapDisallowMixedSpecialIndexBitKHR   PipelineCreateFlagBits2 = 1 << 41
 	PipelineCreate264BitIndexingBitEXT                              PipelineCreateFlagBits2 = 1 << 43
 	PipelineCreate2Reserved45BitEXT                                 PipelineCreateFlagBits2 = 1 << 45
 	PipelineCreate2Reserved47BitAMD                                 PipelineCreateFlagBits2 = 1 << 47
@@ -3113,6 +3124,7 @@ const (
 	PipelineStage2PreRasterizationShadersBit          PipelineStageFlagBits2 = 1 << 38
 	PipelineStage2VideoDecodeBitKHR                   PipelineStageFlagBits2 = 1 << 26
 	PipelineStage2VideoEncodeBitKHR                   PipelineStageFlagBits2 = 1 << 27
+	PipelineStage2Reserved50BitKHR                    PipelineStageFlagBits2 = 1 << 50
 	PipelineStage2NoneKHR                             PipelineStageFlagBits2 = PipelineStage2None
 	PipelineStage2TopOfPipeBitKHR                     PipelineStageFlagBits2 = PipelineStage2TopOfPipeBit
 	PipelineStage2DrawIndirectBitKHR                  PipelineStageFlagBits2 = PipelineStage2DrawIndirectBit
@@ -3279,6 +3291,7 @@ const (
 	QueryTypeAccelerationStructureCompactedSizeKHR                    QueryType = 1000150000
 	QueryTypeAccelerationStructureSerializationSizeKHR                QueryType = 1000150001
 	QueryTypeAccelerationStructureCompactedSizeNV                     QueryType = 1000165000
+	QueryTypeTimeElapsedQCOM                                          QueryType = 1000173000
 	QueryTypePerformanceQueryINTEL                                    QueryType = 1000210000
 	QueryTypeVideoEncodeFeedbackKHR                                   QueryType = 1000299000
 	QueryTypeMeshPrimitivesGeneratedEXT                               QueryType = 1000328000
@@ -3673,23 +3686,23 @@ const (
 type ShaderCreateFlagBitsEXT uint32
 
 const (
-	ShaderCreateLinkStageBitEXT                     ShaderCreateFlagBitsEXT = 1 << 0
-	ShaderCreateReserved17BitIMG                    ShaderCreateFlagBitsEXT = 1 << 17
-	ShaderCreateDescriptorHeapBitEXT                ShaderCreateFlagBitsEXT = 1 << 10
-	ShaderCreateReserved16BitKHR                    ShaderCreateFlagBitsEXT = 1 << 16
-	ShaderCreateInstrumentShaderBitARM              ShaderCreateFlagBitsEXT = 1 << 11
-	ShaderCreateAllowVaryingSubgroupSizeBitEXT      ShaderCreateFlagBitsEXT = 1 << 1
-	ShaderCreateRequireFullSubgroupsBitEXT          ShaderCreateFlagBitsEXT = 1 << 2
-	ShaderCreateNoTaskShaderBitEXT                  ShaderCreateFlagBitsEXT = 1 << 3
-	ShaderCreateDispatchBaseBitEXT                  ShaderCreateFlagBitsEXT = 1 << 4
-	ShaderCreateFragmentShadingRateAttachmentBitEXT ShaderCreateFlagBitsEXT = 1 << 5
-	ShaderCreateFragmentDensityMapAttachmentBitEXT  ShaderCreateFlagBitsEXT = 1 << 6
-	ShaderCreateIndirectBindableBitEXT              ShaderCreateFlagBitsEXT = 1 << 7
-	ShaderCreateReserved8BitEXT                     ShaderCreateFlagBitsEXT = 1 << 8
-	ShaderCreateReserved9BitEXT                     ShaderCreateFlagBitsEXT = 1 << 9
-	ShaderCreateReserved12BitEXT                    ShaderCreateFlagBitsEXT = 1 << 12
-	ShaderCreate64BitIndexingBitEXT                 ShaderCreateFlagBitsEXT = 1 << 15
-	ShaderCreateIndependentSetsBitKHR               ShaderCreateFlagBitsEXT = 1 << 18
+	ShaderCreateLinkStageBitEXT                                ShaderCreateFlagBitsEXT = 1 << 0
+	ShaderCreateReserved17BitIMG                               ShaderCreateFlagBitsEXT = 1 << 17
+	ShaderCreateDescriptorHeapBitEXT                           ShaderCreateFlagBitsEXT = 1 << 10
+	ShaderCreateReserved16BitKHR                               ShaderCreateFlagBitsEXT = 1 << 16
+	ShaderCreateInstrumentShaderBitARM                         ShaderCreateFlagBitsEXT = 1 << 11
+	ShaderCreateAllowVaryingSubgroupSizeBitEXT                 ShaderCreateFlagBitsEXT = 1 << 1
+	ShaderCreateRequireFullSubgroupsBitEXT                     ShaderCreateFlagBitsEXT = 1 << 2
+	ShaderCreateNoTaskShaderBitEXT                             ShaderCreateFlagBitsEXT = 1 << 3
+	ShaderCreateDispatchBaseBitEXT                             ShaderCreateFlagBitsEXT = 1 << 4
+	ShaderCreateFragmentShadingRateAttachmentBitEXT            ShaderCreateFlagBitsEXT = 1 << 5
+	ShaderCreateFragmentDensityMapAttachmentBitEXT             ShaderCreateFlagBitsEXT = 1 << 6
+	ShaderCreateIndirectBindableBitEXT                         ShaderCreateFlagBitsEXT = 1 << 7
+	ShaderCreateReserved8BitEXT                                ShaderCreateFlagBitsEXT = 1 << 8
+	ShaderCreateReserved9BitEXT                                ShaderCreateFlagBitsEXT = 1 << 9
+	ShaderCreateOpacityMicromapDisallowMixedSpecialIndexBitEXT ShaderCreateFlagBitsEXT = 1 << 12
+	ShaderCreate64BitIndexingBitEXT                            ShaderCreateFlagBitsEXT = 1 << 15
+	ShaderCreateIndependentSetsBitKHR                          ShaderCreateFlagBitsEXT = 1 << 18
 )
 
 type ShaderFloatControlsIndependence uint32
@@ -4314,6 +4327,13 @@ const (
 	StructureTypeAndroidHardwareBufferFormatProperties2Android                   StructureType = 1000129006
 	StructureTypePhysicalDeviceSamplerFilterMinmaxPropertiesEXT                  StructureType = StructureTypePhysicalDeviceSamplerFilterMinmaxProperties
 	StructureTypeSamplerReductionModeCreateInfoEXT                               StructureType = StructureTypeSamplerReductionModeCreateInfo
+	StructureTypePhysicalDeviceGpaFeaturesAMD                                    StructureType = 1000133000
+	StructureTypePhysicalDeviceGpaPropertiesAMD                                  StructureType = 1000133001
+	StructureTypeGpaSampleBeginInfoAMD                                           StructureType = 1000133002
+	StructureTypeGpaSessionCreateInfoAMD                                         StructureType = 1000133003
+	StructureTypeGpaDeviceClockModeInfoAMD                                       StructureType = 1000133004
+	StructureTypePhysicalDeviceGpaProperties2AMD                                 StructureType = 1000133005
+	StructureTypeGpaDeviceGetClockInfoAMD                                        StructureType = 1000133006
 	StructureTypePhysicalDeviceShaderEnqueueFeaturesAmdx                         StructureType = 1000134000
 	StructureTypePhysicalDeviceShaderEnqueuePropertiesAmdx                       StructureType = 1000134001
 	StructureTypeExecutionGraphPipelineScratchSizeAmdx                           StructureType = 1000134002
@@ -4425,6 +4445,7 @@ const (
 	StructureTypePhysicalDeviceImageViewImageFormatInfoEXT                       StructureType = 1000170000
 	StructureTypeFilterCubicImageViewImageFormatPropertiesEXT                    StructureType = 1000170001
 	StructureTypePhysicalDeviceCooperativeMatrixConversionFeaturesQCOM           StructureType = 1000172000
+	StructureTypePhysicalDeviceElapsedTimerQueryFeaturesQCOM                     StructureType = 1000173000
 	StructureTypeDeviceQueueGlobalPriorityCreateInfoEXT                          StructureType = StructureTypeDeviceQueueGlobalPriorityCreateInfo
 	StructureTypePhysicalDeviceShaderSubgroupExtendedTypesFeaturesKHR            StructureType = StructureTypePhysicalDeviceShaderSubgroupExtendedTypesFeatures
 	StructureTypePhysicalDevice8bitStorageFeaturesKHR                            StructureType = StructureTypePhysicalDevice8bitStorageFeatures
@@ -4652,6 +4673,11 @@ const (
 	StructureTypePerfHintInfoQCOM                                                StructureType = 1000302000
 	StructureTypePhysicalDeviceQueuePerfHintFeaturesQCOM                         StructureType = 1000302001
 	StructureTypePhysicalDeviceQueuePerfHintPropertiesQCOM                       StructureType = 1000302002
+	StructureTypePhysicalDeviceImageProcessing3FeaturesQCOM                      StructureType = 1000303000
+	StructureTypePhysicalDeviceShaderMultipleWaitQueuesFeaturesQCOM              StructureType = 1000304000
+	StructureTypePhysicalDeviceShaderMultipleWaitQueuesPropertiesQCOM            StructureType = 1000304001
+	StructureTypePhysicalDeviceShaderSplitBarrierFeaturesEXT                     StructureType = 1000305000
+	StructureTypePhysicalDeviceShaderSplitBarrierPropertiesEXT                   StructureType = 1000305001
 	StructureTypeCudaModuleCreateInfoNV                                          StructureType = 1000307000
 	StructureTypeCudaFunctionCreateInfoNV                                        StructureType = 1000307001
 	StructureTypeCudaLaunchInfoNV                                                StructureType = 1000307002
@@ -5259,6 +5285,10 @@ const (
 	StructureTypeRenderingEndInfoEXT                                             StructureType = StructureTypeRenderingEndInfoKHR
 	StructureTypePhysicalDeviceZeroInitializeDeviceMemoryFeaturesEXT             StructureType = 1000620000
 	StructureTypePhysicalDevicePresentModeFifoLatestReadyFeaturesKHR             StructureType = 1000361000
+	StructureTypePhysicalDeviceOpacityMicromapFeaturesKHR                        StructureType = 1000623000
+	StructureTypePhysicalDeviceOpacityMicromapPropertiesKHR                      StructureType = 1000623001
+	StructureTypeAccelerationStructureGeometryMicromapDataKHR                    StructureType = 1000623002
+	StructureTypeAccelerationStructureTrianglesOpacityMicromapKHR                StructureType = 1000623003
 	StructureTypePhysicalDeviceShader64BitIndexingFeaturesEXT                    StructureType = 1000627000
 	StructureTypePhysicalDeviceCustomResolveFeaturesEXT                          StructureType = 1000628000
 	StructureTypeBeginCustomResolveInfoEXT                                       StructureType = 1000628001
