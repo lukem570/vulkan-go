@@ -51,6 +51,48 @@ func (s *MacOSSurfaceCreateInfoMVK) fromC(p *cVkMacOSSurfaceCreateInfoMVK) {
 	s.View = p.pView
 }
 
+type cVkMetalSurfaceCreateInfoEXT struct {
+	sType  int32
+	pNext  unsafe.Pointer
+	flags  uint32
+	pLayer unsafe.Pointer
+}
+
+type MetalSurfaceCreateInfoEXT struct {
+	Next  Structure
+	Flags MetalSurfaceCreateFlagsEXT
+	Layer unsafe.Pointer
+}
+
+func (s *MetalSurfaceCreateInfoEXT) GetType() StructureType {
+	return StructureTypeMetalSurfaceCreateInfoEXT
+}
+
+func (s *MetalSurfaceCreateInfoEXT) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := new(cVkMetalSurfaceCreateInfoEXT)
+	p.sType = int32(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	val0 := uint32(s.Flags)
+	p.flags = val0
+	ext1 := unsafe.Pointer(s.Layer)
+	p.pLayer = ext1
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+	}
+}
+
+func (s *MetalSurfaceCreateInfoEXT) fromC(p *cVkMetalSurfaceCreateInfoEXT) {
+	s.Flags = MetalSurfaceCreateFlagsEXT(p.flags)
+	s.Layer = unsafe.Pointer(p.pLayer)
+}
+
 func (h Instance) CreateMacOSSurfaceMVK(
 	CreateInfo *MacOSSurfaceCreateInfoMVK,
 	Allocator *AllocationCallbacks,
@@ -79,6 +121,46 @@ func (h Instance) CreateMacOSSurfaceMVK(
 	_surfaceOutSlot := unsafe.Pointer(&surfaceOut)
 	var _ret int32
 	ffi.CallFunction(&_cif_vkCreateMacOSSurfaceMVK, h.table.vkCreateMacOSSurfaceMVK, unsafe.Pointer(&_ret), []unsafe.Pointer{
+		unsafe.Pointer(&_recv),
+		unsafe.Pointer(&ptr0),
+		unsafe.Pointer(&ptr3),
+		unsafe.Pointer(&_surfaceOutSlot),
+	})
+	if _ret != int32(Success) {
+		return nil, Result(_ret)
+	}
+	h6 := &SurfaceKHR{handle: unsafe.Pointer(surfaceOut)}
+	return h6, nil
+}
+
+func (h Instance) CreateMetalSurfaceEXT(
+	CreateInfo *MetalSurfaceCreateInfoEXT,
+	Allocator *AllocationCallbacks,
+) (*SurfaceKHR, error) {
+	cancels := make([]func(), 0)
+	defer func() {
+		for _, c := range cancels {
+			c()
+		}
+	}()
+
+	_recv := h.handle
+	var ptr0 unsafe.Pointer
+	if CreateInfo != nil {
+		val1, cancel2 := CreateInfo.toC()
+		cancels = append(cancels, cancel2)
+		ptr0 = val1
+	}
+	var ptr3 unsafe.Pointer
+	if Allocator != nil {
+		val4, cancel5 := Allocator.toC()
+		cancels = append(cancels, cancel5)
+		ptr3 = val4
+	}
+	var surfaceOut unsafe.Pointer
+	_surfaceOutSlot := unsafe.Pointer(&surfaceOut)
+	var _ret int32
+	ffi.CallFunction(&_cif_vkCreateMetalSurfaceEXT, h.table.vkCreateMetalSurfaceEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),

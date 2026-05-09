@@ -9,6 +9,8 @@ tasks:
   generate:
     desc: Generate the go bindings
     deps: [ 'setup' ]
+    env:
+      GOWORK: "off"
     cmds:
       - rm -rf ./pkg/raw
       - mkdir -p ./pkg/raw
@@ -19,6 +21,7 @@ tasks:
     deps: [ 'generate' ]
     env:
       CGO_ENABLED: "0"
+      GOWORK: "off"
     cmds:
       - glslc -o ./test/compute/test.spv ./test/compute/test.comp
       - go run ./test/compute/test.go
@@ -26,6 +29,8 @@ tasks:
   test-surface:
     desc: Test Vulkan surface rendering (requires CGo for GLFW)
     deps: [ 'generate' ]
+    env:
+      GOWORK: "off"
     cmds:
       - go run ./test/surface/test.go
       

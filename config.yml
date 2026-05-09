@@ -9,16 +9,23 @@ extensions:
   - VK_KHR_wayland_surface
   - VK_KHR_win32_surface
   - VK_MVK_macos_surface
+  - VK_EXT_metal_surface
   - VK_EXT_debug_utils
   - VK_EXT_validation_features
   - VK_EXT_line_rasterization
   - VK_EXT_shader_object
   - VK_EXT_swapchain_maintenance1
   - VK_EXT_surface_maintenance1
+  - VK_EXT_memory_budget
+  - VK_EXT_memory_priority
   - VK_EXT_multi_draw
+  - VK_EXT_pageable_device_local_memory
   - VK_EXT_device_generated_commands
   - VK_EXT_extended_dynamic_state2
   - VK_EXT_extended_dynamic_state3
+  - VK_EXT_descriptor_buffer
+  - VK_EXT_graphics_pipeline_library
+  - VK_EXT_mesh_shader
   - VK_KHR_acceleration_structure
   - VK_KHR_ray_tracing_pipeline
   - VK_KHR_deferred_host_operations
