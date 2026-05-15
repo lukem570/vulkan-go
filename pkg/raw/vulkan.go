@@ -1646,6 +1646,7 @@ const (
 	DriverIdMESAHoneykrisp             DriverId = 26
 	DriverIdVulkanScEmulationOnVulkan  DriverId = 27
 	DriverIdMESAKosmickrisp            DriverId = 28
+	DriverIdMESAGfxstream              DriverId = 29
 	DriverIdAMDProprietaryKHR          DriverId = DriverIdAMDProprietary
 	DriverIdAMDOpenSourceKHR           DriverId = DriverIdAMDOpenSource
 	DriverIdMESARadvKHR                DriverId = DriverIdMESARadv
@@ -5376,6 +5377,7 @@ const (
 	StructureTypeDataGraphPipelineSessionNeuralStatisticsCreateInfoARM           StructureType = 1000676001
 	StructureTypePhysicalDeviceDataGraphNeuralAcceleratorStatisticsFeaturesARM   StructureType = 1000676002
 	StructureTypePhysicalDevicePrimitiveRestartIndexFeaturesEXT                  StructureType = 1000678000
+	StructureTypePhysicalDeviceCooperativeMatrixDecodeVectorFeaturesNV           StructureType = 1000689000
 )
 
 type SubgroupFeatureFlagBits uint32
