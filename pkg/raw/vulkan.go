@@ -1267,6 +1267,8 @@ const (
 	BuildAccelerationStructureAllowOpacityMicromapUpdateBitKHR     BuildAccelerationStructureFlagBitsKHR = 1 << 6
 	BuildAccelerationStructureAllowDisableOpacityMicromapsBitKHR   BuildAccelerationStructureFlagBitsKHR = 1 << 7
 	BuildAccelerationStructureMicromapLossyBitKHR                  BuildAccelerationStructureFlagBitsKHR = 1 << 10
+	BuildAccelerationStructureReserved14BitEXT                     BuildAccelerationStructureFlagBitsKHR = 1 << 14
+	BuildAccelerationStructureReserved13BitAMD                     BuildAccelerationStructureFlagBitsKHR = 1 << 13
 )
 
 type BuildAccelerationStructureModeKHR uint32
@@ -2609,7 +2611,7 @@ const (
 	ImageUsageReserved29BitKHR                      ImageUsageFlagBits = 1 << 29
 	ImageUsageReserved30BitKHR                      ImageUsageFlagBits = 1 << 30
 	ImageUsageReserved16BitHUAWEI                   ImageUsageFlagBits = 1 << 16
-	ImageUsageReserved27BitHUAWEI                   ImageUsageFlagBits = 1 << 17
+	ImageUsageReserved17BitHUAWEI                   ImageUsageFlagBits = 1 << 17
 )
 
 type ImageViewCreateFlagBits uint32
@@ -5308,6 +5310,9 @@ const (
 	StructureTypeCooperativeMatrixFlexibleDimensionsPropertiesNV                 StructureType = 1000593001
 	StructureTypePhysicalDeviceCooperativeMatrix2PropertiesNV                    StructureType = 1000593002
 	StructureTypePhysicalDevicePipelineOpacityMicromapFeaturesARM                StructureType = 1000596000
+	StructureTypePhysicalDeviceVideoEncodeFeedback2FeaturesKHR                   StructureType = 1000598000
+	StructureTypeVideoEncodeFeedback2CapabilitiesKHR                             StructureType = 1000598001
+	StructureTypeQueryPoolVideoEncodePerPartitionFeedbackCreateInfoKHR           StructureType = 1000598002
 	StructureTypeImportMemoryMetalHandleInfoEXT                                  StructureType = 1000602000
 	StructureTypeMemoryMetalHandlePropertiesEXT                                  StructureType = 1000602001
 	StructureTypeMemoryGetMetalHandleInfoEXT                                     StructureType = 1000602002
@@ -5330,6 +5335,8 @@ const (
 	StructureTypePhysicalDeviceRobustness2PropertiesKHR                          StructureType = 1000286001
 	StructureTypeSetPresentConfigNV                                              StructureType = 1000613000
 	StructureTypePhysicalDevicePresentMeteringFeaturesNV                         StructureType = 1000613001
+	StructureTypePhysicalDeviceMultisampledRenderToSwapchainFeaturesEXT          StructureType = 1000616000
+	StructureTypeSwapchainFlagsSurfaceCapabilitiesEXT                            StructureType = 1000616001
 	StructureTypePhysicalDeviceFragmentDensityMapOffsetFeaturesEXT               StructureType = 1000425000
 	StructureTypePhysicalDeviceFragmentDensityMapOffsetPropertiesEXT             StructureType = 1000425001
 	StructureTypeRenderPassFragmentDensityMapOffsetEndInfoEXT                    StructureType = 1000425002
@@ -5370,6 +5377,13 @@ const (
 	StructureTypeQueueFamilyOptimalImageTransferGranularityPropertiesKHR         StructureType = 1000657001
 	StructureTypePhysicalDeviceShaderSubgroupPartitionedFeaturesEXT              StructureType = 1000662000
 	StructureTypeUbmSurfaceCreateInfoSEC                                         StructureType = 1000664000
+	StructureTypeFormatProperties4KHR                                            StructureType = 1000668000
+	StructureTypeImageCreateFlags2CreateInfoKHR                                  StructureType = 1000668001
+	StructureTypeImageUsageFlags2CreateInfoKHR                                   StructureType = 1000668002
+	StructureTypeImageViewUsage2CreateInfoKHR                                    StructureType = 1000668003
+	StructureTypePhysicalDeviceExtendedFlagsFeaturesKHR                          StructureType = 1000668004
+	StructureTypeImageStencilUsage2CreateInfoKHR                                 StructureType = 1000668005
+	StructureTypeSharedPresentSurfaceCapabilities2KHR                            StructureType = 1000668006
 	StructureTypePhysicalDeviceShaderMixedFloatDotProductFeaturesVALVE           StructureType = 1000673000
 	StructureTypePhysicalDeviceThrottleHintFeaturesSEC                           StructureType = 1000674000
 	StructureTypeThrottleHintSubmitInfoSEC                                       StructureType = 1000674001
@@ -5451,17 +5465,17 @@ const (
 type SwapchainCreateFlagBitsKHR uint32
 
 const (
-	SwapchainCreateSplitInstanceBindRegionsBitKHR SwapchainCreateFlagBitsKHR = 1 << 0
-	SwapchainCreateProtectedBitKHR                SwapchainCreateFlagBitsKHR = 1 << 1
-	SwapchainCreateMutableFormatBitKHR            SwapchainCreateFlagBitsKHR = 1 << 2
-	SwapchainCreatePresentTimingBitEXT            SwapchainCreateFlagBitsKHR = 1 << 9
-	SwapchainCreateDeferredMemoryAllocationBitEXT SwapchainCreateFlagBitsKHR = SwapchainCreateDeferredMemoryAllocationBitKHR
-	SwapchainCreateReserved5BitEXT                SwapchainCreateFlagBitsKHR = 1 << 5
-	SwapchainCreateReserved4BitEXT                SwapchainCreateFlagBitsKHR = 1 << 4
-	SwapchainCreatePresentId2BitKHR               SwapchainCreateFlagBitsKHR = 1 << 6
-	SwapchainCreatePresentWait2BitKHR             SwapchainCreateFlagBitsKHR = 1 << 7
-	SwapchainCreateDeferredMemoryAllocationBitKHR SwapchainCreateFlagBitsKHR = 1 << 3
-	SwapchainCreateReserved8BitEXT                SwapchainCreateFlagBitsKHR = 1 << 8
+	SwapchainCreateSplitInstanceBindRegionsBitKHR          SwapchainCreateFlagBitsKHR = 1 << 0
+	SwapchainCreateProtectedBitKHR                         SwapchainCreateFlagBitsKHR = 1 << 1
+	SwapchainCreateMutableFormatBitKHR                     SwapchainCreateFlagBitsKHR = 1 << 2
+	SwapchainCreatePresentTimingBitEXT                     SwapchainCreateFlagBitsKHR = 1 << 9
+	SwapchainCreateDeferredMemoryAllocationBitEXT          SwapchainCreateFlagBitsKHR = SwapchainCreateDeferredMemoryAllocationBitKHR
+	SwapchainCreateReserved5BitEXT                         SwapchainCreateFlagBitsKHR = 1 << 5
+	SwapchainCreateReserved4BitEXT                         SwapchainCreateFlagBitsKHR = 1 << 4
+	SwapchainCreatePresentId2BitKHR                        SwapchainCreateFlagBitsKHR = 1 << 6
+	SwapchainCreatePresentWait2BitKHR                      SwapchainCreateFlagBitsKHR = 1 << 7
+	SwapchainCreateDeferredMemoryAllocationBitKHR          SwapchainCreateFlagBitsKHR = 1 << 3
+	SwapchainCreateMultisampledRenderToSingleSampledBitEXT SwapchainCreateFlagBitsKHR = 1 << 8
 )
 
 type SystemAllocationScope uint32
