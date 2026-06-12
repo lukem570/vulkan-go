@@ -1649,6 +1649,7 @@ const (
 	DriverIdVulkanScEmulationOnVulkan  DriverId = 27
 	DriverIdMESAKosmickrisp            DriverId = 28
 	DriverIdMESAGfxstream              DriverId = 29
+	DriverIdApeSoft                    DriverId = 30
 	DriverIdAMDProprietaryKHR          DriverId = DriverIdAMDProprietary
 	DriverIdAMDOpenSourceKHR           DriverId = DriverIdAMDOpenSource
 	DriverIdMESARadvKHR                DriverId = DriverIdMESARadv
@@ -2370,6 +2371,7 @@ const (
 	FormatFeature2CopyImageIndirectDstBitKHR                                             FormatFeatureFlagBits2 = 1 << 59
 	FormatFeature2VideoEncodeQuantizationDeltaMapBitKHR                                  FormatFeatureFlagBits2 = 1 << 49
 	FormatFeature2VideoEncodeEmphasisMapBitKHR                                           FormatFeatureFlagBits2 = 1 << 50
+	FormatFeature2SampledImageFilterLinear2dBitIMG                                       FormatFeatureFlagBits2 = 1 << 45
 	FormatFeature2DepthCopyOnComputeQueueBitKHR                                          FormatFeatureFlagBits2 = 1 << 52
 	FormatFeature2DepthCopyOnTransferQueueBitKHR                                         FormatFeatureFlagBits2 = 1 << 53
 	FormatFeature2StencilCopyOnComputeQueueBitKHR                                        FormatFeatureFlagBits2 = 1 << 54
@@ -5548,6 +5550,7 @@ const (
 	VendorIdMESA     VendorId = 0x10005
 	VendorIdPocl     VendorId = 0x10006
 	VendorIdMobileye VendorId = 0x10007
+	VendorIdApe      VendorId = 0x10008
 )
 
 type VertexInputRate uint32
