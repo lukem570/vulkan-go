@@ -161,6 +161,7 @@ var (
 	ComputeOccupancyPriorityNormalNV                       float32 = 0.50
 	ComputeOccupancyPriorityHighNV                         float32 = 0.75
 	MaxDataGraphTosaNameSizeARM                            int32   = int32(128)
+	MaxTensorCreateInfoRollingBackingWrapCountARM          int32   = int32(4)
 )
 
 type instanceTable struct {
@@ -1267,6 +1268,7 @@ const (
 	BuildAccelerationStructureAllowOpacityMicromapUpdateBitKHR     BuildAccelerationStructureFlagBitsKHR = 1 << 6
 	BuildAccelerationStructureAllowDisableOpacityMicromapsBitKHR   BuildAccelerationStructureFlagBitsKHR = 1 << 7
 	BuildAccelerationStructureMicromapLossyBitKHR                  BuildAccelerationStructureFlagBitsKHR = 1 << 10
+	BuildAccelerationStructureReserved15BitEXT                     BuildAccelerationStructureFlagBitsKHR = 1 << 15
 	BuildAccelerationStructureReserved14BitEXT                     BuildAccelerationStructureFlagBitsKHR = 1 << 14
 	BuildAccelerationStructureReserved13BitAMD                     BuildAccelerationStructureFlagBitsKHR = 1 << 13
 )
@@ -5248,6 +5250,8 @@ const (
 	StructureTypePhysicalDeviceLayeredApiVulkanPropertiesKHR                     StructureType = 1000562004
 	StructureTypePhysicalDeviceShaderAtomicFloat16VectorFeaturesNV               StructureType = 1000563000
 	StructureTypePhysicalDeviceShaderReplicatedCompositesFeaturesEXT             StructureType = 1000564000
+	StructureTypeTensorExplicitTilingFormatPropertiesARM                         StructureType = 1000565000
+	StructureTypeTensorRollingBackingCreateInfoARM                               StructureType = 1000565001
 	StructureTypePhysicalDeviceShaderFloat8FeaturesEXT                           StructureType = 1000567000
 	StructureTypePhysicalDeviceRayTracingValidationFeaturesNV                    StructureType = 1000568000
 	StructureTypePhysicalDeviceClusterAccelerationStructureFeaturesNV            StructureType = 1000569000
