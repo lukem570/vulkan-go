@@ -2515,6 +2515,7 @@ const (
 	ImageCreateVideoProfileIndependentBitKHR           ImageCreateFlagBits = 1 << 20
 	ImageCreateFragmentDensityMapOffsetBitEXT          ImageCreateFlagBits = 1 << 15
 	ImageCreateAliasSingleLayerDescriptorBitKHR        ImageCreateFlagBits = 1 << 22
+	ImageCreateReserved19BitNV                         ImageCreateFlagBits = 1 << 19
 )
 
 type ImageLayout uint32
@@ -5390,6 +5391,7 @@ const (
 	StructureTypePhysicalDeviceExtendedFlagsFeaturesKHR                          StructureType = 1000668004
 	StructureTypeImageStencilUsage2CreateInfoKHR                                 StructureType = 1000668005
 	StructureTypeSharedPresentSurfaceCapabilities2KHR                            StructureType = 1000668006
+	StructureTypePhysicalDeviceShaderOcpMicroscalingTypesFeaturesEXT             StructureType = 1000672000
 	StructureTypePhysicalDeviceShaderMixedFloatDotProductFeaturesVALVE           StructureType = 1000673000
 	StructureTypePhysicalDeviceThrottleHintFeaturesSEC                           StructureType = 1000674000
 	StructureTypeThrottleHintSubmitInfoSEC                                       StructureType = 1000674001
