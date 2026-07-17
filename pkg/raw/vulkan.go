@@ -5484,6 +5484,7 @@ const (
 	SwapchainCreatePresentWait2BitKHR                      SwapchainCreateFlagBitsKHR = 1 << 7
 	SwapchainCreateDeferredMemoryAllocationBitKHR          SwapchainCreateFlagBitsKHR = 1 << 3
 	SwapchainCreateMultisampledRenderToSingleSampledBitEXT SwapchainCreateFlagBitsKHR = 1 << 8
+	SwapchainCreateReserved10BitHUAWEI                     SwapchainCreateFlagBitsKHR = 1 << 10
 )
 
 type SystemAllocationScope uint32
