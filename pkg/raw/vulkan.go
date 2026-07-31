@@ -178,32 +178,20 @@ type instanceTable struct {
 	vkDestroySurfaceKHR                              unsafe.Pointer
 	vkEnumerateDeviceExtensionProperties             unsafe.Pointer
 	vkEnumerateDeviceLayerProperties                 unsafe.Pointer
-	vkEnumeratePhysicalDeviceGroups                  unsafe.Pointer
 	vkEnumeratePhysicalDevices                       unsafe.Pointer
 	vkGetInstanceProcAddr                            unsafe.Pointer
-	vkGetPhysicalDeviceExternalBufferProperties      unsafe.Pointer
-	vkGetPhysicalDeviceExternalFenceProperties       unsafe.Pointer
-	vkGetPhysicalDeviceExternalSemaphoreProperties   unsafe.Pointer
 	vkGetPhysicalDeviceFeatures                      unsafe.Pointer
-	vkGetPhysicalDeviceFeatures2                     unsafe.Pointer
 	vkGetPhysicalDeviceFormatProperties              unsafe.Pointer
-	vkGetPhysicalDeviceFormatProperties2             unsafe.Pointer
 	vkGetPhysicalDeviceImageFormatProperties         unsafe.Pointer
-	vkGetPhysicalDeviceImageFormatProperties2        unsafe.Pointer
 	vkGetPhysicalDeviceMemoryProperties              unsafe.Pointer
-	vkGetPhysicalDeviceMemoryProperties2             unsafe.Pointer
 	vkGetPhysicalDevicePresentRectanglesKHR          unsafe.Pointer
 	vkGetPhysicalDeviceProperties                    unsafe.Pointer
-	vkGetPhysicalDeviceProperties2                   unsafe.Pointer
 	vkGetPhysicalDeviceQueueFamilyProperties         unsafe.Pointer
-	vkGetPhysicalDeviceQueueFamilyProperties2        unsafe.Pointer
 	vkGetPhysicalDeviceSparseImageFormatProperties   unsafe.Pointer
-	vkGetPhysicalDeviceSparseImageFormatProperties2  unsafe.Pointer
 	vkGetPhysicalDeviceSurfaceCapabilitiesKHR        unsafe.Pointer
 	vkGetPhysicalDeviceSurfaceFormatsKHR             unsafe.Pointer
 	vkGetPhysicalDeviceSurfacePresentModesKHR        unsafe.Pointer
 	vkGetPhysicalDeviceSurfaceSupportKHR             unsafe.Pointer
-	vkGetPhysicalDeviceToolProperties                unsafe.Pointer
 	vkGetPhysicalDeviceWaylandPresentationSupportKHR unsafe.Pointer
 	vkGetPhysicalDeviceWin32PresentationSupportKHR   unsafe.Pointer
 	vkGetPhysicalDeviceXcbPresentationSupportKHR     unsafe.Pointer
@@ -219,9 +207,7 @@ type deviceTable struct {
 	vkAllocateMemory                                         unsafe.Pointer
 	vkBeginCommandBuffer                                     unsafe.Pointer
 	vkBindBufferMemory                                       unsafe.Pointer
-	vkBindBufferMemory2                                      unsafe.Pointer
 	vkBindImageMemory                                        unsafe.Pointer
-	vkBindImageMemory2                                       unsafe.Pointer
 	vkBuildAccelerationStructuresKHR                         unsafe.Pointer
 	vkCmdBeginDebugUtilsLabelEXT                             unsafe.Pointer
 	vkCmdBeginQuery                                          unsafe.Pointer
@@ -231,7 +217,6 @@ type deviceTable struct {
 	vkCmdBindDescriptorBufferEmbeddedSamplersEXT             unsafe.Pointer
 	vkCmdBindDescriptorBuffersEXT                            unsafe.Pointer
 	vkCmdBindDescriptorSets                                  unsafe.Pointer
-	vkCmdBindDescriptorSets2                                 unsafe.Pointer
 	vkCmdBindIndexBuffer                                     unsafe.Pointer
 	vkCmdBindIndexBuffer2                                    unsafe.Pointer
 	vkCmdBindPipeline                                        unsafe.Pointer
@@ -248,17 +233,12 @@ type deviceTable struct {
 	vkCmdCopyAccelerationStructureKHR                        unsafe.Pointer
 	vkCmdCopyAccelerationStructureToMemoryKHR                unsafe.Pointer
 	vkCmdCopyBuffer                                          unsafe.Pointer
-	vkCmdCopyBuffer2                                         unsafe.Pointer
 	vkCmdCopyBufferToImage                                   unsafe.Pointer
-	vkCmdCopyBufferToImage2                                  unsafe.Pointer
 	vkCmdCopyImage                                           unsafe.Pointer
-	vkCmdCopyImage2                                          unsafe.Pointer
 	vkCmdCopyImageToBuffer                                   unsafe.Pointer
-	vkCmdCopyImageToBuffer2                                  unsafe.Pointer
 	vkCmdCopyMemoryToAccelerationStructureKHR                unsafe.Pointer
 	vkCmdCopyQueryPoolResults                                unsafe.Pointer
 	vkCmdDispatch                                            unsafe.Pointer
-	vkCmdDispatchBase                                        unsafe.Pointer
 	vkCmdDispatchIndirect                                    unsafe.Pointer
 	vkCmdDraw                                                unsafe.Pointer
 	vkCmdDrawIndexed                                         unsafe.Pointer
@@ -283,16 +263,9 @@ type deviceTable struct {
 	vkCmdNextSubpass                                         unsafe.Pointer
 	vkCmdNextSubpass2                                        unsafe.Pointer
 	vkCmdPipelineBarrier                                     unsafe.Pointer
-	vkCmdPipelineBarrier2                                    unsafe.Pointer
 	vkCmdPreprocessGeneratedCommandsEXT                      unsafe.Pointer
 	vkCmdPushConstants                                       unsafe.Pointer
-	vkCmdPushConstants2                                      unsafe.Pointer
-	vkCmdPushDescriptorSet                                   unsafe.Pointer
-	vkCmdPushDescriptorSet2                                  unsafe.Pointer
-	vkCmdPushDescriptorSetWithTemplate                       unsafe.Pointer
-	vkCmdPushDescriptorSetWithTemplate2                      unsafe.Pointer
 	vkCmdResetEvent                                          unsafe.Pointer
-	vkCmdResetEvent2                                         unsafe.Pointer
 	vkCmdResetQueryPool                                      unsafe.Pointer
 	vkCmdResolveImage                                        unsafe.Pointer
 	vkCmdResolveImage2                                       unsafe.Pointer
@@ -323,9 +296,7 @@ type deviceTable struct {
 	vkCmdSetDepthTestEnable                                  unsafe.Pointer
 	vkCmdSetDepthWriteEnable                                 unsafe.Pointer
 	vkCmdSetDescriptorBufferOffsetsEXT                       unsafe.Pointer
-	vkCmdSetDeviceMask                                       unsafe.Pointer
 	vkCmdSetEvent                                            unsafe.Pointer
-	vkCmdSetEvent2                                           unsafe.Pointer
 	vkCmdSetExtraPrimitiveOverestimationSizeEXT              unsafe.Pointer
 	vkCmdSetFrontFace                                        unsafe.Pointer
 	vkCmdSetLineRasterizationModeEXT                         unsafe.Pointer
@@ -367,16 +338,11 @@ type deviceTable struct {
 	vkCmdTraceRaysKHR                                        unsafe.Pointer
 	vkCmdUpdateBuffer                                        unsafe.Pointer
 	vkCmdWaitEvents                                          unsafe.Pointer
-	vkCmdWaitEvents2                                         unsafe.Pointer
 	vkCmdWriteAccelerationStructuresPropertiesKHR            unsafe.Pointer
 	vkCmdWriteTimestamp                                      unsafe.Pointer
-	vkCmdWriteTimestamp2                                     unsafe.Pointer
 	vkCopyAccelerationStructureKHR                           unsafe.Pointer
 	vkCopyAccelerationStructureToMemoryKHR                   unsafe.Pointer
-	vkCopyImageToImage                                       unsafe.Pointer
-	vkCopyImageToMemory                                      unsafe.Pointer
 	vkCopyMemoryToAccelerationStructureKHR                   unsafe.Pointer
-	vkCopyMemoryToImage                                      unsafe.Pointer
 	vkCreateAccelerationStructureKHR                         unsafe.Pointer
 	vkCreateBuffer                                           unsafe.Pointer
 	vkCreateBufferView                                       unsafe.Pointer
@@ -385,7 +351,6 @@ type deviceTable struct {
 	vkCreateDeferredOperationKHR                             unsafe.Pointer
 	vkCreateDescriptorPool                                   unsafe.Pointer
 	vkCreateDescriptorSetLayout                              unsafe.Pointer
-	vkCreateDescriptorUpdateTemplate                         unsafe.Pointer
 	vkCreateEvent                                            unsafe.Pointer
 	vkCreateFence                                            unsafe.Pointer
 	vkCreateFramebuffer                                      unsafe.Pointer
@@ -396,13 +361,11 @@ type deviceTable struct {
 	vkCreateIndirectExecutionSetEXT                          unsafe.Pointer
 	vkCreatePipelineCache                                    unsafe.Pointer
 	vkCreatePipelineLayout                                   unsafe.Pointer
-	vkCreatePrivateDataSlot                                  unsafe.Pointer
 	vkCreateQueryPool                                        unsafe.Pointer
 	vkCreateRayTracingPipelinesKHR                           unsafe.Pointer
 	vkCreateRenderPass                                       unsafe.Pointer
 	vkCreateRenderPass2                                      unsafe.Pointer
 	vkCreateSampler                                          unsafe.Pointer
-	vkCreateSamplerYcbcrConversion                           unsafe.Pointer
 	vkCreateSemaphore                                        unsafe.Pointer
 	vkCreateShaderModule                                     unsafe.Pointer
 	vkCreateShadersEXT                                       unsafe.Pointer
@@ -415,7 +378,6 @@ type deviceTable struct {
 	vkDestroyDeferredOperationKHR                            unsafe.Pointer
 	vkDestroyDescriptorPool                                  unsafe.Pointer
 	vkDestroyDescriptorSetLayout                             unsafe.Pointer
-	vkDestroyDescriptorUpdateTemplate                        unsafe.Pointer
 	vkDestroyDevice                                          unsafe.Pointer
 	vkDestroyEvent                                           unsafe.Pointer
 	vkDestroyFence                                           unsafe.Pointer
@@ -427,11 +389,9 @@ type deviceTable struct {
 	vkDestroyPipeline                                        unsafe.Pointer
 	vkDestroyPipelineCache                                   unsafe.Pointer
 	vkDestroyPipelineLayout                                  unsafe.Pointer
-	vkDestroyPrivateDataSlot                                 unsafe.Pointer
 	vkDestroyQueryPool                                       unsafe.Pointer
 	vkDestroyRenderPass                                      unsafe.Pointer
 	vkDestroySampler                                         unsafe.Pointer
-	vkDestroySamplerYcbcrConversion                          unsafe.Pointer
 	vkDestroySemaphore                                       unsafe.Pointer
 	vkDestroyShaderEXT                                       unsafe.Pointer
 	vkDestroyShaderModule                                    unsafe.Pointer
@@ -445,43 +405,28 @@ type deviceTable struct {
 	vkGetAccelerationStructureBuildSizesKHR                  unsafe.Pointer
 	vkGetAccelerationStructureDeviceAddressKHR               unsafe.Pointer
 	vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT unsafe.Pointer
-	vkGetBufferDeviceAddress                                 unsafe.Pointer
 	vkGetBufferMemoryRequirements                            unsafe.Pointer
-	vkGetBufferMemoryRequirements2                           unsafe.Pointer
-	vkGetBufferOpaqueCaptureAddress                          unsafe.Pointer
 	vkGetBufferOpaqueCaptureDescriptorDataEXT                unsafe.Pointer
 	vkGetDeferredOperationMaxConcurrencyKHR                  unsafe.Pointer
 	vkGetDeferredOperationResultKHR                          unsafe.Pointer
 	vkGetDescriptorEXT                                       unsafe.Pointer
 	vkGetDescriptorSetLayoutBindingOffsetEXT                 unsafe.Pointer
 	vkGetDescriptorSetLayoutSizeEXT                          unsafe.Pointer
-	vkGetDescriptorSetLayoutSupport                          unsafe.Pointer
 	vkGetDeviceAccelerationStructureCompatibilityKHR         unsafe.Pointer
-	vkGetDeviceBufferMemoryRequirements                      unsafe.Pointer
-	vkGetDeviceGroupPeerMemoryFeatures                       unsafe.Pointer
 	vkGetDeviceGroupPresentCapabilitiesKHR                   unsafe.Pointer
 	vkGetDeviceGroupSurfacePresentModesKHR                   unsafe.Pointer
-	vkGetDeviceImageMemoryRequirements                       unsafe.Pointer
-	vkGetDeviceImageSparseMemoryRequirements                 unsafe.Pointer
-	vkGetDeviceImageSubresourceLayout                        unsafe.Pointer
 	vkGetDeviceMemoryCommitment                              unsafe.Pointer
-	vkGetDeviceMemoryOpaqueCaptureAddress                    unsafe.Pointer
 	vkGetDeviceProcAddr                                      unsafe.Pointer
 	vkGetDeviceQueue                                         unsafe.Pointer
-	vkGetDeviceQueue2                                        unsafe.Pointer
 	vkGetEventStatus                                         unsafe.Pointer
 	vkGetFenceStatus                                         unsafe.Pointer
 	vkGetGeneratedCommandsMemoryRequirementsEXT              unsafe.Pointer
 	vkGetImageMemoryRequirements                             unsafe.Pointer
-	vkGetImageMemoryRequirements2                            unsafe.Pointer
 	vkGetImageOpaqueCaptureDescriptorDataEXT                 unsafe.Pointer
 	vkGetImageSparseMemoryRequirements                       unsafe.Pointer
-	vkGetImageSparseMemoryRequirements2                      unsafe.Pointer
 	vkGetImageSubresourceLayout                              unsafe.Pointer
-	vkGetImageSubresourceLayout2                             unsafe.Pointer
 	vkGetImageViewOpaqueCaptureDescriptorDataEXT             unsafe.Pointer
 	vkGetPipelineCacheData                                   unsafe.Pointer
-	vkGetPrivateData                                         unsafe.Pointer
 	vkGetQueryPoolResults                                    unsafe.Pointer
 	vkGetRayTracingCaptureReplayShaderGroupHandlesKHR        unsafe.Pointer
 	vkGetRayTracingShaderGroupHandlesKHR                     unsafe.Pointer
@@ -489,12 +434,10 @@ type deviceTable struct {
 	vkGetRenderAreaGranularity                               unsafe.Pointer
 	vkGetRenderingAreaGranularity                            unsafe.Pointer
 	vkGetSamplerOpaqueCaptureDescriptorDataEXT               unsafe.Pointer
-	vkGetSemaphoreCounterValue                               unsafe.Pointer
 	vkGetShaderBinaryDataEXT                                 unsafe.Pointer
 	vkGetSwapchainImagesKHR                                  unsafe.Pointer
 	vkInvalidateMappedMemoryRanges                           unsafe.Pointer
 	vkMapMemory                                              unsafe.Pointer
-	vkMapMemory2                                             unsafe.Pointer
 	vkMergePipelineCaches                                    unsafe.Pointer
 	vkQueueBeginDebugUtilsLabelEXT                           unsafe.Pointer
 	vkQueueBindSparse                                        unsafe.Pointer
@@ -502,30 +445,21 @@ type deviceTable struct {
 	vkQueueInsertDebugUtilsLabelEXT                          unsafe.Pointer
 	vkQueuePresentKHR                                        unsafe.Pointer
 	vkQueueSubmit                                            unsafe.Pointer
-	vkQueueSubmit2                                           unsafe.Pointer
 	vkQueueWaitIdle                                          unsafe.Pointer
 	vkResetCommandBuffer                                     unsafe.Pointer
 	vkResetCommandPool                                       unsafe.Pointer
 	vkResetDescriptorPool                                    unsafe.Pointer
 	vkResetEvent                                             unsafe.Pointer
 	vkResetFences                                            unsafe.Pointer
-	vkResetQueryPool                                         unsafe.Pointer
 	vkSetDebugUtilsObjectNameEXT                             unsafe.Pointer
 	vkSetDebugUtilsObjectTagEXT                              unsafe.Pointer
 	vkSetDeviceMemoryPriorityEXT                             unsafe.Pointer
 	vkSetEvent                                               unsafe.Pointer
-	vkSetPrivateData                                         unsafe.Pointer
-	vkSignalSemaphore                                        unsafe.Pointer
-	vkTransitionImageLayout                                  unsafe.Pointer
-	vkTrimCommandPool                                        unsafe.Pointer
 	vkUnmapMemory                                            unsafe.Pointer
-	vkUnmapMemory2                                           unsafe.Pointer
-	vkUpdateDescriptorSetWithTemplate                        unsafe.Pointer
 	vkUpdateDescriptorSets                                   unsafe.Pointer
 	vkUpdateIndirectExecutionSetPipelineEXT                  unsafe.Pointer
 	vkUpdateIndirectExecutionSetShaderEXT                    unsafe.Pointer
 	vkWaitForFences                                          unsafe.Pointer
-	vkWaitSemaphores                                         unsafe.Pointer
 	vkWriteAccelerationStructuresPropertiesKHR               unsafe.Pointer
 }
 
@@ -615,14 +549,6 @@ type DescriptorSetLayout struct {
 }
 
 func (h *DescriptorSetLayout) Handle() unsafe.Pointer { return h.handle }
-
-type DescriptorUpdateTemplate struct {
-	handle  unsafe.Pointer
-	table   *deviceTable
-	cleanup func()
-}
-
-func (h *DescriptorUpdateTemplate) Handle() unsafe.Pointer { return h.handle }
 
 type Device struct {
 	handle  unsafe.Pointer
@@ -735,14 +661,6 @@ type PipelineLayout struct {
 
 func (h *PipelineLayout) Handle() unsafe.Pointer { return h.handle }
 
-type PrivateDataSlot struct {
-	handle  unsafe.Pointer
-	table   *deviceTable
-	cleanup func()
-}
-
-func (h *PrivateDataSlot) Handle() unsafe.Pointer { return h.handle }
-
 type QueryPool struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
@@ -774,13 +692,6 @@ type Sampler struct {
 }
 
 func (h *Sampler) Handle() unsafe.Pointer { return h.handle }
-
-type SamplerYcbcrConversion struct {
-	handle  unsafe.Pointer
-	cleanup func()
-}
-
-func (h *SamplerYcbcrConversion) Handle() unsafe.Pointer { return h.handle }
 
 type Semaphore struct {
 	handle  unsafe.Pointer
@@ -1280,15 +1191,6 @@ const (
 	BuildAccelerationStructureModeUpdateKHR BuildAccelerationStructureModeKHR = 1
 )
 
-type ChromaLocation uint32
-
-const (
-	ChromaLocationCositedEven    ChromaLocation = 0
-	ChromaLocationMidpoint       ChromaLocation = 1
-	ChromaLocationCositedEvenKHR ChromaLocation = ChromaLocationCositedEven
-	ChromaLocationMidpointKHR    ChromaLocation = ChromaLocationMidpoint
-)
-
 type ColorComponentFlagBits uint32
 
 const (
@@ -1526,20 +1428,6 @@ const (
 	DepthClampModeUserDefinedRangeEXT DepthClampModeEXT = 1
 )
 
-type DescriptorBindingFlagBits uint32
-
-const (
-	DescriptorBindingUpdateAfterBindBit             DescriptorBindingFlagBits = 1 << 0
-	DescriptorBindingUpdateUnusedWhilePendingBit    DescriptorBindingFlagBits = 1 << 1
-	DescriptorBindingPartiallyBoundBit              DescriptorBindingFlagBits = 1 << 2
-	DescriptorBindingVariableDescriptorCountBit     DescriptorBindingFlagBits = 1 << 3
-	DescriptorBindingUpdateAfterBindBitEXT          DescriptorBindingFlagBits = DescriptorBindingUpdateAfterBindBit
-	DescriptorBindingUpdateUnusedWhilePendingBitEXT DescriptorBindingFlagBits = DescriptorBindingUpdateUnusedWhilePendingBit
-	DescriptorBindingPartiallyBoundBitEXT           DescriptorBindingFlagBits = DescriptorBindingPartiallyBoundBit
-	DescriptorBindingVariableDescriptorCountBitEXT  DescriptorBindingFlagBits = DescriptorBindingVariableDescriptorCountBit
-	DescriptorBindingReserved4BitQCOM               DescriptorBindingFlagBits = 1 << 4
-)
-
 type DescriptorPoolCreateFlagBits uint32
 
 const (
@@ -1593,15 +1481,6 @@ const (
 	DescriptorTypePartitionedAccelerationStructureNV DescriptorType = 1000570000
 )
 
-type DescriptorUpdateTemplateType uint32
-
-const (
-	DescriptorUpdateTemplateTypeDescriptorSet      DescriptorUpdateTemplateType = 0
-	DescriptorUpdateTemplateTypePushDescriptors    DescriptorUpdateTemplateType = 1
-	DescriptorUpdateTemplateTypePushDescriptorsKHR DescriptorUpdateTemplateType = DescriptorUpdateTemplateTypePushDescriptors
-	DescriptorUpdateTemplateTypeDescriptorSetKHR   DescriptorUpdateTemplateType = DescriptorUpdateTemplateTypeDescriptorSet
-)
-
 type DeviceGroupPresentModeFlagBitsKHR uint32
 
 const (
@@ -1609,61 +1488,6 @@ const (
 	DeviceGroupPresentModeRemoteBitKHR           DeviceGroupPresentModeFlagBitsKHR = 1 << 1
 	DeviceGroupPresentModeSumBitKHR              DeviceGroupPresentModeFlagBitsKHR = 1 << 2
 	DeviceGroupPresentModeLocalMultiDeviceBitKHR DeviceGroupPresentModeFlagBitsKHR = 1 << 3
-)
-
-type DeviceQueueCreateFlagBits uint32
-
-const (
-	DeviceQueueCreateProtectedBit                 DeviceQueueCreateFlagBits = 1 << 0
-	DeviceQueueCreateReserved1BitQCOM             DeviceQueueCreateFlagBits = 1 << 1
-	DeviceQueueCreateInternallySynchronizedBitKHR DeviceQueueCreateFlagBits = 1 << 2
-)
-
-type DriverId uint32
-
-const (
-	DriverIdAMDProprietary             DriverId = 1
-	DriverIdAMDOpenSource              DriverId = 2
-	DriverIdMESARadv                   DriverId = 3
-	DriverIdNvidiaProprietary          DriverId = 4
-	DriverIdINTELProprietaryWindows    DriverId = 5
-	DriverIdINTELOpenSourceMESA        DriverId = 6
-	DriverIdImaginationProprietary     DriverId = 7
-	DriverIdQualcommProprietary        DriverId = 8
-	DriverIdARMProprietary             DriverId = 9
-	DriverIdGOOGLESwiftshader          DriverId = 10
-	DriverIdGgpProprietary             DriverId = 11
-	DriverIdBroadcomProprietary        DriverId = 12
-	DriverIdMESALlvmpipe               DriverId = 13
-	DriverIdMoltenvk                   DriverId = 14
-	DriverIdCoreaviProprietary         DriverId = 15
-	DriverIdJuiceProprietary           DriverId = 16
-	DriverIdVerisiliconProprietary     DriverId = 17
-	DriverIdMESATurnip                 DriverId = 18
-	DriverIdMESAV3dv                   DriverId = 19
-	DriverIdMESAPanvk                  DriverId = 20
-	DriverIdSamsungProprietary         DriverId = 21
-	DriverIdMESAVenus                  DriverId = 22
-	DriverIdMESADozen                  DriverId = 23
-	DriverIdMESANvk                    DriverId = 24
-	DriverIdImaginationOpenSourceMESA  DriverId = 25
-	DriverIdMESAHoneykrisp             DriverId = 26
-	DriverIdVulkanScEmulationOnVulkan  DriverId = 27
-	DriverIdMESAKosmickrisp            DriverId = 28
-	DriverIdMESAGfxstream              DriverId = 29
-	DriverIdApeSoft                    DriverId = 30
-	DriverIdAMDProprietaryKHR          DriverId = DriverIdAMDProprietary
-	DriverIdAMDOpenSourceKHR           DriverId = DriverIdAMDOpenSource
-	DriverIdMESARadvKHR                DriverId = DriverIdMESARadv
-	DriverIdNvidiaProprietaryKHR       DriverId = DriverIdNvidiaProprietary
-	DriverIdINTELProprietaryWindowsKHR DriverId = DriverIdINTELProprietaryWindows
-	DriverIdINTELOpenSourceMESAKHR     DriverId = DriverIdINTELOpenSourceMESA
-	DriverIdImaginationProprietaryKHR  DriverId = DriverIdImaginationProprietary
-	DriverIdQualcommProprietaryKHR     DriverId = DriverIdQualcommProprietary
-	DriverIdARMProprietaryKHR          DriverId = DriverIdARMProprietary
-	DriverIdGOOGLESwiftshaderKHR       DriverId = DriverIdGOOGLESwiftshader
-	DriverIdGgpProprietaryKHR          DriverId = DriverIdGgpProprietary
-	DriverIdBroadcomProprietaryKHR     DriverId = DriverIdBroadcomProprietary
 )
 
 type DynamicState uint32
@@ -1768,110 +1592,10 @@ const (
 	EventCreateDeviceOnlyBitKHR EventCreateFlagBits = EventCreateDeviceOnlyBit
 )
 
-type ExternalFenceFeatureFlagBits uint32
-
-const (
-	ExternalFenceFeatureExportableBit    ExternalFenceFeatureFlagBits = 1 << 0
-	ExternalFenceFeatureImportableBit    ExternalFenceFeatureFlagBits = 1 << 1
-	ExternalFenceFeatureExportableBitKHR ExternalFenceFeatureFlagBits = ExternalFenceFeatureExportableBit
-	ExternalFenceFeatureImportableBitKHR ExternalFenceFeatureFlagBits = ExternalFenceFeatureImportableBit
-)
-
-type ExternalFenceHandleTypeFlagBits uint32
-
-const (
-	ExternalFenceHandleTypeOpaqueFdBit          ExternalFenceHandleTypeFlagBits = 1 << 0
-	ExternalFenceHandleTypeOpaqueWin32Bit       ExternalFenceHandleTypeFlagBits = 1 << 1
-	ExternalFenceHandleTypeOpaqueWin32KmtBit    ExternalFenceHandleTypeFlagBits = 1 << 2
-	ExternalFenceHandleTypeSyncFdBit            ExternalFenceHandleTypeFlagBits = 1 << 3
-	ExternalFenceHandleTypeOpaqueFdBitKHR       ExternalFenceHandleTypeFlagBits = ExternalFenceHandleTypeOpaqueFdBit
-	ExternalFenceHandleTypeOpaqueWin32BitKHR    ExternalFenceHandleTypeFlagBits = ExternalFenceHandleTypeOpaqueWin32Bit
-	ExternalFenceHandleTypeOpaqueWin32KmtBitKHR ExternalFenceHandleTypeFlagBits = ExternalFenceHandleTypeOpaqueWin32KmtBit
-	ExternalFenceHandleTypeSyncFdBitKHR         ExternalFenceHandleTypeFlagBits = ExternalFenceHandleTypeSyncFdBit
-	ExternalFenceHandleTypeSciSyncObjBitNV      ExternalFenceHandleTypeFlagBits = 1 << 4
-	ExternalFenceHandleTypeSciSyncFenceBitNV    ExternalFenceHandleTypeFlagBits = 1 << 5
-)
-
-type ExternalMemoryFeatureFlagBits uint32
-
-const (
-	ExternalMemoryFeatureDedicatedOnlyBit    ExternalMemoryFeatureFlagBits = 1 << 0
-	ExternalMemoryFeatureExportableBit       ExternalMemoryFeatureFlagBits = 1 << 1
-	ExternalMemoryFeatureImportableBit       ExternalMemoryFeatureFlagBits = 1 << 2
-	ExternalMemoryFeatureDedicatedOnlyBitKHR ExternalMemoryFeatureFlagBits = ExternalMemoryFeatureDedicatedOnlyBit
-	ExternalMemoryFeatureExportableBitKHR    ExternalMemoryFeatureFlagBits = ExternalMemoryFeatureExportableBit
-	ExternalMemoryFeatureImportableBitKHR    ExternalMemoryFeatureFlagBits = ExternalMemoryFeatureImportableBit
-)
-
-type ExternalMemoryHandleTypeFlagBits uint32
-
-const (
-	ExternalMemoryHandleTypeOpaqueFdBit                     ExternalMemoryHandleTypeFlagBits = 1 << 0
-	ExternalMemoryHandleTypeOpaqueWin32Bit                  ExternalMemoryHandleTypeFlagBits = 1 << 1
-	ExternalMemoryHandleTypeOpaqueWin32KmtBit               ExternalMemoryHandleTypeFlagBits = 1 << 2
-	ExternalMemoryHandleTypeD3d11TextureBit                 ExternalMemoryHandleTypeFlagBits = 1 << 3
-	ExternalMemoryHandleTypeD3d11TextureKmtBit              ExternalMemoryHandleTypeFlagBits = 1 << 4
-	ExternalMemoryHandleTypeD3d12HeapBit                    ExternalMemoryHandleTypeFlagBits = 1 << 5
-	ExternalMemoryHandleTypeD3d12ResourceBit                ExternalMemoryHandleTypeFlagBits = 1 << 6
-	ExternalMemoryHandleTypeOpaqueFdBitKHR                  ExternalMemoryHandleTypeFlagBits = ExternalMemoryHandleTypeOpaqueFdBit
-	ExternalMemoryHandleTypeOpaqueWin32BitKHR               ExternalMemoryHandleTypeFlagBits = ExternalMemoryHandleTypeOpaqueWin32Bit
-	ExternalMemoryHandleTypeOpaqueWin32KmtBitKHR            ExternalMemoryHandleTypeFlagBits = ExternalMemoryHandleTypeOpaqueWin32KmtBit
-	ExternalMemoryHandleTypeD3d11TextureBitKHR              ExternalMemoryHandleTypeFlagBits = ExternalMemoryHandleTypeD3d11TextureBit
-	ExternalMemoryHandleTypeD3d11TextureKmtBitKHR           ExternalMemoryHandleTypeFlagBits = ExternalMemoryHandleTypeD3d11TextureKmtBit
-	ExternalMemoryHandleTypeD3d12HeapBitKHR                 ExternalMemoryHandleTypeFlagBits = ExternalMemoryHandleTypeD3d12HeapBit
-	ExternalMemoryHandleTypeD3d12ResourceBitKHR             ExternalMemoryHandleTypeFlagBits = ExternalMemoryHandleTypeD3d12ResourceBit
-	ExternalMemoryHandleTypeDmaBufBitEXT                    ExternalMemoryHandleTypeFlagBits = 1 << 9
-	ExternalMemoryHandleTypeAndroidHardwareBufferBitAndroid ExternalMemoryHandleTypeFlagBits = 1 << 10
-	ExternalMemoryHandleTypeHostAllocationBitEXT            ExternalMemoryHandleTypeFlagBits = 1 << 7
-	ExternalMemoryHandleTypeHostMappedForeignMemoryBitEXT   ExternalMemoryHandleTypeFlagBits = 1 << 8
-	ExternalMemoryHandleTypeZirconVmoBitFuchsia             ExternalMemoryHandleTypeFlagBits = 1 << 11
-	ExternalMemoryHandleTypeRdmaAddressBitNV                ExternalMemoryHandleTypeFlagBits = 1 << 12
-	ExternalMemoryHandleTypeSciBufBitNV                     ExternalMemoryHandleTypeFlagBits = 1 << 13
-	ExternalMemoryHandleTypeOhNativeBufferBitOhos           ExternalMemoryHandleTypeFlagBits = 1 << 15
-	ExternalMemoryHandleTypeScreenBufferBitQnx              ExternalMemoryHandleTypeFlagBits = 1 << 14
-	ExternalMemoryHandleTypeMtlbufferBitEXT                 ExternalMemoryHandleTypeFlagBits = 1 << 16
-	ExternalMemoryHandleTypeMtltextureBitEXT                ExternalMemoryHandleTypeFlagBits = 1 << 17
-	ExternalMemoryHandleTypeMtlheapBitEXT                   ExternalMemoryHandleTypeFlagBits = 1 << 18
-)
-
-type ExternalSemaphoreFeatureFlagBits uint32
-
-const (
-	ExternalSemaphoreFeatureExportableBit    ExternalSemaphoreFeatureFlagBits = 1 << 0
-	ExternalSemaphoreFeatureImportableBit    ExternalSemaphoreFeatureFlagBits = 1 << 1
-	ExternalSemaphoreFeatureExportableBitKHR ExternalSemaphoreFeatureFlagBits = ExternalSemaphoreFeatureExportableBit
-	ExternalSemaphoreFeatureImportableBitKHR ExternalSemaphoreFeatureFlagBits = ExternalSemaphoreFeatureImportableBit
-)
-
-type ExternalSemaphoreHandleTypeFlagBits uint32
-
-const (
-	ExternalSemaphoreHandleTypeOpaqueFdBit           ExternalSemaphoreHandleTypeFlagBits = 1 << 0
-	ExternalSemaphoreHandleTypeOpaqueWin32Bit        ExternalSemaphoreHandleTypeFlagBits = 1 << 1
-	ExternalSemaphoreHandleTypeOpaqueWin32KmtBit     ExternalSemaphoreHandleTypeFlagBits = 1 << 2
-	ExternalSemaphoreHandleTypeD3d12FenceBit         ExternalSemaphoreHandleTypeFlagBits = 1 << 3
-	ExternalSemaphoreHandleTypeD3d11FenceBit         ExternalSemaphoreHandleTypeFlagBits = 0 // TODO: unknown value
-	ExternalSemaphoreHandleTypeSyncFdBit             ExternalSemaphoreHandleTypeFlagBits = 1 << 4
-	ExternalSemaphoreHandleTypeOpaqueFdBitKHR        ExternalSemaphoreHandleTypeFlagBits = ExternalSemaphoreHandleTypeOpaqueFdBit
-	ExternalSemaphoreHandleTypeOpaqueWin32BitKHR     ExternalSemaphoreHandleTypeFlagBits = ExternalSemaphoreHandleTypeOpaqueWin32Bit
-	ExternalSemaphoreHandleTypeOpaqueWin32KmtBitKHR  ExternalSemaphoreHandleTypeFlagBits = ExternalSemaphoreHandleTypeOpaqueWin32KmtBit
-	ExternalSemaphoreHandleTypeD3d12FenceBitKHR      ExternalSemaphoreHandleTypeFlagBits = ExternalSemaphoreHandleTypeD3d12FenceBit
-	ExternalSemaphoreHandleTypeSyncFdBitKHR          ExternalSemaphoreHandleTypeFlagBits = ExternalSemaphoreHandleTypeSyncFdBit
-	ExternalSemaphoreHandleTypeZirconEventBitFuchsia ExternalSemaphoreHandleTypeFlagBits = 1 << 7
-	ExternalSemaphoreHandleTypeSciSyncObjBitNV       ExternalSemaphoreHandleTypeFlagBits = 1 << 5
-)
-
 type FenceCreateFlagBits uint32
 
 const (
 	FenceCreateSignaledBit FenceCreateFlagBits = 1 << 0
-)
-
-type FenceImportFlagBits uint32
-
-const (
-	FenceImportTemporaryBit    FenceImportFlagBits = 1 << 0
-	FenceImportTemporaryBitKHR FenceImportFlagBits = FenceImportTemporaryBit
 )
 
 type Filter uint32
@@ -2451,15 +2175,6 @@ const (
 	GraphicsPipelineLibraryFragmentOutputInterfaceBitEXT GraphicsPipelineLibraryFlagBitsEXT = 1 << 3
 )
 
-type HostImageCopyFlagBits uint32
-
-const (
-	HostImageCopyMemcpyBit    HostImageCopyFlagBits = 1 << 0
-	HostImageCopyMemcpy       HostImageCopyFlagBits = 0 // TODO: unknown value
-	HostImageCopyMemcpyBitEXT HostImageCopyFlagBits = HostImageCopyMemcpyBit
-	HostImageCopyMemcpyEXT    HostImageCopyFlagBits = HostImageCopyMemcpyBit
-)
-
 type ImageAspectFlagBits uint32
 
 const (
@@ -2762,18 +2477,6 @@ const (
 	LogicOpSet          LogicOp = 15
 )
 
-type MemoryAllocateFlagBits uint32
-
-const (
-	MemoryAllocateDeviceMaskBit                    MemoryAllocateFlagBits = 1 << 0
-	MemoryAllocateDeviceAddressBit                 MemoryAllocateFlagBits = 1 << 1
-	MemoryAllocateDeviceAddressCaptureReplayBit    MemoryAllocateFlagBits = 1 << 2
-	MemoryAllocateDeviceMaskBitKHR                 MemoryAllocateFlagBits = MemoryAllocateDeviceMaskBit
-	MemoryAllocateDeviceAddressBitKHR              MemoryAllocateFlagBits = MemoryAllocateDeviceAddressBit
-	MemoryAllocateDeviceAddressCaptureReplayBitKHR MemoryAllocateFlagBits = MemoryAllocateDeviceAddressCaptureReplayBit
-	MemoryAllocateZeroInitializeBitEXT             MemoryAllocateFlagBits = 1 << 3
-)
-
 type MemoryHeapFlagBits uint32
 
 const (
@@ -2802,12 +2505,6 @@ const (
 	MemoryPropertyDeviceCoherentBitAMD MemoryPropertyFlagBits = 1 << 6
 	MemoryPropertyDeviceUncachedBitAMD MemoryPropertyFlagBits = 1 << 7
 	MemoryPropertyRdmaCapableBitNV     MemoryPropertyFlagBits = 1 << 8
-)
-
-type MemoryUnmapFlagBits uint32
-
-const (
-	MemoryUnmapReserveBitEXT MemoryUnmapFlagBits = 1 << 0
 )
 
 type ObjectType uint32
@@ -2877,19 +2574,6 @@ const (
 	ObjectTypeIndirectCommandsLayoutEXT     ObjectType = 1000572000
 	ObjectTypeIndirectExecutionSetEXT       ObjectType = 1000572001
 	ObjectTypeShaderInstrumentationARM      ObjectType = 1000607000
-)
-
-type PeerMemoryFeatureFlagBits uint32
-
-const (
-	PeerMemoryFeatureCopySrcBit       PeerMemoryFeatureFlagBits = 1 << 0
-	PeerMemoryFeatureCopyDstBit       PeerMemoryFeatureFlagBits = 1 << 1
-	PeerMemoryFeatureGenericSrcBit    PeerMemoryFeatureFlagBits = 1 << 2
-	PeerMemoryFeatureGenericDstBit    PeerMemoryFeatureFlagBits = 1 << 3
-	PeerMemoryFeatureCopySrcBitKHR    PeerMemoryFeatureFlagBits = PeerMemoryFeatureCopySrcBit
-	PeerMemoryFeatureCopyDstBitKHR    PeerMemoryFeatureFlagBits = PeerMemoryFeatureCopyDstBit
-	PeerMemoryFeatureGenericSrcBitKHR PeerMemoryFeatureFlagBits = PeerMemoryFeatureGenericSrcBit
-	PeerMemoryFeatureGenericDstBitKHR PeerMemoryFeatureFlagBits = PeerMemoryFeatureGenericDstBit
 )
 
 type PhysicalDeviceType uint32
@@ -3049,17 +2733,6 @@ const (
 	PipelineCreate2Reserved48BitHUAWEI                              PipelineCreateFlagBits2 = 1 << 48
 )
 
-type PipelineCreationFeedbackFlagBits uint32
-
-const (
-	PipelineCreationFeedbackValidBit                          PipelineCreationFeedbackFlagBits = 1 << 0
-	PipelineCreationFeedbackApplicationPipelineCacheHitBit    PipelineCreationFeedbackFlagBits = 1 << 1
-	PipelineCreationFeedbackBasePipelineAccelerationBit       PipelineCreationFeedbackFlagBits = 1 << 2
-	PipelineCreationFeedbackValidBitEXT                       PipelineCreationFeedbackFlagBits = PipelineCreationFeedbackValidBit
-	PipelineCreationFeedbackApplicationPipelineCacheHitBitEXT PipelineCreationFeedbackFlagBits = PipelineCreationFeedbackApplicationPipelineCacheHitBit
-	PipelineCreationFeedbackBasePipelineAccelerationBitEXT    PipelineCreationFeedbackFlagBits = PipelineCreationFeedbackBasePipelineAccelerationBit
-)
-
 type PipelineDepthStencilStateCreateFlagBits uint32
 
 const (
@@ -3074,32 +2747,6 @@ type PipelineLayoutCreateFlagBits uint32
 const (
 	PipelineLayoutCreateIndependentSetsBitEXT PipelineLayoutCreateFlagBits = 1 << 1
 	PipelineLayoutCreateNoTaskShaderBitKHR    PipelineLayoutCreateFlagBits = 1 << 2
-)
-
-type PipelineRobustnessBufferBehavior uint32
-
-const (
-	PipelineRobustnessBufferBehaviorDeviceDefault          PipelineRobustnessBufferBehavior = 0
-	PipelineRobustnessBufferBehaviorDisabled               PipelineRobustnessBufferBehavior = 1
-	PipelineRobustnessBufferBehaviorRobustBufferAccess     PipelineRobustnessBufferBehavior = 2
-	PipelineRobustnessBufferBehaviorRobustBufferAccess2    PipelineRobustnessBufferBehavior = 3
-	PipelineRobustnessBufferBehaviorDeviceDefaultEXT       PipelineRobustnessBufferBehavior = PipelineRobustnessBufferBehaviorDeviceDefault
-	PipelineRobustnessBufferBehaviorDisabledEXT            PipelineRobustnessBufferBehavior = PipelineRobustnessBufferBehaviorDisabled
-	PipelineRobustnessBufferBehaviorRobustBufferAccessEXT  PipelineRobustnessBufferBehavior = PipelineRobustnessBufferBehaviorRobustBufferAccess
-	PipelineRobustnessBufferBehaviorRobustBufferAccess2EXT PipelineRobustnessBufferBehavior = PipelineRobustnessBufferBehaviorRobustBufferAccess2
-)
-
-type PipelineRobustnessImageBehavior uint32
-
-const (
-	PipelineRobustnessImageBehaviorDeviceDefault         PipelineRobustnessImageBehavior = 0
-	PipelineRobustnessImageBehaviorDisabled              PipelineRobustnessImageBehavior = 1
-	PipelineRobustnessImageBehaviorRobustImageAccess     PipelineRobustnessImageBehavior = 2
-	PipelineRobustnessImageBehaviorRobustImageAccess2    PipelineRobustnessImageBehavior = 3
-	PipelineRobustnessImageBehaviorDeviceDefaultEXT      PipelineRobustnessImageBehavior = PipelineRobustnessImageBehaviorDeviceDefault
-	PipelineRobustnessImageBehaviorDisabledEXT           PipelineRobustnessImageBehavior = PipelineRobustnessImageBehaviorDisabled
-	PipelineRobustnessImageBehaviorRobustImageAccessEXT  PipelineRobustnessImageBehavior = PipelineRobustnessImageBehaviorRobustImageAccess
-	PipelineRobustnessImageBehaviorRobustImageAccess2EXT PipelineRobustnessImageBehavior = PipelineRobustnessImageBehaviorRobustImageAccess2
 )
 
 type PipelineShaderStageCreateFlagBits uint32
@@ -3377,23 +3024,7 @@ const (
 	QueueReserved9BitEXT   QueueFlagBits = 1 << 9
 	QueueReserved13BitEXT  QueueFlagBits = 1 << 13
 	QueueReserved11BitARM  QueueFlagBits = 1 << 11
-)
-
-type QueueGlobalPriority uint32
-
-const (
-	QueueGlobalPriorityLow         QueueGlobalPriority = 128
-	QueueGlobalPriorityMedium      QueueGlobalPriority = 256
-	QueueGlobalPriorityHigh        QueueGlobalPriority = 512
-	QueueGlobalPriorityRealtime    QueueGlobalPriority = 1024
-	QueueGlobalPriorityLowEXT      QueueGlobalPriority = QueueGlobalPriorityLow
-	QueueGlobalPriorityMediumEXT   QueueGlobalPriority = QueueGlobalPriorityMedium
-	QueueGlobalPriorityHighEXT     QueueGlobalPriority = QueueGlobalPriorityHigh
-	QueueGlobalPriorityRealtimeEXT QueueGlobalPriority = QueueGlobalPriorityRealtime
-	QueueGlobalPriorityLowKHR      QueueGlobalPriority = QueueGlobalPriorityLow
-	QueueGlobalPriorityMediumKHR   QueueGlobalPriority = QueueGlobalPriorityMedium
-	QueueGlobalPriorityHighKHR     QueueGlobalPriority = QueueGlobalPriorityHigh
-	QueueGlobalPriorityRealtimeKHR QueueGlobalPriority = QueueGlobalPriorityRealtime
+	QueueReserved14BitEXT  QueueFlagBits = 1 << 14
 )
 
 type RayTracingShaderGroupTypeKHR uint32
@@ -3675,65 +3306,6 @@ const (
 	SamplerMipmapModeLinear  SamplerMipmapMode = 1
 )
 
-type SamplerReductionMode uint32
-
-const (
-	SamplerReductionModeWeightedAverage               SamplerReductionMode = 0
-	SamplerReductionModeMin                           SamplerReductionMode = 1
-	SamplerReductionModeMax                           SamplerReductionMode = 2
-	SamplerReductionModeWeightedAverageEXT            SamplerReductionMode = SamplerReductionModeWeightedAverage
-	SamplerReductionModeMinEXT                        SamplerReductionMode = SamplerReductionModeMin
-	SamplerReductionModeMaxEXT                        SamplerReductionMode = SamplerReductionModeMax
-	SamplerReductionModeWeightedAverageRangeclampQCOM SamplerReductionMode = 1000521000
-)
-
-type SamplerYcbcrModelConversion uint32
-
-const (
-	SamplerYcbcrModelConversionRgbIdentity      SamplerYcbcrModelConversion = 0
-	SamplerYcbcrModelConversionYcbcrIdentity    SamplerYcbcrModelConversion = 1
-	SamplerYcbcrModelConversionYcbcr709         SamplerYcbcrModelConversion = 2
-	SamplerYcbcrModelConversionYcbcr601         SamplerYcbcrModelConversion = 3
-	SamplerYcbcrModelConversionYcbcr2020        SamplerYcbcrModelConversion = 4
-	SamplerYcbcrModelConversionRgbIdentityKHR   SamplerYcbcrModelConversion = SamplerYcbcrModelConversionRgbIdentity
-	SamplerYcbcrModelConversionYcbcrIdentityKHR SamplerYcbcrModelConversion = SamplerYcbcrModelConversionYcbcrIdentity
-	SamplerYcbcrModelConversionYcbcr709KHR      SamplerYcbcrModelConversion = SamplerYcbcrModelConversionYcbcr709
-	SamplerYcbcrModelConversionYcbcr601KHR      SamplerYcbcrModelConversion = SamplerYcbcrModelConversionYcbcr601
-	SamplerYcbcrModelConversionYcbcr2020KHR     SamplerYcbcrModelConversion = SamplerYcbcrModelConversionYcbcr2020
-)
-
-type SamplerYcbcrRange uint32
-
-const (
-	SamplerYcbcrRangeItuFull      SamplerYcbcrRange = 0
-	SamplerYcbcrRangeItuNarrow    SamplerYcbcrRange = 1
-	SamplerYcbcrRangeItuFullKHR   SamplerYcbcrRange = SamplerYcbcrRangeItuFull
-	SamplerYcbcrRangeItuNarrowKHR SamplerYcbcrRange = SamplerYcbcrRangeItuNarrow
-)
-
-type SemaphoreImportFlagBits uint32
-
-const (
-	SemaphoreImportTemporaryBit    SemaphoreImportFlagBits = 1 << 0
-	SemaphoreImportTemporaryBitKHR SemaphoreImportFlagBits = SemaphoreImportTemporaryBit
-)
-
-type SemaphoreType uint32
-
-const (
-	SemaphoreTypeBinary      SemaphoreType = 0
-	SemaphoreTypeTimeline    SemaphoreType = 1
-	SemaphoreTypeBinaryKHR   SemaphoreType = SemaphoreTypeBinary
-	SemaphoreTypeTimelineKHR SemaphoreType = SemaphoreTypeTimeline
-)
-
-type SemaphoreWaitFlagBits uint32
-
-const (
-	SemaphoreWaitAnyBit    SemaphoreWaitFlagBits = 1 << 0
-	SemaphoreWaitAnyBitKHR SemaphoreWaitFlagBits = SemaphoreWaitAnyBit
-)
-
 type ShaderCodeTypeEXT uint32
 
 const (
@@ -3761,17 +3333,6 @@ const (
 	ShaderCreateOpacityMicromapDisallowMixedSpecialIndexBitEXT ShaderCreateFlagBitsEXT = 1 << 12
 	ShaderCreate64BitIndexingBitEXT                            ShaderCreateFlagBitsEXT = 1 << 15
 	ShaderCreateIndependentSetsBitKHR                          ShaderCreateFlagBitsEXT = 1 << 18
-)
-
-type ShaderFloatControlsIndependence uint32
-
-const (
-	ShaderFloatControlsIndependence32BitOnly    ShaderFloatControlsIndependence = 0
-	ShaderFloatControlsIndependenceAll          ShaderFloatControlsIndependence = 1
-	ShaderFloatControlsIndependenceNone         ShaderFloatControlsIndependence = 2
-	ShaderFloatControlsIndependence32BitOnlyKHR ShaderFloatControlsIndependence = ShaderFloatControlsIndependence32BitOnly
-	ShaderFloatControlsIndependenceAllKHR       ShaderFloatControlsIndependence = ShaderFloatControlsIndependenceAll
-	ShaderFloatControlsIndependenceNoneKHR      ShaderFloatControlsIndependence = ShaderFloatControlsIndependenceNone
 )
 
 type ShaderGroupShaderKHR uint32
@@ -5399,33 +4960,9 @@ const (
 	StructureTypeDataGraphPipelineSessionNeuralStatisticsCreateInfoARM           StructureType = 1000676001
 	StructureTypePhysicalDeviceDataGraphNeuralAcceleratorStatisticsFeaturesARM   StructureType = 1000676002
 	StructureTypePhysicalDevicePrimitiveRestartIndexFeaturesEXT                  StructureType = 1000678000
+	StructureTypePhysicalDeviceImageTilingControlFeaturesEXT                     StructureType = 1000687000
+	StructureTypeImageTilingControlCreateInfoEXT                                 StructureType = 1000687001
 	StructureTypePhysicalDeviceCooperativeMatrixDecodeVectorFeaturesNV           StructureType = 1000689000
-)
-
-type SubgroupFeatureFlagBits uint32
-
-const (
-	SubgroupFeatureBasicBit              SubgroupFeatureFlagBits = 1 << 0
-	SubgroupFeatureVoteBit               SubgroupFeatureFlagBits = 1 << 1
-	SubgroupFeatureArithmeticBit         SubgroupFeatureFlagBits = 1 << 2
-	SubgroupFeatureBallotBit             SubgroupFeatureFlagBits = 1 << 3
-	SubgroupFeatureShuffleBit            SubgroupFeatureFlagBits = 1 << 4
-	SubgroupFeatureShuffleRelativeBit    SubgroupFeatureFlagBits = 1 << 5
-	SubgroupFeatureClusteredBit          SubgroupFeatureFlagBits = 1 << 6
-	SubgroupFeatureQuadBit               SubgroupFeatureFlagBits = 1 << 7
-	SubgroupFeatureRotateBit             SubgroupFeatureFlagBits = 1 << 9
-	SubgroupFeatureRotateClusteredBit    SubgroupFeatureFlagBits = 1 << 10
-	SubgroupFeaturePartitionedBitNV      SubgroupFeatureFlagBits = SubgroupFeaturePartitionedBitEXT
-	SubgroupFeatureRotateBitKHR          SubgroupFeatureFlagBits = SubgroupFeatureRotateBit
-	SubgroupFeatureRotateClusteredBitKHR SubgroupFeatureFlagBits = SubgroupFeatureRotateClusteredBit
-	SubgroupFeaturePartitionedBitEXT     SubgroupFeatureFlagBits = 1 << 8
-)
-
-type SubmitFlagBits uint32
-
-const (
-	SubmitProtectedBit    SubmitFlagBits = 1 << 0
-	SubmitProtectedBitKHR SubmitFlagBits = SubmitProtectedBit
 )
 
 type SubpassContents uint32
@@ -5506,23 +5043,6 @@ const (
 	TessellationDomainOriginLowerLeftKHR TessellationDomainOrigin = TessellationDomainOriginLowerLeft
 )
 
-type ToolPurposeFlagBits uint32
-
-const (
-	ToolPurposeValidationBit            ToolPurposeFlagBits = 1 << 0
-	ToolPurposeProfilingBit             ToolPurposeFlagBits = 1 << 1
-	ToolPurposeTracingBit               ToolPurposeFlagBits = 1 << 2
-	ToolPurposeAdditionalFeaturesBit    ToolPurposeFlagBits = 1 << 3
-	ToolPurposeModifyingFeaturesBit     ToolPurposeFlagBits = 1 << 4
-	ToolPurposeValidationBitEXT         ToolPurposeFlagBits = ToolPurposeValidationBit
-	ToolPurposeProfilingBitEXT          ToolPurposeFlagBits = ToolPurposeProfilingBit
-	ToolPurposeTracingBitEXT            ToolPurposeFlagBits = ToolPurposeTracingBit
-	ToolPurposeAdditionalFeaturesBitEXT ToolPurposeFlagBits = ToolPurposeAdditionalFeaturesBit
-	ToolPurposeModifyingFeaturesBitEXT  ToolPurposeFlagBits = ToolPurposeModifyingFeaturesBit
-	ToolPurposeDebugReportingBitEXT     ToolPurposeFlagBits = 1 << 5
-	ToolPurposeDebugMarkersBitEXT       ToolPurposeFlagBits = 1 << 6
-)
-
 type ValidationFeatureDisableEXT uint32
 
 const (
@@ -5584,15 +5104,11 @@ type AccelerationStructureCreateFlagsKHR uint32
 
 type AccessFlags uint32
 
-type AccessFlags2 uint64
-
 type AttachmentDescriptionFlags uint32
 
 type BufferCreateFlags uint32
 
 type BufferUsageFlags uint32
-
-type BufferUsageFlags2 uint64
 
 type BufferViewCreateFlags uint32
 
@@ -5608,8 +5124,6 @@ type CommandPoolCreateFlags uint32
 
 type CommandPoolResetFlags uint32
 
-type CommandPoolTrimFlags uint32
-
 type CompositeAlphaFlagsKHR uint32
 
 type CullModeFlags uint32
@@ -5624,15 +5138,11 @@ type DebugUtilsMessengerCreateFlagsEXT uint32
 
 type DependencyFlags uint32
 
-type DescriptorBindingFlags uint32
-
 type DescriptorPoolCreateFlags uint32
 
 type DescriptorPoolResetFlags uint32
 
 type DescriptorSetLayoutCreateFlags uint32
-
-type DescriptorUpdateTemplateCreateFlags uint32
 
 type DeviceCreateFlags uint32
 
@@ -5642,25 +5152,9 @@ type DeviceQueueCreateFlags uint32
 
 type EventCreateFlags uint32
 
-type ExternalFenceFeatureFlags uint32
-
-type ExternalFenceHandleTypeFlags uint32
-
-type ExternalMemoryFeatureFlags uint32
-
-type ExternalMemoryHandleTypeFlags uint32
-
-type ExternalSemaphoreFeatureFlags uint32
-
-type ExternalSemaphoreHandleTypeFlags uint32
-
 type FenceCreateFlags uint32
 
-type FenceImportFlags uint32
-
 type FormatFeatureFlags uint32
-
-type FormatFeatureFlags2 uint64
 
 type FramebufferCreateFlags uint32
 
@@ -5669,8 +5163,6 @@ type GeometryFlagsKHR uint32
 type GeometryInstanceFlagsKHR uint32
 
 type GraphicsPipelineLibraryFlagsEXT uint32
-
-type HostImageCopyFlags uint32
 
 type ImageAspectFlags uint32
 
@@ -5688,29 +5180,19 @@ type InstanceCreateFlags uint32
 
 type MacOSSurfaceCreateFlagsMVK uint32
 
-type MemoryAllocateFlags uint32
-
 type MemoryHeapFlags uint32
 
 type MemoryMapFlags uint32
 
 type MemoryPropertyFlags uint32
 
-type MemoryUnmapFlags uint32
-
 type MetalSurfaceCreateFlagsEXT uint32
-
-type PeerMemoryFeatureFlags uint32
 
 type PipelineCacheCreateFlags uint32
 
 type PipelineColorBlendStateCreateFlags uint32
 
 type PipelineCreateFlags uint32
-
-type PipelineCreateFlags2 uint64
-
-type PipelineCreationFeedbackFlags uint32
 
 type PipelineDepthStencilStateCreateFlags uint32
 
@@ -5728,8 +5210,6 @@ type PipelineShaderStageCreateFlags uint32
 
 type PipelineStageFlags uint32
 
-type PipelineStageFlags2 uint64
-
 type PipelineTessellationStateCreateFlags uint32
 
 type PipelineVertexInputStateCreateFlags uint32
@@ -5739,8 +5219,6 @@ type PipelineViewportStateCreateFlags uint32
 type PresentGravityFlagsKHR uint32
 
 type PresentScalingFlagsKHR uint32
-
-type PrivateDataSlotCreateFlags uint32
 
 type QueryControlFlags uint32
 
@@ -5764,10 +5242,6 @@ type SamplerCreateFlags uint32
 
 type SemaphoreCreateFlags uint32
 
-type SemaphoreImportFlags uint32
-
-type SemaphoreWaitFlags uint32
-
 type ShaderCreateFlagsEXT uint32
 
 type ShaderModuleCreateFlags uint32
@@ -5780,17 +5254,11 @@ type SparseMemoryBindFlags uint32
 
 type StencilFaceFlags uint32
 
-type SubgroupFeatureFlags uint32
-
-type SubmitFlags uint32
-
 type SubpassDescriptionFlags uint32
 
 type SurfaceTransformFlagsKHR uint32
 
 type SwapchainCreateFlagsKHR uint32
-
-type ToolPurposeFlags uint32
 
 type WaylandSurfaceCreateFlagsKHR uint32
 
@@ -7108,352 +6576,6 @@ func (s *BaseOutStructure) toC() (unsafe.Pointer, func()) {
 func (s *BaseOutStructure) fromC(p *cVkBaseOutStructure) {
 }
 
-type cVkBindBufferMemoryDeviceGroupInfo struct {
-	sType            int32
-	pNext            unsafe.Pointer
-	deviceIndexCount uint32
-	pDeviceIndices   unsafe.Pointer
-}
-
-type BindBufferMemoryDeviceGroupInfo struct {
-	Next          Structure
-	DeviceIndices []uint32
-}
-
-func (s *BindBufferMemoryDeviceGroupInfo) GetType() StructureType {
-	return StructureTypeBindBufferMemoryDeviceGroupInfo
-}
-
-func (s *BindBufferMemoryDeviceGroupInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBindBufferMemoryDeviceGroupInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	len0 := len(s.DeviceIndices)
-	var arr1 unsafe.Pointer
-	if len0 > 0 {
-		buf2 := make([]uint32, len0)
-		var pin3 runtime.Pinner
-		pin3.Pin(&buf2[0])
-		cancels = append(cancels, func() { pin3.Unpin(); runtime.KeepAlive(buf2) })
-		arr1 = unsafe.Pointer(&buf2[0])
-		for i4, elem5 := range s.DeviceIndices {
-			val6 := uint32(elem5)
-			buf2[i4] = val6
-		}
-	}
-	p.pDeviceIndices = arr1
-	p.deviceIndexCount = uint32(len(s.DeviceIndices))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BindBufferMemoryDeviceGroupInfo) fromC(p *cVkBindBufferMemoryDeviceGroupInfo) {
-	if p.deviceIndexCount > 0 && p.pDeviceIndices != nil {
-		s.DeviceIndices = make([]uint32, p.deviceIndexCount)
-		for i0 := range s.DeviceIndices {
-			s.DeviceIndices[i0] = uint32((*[1 << 30]uint32)(unsafe.Pointer(p.pDeviceIndices))[i0])
-		}
-	}
-}
-
-type cVkBindBufferMemoryInfo struct {
-	sType        int32
-	pNext        unsafe.Pointer
-	buffer       unsafe.Pointer
-	memory       unsafe.Pointer
-	memoryOffset uint64
-}
-
-type BindBufferMemoryInfo struct {
-	Next         Structure
-	Buffer       *Buffer
-	Memory       *DeviceMemory
-	MemoryOffset uint64
-}
-
-func (s *BindBufferMemoryInfo) GetType() StructureType {
-	return StructureTypeBindBufferMemoryInfo
-}
-
-func (s *BindBufferMemoryInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBindBufferMemoryInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.Buffer != nil {
-		h0 = s.Buffer.handle
-	}
-	p.buffer = h0
-	var h1 unsafe.Pointer
-	if s.Memory != nil {
-		h1 = s.Memory.handle
-	}
-	p.memory = h1
-	val2 := uint64(s.MemoryOffset)
-	p.memoryOffset = val2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BindBufferMemoryInfo) fromC(p *cVkBindBufferMemoryInfo) {
-	s.Buffer = &Buffer{handle: p.buffer}
-	s.Memory = &DeviceMemory{handle: p.memory}
-	s.MemoryOffset = uint64(p.memoryOffset)
-}
-
-type cVkBindDescriptorSetsInfo struct {
-	sType              int32
-	pNext              unsafe.Pointer
-	stageFlags         uint32
-	layout             unsafe.Pointer
-	firstSet           uint32
-	descriptorSetCount uint32
-	pDescriptorSets    unsafe.Pointer
-	dynamicOffsetCount uint32
-	pDynamicOffsets    unsafe.Pointer
-}
-
-type BindDescriptorSetsInfo struct {
-	Next           Structure
-	StageFlags     ShaderStageFlags
-	Layout         *PipelineLayout
-	FirstSet       uint32
-	DescriptorSets []*DescriptorSet
-	DynamicOffsets []uint32
-}
-
-func (s *BindDescriptorSetsInfo) GetType() StructureType {
-	return StructureTypeBindDescriptorSetsInfo
-}
-
-func (s *BindDescriptorSetsInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBindDescriptorSetsInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.StageFlags)
-	p.stageFlags = val0
-	var h1 unsafe.Pointer
-	if s.Layout != nil {
-		h1 = s.Layout.handle
-	}
-	p.layout = h1
-	val2 := uint32(s.FirstSet)
-	p.firstSet = val2
-	len3 := len(s.DescriptorSets)
-	var arr4 unsafe.Pointer
-	if len3 > 0 {
-		buf5 := make([]unsafe.Pointer, len3)
-		var pin6 runtime.Pinner
-		pin6.Pin(&buf5[0])
-		cancels = append(cancels, func() { pin6.Unpin(); runtime.KeepAlive(buf5) })
-		arr4 = unsafe.Pointer(&buf5[0])
-		for i7, elem8 := range s.DescriptorSets {
-			var h9 unsafe.Pointer
-			if elem8 != nil {
-				h9 = elem8.handle
-			}
-			buf5[i7] = h9
-		}
-	}
-	p.pDescriptorSets = arr4
-	p.descriptorSetCount = uint32(len(s.DescriptorSets))
-	len10 := len(s.DynamicOffsets)
-	var arr11 unsafe.Pointer
-	if len10 > 0 {
-		buf12 := make([]uint32, len10)
-		var pin13 runtime.Pinner
-		pin13.Pin(&buf12[0])
-		cancels = append(cancels, func() { pin13.Unpin(); runtime.KeepAlive(buf12) })
-		arr11 = unsafe.Pointer(&buf12[0])
-		for i14, elem15 := range s.DynamicOffsets {
-			val16 := uint32(elem15)
-			buf12[i14] = val16
-		}
-	}
-	p.pDynamicOffsets = arr11
-	p.dynamicOffsetCount = uint32(len(s.DynamicOffsets))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BindDescriptorSetsInfo) fromC(p *cVkBindDescriptorSetsInfo) {
-	s.StageFlags = ShaderStageFlags(p.stageFlags)
-	s.Layout = &PipelineLayout{handle: p.layout}
-	s.FirstSet = uint32(p.firstSet)
-	if p.descriptorSetCount > 0 && p.pDescriptorSets != nil {
-		s.DescriptorSets = make([]*DescriptorSet, p.descriptorSetCount)
-		for i0 := range s.DescriptorSets {
-			s.DescriptorSets[i0] = &DescriptorSet{handle: (*[1 << 30]unsafe.Pointer)(unsafe.Pointer(p.pDescriptorSets))[i0]}
-		}
-	}
-	if p.dynamicOffsetCount > 0 && p.pDynamicOffsets != nil {
-		s.DynamicOffsets = make([]uint32, p.dynamicOffsetCount)
-		for i2 := range s.DynamicOffsets {
-			s.DynamicOffsets[i2] = uint32((*[1 << 30]uint32)(unsafe.Pointer(p.pDynamicOffsets))[i2])
-		}
-	}
-}
-
-type cVkBindImageMemoryDeviceGroupInfo struct {
-	sType                        int32
-	pNext                        unsafe.Pointer
-	deviceIndexCount             uint32
-	pDeviceIndices               unsafe.Pointer
-	splitInstanceBindRegionCount uint32
-	pSplitInstanceBindRegions    unsafe.Pointer
-}
-
-type BindImageMemoryDeviceGroupInfo struct {
-	Next                     Structure
-	DeviceIndices            []uint32
-	SplitInstanceBindRegions []Rect2D
-}
-
-func (s *BindImageMemoryDeviceGroupInfo) GetType() StructureType {
-	return StructureTypeBindImageMemoryDeviceGroupInfo
-}
-
-func (s *BindImageMemoryDeviceGroupInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBindImageMemoryDeviceGroupInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	len0 := len(s.DeviceIndices)
-	var arr1 unsafe.Pointer
-	if len0 > 0 {
-		buf2 := make([]uint32, len0)
-		var pin3 runtime.Pinner
-		pin3.Pin(&buf2[0])
-		cancels = append(cancels, func() { pin3.Unpin(); runtime.KeepAlive(buf2) })
-		arr1 = unsafe.Pointer(&buf2[0])
-		for i4, elem5 := range s.DeviceIndices {
-			val6 := uint32(elem5)
-			buf2[i4] = val6
-		}
-	}
-	p.pDeviceIndices = arr1
-	p.deviceIndexCount = uint32(len(s.DeviceIndices))
-	len7 := len(s.SplitInstanceBindRegions)
-	var arr8 unsafe.Pointer
-	if len7 > 0 {
-		buf9 := make([]cVkRect2D, len7)
-		var pin10 runtime.Pinner
-		pin10.Pin(&buf9[0])
-		cancels = append(cancels, func() { pin10.Unpin(); runtime.KeepAlive(buf9) })
-		arr8 = unsafe.Pointer(&buf9[0])
-		for i11, elem12 := range s.SplitInstanceBindRegions {
-			val13, cancel14 := elem12.toC()
-			cancels = append(cancels, cancel14)
-			cast15 := (*cVkRect2D)(val13)
-			buf9[i11] = *cast15
-		}
-	}
-	p.pSplitInstanceBindRegions = arr8
-	p.splitInstanceBindRegionCount = uint32(len(s.SplitInstanceBindRegions))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BindImageMemoryDeviceGroupInfo) fromC(p *cVkBindImageMemoryDeviceGroupInfo) {
-	if p.deviceIndexCount > 0 && p.pDeviceIndices != nil {
-		s.DeviceIndices = make([]uint32, p.deviceIndexCount)
-		for i0 := range s.DeviceIndices {
-			s.DeviceIndices[i0] = uint32((*[1 << 30]uint32)(unsafe.Pointer(p.pDeviceIndices))[i0])
-		}
-	}
-	if p.splitInstanceBindRegionCount > 0 && p.pSplitInstanceBindRegions != nil {
-		s.SplitInstanceBindRegions = make([]Rect2D, p.splitInstanceBindRegionCount)
-		for i2 := range s.SplitInstanceBindRegions {
-			elem3 := (*[1 << 30]cVkRect2D)(unsafe.Pointer(p.pSplitInstanceBindRegions))[i2]
-			s.SplitInstanceBindRegions[i2].fromC(&elem3)
-		}
-	}
-}
-
-type cVkBindImageMemoryInfo struct {
-	sType        int32
-	pNext        unsafe.Pointer
-	image        unsafe.Pointer
-	memory       unsafe.Pointer
-	memoryOffset uint64
-}
-
-type BindImageMemoryInfo struct {
-	Next         Structure
-	Image        *Image
-	Memory       *DeviceMemory
-	MemoryOffset uint64
-}
-
-func (s *BindImageMemoryInfo) GetType() StructureType {
-	return StructureTypeBindImageMemoryInfo
-}
-
-func (s *BindImageMemoryInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBindImageMemoryInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.Image != nil {
-		h0 = s.Image.handle
-	}
-	p.image = h0
-	var h1 unsafe.Pointer
-	if s.Memory != nil {
-		h1 = s.Memory.handle
-	}
-	p.memory = h1
-	val2 := uint64(s.MemoryOffset)
-	p.memoryOffset = val2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BindImageMemoryInfo) fromC(p *cVkBindImageMemoryInfo) {
-	s.Image = &Image{handle: p.image}
-	s.Memory = &DeviceMemory{handle: p.memory}
-	s.MemoryOffset = uint64(p.memoryOffset)
-}
-
 type cVkBindImageMemorySwapchainInfoKHR struct {
 	sType      int32
 	pNext      unsafe.Pointer
@@ -7499,43 +6621,6 @@ func (s *BindImageMemorySwapchainInfoKHR) fromC(p *cVkBindImageMemorySwapchainIn
 	s.ImageIndex = uint32(p.imageIndex)
 }
 
-type cVkBindImagePlaneMemoryInfo struct {
-	sType       int32
-	pNext       unsafe.Pointer
-	planeAspect uint32
-}
-
-type BindImagePlaneMemoryInfo struct {
-	Next        Structure
-	PlaneAspect ImageAspectFlagBits
-}
-
-func (s *BindImagePlaneMemoryInfo) GetType() StructureType {
-	return StructureTypeBindImagePlaneMemoryInfo
-}
-
-func (s *BindImagePlaneMemoryInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBindImagePlaneMemoryInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.PlaneAspect)
-	p.planeAspect = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BindImagePlaneMemoryInfo) fromC(p *cVkBindImagePlaneMemoryInfo) {
-	s.PlaneAspect = ImageAspectFlagBits(p.planeAspect)
-}
-
 type cVkBindIndexBufferIndirectCommandEXT struct {
 	bufferAddress uint64
 	size          uint32
@@ -7568,48 +6653,6 @@ func (s *BindIndexBufferIndirectCommandEXT) fromC(p *cVkBindIndexBufferIndirectC
 	s.BufferAddress = uint64(p.bufferAddress)
 	s.Size = uint32(p.size)
 	s.IndexType = IndexType(p.indexType)
-}
-
-type cVkBindMemoryStatus struct {
-	sType   int32
-	pNext   unsafe.Pointer
-	pResult unsafe.Pointer
-}
-
-type BindMemoryStatus struct {
-	Next   Structure
-	Result *Result
-}
-
-func (s *BindMemoryStatus) GetType() StructureType {
-	return StructureTypeBindMemoryStatus
-}
-
-func (s *BindMemoryStatus) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBindMemoryStatus)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var ptr0 unsafe.Pointer
-	if s.Result != nil {
-		val1 := uint32(*s.Result)
-		inner2 := val1
-		ptr0 = unsafe.Pointer(&inner2)
-	}
-	p.pResult = ptr0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BindMemoryStatus) fromC(p *cVkBindMemoryStatus) {
-	// TODO: fromC for Result (Pointer of *generator.NamedType)
 }
 
 type cVkBindSparseInfo struct {
@@ -7977,53 +7020,6 @@ func (s *BufferCopy) fromC(p *cVkBufferCopy) {
 	s.Size = uint64(p.size)
 }
 
-type cVkBufferCopy2 struct {
-	sType     int32
-	pNext     unsafe.Pointer
-	srcOffset uint64
-	dstOffset uint64
-	size      uint64
-}
-
-type BufferCopy2 struct {
-	Next      Structure
-	SrcOffset uint64
-	DstOffset uint64
-	Size      uint64
-}
-
-func (s *BufferCopy2) GetType() StructureType {
-	return StructureTypeBufferCopy2
-}
-
-func (s *BufferCopy2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBufferCopy2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.SrcOffset)
-	p.srcOffset = val0
-	val1 := uint64(s.DstOffset)
-	p.dstOffset = val1
-	val2 := uint64(s.Size)
-	p.size = val2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BufferCopy2) fromC(p *cVkBufferCopy2) {
-	s.SrcOffset = uint64(p.srcOffset)
-	s.DstOffset = uint64(p.dstOffset)
-	s.Size = uint64(p.size)
-}
-
 type cVkBufferCreateInfo struct {
 	sType                 int32
 	pNext                 unsafe.Pointer
@@ -8100,46 +7096,6 @@ func (s *BufferCreateInfo) fromC(p *cVkBufferCreateInfo) {
 	}
 }
 
-type cVkBufferDeviceAddressInfo struct {
-	sType  int32
-	pNext  unsafe.Pointer
-	buffer unsafe.Pointer
-}
-
-type BufferDeviceAddressInfo struct {
-	Next   Structure
-	Buffer *Buffer
-}
-
-func (s *BufferDeviceAddressInfo) GetType() StructureType {
-	return StructureTypeBufferDeviceAddressInfo
-}
-
-func (s *BufferDeviceAddressInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBufferDeviceAddressInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.Buffer != nil {
-		h0 = s.Buffer.handle
-	}
-	p.buffer = h0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BufferDeviceAddressInfo) fromC(p *cVkBufferDeviceAddressInfo) {
-	s.Buffer = &Buffer{handle: p.buffer}
-}
-
 type cVkBufferImageCopy struct {
 	bufferOffset      uint64
 	bufferRowLength   uint32
@@ -8187,74 +7143,6 @@ func (s *BufferImageCopy) toC() (unsafe.Pointer, func()) {
 }
 
 func (s *BufferImageCopy) fromC(p *cVkBufferImageCopy) {
-	s.BufferOffset = uint64(p.bufferOffset)
-	s.BufferRowLength = uint32(p.bufferRowLength)
-	s.BufferImageHeight = uint32(p.bufferImageHeight)
-	s.ImageSubresource.fromC(&p.imageSubresource)
-	s.ImageOffset.fromC(&p.imageOffset)
-	s.ImageExtent.fromC(&p.imageExtent)
-}
-
-type cVkBufferImageCopy2 struct {
-	sType             int32
-	pNext             unsafe.Pointer
-	bufferOffset      uint64
-	bufferRowLength   uint32
-	bufferImageHeight uint32
-	imageSubresource  cVkImageSubresourceLayers
-	imageOffset       cVkOffset3D
-	imageExtent       cVkExtent3D
-}
-
-type BufferImageCopy2 struct {
-	Next              Structure
-	BufferOffset      uint64
-	BufferRowLength   uint32
-	BufferImageHeight uint32
-	ImageSubresource  ImageSubresourceLayers
-	ImageOffset       Offset3D
-	ImageExtent       Extent3D
-}
-
-func (s *BufferImageCopy2) GetType() StructureType {
-	return StructureTypeBufferImageCopy2
-}
-
-func (s *BufferImageCopy2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBufferImageCopy2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.BufferOffset)
-	p.bufferOffset = val0
-	val1 := uint32(s.BufferRowLength)
-	p.bufferRowLength = val1
-	val2 := uint32(s.BufferImageHeight)
-	p.bufferImageHeight = val2
-	val3, cancel4 := s.ImageSubresource.toC()
-	cancels = append(cancels, cancel4)
-	cast5 := (*cVkImageSubresourceLayers)(val3)
-	p.imageSubresource = *cast5
-	val6, cancel7 := s.ImageOffset.toC()
-	cancels = append(cancels, cancel7)
-	cast8 := (*cVkOffset3D)(val6)
-	p.imageOffset = *cast8
-	val9, cancel10 := s.ImageExtent.toC()
-	cancels = append(cancels, cancel10)
-	cast11 := (*cVkExtent3D)(val9)
-	p.imageExtent = *cast11
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BufferImageCopy2) fromC(p *cVkBufferImageCopy2) {
 	s.BufferOffset = uint64(p.bufferOffset)
 	s.BufferRowLength = uint32(p.bufferRowLength)
 	s.BufferImageHeight = uint32(p.bufferImageHeight)
@@ -8331,200 +7219,6 @@ func (s *BufferMemoryBarrier) fromC(p *cVkBufferMemoryBarrier) {
 	s.Buffer = &Buffer{handle: p.buffer}
 	s.Offset = uint64(p.offset)
 	s.Size = uint64(p.size)
-}
-
-type cVkBufferMemoryBarrier2 struct {
-	sType               int32
-	pNext               unsafe.Pointer
-	srcStageMask        uint64
-	srcAccessMask       uint64
-	dstStageMask        uint64
-	dstAccessMask       uint64
-	srcQueueFamilyIndex uint32
-	dstQueueFamilyIndex uint32
-	buffer              unsafe.Pointer
-	offset              uint64
-	size                uint64
-}
-
-type BufferMemoryBarrier2 struct {
-	Next                Structure
-	SrcStageMask        PipelineStageFlags2
-	SrcAccessMask       AccessFlags2
-	DstStageMask        PipelineStageFlags2
-	DstAccessMask       AccessFlags2
-	SrcQueueFamilyIndex uint32
-	DstQueueFamilyIndex uint32
-	Buffer              *Buffer
-	Offset              uint64
-	Size                uint64
-}
-
-func (s *BufferMemoryBarrier2) GetType() StructureType {
-	return StructureTypeBufferMemoryBarrier2
-}
-
-func (s *BufferMemoryBarrier2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBufferMemoryBarrier2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.SrcStageMask)
-	p.srcStageMask = val0
-	val1 := uint64(s.SrcAccessMask)
-	p.srcAccessMask = val1
-	val2 := uint64(s.DstStageMask)
-	p.dstStageMask = val2
-	val3 := uint64(s.DstAccessMask)
-	p.dstAccessMask = val3
-	val4 := uint32(s.SrcQueueFamilyIndex)
-	p.srcQueueFamilyIndex = val4
-	val5 := uint32(s.DstQueueFamilyIndex)
-	p.dstQueueFamilyIndex = val5
-	var h6 unsafe.Pointer
-	if s.Buffer != nil {
-		h6 = s.Buffer.handle
-	}
-	p.buffer = h6
-	val7 := uint64(s.Offset)
-	p.offset = val7
-	val8 := uint64(s.Size)
-	p.size = val8
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BufferMemoryBarrier2) fromC(p *cVkBufferMemoryBarrier2) {
-	s.SrcStageMask = PipelineStageFlags2(p.srcStageMask)
-	s.SrcAccessMask = AccessFlags2(p.srcAccessMask)
-	s.DstStageMask = PipelineStageFlags2(p.dstStageMask)
-	s.DstAccessMask = AccessFlags2(p.dstAccessMask)
-	s.SrcQueueFamilyIndex = uint32(p.srcQueueFamilyIndex)
-	s.DstQueueFamilyIndex = uint32(p.dstQueueFamilyIndex)
-	s.Buffer = &Buffer{handle: p.buffer}
-	s.Offset = uint64(p.offset)
-	s.Size = uint64(p.size)
-}
-
-type cVkBufferMemoryRequirementsInfo2 struct {
-	sType  int32
-	pNext  unsafe.Pointer
-	buffer unsafe.Pointer
-}
-
-type BufferMemoryRequirementsInfo2 struct {
-	Next   Structure
-	Buffer *Buffer
-}
-
-func (s *BufferMemoryRequirementsInfo2) GetType() StructureType {
-	return StructureTypeBufferMemoryRequirementsInfo2
-}
-
-func (s *BufferMemoryRequirementsInfo2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBufferMemoryRequirementsInfo2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.Buffer != nil {
-		h0 = s.Buffer.handle
-	}
-	p.buffer = h0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BufferMemoryRequirementsInfo2) fromC(p *cVkBufferMemoryRequirementsInfo2) {
-	s.Buffer = &Buffer{handle: p.buffer}
-}
-
-type cVkBufferOpaqueCaptureAddressCreateInfo struct {
-	sType                int32
-	pNext                unsafe.Pointer
-	opaqueCaptureAddress uint64
-}
-
-type BufferOpaqueCaptureAddressCreateInfo struct {
-	Next                 Structure
-	OpaqueCaptureAddress uint64
-}
-
-func (s *BufferOpaqueCaptureAddressCreateInfo) GetType() StructureType {
-	return StructureTypeBufferOpaqueCaptureAddressCreateInfo
-}
-
-func (s *BufferOpaqueCaptureAddressCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBufferOpaqueCaptureAddressCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.OpaqueCaptureAddress)
-	p.opaqueCaptureAddress = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BufferOpaqueCaptureAddressCreateInfo) fromC(p *cVkBufferOpaqueCaptureAddressCreateInfo) {
-	s.OpaqueCaptureAddress = uint64(p.opaqueCaptureAddress)
-}
-
-type cVkBufferUsageFlags2CreateInfo struct {
-	sType int32
-	pNext unsafe.Pointer
-	usage uint64
-}
-
-type BufferUsageFlags2CreateInfo struct {
-	Next  Structure
-	Usage BufferUsageFlags2
-}
-
-func (s *BufferUsageFlags2CreateInfo) GetType() StructureType {
-	return StructureTypeBufferUsageFlags2CreateInfo
-}
-
-func (s *BufferUsageFlags2CreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkBufferUsageFlags2CreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.Usage)
-	p.usage = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *BufferUsageFlags2CreateInfo) fromC(p *cVkBufferUsageFlags2CreateInfo) {
-	s.Usage = BufferUsageFlags2(p.usage)
 }
 
 type cVkBufferViewCreateInfo struct {
@@ -9118,51 +7812,6 @@ func (s *CommandBufferInheritanceRenderingInfo) fromC(p *cVkCommandBufferInherit
 	s.RasterizationSamples = SampleCountFlagBits(p.rasterizationSamples)
 }
 
-type cVkCommandBufferSubmitInfo struct {
-	sType         int32
-	pNext         unsafe.Pointer
-	commandBuffer unsafe.Pointer
-	deviceMask    uint32
-}
-
-type CommandBufferSubmitInfo struct {
-	Next          Structure
-	CommandBuffer *CommandBuffer
-	DeviceMask    uint32
-}
-
-func (s *CommandBufferSubmitInfo) GetType() StructureType {
-	return StructureTypeCommandBufferSubmitInfo
-}
-
-func (s *CommandBufferSubmitInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkCommandBufferSubmitInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.CommandBuffer != nil {
-		h0 = s.CommandBuffer.handle
-	}
-	p.commandBuffer = h0
-	val1 := uint32(s.DeviceMask)
-	p.deviceMask = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *CommandBufferSubmitInfo) fromC(p *cVkCommandBufferSubmitInfo) {
-	s.CommandBuffer = &CommandBuffer{handle: p.commandBuffer}
-	s.DeviceMask = uint32(p.deviceMask)
-}
-
 type cVkCommandPoolCreateInfo struct {
 	sType            int32
 	pNext            unsafe.Pointer
@@ -9309,45 +7958,6 @@ func (s *ComputePipelineCreateInfo) fromC(p *cVkComputePipelineCreateInfo) {
 	s.BasePipelineIndex = int32(p.basePipelineIndex)
 }
 
-type cVkConformanceVersion struct {
-	major    uint8
-	minor    uint8
-	subminor uint8
-	patch    uint8
-}
-
-type ConformanceVersion struct {
-	Major    uint8
-	Minor    uint8
-	Subminor uint8
-	Patch    uint8
-}
-
-func (s *ConformanceVersion) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkConformanceVersion)
-	val0 := uint8(s.Major)
-	p.major = val0
-	val1 := uint8(s.Minor)
-	p.minor = val1
-	val2 := uint8(s.Subminor)
-	p.subminor = val2
-	val3 := uint8(s.Patch)
-	p.patch = val3
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ConformanceVersion) fromC(p *cVkConformanceVersion) {
-	s.Major = uint8(p.major)
-	s.Minor = uint8(p.minor)
-	s.Subminor = uint8(p.subminor)
-	s.Patch = uint8(p.patch)
-}
-
 type cVkCopyAccelerationStructureInfoKHR struct {
 	sType int32
 	pNext unsafe.Pointer
@@ -9453,161 +8063,6 @@ func (s *CopyAccelerationStructureToMemoryInfoKHR) fromC(p *cVkCopyAccelerationS
 	s.Mode = CopyAccelerationStructureModeKHR(p.mode)
 }
 
-type cVkCopyBufferInfo2 struct {
-	sType       int32
-	pNext       unsafe.Pointer
-	srcBuffer   unsafe.Pointer
-	dstBuffer   unsafe.Pointer
-	regionCount uint32
-	pRegions    unsafe.Pointer
-}
-
-type CopyBufferInfo2 struct {
-	Next      Structure
-	SrcBuffer *Buffer
-	DstBuffer *Buffer
-	Regions   []BufferCopy2
-}
-
-func (s *CopyBufferInfo2) GetType() StructureType {
-	return StructureTypeCopyBufferInfo2
-}
-
-func (s *CopyBufferInfo2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkCopyBufferInfo2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.SrcBuffer != nil {
-		h0 = s.SrcBuffer.handle
-	}
-	p.srcBuffer = h0
-	var h1 unsafe.Pointer
-	if s.DstBuffer != nil {
-		h1 = s.DstBuffer.handle
-	}
-	p.dstBuffer = h1
-	len2 := len(s.Regions)
-	var arr3 unsafe.Pointer
-	if len2 > 0 {
-		buf4 := make([]cVkBufferCopy2, len2)
-		var pin5 runtime.Pinner
-		pin5.Pin(&buf4[0])
-		cancels = append(cancels, func() { pin5.Unpin(); runtime.KeepAlive(buf4) })
-		arr3 = unsafe.Pointer(&buf4[0])
-		for i6, elem7 := range s.Regions {
-			val8, cancel9 := elem7.toC()
-			cancels = append(cancels, cancel9)
-			cast10 := (*cVkBufferCopy2)(val8)
-			buf4[i6] = *cast10
-		}
-	}
-	p.pRegions = arr3
-	p.regionCount = uint32(len(s.Regions))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *CopyBufferInfo2) fromC(p *cVkCopyBufferInfo2) {
-	s.SrcBuffer = &Buffer{handle: p.srcBuffer}
-	s.DstBuffer = &Buffer{handle: p.dstBuffer}
-	if p.regionCount > 0 && p.pRegions != nil {
-		s.Regions = make([]BufferCopy2, p.regionCount)
-		for i0 := range s.Regions {
-			elem1 := (*[1 << 30]cVkBufferCopy2)(unsafe.Pointer(p.pRegions))[i0]
-			s.Regions[i0].fromC(&elem1)
-		}
-	}
-}
-
-type cVkCopyBufferToImageInfo2 struct {
-	sType          int32
-	pNext          unsafe.Pointer
-	srcBuffer      unsafe.Pointer
-	dstImage       unsafe.Pointer
-	dstImageLayout uint32
-	regionCount    uint32
-	pRegions       unsafe.Pointer
-}
-
-type CopyBufferToImageInfo2 struct {
-	Next           Structure
-	SrcBuffer      *Buffer
-	DstImage       *Image
-	DstImageLayout ImageLayout
-	Regions        []BufferImageCopy2
-}
-
-func (s *CopyBufferToImageInfo2) GetType() StructureType {
-	return StructureTypeCopyBufferToImageInfo2
-}
-
-func (s *CopyBufferToImageInfo2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkCopyBufferToImageInfo2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.SrcBuffer != nil {
-		h0 = s.SrcBuffer.handle
-	}
-	p.srcBuffer = h0
-	var h1 unsafe.Pointer
-	if s.DstImage != nil {
-		h1 = s.DstImage.handle
-	}
-	p.dstImage = h1
-	val2 := uint32(s.DstImageLayout)
-	p.dstImageLayout = val2
-	len3 := len(s.Regions)
-	var arr4 unsafe.Pointer
-	if len3 > 0 {
-		buf5 := make([]cVkBufferImageCopy2, len3)
-		var pin6 runtime.Pinner
-		pin6.Pin(&buf5[0])
-		cancels = append(cancels, func() { pin6.Unpin(); runtime.KeepAlive(buf5) })
-		arr4 = unsafe.Pointer(&buf5[0])
-		for i7, elem8 := range s.Regions {
-			val9, cancel10 := elem8.toC()
-			cancels = append(cancels, cancel10)
-			cast11 := (*cVkBufferImageCopy2)(val9)
-			buf5[i7] = *cast11
-		}
-	}
-	p.pRegions = arr4
-	p.regionCount = uint32(len(s.Regions))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *CopyBufferToImageInfo2) fromC(p *cVkCopyBufferToImageInfo2) {
-	s.SrcBuffer = &Buffer{handle: p.srcBuffer}
-	s.DstImage = &Image{handle: p.dstImage}
-	s.DstImageLayout = ImageLayout(p.dstImageLayout)
-	if p.regionCount > 0 && p.pRegions != nil {
-		s.Regions = make([]BufferImageCopy2, p.regionCount)
-		for i0 := range s.Regions {
-			elem1 := (*[1 << 30]cVkBufferImageCopy2)(unsafe.Pointer(p.pRegions))[i0]
-			s.Regions[i0].fromC(&elem1)
-		}
-	}
-}
-
 type cVkCopyDescriptorSet struct {
 	sType           int32
 	pNext           unsafe.Pointer
@@ -9681,338 +8136,6 @@ func (s *CopyDescriptorSet) fromC(p *cVkCopyDescriptorSet) {
 	s.DescriptorCount = uint32(p.descriptorCount)
 }
 
-type cVkCopyImageInfo2 struct {
-	sType          int32
-	pNext          unsafe.Pointer
-	srcImage       unsafe.Pointer
-	srcImageLayout uint32
-	dstImage       unsafe.Pointer
-	dstImageLayout uint32
-	regionCount    uint32
-	pRegions       unsafe.Pointer
-}
-
-type CopyImageInfo2 struct {
-	Next           Structure
-	SrcImage       *Image
-	SrcImageLayout ImageLayout
-	DstImage       *Image
-	DstImageLayout ImageLayout
-	Regions        []ImageCopy2
-}
-
-func (s *CopyImageInfo2) GetType() StructureType {
-	return StructureTypeCopyImageInfo2
-}
-
-func (s *CopyImageInfo2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkCopyImageInfo2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.SrcImage != nil {
-		h0 = s.SrcImage.handle
-	}
-	p.srcImage = h0
-	val1 := uint32(s.SrcImageLayout)
-	p.srcImageLayout = val1
-	var h2 unsafe.Pointer
-	if s.DstImage != nil {
-		h2 = s.DstImage.handle
-	}
-	p.dstImage = h2
-	val3 := uint32(s.DstImageLayout)
-	p.dstImageLayout = val3
-	len4 := len(s.Regions)
-	var arr5 unsafe.Pointer
-	if len4 > 0 {
-		buf6 := make([]cVkImageCopy2, len4)
-		var pin7 runtime.Pinner
-		pin7.Pin(&buf6[0])
-		cancels = append(cancels, func() { pin7.Unpin(); runtime.KeepAlive(buf6) })
-		arr5 = unsafe.Pointer(&buf6[0])
-		for i8, elem9 := range s.Regions {
-			val10, cancel11 := elem9.toC()
-			cancels = append(cancels, cancel11)
-			cast12 := (*cVkImageCopy2)(val10)
-			buf6[i8] = *cast12
-		}
-	}
-	p.pRegions = arr5
-	p.regionCount = uint32(len(s.Regions))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *CopyImageInfo2) fromC(p *cVkCopyImageInfo2) {
-	s.SrcImage = &Image{handle: p.srcImage}
-	s.SrcImageLayout = ImageLayout(p.srcImageLayout)
-	s.DstImage = &Image{handle: p.dstImage}
-	s.DstImageLayout = ImageLayout(p.dstImageLayout)
-	if p.regionCount > 0 && p.pRegions != nil {
-		s.Regions = make([]ImageCopy2, p.regionCount)
-		for i0 := range s.Regions {
-			elem1 := (*[1 << 30]cVkImageCopy2)(unsafe.Pointer(p.pRegions))[i0]
-			s.Regions[i0].fromC(&elem1)
-		}
-	}
-}
-
-type cVkCopyImageToBufferInfo2 struct {
-	sType          int32
-	pNext          unsafe.Pointer
-	srcImage       unsafe.Pointer
-	srcImageLayout uint32
-	dstBuffer      unsafe.Pointer
-	regionCount    uint32
-	pRegions       unsafe.Pointer
-}
-
-type CopyImageToBufferInfo2 struct {
-	Next           Structure
-	SrcImage       *Image
-	SrcImageLayout ImageLayout
-	DstBuffer      *Buffer
-	Regions        []BufferImageCopy2
-}
-
-func (s *CopyImageToBufferInfo2) GetType() StructureType {
-	return StructureTypeCopyImageToBufferInfo2
-}
-
-func (s *CopyImageToBufferInfo2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkCopyImageToBufferInfo2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.SrcImage != nil {
-		h0 = s.SrcImage.handle
-	}
-	p.srcImage = h0
-	val1 := uint32(s.SrcImageLayout)
-	p.srcImageLayout = val1
-	var h2 unsafe.Pointer
-	if s.DstBuffer != nil {
-		h2 = s.DstBuffer.handle
-	}
-	p.dstBuffer = h2
-	len3 := len(s.Regions)
-	var arr4 unsafe.Pointer
-	if len3 > 0 {
-		buf5 := make([]cVkBufferImageCopy2, len3)
-		var pin6 runtime.Pinner
-		pin6.Pin(&buf5[0])
-		cancels = append(cancels, func() { pin6.Unpin(); runtime.KeepAlive(buf5) })
-		arr4 = unsafe.Pointer(&buf5[0])
-		for i7, elem8 := range s.Regions {
-			val9, cancel10 := elem8.toC()
-			cancels = append(cancels, cancel10)
-			cast11 := (*cVkBufferImageCopy2)(val9)
-			buf5[i7] = *cast11
-		}
-	}
-	p.pRegions = arr4
-	p.regionCount = uint32(len(s.Regions))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *CopyImageToBufferInfo2) fromC(p *cVkCopyImageToBufferInfo2) {
-	s.SrcImage = &Image{handle: p.srcImage}
-	s.SrcImageLayout = ImageLayout(p.srcImageLayout)
-	s.DstBuffer = &Buffer{handle: p.dstBuffer}
-	if p.regionCount > 0 && p.pRegions != nil {
-		s.Regions = make([]BufferImageCopy2, p.regionCount)
-		for i0 := range s.Regions {
-			elem1 := (*[1 << 30]cVkBufferImageCopy2)(unsafe.Pointer(p.pRegions))[i0]
-			s.Regions[i0].fromC(&elem1)
-		}
-	}
-}
-
-type cVkCopyImageToImageInfo struct {
-	sType          int32
-	pNext          unsafe.Pointer
-	flags          uint32
-	srcImage       unsafe.Pointer
-	srcImageLayout uint32
-	dstImage       unsafe.Pointer
-	dstImageLayout uint32
-	regionCount    uint32
-	pRegions       unsafe.Pointer
-}
-
-type CopyImageToImageInfo struct {
-	Next           Structure
-	Flags          HostImageCopyFlags
-	SrcImage       *Image
-	SrcImageLayout ImageLayout
-	DstImage       *Image
-	DstImageLayout ImageLayout
-	Regions        []ImageCopy2
-}
-
-func (s *CopyImageToImageInfo) GetType() StructureType {
-	return StructureTypeCopyImageToImageInfo
-}
-
-func (s *CopyImageToImageInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkCopyImageToImageInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Flags)
-	p.flags = val0
-	var h1 unsafe.Pointer
-	if s.SrcImage != nil {
-		h1 = s.SrcImage.handle
-	}
-	p.srcImage = h1
-	val2 := uint32(s.SrcImageLayout)
-	p.srcImageLayout = val2
-	var h3 unsafe.Pointer
-	if s.DstImage != nil {
-		h3 = s.DstImage.handle
-	}
-	p.dstImage = h3
-	val4 := uint32(s.DstImageLayout)
-	p.dstImageLayout = val4
-	len5 := len(s.Regions)
-	var arr6 unsafe.Pointer
-	if len5 > 0 {
-		buf7 := make([]cVkImageCopy2, len5)
-		var pin8 runtime.Pinner
-		pin8.Pin(&buf7[0])
-		cancels = append(cancels, func() { pin8.Unpin(); runtime.KeepAlive(buf7) })
-		arr6 = unsafe.Pointer(&buf7[0])
-		for i9, elem10 := range s.Regions {
-			val11, cancel12 := elem10.toC()
-			cancels = append(cancels, cancel12)
-			cast13 := (*cVkImageCopy2)(val11)
-			buf7[i9] = *cast13
-		}
-	}
-	p.pRegions = arr6
-	p.regionCount = uint32(len(s.Regions))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *CopyImageToImageInfo) fromC(p *cVkCopyImageToImageInfo) {
-	s.Flags = HostImageCopyFlags(p.flags)
-	s.SrcImage = &Image{handle: p.srcImage}
-	s.SrcImageLayout = ImageLayout(p.srcImageLayout)
-	s.DstImage = &Image{handle: p.dstImage}
-	s.DstImageLayout = ImageLayout(p.dstImageLayout)
-	if p.regionCount > 0 && p.pRegions != nil {
-		s.Regions = make([]ImageCopy2, p.regionCount)
-		for i0 := range s.Regions {
-			elem1 := (*[1 << 30]cVkImageCopy2)(unsafe.Pointer(p.pRegions))[i0]
-			s.Regions[i0].fromC(&elem1)
-		}
-	}
-}
-
-type cVkCopyImageToMemoryInfo struct {
-	sType          int32
-	pNext          unsafe.Pointer
-	flags          uint32
-	srcImage       unsafe.Pointer
-	srcImageLayout uint32
-	regionCount    uint32
-	pRegions       unsafe.Pointer
-}
-
-type CopyImageToMemoryInfo struct {
-	Next           Structure
-	Flags          HostImageCopyFlags
-	SrcImage       *Image
-	SrcImageLayout ImageLayout
-	Regions        []ImageToMemoryCopy
-}
-
-func (s *CopyImageToMemoryInfo) GetType() StructureType {
-	return StructureTypeCopyImageToMemoryInfo
-}
-
-func (s *CopyImageToMemoryInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkCopyImageToMemoryInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Flags)
-	p.flags = val0
-	var h1 unsafe.Pointer
-	if s.SrcImage != nil {
-		h1 = s.SrcImage.handle
-	}
-	p.srcImage = h1
-	val2 := uint32(s.SrcImageLayout)
-	p.srcImageLayout = val2
-	len3 := len(s.Regions)
-	var arr4 unsafe.Pointer
-	if len3 > 0 {
-		buf5 := make([]cVkImageToMemoryCopy, len3)
-		var pin6 runtime.Pinner
-		pin6.Pin(&buf5[0])
-		cancels = append(cancels, func() { pin6.Unpin(); runtime.KeepAlive(buf5) })
-		arr4 = unsafe.Pointer(&buf5[0])
-		for i7, elem8 := range s.Regions {
-			val9, cancel10 := elem8.toC()
-			cancels = append(cancels, cancel10)
-			cast11 := (*cVkImageToMemoryCopy)(val9)
-			buf5[i7] = *cast11
-		}
-	}
-	p.pRegions = arr4
-	p.regionCount = uint32(len(s.Regions))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *CopyImageToMemoryInfo) fromC(p *cVkCopyImageToMemoryInfo) {
-	s.Flags = HostImageCopyFlags(p.flags)
-	s.SrcImage = &Image{handle: p.srcImage}
-	s.SrcImageLayout = ImageLayout(p.srcImageLayout)
-	if p.regionCount > 0 && p.pRegions != nil {
-		s.Regions = make([]ImageToMemoryCopy, p.regionCount)
-		for i0 := range s.Regions {
-			elem1 := (*[1 << 30]cVkImageToMemoryCopy)(unsafe.Pointer(p.pRegions))[i0]
-			s.Regions[i0].fromC(&elem1)
-		}
-	}
-}
-
 type cVkCopyMemoryToAccelerationStructureInfoKHR struct {
 	sType int32
 	pNext unsafe.Pointer
@@ -10063,83 +8186,6 @@ func (s *CopyMemoryToAccelerationStructureInfoKHR) fromC(p *cVkCopyMemoryToAccel
 	s.Src.fromC(&p.src)
 	s.Dst = &AccelerationStructureKHR{handle: p.dst}
 	s.Mode = CopyAccelerationStructureModeKHR(p.mode)
-}
-
-type cVkCopyMemoryToImageInfo struct {
-	sType          int32
-	pNext          unsafe.Pointer
-	flags          uint32
-	dstImage       unsafe.Pointer
-	dstImageLayout uint32
-	regionCount    uint32
-	pRegions       unsafe.Pointer
-}
-
-type CopyMemoryToImageInfo struct {
-	Next           Structure
-	Flags          HostImageCopyFlags
-	DstImage       *Image
-	DstImageLayout ImageLayout
-	Regions        []MemoryToImageCopy
-}
-
-func (s *CopyMemoryToImageInfo) GetType() StructureType {
-	return StructureTypeCopyMemoryToImageInfo
-}
-
-func (s *CopyMemoryToImageInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkCopyMemoryToImageInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Flags)
-	p.flags = val0
-	var h1 unsafe.Pointer
-	if s.DstImage != nil {
-		h1 = s.DstImage.handle
-	}
-	p.dstImage = h1
-	val2 := uint32(s.DstImageLayout)
-	p.dstImageLayout = val2
-	len3 := len(s.Regions)
-	var arr4 unsafe.Pointer
-	if len3 > 0 {
-		buf5 := make([]cVkMemoryToImageCopy, len3)
-		var pin6 runtime.Pinner
-		pin6.Pin(&buf5[0])
-		cancels = append(cancels, func() { pin6.Unpin(); runtime.KeepAlive(buf5) })
-		arr4 = unsafe.Pointer(&buf5[0])
-		for i7, elem8 := range s.Regions {
-			val9, cancel10 := elem8.toC()
-			cancels = append(cancels, cancel10)
-			cast11 := (*cVkMemoryToImageCopy)(val9)
-			buf5[i7] = *cast11
-		}
-	}
-	p.pRegions = arr4
-	p.regionCount = uint32(len(s.Regions))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *CopyMemoryToImageInfo) fromC(p *cVkCopyMemoryToImageInfo) {
-	s.Flags = HostImageCopyFlags(p.flags)
-	s.DstImage = &Image{handle: p.dstImage}
-	s.DstImageLayout = ImageLayout(p.dstImageLayout)
-	if p.regionCount > 0 && p.pRegions != nil {
-		s.Regions = make([]MemoryToImageCopy, p.regionCount)
-		for i0 := range s.Regions {
-			elem1 := (*[1 << 30]cVkMemoryToImageCopy)(unsafe.Pointer(p.pRegions))[i0]
-			s.Regions[i0].fromC(&elem1)
-		}
-	}
 }
 
 type cVkDebugUtilsLabelEXT struct {
@@ -10515,124 +8561,6 @@ func (s *DebugUtilsObjectTagInfoEXT) fromC(p *cVkDebugUtilsObjectTagInfoEXT) {
 	if p.tagSize > 0 && p.pTag != nil {
 		s.Tag = make([]byte, p.tagSize)
 		copy(s.Tag, unsafe.Slice((*byte)(p.pTag), p.tagSize))
-	}
-}
-
-type cVkDependencyInfo struct {
-	sType                    int32
-	pNext                    unsafe.Pointer
-	dependencyFlags          uint32
-	memoryBarrierCount       uint32
-	pMemoryBarriers          unsafe.Pointer
-	bufferMemoryBarrierCount uint32
-	pBufferMemoryBarriers    unsafe.Pointer
-	imageMemoryBarrierCount  uint32
-	pImageMemoryBarriers     unsafe.Pointer
-}
-
-type DependencyInfo struct {
-	Next                 Structure
-	DependencyFlags      DependencyFlags
-	MemoryBarriers       []MemoryBarrier2
-	BufferMemoryBarriers []BufferMemoryBarrier2
-	ImageMemoryBarriers  []ImageMemoryBarrier2
-}
-
-func (s *DependencyInfo) GetType() StructureType {
-	return StructureTypeDependencyInfo
-}
-
-func (s *DependencyInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDependencyInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.DependencyFlags)
-	p.dependencyFlags = val0
-	len1 := len(s.MemoryBarriers)
-	var arr2 unsafe.Pointer
-	if len1 > 0 {
-		buf3 := make([]cVkMemoryBarrier2, len1)
-		var pin4 runtime.Pinner
-		pin4.Pin(&buf3[0])
-		cancels = append(cancels, func() { pin4.Unpin(); runtime.KeepAlive(buf3) })
-		arr2 = unsafe.Pointer(&buf3[0])
-		for i5, elem6 := range s.MemoryBarriers {
-			val7, cancel8 := elem6.toC()
-			cancels = append(cancels, cancel8)
-			cast9 := (*cVkMemoryBarrier2)(val7)
-			buf3[i5] = *cast9
-		}
-	}
-	p.pMemoryBarriers = arr2
-	p.memoryBarrierCount = uint32(len(s.MemoryBarriers))
-	len10 := len(s.BufferMemoryBarriers)
-	var arr11 unsafe.Pointer
-	if len10 > 0 {
-		buf12 := make([]cVkBufferMemoryBarrier2, len10)
-		var pin13 runtime.Pinner
-		pin13.Pin(&buf12[0])
-		cancels = append(cancels, func() { pin13.Unpin(); runtime.KeepAlive(buf12) })
-		arr11 = unsafe.Pointer(&buf12[0])
-		for i14, elem15 := range s.BufferMemoryBarriers {
-			val16, cancel17 := elem15.toC()
-			cancels = append(cancels, cancel17)
-			cast18 := (*cVkBufferMemoryBarrier2)(val16)
-			buf12[i14] = *cast18
-		}
-	}
-	p.pBufferMemoryBarriers = arr11
-	p.bufferMemoryBarrierCount = uint32(len(s.BufferMemoryBarriers))
-	len19 := len(s.ImageMemoryBarriers)
-	var arr20 unsafe.Pointer
-	if len19 > 0 {
-		buf21 := make([]cVkImageMemoryBarrier2, len19)
-		var pin22 runtime.Pinner
-		pin22.Pin(&buf21[0])
-		cancels = append(cancels, func() { pin22.Unpin(); runtime.KeepAlive(buf21) })
-		arr20 = unsafe.Pointer(&buf21[0])
-		for i23, elem24 := range s.ImageMemoryBarriers {
-			val25, cancel26 := elem24.toC()
-			cancels = append(cancels, cancel26)
-			cast27 := (*cVkImageMemoryBarrier2)(val25)
-			buf21[i23] = *cast27
-		}
-	}
-	p.pImageMemoryBarriers = arr20
-	p.imageMemoryBarrierCount = uint32(len(s.ImageMemoryBarriers))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DependencyInfo) fromC(p *cVkDependencyInfo) {
-	s.DependencyFlags = DependencyFlags(p.dependencyFlags)
-	if p.memoryBarrierCount > 0 && p.pMemoryBarriers != nil {
-		s.MemoryBarriers = make([]MemoryBarrier2, p.memoryBarrierCount)
-		for i0 := range s.MemoryBarriers {
-			elem1 := (*[1 << 30]cVkMemoryBarrier2)(unsafe.Pointer(p.pMemoryBarriers))[i0]
-			s.MemoryBarriers[i0].fromC(&elem1)
-		}
-	}
-	if p.bufferMemoryBarrierCount > 0 && p.pBufferMemoryBarriers != nil {
-		s.BufferMemoryBarriers = make([]BufferMemoryBarrier2, p.bufferMemoryBarrierCount)
-		for i2 := range s.BufferMemoryBarriers {
-			elem3 := (*[1 << 30]cVkBufferMemoryBarrier2)(unsafe.Pointer(p.pBufferMemoryBarriers))[i2]
-			s.BufferMemoryBarriers[i2].fromC(&elem3)
-		}
-	}
-	if p.imageMemoryBarrierCount > 0 && p.pImageMemoryBarriers != nil {
-		s.ImageMemoryBarriers = make([]ImageMemoryBarrier2, p.imageMemoryBarrierCount)
-		for i4 := range s.ImageMemoryBarriers {
-			elem5 := (*[1 << 30]cVkImageMemoryBarrier2)(unsafe.Pointer(p.pImageMemoryBarriers))[i4]
-			s.ImageMemoryBarriers[i4].fromC(&elem5)
-		}
 	}
 }
 
@@ -11099,43 +9027,6 @@ func (s *DescriptorPoolCreateInfo) fromC(p *cVkDescriptorPoolCreateInfo) {
 	}
 }
 
-type cVkDescriptorPoolInlineUniformBlockCreateInfo struct {
-	sType                         int32
-	pNext                         unsafe.Pointer
-	maxInlineUniformBlockBindings uint32
-}
-
-type DescriptorPoolInlineUniformBlockCreateInfo struct {
-	Next                          Structure
-	MaxInlineUniformBlockBindings uint32
-}
-
-func (s *DescriptorPoolInlineUniformBlockCreateInfo) GetType() StructureType {
-	return StructureTypeDescriptorPoolInlineUniformBlockCreateInfo
-}
-
-func (s *DescriptorPoolInlineUniformBlockCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDescriptorPoolInlineUniformBlockCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.MaxInlineUniformBlockBindings)
-	p.maxInlineUniformBlockBindings = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DescriptorPoolInlineUniformBlockCreateInfo) fromC(p *cVkDescriptorPoolInlineUniformBlockCreateInfo) {
-	s.MaxInlineUniformBlockBindings = uint32(p.maxInlineUniformBlockBindings)
-}
-
 type cVkDescriptorPoolSize struct {
 	_type           uint32
 	descriptorCount uint32
@@ -11296,57 +9187,6 @@ func (s *DescriptorSetLayoutBinding) fromC(p *cVkDescriptorSetLayoutBinding) {
 	}
 }
 
-type cVkDescriptorSetLayoutBindingFlagsCreateInfo struct {
-	sType         int32
-	pNext         unsafe.Pointer
-	bindingCount  uint32
-	pBindingFlags unsafe.Pointer
-}
-
-type DescriptorSetLayoutBindingFlagsCreateInfo struct {
-	Next         Structure
-	BindingFlags []DescriptorBindingFlags
-}
-
-func (s *DescriptorSetLayoutBindingFlagsCreateInfo) GetType() StructureType {
-	return StructureTypeDescriptorSetLayoutBindingFlagsCreateInfo
-}
-
-func (s *DescriptorSetLayoutBindingFlagsCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDescriptorSetLayoutBindingFlagsCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	len0 := len(s.BindingFlags)
-	var arr1 unsafe.Pointer
-	if len0 > 0 {
-		buf2 := make([]uint32, len0)
-		var pin3 runtime.Pinner
-		pin3.Pin(&buf2[0])
-		cancels = append(cancels, func() { pin3.Unpin(); runtime.KeepAlive(buf2) })
-		arr1 = unsafe.Pointer(&buf2[0])
-		for i4, elem5 := range s.BindingFlags {
-			val6 := uint32(elem5)
-			buf2[i4] = val6
-		}
-	}
-	p.pBindingFlags = arr1
-	p.bindingCount = uint32(len(s.BindingFlags))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DescriptorSetLayoutBindingFlagsCreateInfo) fromC(p *cVkDescriptorSetLayoutBindingFlagsCreateInfo) {
-	// TODO: fromC for BindingFlags (Slice of *generator.NamedType)
-}
-
 type cVkDescriptorSetLayoutCreateInfo struct {
 	sType        int32
 	pNext        unsafe.Pointer
@@ -11408,327 +9248,6 @@ func (s *DescriptorSetLayoutCreateInfo) fromC(p *cVkDescriptorSetLayoutCreateInf
 			elem1 := (*[1 << 30]cVkDescriptorSetLayoutBinding)(unsafe.Pointer(p.pBindings))[i0]
 			s.Bindings[i0].fromC(&elem1)
 		}
-	}
-}
-
-type cVkDescriptorSetLayoutSupport struct {
-	sType     int32
-	pNext     unsafe.Pointer
-	supported uint32
-}
-
-type DescriptorSetLayoutSupport struct {
-	Next      Structure
-	Supported bool
-}
-
-func (s *DescriptorSetLayoutSupport) GetType() StructureType {
-	return StructureTypeDescriptorSetLayoutSupport
-}
-
-func (s *DescriptorSetLayoutSupport) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDescriptorSetLayoutSupport)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.Supported {
-		val0 = 1
-	}
-	p.supported = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DescriptorSetLayoutSupport) fromC(p *cVkDescriptorSetLayoutSupport) {
-	s.Supported = p.supported != 0
-}
-
-type cVkDescriptorSetVariableDescriptorCountAllocateInfo struct {
-	sType              int32
-	pNext              unsafe.Pointer
-	descriptorSetCount uint32
-	pDescriptorCounts  unsafe.Pointer
-}
-
-type DescriptorSetVariableDescriptorCountAllocateInfo struct {
-	Next             Structure
-	DescriptorCounts []uint32
-}
-
-func (s *DescriptorSetVariableDescriptorCountAllocateInfo) GetType() StructureType {
-	return StructureTypeDescriptorSetVariableDescriptorCountAllocateInfo
-}
-
-func (s *DescriptorSetVariableDescriptorCountAllocateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDescriptorSetVariableDescriptorCountAllocateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	len0 := len(s.DescriptorCounts)
-	var arr1 unsafe.Pointer
-	if len0 > 0 {
-		buf2 := make([]uint32, len0)
-		var pin3 runtime.Pinner
-		pin3.Pin(&buf2[0])
-		cancels = append(cancels, func() { pin3.Unpin(); runtime.KeepAlive(buf2) })
-		arr1 = unsafe.Pointer(&buf2[0])
-		for i4, elem5 := range s.DescriptorCounts {
-			val6 := uint32(elem5)
-			buf2[i4] = val6
-		}
-	}
-	p.pDescriptorCounts = arr1
-	p.descriptorSetCount = uint32(len(s.DescriptorCounts))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DescriptorSetVariableDescriptorCountAllocateInfo) fromC(p *cVkDescriptorSetVariableDescriptorCountAllocateInfo) {
-	if p.descriptorSetCount > 0 && p.pDescriptorCounts != nil {
-		s.DescriptorCounts = make([]uint32, p.descriptorSetCount)
-		for i0 := range s.DescriptorCounts {
-			s.DescriptorCounts[i0] = uint32((*[1 << 30]uint32)(unsafe.Pointer(p.pDescriptorCounts))[i0])
-		}
-	}
-}
-
-type cVkDescriptorSetVariableDescriptorCountLayoutSupport struct {
-	sType                      int32
-	pNext                      unsafe.Pointer
-	maxVariableDescriptorCount uint32
-}
-
-type DescriptorSetVariableDescriptorCountLayoutSupport struct {
-	Next                       Structure
-	MaxVariableDescriptorCount uint32
-}
-
-func (s *DescriptorSetVariableDescriptorCountLayoutSupport) GetType() StructureType {
-	return StructureTypeDescriptorSetVariableDescriptorCountLayoutSupport
-}
-
-func (s *DescriptorSetVariableDescriptorCountLayoutSupport) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDescriptorSetVariableDescriptorCountLayoutSupport)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.MaxVariableDescriptorCount)
-	p.maxVariableDescriptorCount = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DescriptorSetVariableDescriptorCountLayoutSupport) fromC(p *cVkDescriptorSetVariableDescriptorCountLayoutSupport) {
-	s.MaxVariableDescriptorCount = uint32(p.maxVariableDescriptorCount)
-}
-
-type cVkDescriptorUpdateTemplateCreateInfo struct {
-	sType                      int32
-	pNext                      unsafe.Pointer
-	flags                      uint32
-	descriptorUpdateEntryCount uint32
-	pDescriptorUpdateEntries   unsafe.Pointer
-	templateType               uint32
-	descriptorSetLayout        unsafe.Pointer
-	pipelineBindPoint          uint32
-	pipelineLayout             unsafe.Pointer
-	set                        uint32
-}
-
-type DescriptorUpdateTemplateCreateInfo struct {
-	Next                    Structure
-	Flags                   DescriptorUpdateTemplateCreateFlags
-	DescriptorUpdateEntries []DescriptorUpdateTemplateEntry
-	TemplateType            DescriptorUpdateTemplateType
-	DescriptorSetLayout     *DescriptorSetLayout
-	PipelineBindPoint       PipelineBindPoint
-	PipelineLayout          *PipelineLayout
-	Set                     uint32
-}
-
-func (s *DescriptorUpdateTemplateCreateInfo) GetType() StructureType {
-	return StructureTypeDescriptorUpdateTemplateCreateInfo
-}
-
-func (s *DescriptorUpdateTemplateCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDescriptorUpdateTemplateCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Flags)
-	p.flags = val0
-	len1 := len(s.DescriptorUpdateEntries)
-	var arr2 unsafe.Pointer
-	if len1 > 0 {
-		buf3 := make([]cVkDescriptorUpdateTemplateEntry, len1)
-		var pin4 runtime.Pinner
-		pin4.Pin(&buf3[0])
-		cancels = append(cancels, func() { pin4.Unpin(); runtime.KeepAlive(buf3) })
-		arr2 = unsafe.Pointer(&buf3[0])
-		for i5, elem6 := range s.DescriptorUpdateEntries {
-			val7, cancel8 := elem6.toC()
-			cancels = append(cancels, cancel8)
-			cast9 := (*cVkDescriptorUpdateTemplateEntry)(val7)
-			buf3[i5] = *cast9
-		}
-	}
-	p.pDescriptorUpdateEntries = arr2
-	p.descriptorUpdateEntryCount = uint32(len(s.DescriptorUpdateEntries))
-	val10 := uint32(s.TemplateType)
-	p.templateType = val10
-	var h11 unsafe.Pointer
-	if s.DescriptorSetLayout != nil {
-		h11 = s.DescriptorSetLayout.handle
-	}
-	p.descriptorSetLayout = h11
-	val12 := uint32(s.PipelineBindPoint)
-	p.pipelineBindPoint = val12
-	var h13 unsafe.Pointer
-	if s.PipelineLayout != nil {
-		h13 = s.PipelineLayout.handle
-	}
-	p.pipelineLayout = h13
-	val14 := uint32(s.Set)
-	p.set = val14
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DescriptorUpdateTemplateCreateInfo) fromC(p *cVkDescriptorUpdateTemplateCreateInfo) {
-	s.Flags = DescriptorUpdateTemplateCreateFlags(p.flags)
-	if p.descriptorUpdateEntryCount > 0 && p.pDescriptorUpdateEntries != nil {
-		s.DescriptorUpdateEntries = make([]DescriptorUpdateTemplateEntry, p.descriptorUpdateEntryCount)
-		for i0 := range s.DescriptorUpdateEntries {
-			elem1 := (*[1 << 30]cVkDescriptorUpdateTemplateEntry)(unsafe.Pointer(p.pDescriptorUpdateEntries))[i0]
-			s.DescriptorUpdateEntries[i0].fromC(&elem1)
-		}
-	}
-	s.TemplateType = DescriptorUpdateTemplateType(p.templateType)
-	s.DescriptorSetLayout = &DescriptorSetLayout{handle: p.descriptorSetLayout}
-	s.PipelineBindPoint = PipelineBindPoint(p.pipelineBindPoint)
-	s.PipelineLayout = &PipelineLayout{handle: p.pipelineLayout}
-	s.Set = uint32(p.set)
-}
-
-type cVkDescriptorUpdateTemplateEntry struct {
-	dstBinding      uint32
-	dstArrayElement uint32
-	descriptorCount uint32
-	descriptorType  uint32
-	offset          uintptr
-	stride          uintptr
-}
-
-type DescriptorUpdateTemplateEntry struct {
-	DstBinding      uint32
-	DstArrayElement uint32
-	DescriptorCount uint32
-	DescriptorType  DescriptorType
-	Offset          uintptr
-	Stride          uintptr
-}
-
-func (s *DescriptorUpdateTemplateEntry) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDescriptorUpdateTemplateEntry)
-	val0 := uint32(s.DstBinding)
-	p.dstBinding = val0
-	val1 := uint32(s.DstArrayElement)
-	p.dstArrayElement = val1
-	val2 := uint32(s.DescriptorCount)
-	p.descriptorCount = val2
-	val3 := uint32(s.DescriptorType)
-	p.descriptorType = val3
-	val4 := uintptr(s.Offset)
-	p.offset = val4
-	val5 := uintptr(s.Stride)
-	p.stride = val5
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DescriptorUpdateTemplateEntry) fromC(p *cVkDescriptorUpdateTemplateEntry) {
-	s.DstBinding = uint32(p.dstBinding)
-	s.DstArrayElement = uint32(p.dstArrayElement)
-	s.DescriptorCount = uint32(p.descriptorCount)
-	s.DescriptorType = DescriptorType(p.descriptorType)
-	s.Offset = uintptr(p.offset)
-	s.Stride = uintptr(p.stride)
-}
-
-type cVkDeviceBufferMemoryRequirements struct {
-	sType       int32
-	pNext       unsafe.Pointer
-	pCreateInfo unsafe.Pointer
-}
-
-type DeviceBufferMemoryRequirements struct {
-	Next       Structure
-	CreateInfo *BufferCreateInfo
-}
-
-func (s *DeviceBufferMemoryRequirements) GetType() StructureType {
-	return StructureTypeDeviceBufferMemoryRequirements
-}
-
-func (s *DeviceBufferMemoryRequirements) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDeviceBufferMemoryRequirements)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var ptr0 unsafe.Pointer
-	if s.CreateInfo != nil {
-		val1, cancel2 := s.CreateInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	p.pCreateInfo = ptr0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DeviceBufferMemoryRequirements) fromC(p *cVkDeviceBufferMemoryRequirements) {
-	if p.pCreateInfo != nil {
-		s.CreateInfo.fromC((*cVkBufferCreateInfo)(p.pCreateInfo))
 	}
 }
 
@@ -11851,144 +9370,6 @@ func (s *DeviceCreateInfo) fromC(p *cVkDeviceCreateInfo) {
 	// TODO: fromC for EnabledExtensionNames (Slice of *generator.String)
 	if p.pEnabledFeatures != nil {
 		s.EnabledFeatures.fromC((*cVkPhysicalDeviceFeatures)(p.pEnabledFeatures))
-	}
-}
-
-type cVkDeviceGroupBindSparseInfo struct {
-	sType               int32
-	pNext               unsafe.Pointer
-	resourceDeviceIndex uint32
-	memoryDeviceIndex   uint32
-}
-
-type DeviceGroupBindSparseInfo struct {
-	Next                Structure
-	ResourceDeviceIndex uint32
-	MemoryDeviceIndex   uint32
-}
-
-func (s *DeviceGroupBindSparseInfo) GetType() StructureType {
-	return StructureTypeDeviceGroupBindSparseInfo
-}
-
-func (s *DeviceGroupBindSparseInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDeviceGroupBindSparseInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.ResourceDeviceIndex)
-	p.resourceDeviceIndex = val0
-	val1 := uint32(s.MemoryDeviceIndex)
-	p.memoryDeviceIndex = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DeviceGroupBindSparseInfo) fromC(p *cVkDeviceGroupBindSparseInfo) {
-	s.ResourceDeviceIndex = uint32(p.resourceDeviceIndex)
-	s.MemoryDeviceIndex = uint32(p.memoryDeviceIndex)
-}
-
-type cVkDeviceGroupCommandBufferBeginInfo struct {
-	sType      int32
-	pNext      unsafe.Pointer
-	deviceMask uint32
-}
-
-type DeviceGroupCommandBufferBeginInfo struct {
-	Next       Structure
-	DeviceMask uint32
-}
-
-func (s *DeviceGroupCommandBufferBeginInfo) GetType() StructureType {
-	return StructureTypeDeviceGroupCommandBufferBeginInfo
-}
-
-func (s *DeviceGroupCommandBufferBeginInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDeviceGroupCommandBufferBeginInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.DeviceMask)
-	p.deviceMask = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DeviceGroupCommandBufferBeginInfo) fromC(p *cVkDeviceGroupCommandBufferBeginInfo) {
-	s.DeviceMask = uint32(p.deviceMask)
-}
-
-type cVkDeviceGroupDeviceCreateInfo struct {
-	sType               int32
-	pNext               unsafe.Pointer
-	physicalDeviceCount uint32
-	pPhysicalDevices    unsafe.Pointer
-}
-
-type DeviceGroupDeviceCreateInfo struct {
-	Next            Structure
-	PhysicalDevices []*PhysicalDevice
-}
-
-func (s *DeviceGroupDeviceCreateInfo) GetType() StructureType {
-	return StructureTypeDeviceGroupDeviceCreateInfo
-}
-
-func (s *DeviceGroupDeviceCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDeviceGroupDeviceCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	len0 := len(s.PhysicalDevices)
-	var arr1 unsafe.Pointer
-	if len0 > 0 {
-		buf2 := make([]unsafe.Pointer, len0)
-		var pin3 runtime.Pinner
-		pin3.Pin(&buf2[0])
-		cancels = append(cancels, func() { pin3.Unpin(); runtime.KeepAlive(buf2) })
-		arr1 = unsafe.Pointer(&buf2[0])
-		for i4, elem5 := range s.PhysicalDevices {
-			var h6 unsafe.Pointer
-			if elem5 != nil {
-				h6 = elem5.handle
-			}
-			buf2[i4] = h6
-		}
-	}
-	p.pPhysicalDevices = arr1
-	p.physicalDeviceCount = uint32(len(s.PhysicalDevices))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DeviceGroupDeviceCreateInfo) fromC(p *cVkDeviceGroupDeviceCreateInfo) {
-	if p.physicalDeviceCount > 0 && p.pPhysicalDevices != nil {
-		s.PhysicalDevices = make([]*PhysicalDevice, p.physicalDeviceCount)
-		for i0 := range s.PhysicalDevices {
-			s.PhysicalDevices[i0] = &PhysicalDevice{handle: (*[1 << 30]unsafe.Pointer)(unsafe.Pointer(p.pPhysicalDevices))[i0]}
-		}
 	}
 }
 
@@ -12165,110 +9546,6 @@ func (s *DeviceGroupRenderPassBeginInfo) fromC(p *cVkDeviceGroupRenderPassBeginI
 	}
 }
 
-type cVkDeviceGroupSubmitInfo struct {
-	sType                         int32
-	pNext                         unsafe.Pointer
-	waitSemaphoreCount            uint32
-	pWaitSemaphoreDeviceIndices   unsafe.Pointer
-	commandBufferCount            uint32
-	pCommandBufferDeviceMasks     unsafe.Pointer
-	signalSemaphoreCount          uint32
-	pSignalSemaphoreDeviceIndices unsafe.Pointer
-}
-
-type DeviceGroupSubmitInfo struct {
-	Next                         Structure
-	WaitSemaphoreDeviceIndices   []uint32
-	CommandBufferDeviceMasks     []uint32
-	SignalSemaphoreDeviceIndices []uint32
-}
-
-func (s *DeviceGroupSubmitInfo) GetType() StructureType {
-	return StructureTypeDeviceGroupSubmitInfo
-}
-
-func (s *DeviceGroupSubmitInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDeviceGroupSubmitInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	len0 := len(s.WaitSemaphoreDeviceIndices)
-	var arr1 unsafe.Pointer
-	if len0 > 0 {
-		buf2 := make([]uint32, len0)
-		var pin3 runtime.Pinner
-		pin3.Pin(&buf2[0])
-		cancels = append(cancels, func() { pin3.Unpin(); runtime.KeepAlive(buf2) })
-		arr1 = unsafe.Pointer(&buf2[0])
-		for i4, elem5 := range s.WaitSemaphoreDeviceIndices {
-			val6 := uint32(elem5)
-			buf2[i4] = val6
-		}
-	}
-	p.pWaitSemaphoreDeviceIndices = arr1
-	p.waitSemaphoreCount = uint32(len(s.WaitSemaphoreDeviceIndices))
-	len7 := len(s.CommandBufferDeviceMasks)
-	var arr8 unsafe.Pointer
-	if len7 > 0 {
-		buf9 := make([]uint32, len7)
-		var pin10 runtime.Pinner
-		pin10.Pin(&buf9[0])
-		cancels = append(cancels, func() { pin10.Unpin(); runtime.KeepAlive(buf9) })
-		arr8 = unsafe.Pointer(&buf9[0])
-		for i11, elem12 := range s.CommandBufferDeviceMasks {
-			val13 := uint32(elem12)
-			buf9[i11] = val13
-		}
-	}
-	p.pCommandBufferDeviceMasks = arr8
-	p.commandBufferCount = uint32(len(s.CommandBufferDeviceMasks))
-	len14 := len(s.SignalSemaphoreDeviceIndices)
-	var arr15 unsafe.Pointer
-	if len14 > 0 {
-		buf16 := make([]uint32, len14)
-		var pin17 runtime.Pinner
-		pin17.Pin(&buf16[0])
-		cancels = append(cancels, func() { pin17.Unpin(); runtime.KeepAlive(buf16) })
-		arr15 = unsafe.Pointer(&buf16[0])
-		for i18, elem19 := range s.SignalSemaphoreDeviceIndices {
-			val20 := uint32(elem19)
-			buf16[i18] = val20
-		}
-	}
-	p.pSignalSemaphoreDeviceIndices = arr15
-	p.signalSemaphoreCount = uint32(len(s.SignalSemaphoreDeviceIndices))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DeviceGroupSubmitInfo) fromC(p *cVkDeviceGroupSubmitInfo) {
-	if p.waitSemaphoreCount > 0 && p.pWaitSemaphoreDeviceIndices != nil {
-		s.WaitSemaphoreDeviceIndices = make([]uint32, p.waitSemaphoreCount)
-		for i0 := range s.WaitSemaphoreDeviceIndices {
-			s.WaitSemaphoreDeviceIndices[i0] = uint32((*[1 << 30]uint32)(unsafe.Pointer(p.pWaitSemaphoreDeviceIndices))[i0])
-		}
-	}
-	if p.commandBufferCount > 0 && p.pCommandBufferDeviceMasks != nil {
-		s.CommandBufferDeviceMasks = make([]uint32, p.commandBufferCount)
-		for i2 := range s.CommandBufferDeviceMasks {
-			s.CommandBufferDeviceMasks[i2] = uint32((*[1 << 30]uint32)(unsafe.Pointer(p.pCommandBufferDeviceMasks))[i2])
-		}
-	}
-	if p.signalSemaphoreCount > 0 && p.pSignalSemaphoreDeviceIndices != nil {
-		s.SignalSemaphoreDeviceIndices = make([]uint32, p.signalSemaphoreCount)
-		for i4 := range s.SignalSemaphoreDeviceIndices {
-			s.SignalSemaphoreDeviceIndices[i4] = uint32((*[1 << 30]uint32)(unsafe.Pointer(p.pSignalSemaphoreDeviceIndices))[i4])
-		}
-	}
-}
-
 type cVkDeviceGroupSwapchainCreateInfoKHR struct {
 	sType int32
 	pNext unsafe.Pointer
@@ -12304,151 +9581,6 @@ func (s *DeviceGroupSwapchainCreateInfoKHR) toC() (unsafe.Pointer, func()) {
 
 func (s *DeviceGroupSwapchainCreateInfoKHR) fromC(p *cVkDeviceGroupSwapchainCreateInfoKHR) {
 	s.Modes = DeviceGroupPresentModeFlagsKHR(p.modes)
-}
-
-type cVkDeviceImageMemoryRequirements struct {
-	sType       int32
-	pNext       unsafe.Pointer
-	pCreateInfo unsafe.Pointer
-	planeAspect uint32
-}
-
-type DeviceImageMemoryRequirements struct {
-	Next        Structure
-	CreateInfo  *ImageCreateInfo
-	PlaneAspect ImageAspectFlagBits
-}
-
-func (s *DeviceImageMemoryRequirements) GetType() StructureType {
-	return StructureTypeDeviceImageMemoryRequirements
-}
-
-func (s *DeviceImageMemoryRequirements) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDeviceImageMemoryRequirements)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var ptr0 unsafe.Pointer
-	if s.CreateInfo != nil {
-		val1, cancel2 := s.CreateInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	p.pCreateInfo = ptr0
-	val3 := uint32(s.PlaneAspect)
-	p.planeAspect = val3
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DeviceImageMemoryRequirements) fromC(p *cVkDeviceImageMemoryRequirements) {
-	if p.pCreateInfo != nil {
-		s.CreateInfo.fromC((*cVkImageCreateInfo)(p.pCreateInfo))
-	}
-	s.PlaneAspect = ImageAspectFlagBits(p.planeAspect)
-}
-
-type cVkDeviceImageSubresourceInfo struct {
-	sType        int32
-	pNext        unsafe.Pointer
-	pCreateInfo  unsafe.Pointer
-	pSubresource unsafe.Pointer
-}
-
-type DeviceImageSubresourceInfo struct {
-	Next        Structure
-	CreateInfo  *ImageCreateInfo
-	Subresource *ImageSubresource2
-}
-
-func (s *DeviceImageSubresourceInfo) GetType() StructureType {
-	return StructureTypeDeviceImageSubresourceInfo
-}
-
-func (s *DeviceImageSubresourceInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDeviceImageSubresourceInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var ptr0 unsafe.Pointer
-	if s.CreateInfo != nil {
-		val1, cancel2 := s.CreateInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	p.pCreateInfo = ptr0
-	var ptr3 unsafe.Pointer
-	if s.Subresource != nil {
-		val4, cancel5 := s.Subresource.toC()
-		cancels = append(cancels, cancel5)
-		ptr3 = val4
-	}
-	p.pSubresource = ptr3
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DeviceImageSubresourceInfo) fromC(p *cVkDeviceImageSubresourceInfo) {
-	if p.pCreateInfo != nil {
-		s.CreateInfo.fromC((*cVkImageCreateInfo)(p.pCreateInfo))
-	}
-	if p.pSubresource != nil {
-		s.Subresource.fromC((*cVkImageSubresource2)(p.pSubresource))
-	}
-}
-
-type cVkDeviceMemoryOpaqueCaptureAddressInfo struct {
-	sType  int32
-	pNext  unsafe.Pointer
-	memory unsafe.Pointer
-}
-
-type DeviceMemoryOpaqueCaptureAddressInfo struct {
-	Next   Structure
-	Memory *DeviceMemory
-}
-
-func (s *DeviceMemoryOpaqueCaptureAddressInfo) GetType() StructureType {
-	return StructureTypeDeviceMemoryOpaqueCaptureAddressInfo
-}
-
-func (s *DeviceMemoryOpaqueCaptureAddressInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDeviceMemoryOpaqueCaptureAddressInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.Memory != nil {
-		h0 = s.Memory.handle
-	}
-	p.memory = h0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DeviceMemoryOpaqueCaptureAddressInfo) fromC(p *cVkDeviceMemoryOpaqueCaptureAddressInfo) {
-	s.Memory = &DeviceMemory{handle: p.memory}
 }
 
 type cVkDeviceOrHostAddressConstKHR [8]byte
@@ -12519,43 +9651,6 @@ func (s *DeviceOrHostAddressKHR) fromC(p *cVkDeviceOrHostAddressKHR) {
 	copy(s[:], (*p)[:])
 }
 
-type cVkDevicePrivateDataCreateInfo struct {
-	sType                       int32
-	pNext                       unsafe.Pointer
-	privateDataSlotRequestCount uint32
-}
-
-type DevicePrivateDataCreateInfo struct {
-	Next                        Structure
-	PrivateDataSlotRequestCount uint32
-}
-
-func (s *DevicePrivateDataCreateInfo) GetType() StructureType {
-	return StructureTypeDevicePrivateDataCreateInfo
-}
-
-func (s *DevicePrivateDataCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDevicePrivateDataCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.PrivateDataSlotRequestCount)
-	p.privateDataSlotRequestCount = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DevicePrivateDataCreateInfo) fromC(p *cVkDevicePrivateDataCreateInfo) {
-	s.PrivateDataSlotRequestCount = uint32(p.privateDataSlotRequestCount)
-}
-
 type cVkDeviceQueueCreateInfo struct {
 	sType            int32
 	pNext            unsafe.Pointer
@@ -12620,90 +9715,6 @@ func (s *DeviceQueueCreateInfo) fromC(p *cVkDeviceQueueCreateInfo) {
 			s.QueuePriorities[i0] = float32((*[1 << 30]float32)(unsafe.Pointer(p.pQueuePriorities))[i0])
 		}
 	}
-}
-
-type cVkDeviceQueueGlobalPriorityCreateInfo struct {
-	sType          int32
-	pNext          unsafe.Pointer
-	globalPriority uint32
-}
-
-type DeviceQueueGlobalPriorityCreateInfo struct {
-	Next           Structure
-	GlobalPriority QueueGlobalPriority
-}
-
-func (s *DeviceQueueGlobalPriorityCreateInfo) GetType() StructureType {
-	return StructureTypeDeviceQueueGlobalPriorityCreateInfo
-}
-
-func (s *DeviceQueueGlobalPriorityCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDeviceQueueGlobalPriorityCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.GlobalPriority)
-	p.globalPriority = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DeviceQueueGlobalPriorityCreateInfo) fromC(p *cVkDeviceQueueGlobalPriorityCreateInfo) {
-	s.GlobalPriority = QueueGlobalPriority(p.globalPriority)
-}
-
-type cVkDeviceQueueInfo2 struct {
-	sType            int32
-	pNext            unsafe.Pointer
-	flags            uint32
-	queueFamilyIndex uint32
-	queueIndex       uint32
-}
-
-type DeviceQueueInfo2 struct {
-	Next             Structure
-	Flags            DeviceQueueCreateFlags
-	QueueFamilyIndex uint32
-	QueueIndex       uint32
-}
-
-func (s *DeviceQueueInfo2) GetType() StructureType {
-	return StructureTypeDeviceQueueInfo2
-}
-
-func (s *DeviceQueueInfo2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkDeviceQueueInfo2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Flags)
-	p.flags = val0
-	val1 := uint32(s.QueueFamilyIndex)
-	p.queueFamilyIndex = val1
-	val2 := uint32(s.QueueIndex)
-	p.queueIndex = val2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *DeviceQueueInfo2) fromC(p *cVkDeviceQueueInfo2) {
-	s.Flags = DeviceQueueCreateFlags(p.flags)
-	s.QueueFamilyIndex = uint32(p.queueFamilyIndex)
-	s.QueueIndex = uint32(p.queueIndex)
 }
 
 type cVkDispatchIndirectCommand struct {
@@ -12928,117 +9939,6 @@ func (s *EventCreateInfo) fromC(p *cVkEventCreateInfo) {
 	s.Flags = EventCreateFlags(p.flags)
 }
 
-type cVkExportFenceCreateInfo struct {
-	sType       int32
-	pNext       unsafe.Pointer
-	handleTypes uint32
-}
-
-type ExportFenceCreateInfo struct {
-	Next        Structure
-	HandleTypes ExternalFenceHandleTypeFlags
-}
-
-func (s *ExportFenceCreateInfo) GetType() StructureType {
-	return StructureTypeExportFenceCreateInfo
-}
-
-func (s *ExportFenceCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkExportFenceCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.HandleTypes)
-	p.handleTypes = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ExportFenceCreateInfo) fromC(p *cVkExportFenceCreateInfo) {
-	s.HandleTypes = ExternalFenceHandleTypeFlags(p.handleTypes)
-}
-
-type cVkExportMemoryAllocateInfo struct {
-	sType       int32
-	pNext       unsafe.Pointer
-	handleTypes uint32
-}
-
-type ExportMemoryAllocateInfo struct {
-	Next        Structure
-	HandleTypes ExternalMemoryHandleTypeFlags
-}
-
-func (s *ExportMemoryAllocateInfo) GetType() StructureType {
-	return StructureTypeExportMemoryAllocateInfo
-}
-
-func (s *ExportMemoryAllocateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkExportMemoryAllocateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.HandleTypes)
-	p.handleTypes = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ExportMemoryAllocateInfo) fromC(p *cVkExportMemoryAllocateInfo) {
-	s.HandleTypes = ExternalMemoryHandleTypeFlags(p.handleTypes)
-}
-
-type cVkExportSemaphoreCreateInfo struct {
-	sType       int32
-	pNext       unsafe.Pointer
-	handleTypes uint32
-}
-
-type ExportSemaphoreCreateInfo struct {
-	Next        Structure
-	HandleTypes ExternalSemaphoreHandleTypeFlags
-}
-
-func (s *ExportSemaphoreCreateInfo) GetType() StructureType {
-	return StructureTypeExportSemaphoreCreateInfo
-}
-
-func (s *ExportSemaphoreCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkExportSemaphoreCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.HandleTypes)
-	p.handleTypes = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ExportSemaphoreCreateInfo) fromC(p *cVkExportSemaphoreCreateInfo) {
-	s.HandleTypes = ExternalSemaphoreHandleTypeFlags(p.handleTypes)
-}
-
 type cVkExtensionProperties struct {
 	extensionName [256]byte
 	specVersion   uint32
@@ -13137,286 +10037,6 @@ func (s *Extent3D) fromC(p *cVkExtent3D) {
 	s.Depth = uint32(p.depth)
 }
 
-type cVkExternalBufferProperties struct {
-	sType                    int32
-	pNext                    unsafe.Pointer
-	externalMemoryProperties cVkExternalMemoryProperties
-}
-
-type ExternalBufferProperties struct {
-	Next                     Structure
-	ExternalMemoryProperties ExternalMemoryProperties
-}
-
-func (s *ExternalBufferProperties) GetType() StructureType {
-	return StructureTypeExternalBufferProperties
-}
-
-func (s *ExternalBufferProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkExternalBufferProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0, cancel1 := s.ExternalMemoryProperties.toC()
-	cancels = append(cancels, cancel1)
-	cast2 := (*cVkExternalMemoryProperties)(val0)
-	p.externalMemoryProperties = *cast2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ExternalBufferProperties) fromC(p *cVkExternalBufferProperties) {
-	s.ExternalMemoryProperties.fromC(&p.externalMemoryProperties)
-}
-
-type cVkExternalFenceProperties struct {
-	sType                         int32
-	pNext                         unsafe.Pointer
-	exportFromImportedHandleTypes uint32
-	compatibleHandleTypes         uint32
-	externalFenceFeatures         uint32
-}
-
-type ExternalFenceProperties struct {
-	Next                          Structure
-	ExportFromImportedHandleTypes ExternalFenceHandleTypeFlags
-	CompatibleHandleTypes         ExternalFenceHandleTypeFlags
-	ExternalFenceFeatures         ExternalFenceFeatureFlags
-}
-
-func (s *ExternalFenceProperties) GetType() StructureType {
-	return StructureTypeExternalFenceProperties
-}
-
-func (s *ExternalFenceProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkExternalFenceProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.ExportFromImportedHandleTypes)
-	p.exportFromImportedHandleTypes = val0
-	val1 := uint32(s.CompatibleHandleTypes)
-	p.compatibleHandleTypes = val1
-	val2 := uint32(s.ExternalFenceFeatures)
-	p.externalFenceFeatures = val2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ExternalFenceProperties) fromC(p *cVkExternalFenceProperties) {
-	s.ExportFromImportedHandleTypes = ExternalFenceHandleTypeFlags(p.exportFromImportedHandleTypes)
-	s.CompatibleHandleTypes = ExternalFenceHandleTypeFlags(p.compatibleHandleTypes)
-	s.ExternalFenceFeatures = ExternalFenceFeatureFlags(p.externalFenceFeatures)
-}
-
-type cVkExternalImageFormatProperties struct {
-	sType                    int32
-	pNext                    unsafe.Pointer
-	externalMemoryProperties cVkExternalMemoryProperties
-}
-
-type ExternalImageFormatProperties struct {
-	Next                     Structure
-	ExternalMemoryProperties ExternalMemoryProperties
-}
-
-func (s *ExternalImageFormatProperties) GetType() StructureType {
-	return StructureTypeExternalImageFormatProperties
-}
-
-func (s *ExternalImageFormatProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkExternalImageFormatProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0, cancel1 := s.ExternalMemoryProperties.toC()
-	cancels = append(cancels, cancel1)
-	cast2 := (*cVkExternalMemoryProperties)(val0)
-	p.externalMemoryProperties = *cast2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ExternalImageFormatProperties) fromC(p *cVkExternalImageFormatProperties) {
-	s.ExternalMemoryProperties.fromC(&p.externalMemoryProperties)
-}
-
-type cVkExternalMemoryBufferCreateInfo struct {
-	sType       int32
-	pNext       unsafe.Pointer
-	handleTypes uint32
-}
-
-type ExternalMemoryBufferCreateInfo struct {
-	Next        Structure
-	HandleTypes ExternalMemoryHandleTypeFlags
-}
-
-func (s *ExternalMemoryBufferCreateInfo) GetType() StructureType {
-	return StructureTypeExternalMemoryBufferCreateInfo
-}
-
-func (s *ExternalMemoryBufferCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkExternalMemoryBufferCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.HandleTypes)
-	p.handleTypes = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ExternalMemoryBufferCreateInfo) fromC(p *cVkExternalMemoryBufferCreateInfo) {
-	s.HandleTypes = ExternalMemoryHandleTypeFlags(p.handleTypes)
-}
-
-type cVkExternalMemoryImageCreateInfo struct {
-	sType       int32
-	pNext       unsafe.Pointer
-	handleTypes uint32
-}
-
-type ExternalMemoryImageCreateInfo struct {
-	Next        Structure
-	HandleTypes ExternalMemoryHandleTypeFlags
-}
-
-func (s *ExternalMemoryImageCreateInfo) GetType() StructureType {
-	return StructureTypeExternalMemoryImageCreateInfo
-}
-
-func (s *ExternalMemoryImageCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkExternalMemoryImageCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.HandleTypes)
-	p.handleTypes = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ExternalMemoryImageCreateInfo) fromC(p *cVkExternalMemoryImageCreateInfo) {
-	s.HandleTypes = ExternalMemoryHandleTypeFlags(p.handleTypes)
-}
-
-type cVkExternalMemoryProperties struct {
-	externalMemoryFeatures        uint32
-	exportFromImportedHandleTypes uint32
-	compatibleHandleTypes         uint32
-}
-
-type ExternalMemoryProperties struct {
-	ExternalMemoryFeatures        ExternalMemoryFeatureFlags
-	ExportFromImportedHandleTypes ExternalMemoryHandleTypeFlags
-	CompatibleHandleTypes         ExternalMemoryHandleTypeFlags
-}
-
-func (s *ExternalMemoryProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkExternalMemoryProperties)
-	val0 := uint32(s.ExternalMemoryFeatures)
-	p.externalMemoryFeatures = val0
-	val1 := uint32(s.ExportFromImportedHandleTypes)
-	p.exportFromImportedHandleTypes = val1
-	val2 := uint32(s.CompatibleHandleTypes)
-	p.compatibleHandleTypes = val2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ExternalMemoryProperties) fromC(p *cVkExternalMemoryProperties) {
-	s.ExternalMemoryFeatures = ExternalMemoryFeatureFlags(p.externalMemoryFeatures)
-	s.ExportFromImportedHandleTypes = ExternalMemoryHandleTypeFlags(p.exportFromImportedHandleTypes)
-	s.CompatibleHandleTypes = ExternalMemoryHandleTypeFlags(p.compatibleHandleTypes)
-}
-
-type cVkExternalSemaphoreProperties struct {
-	sType                         int32
-	pNext                         unsafe.Pointer
-	exportFromImportedHandleTypes uint32
-	compatibleHandleTypes         uint32
-	externalSemaphoreFeatures     uint32
-}
-
-type ExternalSemaphoreProperties struct {
-	Next                          Structure
-	ExportFromImportedHandleTypes ExternalSemaphoreHandleTypeFlags
-	CompatibleHandleTypes         ExternalSemaphoreHandleTypeFlags
-	ExternalSemaphoreFeatures     ExternalSemaphoreFeatureFlags
-}
-
-func (s *ExternalSemaphoreProperties) GetType() StructureType {
-	return StructureTypeExternalSemaphoreProperties
-}
-
-func (s *ExternalSemaphoreProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkExternalSemaphoreProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.ExportFromImportedHandleTypes)
-	p.exportFromImportedHandleTypes = val0
-	val1 := uint32(s.CompatibleHandleTypes)
-	p.compatibleHandleTypes = val1
-	val2 := uint32(s.ExternalSemaphoreFeatures)
-	p.externalSemaphoreFeatures = val2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ExternalSemaphoreProperties) fromC(p *cVkExternalSemaphoreProperties) {
-	s.ExportFromImportedHandleTypes = ExternalSemaphoreHandleTypeFlags(p.exportFromImportedHandleTypes)
-	s.CompatibleHandleTypes = ExternalSemaphoreHandleTypeFlags(p.compatibleHandleTypes)
-	s.ExternalSemaphoreFeatures = ExternalSemaphoreFeatureFlags(p.externalSemaphoreFeatures)
-}
-
 type cVkFenceCreateInfo struct {
 	sType int32
 	pNext unsafe.Pointer
@@ -13486,92 +10106,6 @@ func (s *FormatProperties) fromC(p *cVkFormatProperties) {
 	s.LinearTilingFeatures = FormatFeatureFlags(p.linearTilingFeatures)
 	s.OptimalTilingFeatures = FormatFeatureFlags(p.optimalTilingFeatures)
 	s.BufferFeatures = FormatFeatureFlags(p.bufferFeatures)
-}
-
-type cVkFormatProperties2 struct {
-	sType            int32
-	pNext            unsafe.Pointer
-	formatProperties cVkFormatProperties
-}
-
-type FormatProperties2 struct {
-	Next             Structure
-	FormatProperties FormatProperties
-}
-
-func (s *FormatProperties2) GetType() StructureType {
-	return StructureTypeFormatProperties2
-}
-
-func (s *FormatProperties2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkFormatProperties2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0, cancel1 := s.FormatProperties.toC()
-	cancels = append(cancels, cancel1)
-	cast2 := (*cVkFormatProperties)(val0)
-	p.formatProperties = *cast2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *FormatProperties2) fromC(p *cVkFormatProperties2) {
-	s.FormatProperties.fromC(&p.formatProperties)
-}
-
-type cVkFormatProperties3 struct {
-	sType                 int32
-	pNext                 unsafe.Pointer
-	linearTilingFeatures  uint64
-	optimalTilingFeatures uint64
-	bufferFeatures        uint64
-}
-
-type FormatProperties3 struct {
-	Next                  Structure
-	LinearTilingFeatures  FormatFeatureFlags2
-	OptimalTilingFeatures FormatFeatureFlags2
-	BufferFeatures        FormatFeatureFlags2
-}
-
-func (s *FormatProperties3) GetType() StructureType {
-	return StructureTypeFormatProperties3
-}
-
-func (s *FormatProperties3) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkFormatProperties3)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.LinearTilingFeatures)
-	p.linearTilingFeatures = val0
-	val1 := uint64(s.OptimalTilingFeatures)
-	p.optimalTilingFeatures = val1
-	val2 := uint64(s.BufferFeatures)
-	p.bufferFeatures = val2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *FormatProperties3) fromC(p *cVkFormatProperties3) {
-	s.LinearTilingFeatures = FormatFeatureFlags2(p.linearTilingFeatures)
-	s.OptimalTilingFeatures = FormatFeatureFlags2(p.optimalTilingFeatures)
-	s.BufferFeatures = FormatFeatureFlags2(p.bufferFeatures)
 }
 
 type cVkFramebufferAttachmentImageInfo struct {
@@ -14287,111 +10821,6 @@ func (s *GraphicsPipelineLibraryCreateInfoEXT) fromC(p *cVkGraphicsPipelineLibra
 	s.Flags = GraphicsPipelineLibraryFlagsEXT(p.flags)
 }
 
-type cVkHostImageCopyDevicePerformanceQuery struct {
-	sType                 int32
-	pNext                 unsafe.Pointer
-	optimalDeviceAccess   uint32
-	identicalMemoryLayout uint32
-}
-
-type HostImageCopyDevicePerformanceQuery struct {
-	Next                  Structure
-	OptimalDeviceAccess   bool
-	IdenticalMemoryLayout bool
-}
-
-func (s *HostImageCopyDevicePerformanceQuery) GetType() StructureType {
-	return StructureTypeHostImageCopyDevicePerformanceQuery
-}
-
-func (s *HostImageCopyDevicePerformanceQuery) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkHostImageCopyDevicePerformanceQuery)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.OptimalDeviceAccess {
-		val0 = 1
-	}
-	p.optimalDeviceAccess = val0
-	val1 := uint32(0)
-	if s.IdenticalMemoryLayout {
-		val1 = 1
-	}
-	p.identicalMemoryLayout = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *HostImageCopyDevicePerformanceQuery) fromC(p *cVkHostImageCopyDevicePerformanceQuery) {
-	s.OptimalDeviceAccess = p.optimalDeviceAccess != 0
-	s.IdenticalMemoryLayout = p.identicalMemoryLayout != 0
-}
-
-type cVkHostImageLayoutTransitionInfo struct {
-	sType            int32
-	pNext            unsafe.Pointer
-	image            unsafe.Pointer
-	oldLayout        uint32
-	newLayout        uint32
-	subresourceRange cVkImageSubresourceRange
-}
-
-type HostImageLayoutTransitionInfo struct {
-	Next             Structure
-	Image            *Image
-	OldLayout        ImageLayout
-	NewLayout        ImageLayout
-	SubresourceRange ImageSubresourceRange
-}
-
-func (s *HostImageLayoutTransitionInfo) GetType() StructureType {
-	return StructureTypeHostImageLayoutTransitionInfo
-}
-
-func (s *HostImageLayoutTransitionInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkHostImageLayoutTransitionInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.Image != nil {
-		h0 = s.Image.handle
-	}
-	p.image = h0
-	val1 := uint32(s.OldLayout)
-	p.oldLayout = val1
-	val2 := uint32(s.NewLayout)
-	p.newLayout = val2
-	val3, cancel4 := s.SubresourceRange.toC()
-	cancels = append(cancels, cancel4)
-	cast5 := (*cVkImageSubresourceRange)(val3)
-	p.subresourceRange = *cast5
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *HostImageLayoutTransitionInfo) fromC(p *cVkHostImageLayoutTransitionInfo) {
-	s.Image = &Image{handle: p.image}
-	s.OldLayout = ImageLayout(p.oldLayout)
-	s.NewLayout = ImageLayout(p.newLayout)
-	s.SubresourceRange.fromC(&p.subresourceRange)
-}
-
 type cVkImageBlit struct {
 	srcSubresource cVkImageSubresourceLayers
 	srcOffsets     [2]cVkOffset3D
@@ -14617,73 +11046,6 @@ func (s *ImageCopy) fromC(p *cVkImageCopy) {
 	s.Extent.fromC(&p.extent)
 }
 
-type cVkImageCopy2 struct {
-	sType          int32
-	pNext          unsafe.Pointer
-	srcSubresource cVkImageSubresourceLayers
-	srcOffset      cVkOffset3D
-	dstSubresource cVkImageSubresourceLayers
-	dstOffset      cVkOffset3D
-	extent         cVkExtent3D
-}
-
-type ImageCopy2 struct {
-	Next           Structure
-	SrcSubresource ImageSubresourceLayers
-	SrcOffset      Offset3D
-	DstSubresource ImageSubresourceLayers
-	DstOffset      Offset3D
-	Extent         Extent3D
-}
-
-func (s *ImageCopy2) GetType() StructureType {
-	return StructureTypeImageCopy2
-}
-
-func (s *ImageCopy2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkImageCopy2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0, cancel1 := s.SrcSubresource.toC()
-	cancels = append(cancels, cancel1)
-	cast2 := (*cVkImageSubresourceLayers)(val0)
-	p.srcSubresource = *cast2
-	val3, cancel4 := s.SrcOffset.toC()
-	cancels = append(cancels, cancel4)
-	cast5 := (*cVkOffset3D)(val3)
-	p.srcOffset = *cast5
-	val6, cancel7 := s.DstSubresource.toC()
-	cancels = append(cancels, cancel7)
-	cast8 := (*cVkImageSubresourceLayers)(val6)
-	p.dstSubresource = *cast8
-	val9, cancel10 := s.DstOffset.toC()
-	cancels = append(cancels, cancel10)
-	cast11 := (*cVkOffset3D)(val9)
-	p.dstOffset = *cast11
-	val12, cancel13 := s.Extent.toC()
-	cancels = append(cancels, cancel13)
-	cast14 := (*cVkExtent3D)(val12)
-	p.extent = *cast14
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ImageCopy2) fromC(p *cVkImageCopy2) {
-	s.SrcSubresource.fromC(&p.srcSubresource)
-	s.SrcOffset.fromC(&p.srcOffset)
-	s.DstSubresource.fromC(&p.dstSubresource)
-	s.DstOffset.fromC(&p.dstOffset)
-	s.Extent.fromC(&p.extent)
-}
-
 type cVkImageCreateInfo struct {
 	sType                 int32
 	pNext                 unsafe.Pointer
@@ -14797,57 +11159,6 @@ func (s *ImageCreateInfo) fromC(p *cVkImageCreateInfo) {
 	s.InitialLayout = ImageLayout(p.initialLayout)
 }
 
-type cVkImageFormatListCreateInfo struct {
-	sType           int32
-	pNext           unsafe.Pointer
-	viewFormatCount uint32
-	pViewFormats    unsafe.Pointer
-}
-
-type ImageFormatListCreateInfo struct {
-	Next        Structure
-	ViewFormats []Format
-}
-
-func (s *ImageFormatListCreateInfo) GetType() StructureType {
-	return StructureTypeImageFormatListCreateInfo
-}
-
-func (s *ImageFormatListCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkImageFormatListCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	len0 := len(s.ViewFormats)
-	var arr1 unsafe.Pointer
-	if len0 > 0 {
-		buf2 := make([]uint32, len0)
-		var pin3 runtime.Pinner
-		pin3.Pin(&buf2[0])
-		cancels = append(cancels, func() { pin3.Unpin(); runtime.KeepAlive(buf2) })
-		arr1 = unsafe.Pointer(&buf2[0])
-		for i4, elem5 := range s.ViewFormats {
-			val6 := uint32(elem5)
-			buf2[i4] = val6
-		}
-	}
-	p.pViewFormats = arr1
-	p.viewFormatCount = uint32(len(s.ViewFormats))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ImageFormatListCreateInfo) fromC(p *cVkImageFormatListCreateInfo) {
-	// TODO: fromC for ViewFormats (Slice of *generator.NamedType)
-}
-
 type cVkImageFormatProperties struct {
 	maxExtent       cVkExtent3D
 	maxMipLevels    uint32
@@ -14892,45 +11203,6 @@ func (s *ImageFormatProperties) fromC(p *cVkImageFormatProperties) {
 	s.MaxArrayLayers = uint32(p.maxArrayLayers)
 	s.SampleCounts = SampleCountFlags(p.sampleCounts)
 	s.MaxResourceSize = uint64(p.maxResourceSize)
-}
-
-type cVkImageFormatProperties2 struct {
-	sType                 int32
-	pNext                 unsafe.Pointer
-	imageFormatProperties cVkImageFormatProperties
-}
-
-type ImageFormatProperties2 struct {
-	Next                  Structure
-	ImageFormatProperties ImageFormatProperties
-}
-
-func (s *ImageFormatProperties2) GetType() StructureType {
-	return StructureTypeImageFormatProperties2
-}
-
-func (s *ImageFormatProperties2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkImageFormatProperties2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0, cancel1 := s.ImageFormatProperties.toC()
-	cancels = append(cancels, cancel1)
-	cast2 := (*cVkImageFormatProperties)(val0)
-	p.imageFormatProperties = *cast2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ImageFormatProperties2) fromC(p *cVkImageFormatProperties2) {
-	s.ImageFormatProperties.fromC(&p.imageFormatProperties)
 }
 
 type cVkImageMemoryBarrier struct {
@@ -15008,170 +11280,6 @@ func (s *ImageMemoryBarrier) fromC(p *cVkImageMemoryBarrier) {
 	s.DstQueueFamilyIndex = uint32(p.dstQueueFamilyIndex)
 	s.Image = &Image{handle: p.image}
 	s.SubresourceRange.fromC(&p.subresourceRange)
-}
-
-type cVkImageMemoryBarrier2 struct {
-	sType               int32
-	pNext               unsafe.Pointer
-	srcStageMask        uint64
-	srcAccessMask       uint64
-	dstStageMask        uint64
-	dstAccessMask       uint64
-	oldLayout           uint32
-	newLayout           uint32
-	srcQueueFamilyIndex uint32
-	dstQueueFamilyIndex uint32
-	image               unsafe.Pointer
-	subresourceRange    cVkImageSubresourceRange
-}
-
-type ImageMemoryBarrier2 struct {
-	Next                Structure
-	SrcStageMask        PipelineStageFlags2
-	SrcAccessMask       AccessFlags2
-	DstStageMask        PipelineStageFlags2
-	DstAccessMask       AccessFlags2
-	OldLayout           ImageLayout
-	NewLayout           ImageLayout
-	SrcQueueFamilyIndex uint32
-	DstQueueFamilyIndex uint32
-	Image               *Image
-	SubresourceRange    ImageSubresourceRange
-}
-
-func (s *ImageMemoryBarrier2) GetType() StructureType {
-	return StructureTypeImageMemoryBarrier2
-}
-
-func (s *ImageMemoryBarrier2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkImageMemoryBarrier2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.SrcStageMask)
-	p.srcStageMask = val0
-	val1 := uint64(s.SrcAccessMask)
-	p.srcAccessMask = val1
-	val2 := uint64(s.DstStageMask)
-	p.dstStageMask = val2
-	val3 := uint64(s.DstAccessMask)
-	p.dstAccessMask = val3
-	val4 := uint32(s.OldLayout)
-	p.oldLayout = val4
-	val5 := uint32(s.NewLayout)
-	p.newLayout = val5
-	val6 := uint32(s.SrcQueueFamilyIndex)
-	p.srcQueueFamilyIndex = val6
-	val7 := uint32(s.DstQueueFamilyIndex)
-	p.dstQueueFamilyIndex = val7
-	var h8 unsafe.Pointer
-	if s.Image != nil {
-		h8 = s.Image.handle
-	}
-	p.image = h8
-	val9, cancel10 := s.SubresourceRange.toC()
-	cancels = append(cancels, cancel10)
-	cast11 := (*cVkImageSubresourceRange)(val9)
-	p.subresourceRange = *cast11
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ImageMemoryBarrier2) fromC(p *cVkImageMemoryBarrier2) {
-	s.SrcStageMask = PipelineStageFlags2(p.srcStageMask)
-	s.SrcAccessMask = AccessFlags2(p.srcAccessMask)
-	s.DstStageMask = PipelineStageFlags2(p.dstStageMask)
-	s.DstAccessMask = AccessFlags2(p.dstAccessMask)
-	s.OldLayout = ImageLayout(p.oldLayout)
-	s.NewLayout = ImageLayout(p.newLayout)
-	s.SrcQueueFamilyIndex = uint32(p.srcQueueFamilyIndex)
-	s.DstQueueFamilyIndex = uint32(p.dstQueueFamilyIndex)
-	s.Image = &Image{handle: p.image}
-	s.SubresourceRange.fromC(&p.subresourceRange)
-}
-
-type cVkImageMemoryRequirementsInfo2 struct {
-	sType int32
-	pNext unsafe.Pointer
-	image unsafe.Pointer
-}
-
-type ImageMemoryRequirementsInfo2 struct {
-	Next  Structure
-	Image *Image
-}
-
-func (s *ImageMemoryRequirementsInfo2) GetType() StructureType {
-	return StructureTypeImageMemoryRequirementsInfo2
-}
-
-func (s *ImageMemoryRequirementsInfo2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkImageMemoryRequirementsInfo2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.Image != nil {
-		h0 = s.Image.handle
-	}
-	p.image = h0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ImageMemoryRequirementsInfo2) fromC(p *cVkImageMemoryRequirementsInfo2) {
-	s.Image = &Image{handle: p.image}
-}
-
-type cVkImagePlaneMemoryRequirementsInfo struct {
-	sType       int32
-	pNext       unsafe.Pointer
-	planeAspect uint32
-}
-
-type ImagePlaneMemoryRequirementsInfo struct {
-	Next        Structure
-	PlaneAspect ImageAspectFlagBits
-}
-
-func (s *ImagePlaneMemoryRequirementsInfo) GetType() StructureType {
-	return StructureTypeImagePlaneMemoryRequirementsInfo
-}
-
-func (s *ImagePlaneMemoryRequirementsInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkImagePlaneMemoryRequirementsInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.PlaneAspect)
-	p.planeAspect = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ImagePlaneMemoryRequirementsInfo) fromC(p *cVkImagePlaneMemoryRequirementsInfo) {
-	s.PlaneAspect = ImageAspectFlagBits(p.planeAspect)
 }
 
 type cVkImageResolve struct {
@@ -15295,46 +11403,6 @@ func (s *ImageResolve2) fromC(p *cVkImageResolve2) {
 	s.Extent.fromC(&p.extent)
 }
 
-type cVkImageSparseMemoryRequirementsInfo2 struct {
-	sType int32
-	pNext unsafe.Pointer
-	image unsafe.Pointer
-}
-
-type ImageSparseMemoryRequirementsInfo2 struct {
-	Next  Structure
-	Image *Image
-}
-
-func (s *ImageSparseMemoryRequirementsInfo2) GetType() StructureType {
-	return StructureTypeImageSparseMemoryRequirementsInfo2
-}
-
-func (s *ImageSparseMemoryRequirementsInfo2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkImageSparseMemoryRequirementsInfo2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.Image != nil {
-		h0 = s.Image.handle
-	}
-	p.image = h0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ImageSparseMemoryRequirementsInfo2) fromC(p *cVkImageSparseMemoryRequirementsInfo2) {
-	s.Image = &Image{handle: p.image}
-}
-
 type cVkImageStencilUsageCreateInfo struct {
 	sType        int32
 	pNext        unsafe.Pointer
@@ -15404,45 +11472,6 @@ func (s *ImageSubresource) fromC(p *cVkImageSubresource) {
 	s.AspectMask = ImageAspectFlags(p.aspectMask)
 	s.MipLevel = uint32(p.mipLevel)
 	s.ArrayLayer = uint32(p.arrayLayer)
-}
-
-type cVkImageSubresource2 struct {
-	sType            int32
-	pNext            unsafe.Pointer
-	imageSubresource cVkImageSubresource
-}
-
-type ImageSubresource2 struct {
-	Next             Structure
-	ImageSubresource ImageSubresource
-}
-
-func (s *ImageSubresource2) GetType() StructureType {
-	return StructureTypeImageSubresource2
-}
-
-func (s *ImageSubresource2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkImageSubresource2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0, cancel1 := s.ImageSubresource.toC()
-	cancels = append(cancels, cancel1)
-	cast2 := (*cVkImageSubresource)(val0)
-	p.imageSubresource = *cast2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ImageSubresource2) fromC(p *cVkImageSubresource2) {
-	s.ImageSubresource.fromC(&p.imageSubresource)
 }
 
 type cVkImageSubresourceLayers struct {
@@ -15568,73 +11597,6 @@ func (s *ImageSwapchainCreateInfoKHR) fromC(p *cVkImageSwapchainCreateInfoKHR) {
 	s.Swapchain = &SwapchainKHR{handle: p.swapchain}
 }
 
-type cVkImageToMemoryCopy struct {
-	sType             int32
-	pNext             unsafe.Pointer
-	pHostPointer      unsafe.Pointer
-	memoryRowLength   uint32
-	memoryImageHeight uint32
-	imageSubresource  cVkImageSubresourceLayers
-	imageOffset       cVkOffset3D
-	imageExtent       cVkExtent3D
-}
-
-type ImageToMemoryCopy struct {
-	Next              Structure
-	HostPointer       unsafe.Pointer
-	MemoryRowLength   uint32
-	MemoryImageHeight uint32
-	ImageSubresource  ImageSubresourceLayers
-	ImageOffset       Offset3D
-	ImageExtent       Extent3D
-}
-
-func (s *ImageToMemoryCopy) GetType() StructureType {
-	return StructureTypeImageToMemoryCopy
-}
-
-func (s *ImageToMemoryCopy) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkImageToMemoryCopy)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	p.pHostPointer = s.HostPointer
-	val0 := uint32(s.MemoryRowLength)
-	p.memoryRowLength = val0
-	val1 := uint32(s.MemoryImageHeight)
-	p.memoryImageHeight = val1
-	val2, cancel3 := s.ImageSubresource.toC()
-	cancels = append(cancels, cancel3)
-	cast4 := (*cVkImageSubresourceLayers)(val2)
-	p.imageSubresource = *cast4
-	val5, cancel6 := s.ImageOffset.toC()
-	cancels = append(cancels, cancel6)
-	cast7 := (*cVkOffset3D)(val5)
-	p.imageOffset = *cast7
-	val8, cancel9 := s.ImageExtent.toC()
-	cancels = append(cancels, cancel9)
-	cast10 := (*cVkExtent3D)(val8)
-	p.imageExtent = *cast10
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ImageToMemoryCopy) fromC(p *cVkImageToMemoryCopy) {
-	s.HostPointer = p.pHostPointer
-	s.MemoryRowLength = uint32(p.memoryRowLength)
-	s.MemoryImageHeight = uint32(p.memoryImageHeight)
-	s.ImageSubresource.fromC(&p.imageSubresource)
-	s.ImageOffset.fromC(&p.imageOffset)
-	s.ImageExtent.fromC(&p.imageExtent)
-}
-
 type cVkImageViewCaptureDescriptorDataInfoEXT struct {
 	sType     int32
 	pNext     unsafe.Pointer
@@ -15742,43 +11704,6 @@ func (s *ImageViewCreateInfo) fromC(p *cVkImageViewCreateInfo) {
 	s.Format = Format(p.format)
 	s.Components.fromC(&p.components)
 	s.SubresourceRange.fromC(&p.subresourceRange)
-}
-
-type cVkImageViewUsageCreateInfo struct {
-	sType int32
-	pNext unsafe.Pointer
-	usage uint32
-}
-
-type ImageViewUsageCreateInfo struct {
-	Next  Structure
-	Usage ImageUsageFlags
-}
-
-func (s *ImageViewUsageCreateInfo) GetType() StructureType {
-	return StructureTypeImageViewUsageCreateInfo
-}
-
-func (s *ImageViewUsageCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkImageViewUsageCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Usage)
-	p.usage = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ImageViewUsageCreateInfo) fromC(p *cVkImageViewUsageCreateInfo) {
-	s.Usage = ImageUsageFlags(p.usage)
 }
 
 type cVkIndirectCommandsExecutionSetTokenEXT struct {
@@ -16602,48 +12527,6 @@ func (s *MappedMemoryRange) fromC(p *cVkMappedMemoryRange) {
 	s.Size = uint64(p.size)
 }
 
-type cVkMemoryAllocateFlagsInfo struct {
-	sType      int32
-	pNext      unsafe.Pointer
-	flags      uint32
-	deviceMask uint32
-}
-
-type MemoryAllocateFlagsInfo struct {
-	Next       Structure
-	Flags      MemoryAllocateFlags
-	DeviceMask uint32
-}
-
-func (s *MemoryAllocateFlagsInfo) GetType() StructureType {
-	return StructureTypeMemoryAllocateFlagsInfo
-}
-
-func (s *MemoryAllocateFlagsInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkMemoryAllocateFlagsInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Flags)
-	p.flags = val0
-	val1 := uint32(s.DeviceMask)
-	p.deviceMask = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *MemoryAllocateFlagsInfo) fromC(p *cVkMemoryAllocateFlagsInfo) {
-	s.Flags = MemoryAllocateFlags(p.flags)
-	s.DeviceMask = uint32(p.deviceMask)
-}
-
 type cVkMemoryAllocateInfo struct {
 	sType           int32
 	pNext           unsafe.Pointer
@@ -16728,154 +12611,6 @@ func (s *MemoryBarrier) fromC(p *cVkMemoryBarrier) {
 	s.DstAccessMask = AccessFlags(p.dstAccessMask)
 }
 
-type cVkMemoryBarrier2 struct {
-	sType         int32
-	pNext         unsafe.Pointer
-	srcStageMask  uint64
-	srcAccessMask uint64
-	dstStageMask  uint64
-	dstAccessMask uint64
-}
-
-type MemoryBarrier2 struct {
-	Next          Structure
-	SrcStageMask  PipelineStageFlags2
-	SrcAccessMask AccessFlags2
-	DstStageMask  PipelineStageFlags2
-	DstAccessMask AccessFlags2
-}
-
-func (s *MemoryBarrier2) GetType() StructureType {
-	return StructureTypeMemoryBarrier2
-}
-
-func (s *MemoryBarrier2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkMemoryBarrier2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.SrcStageMask)
-	p.srcStageMask = val0
-	val1 := uint64(s.SrcAccessMask)
-	p.srcAccessMask = val1
-	val2 := uint64(s.DstStageMask)
-	p.dstStageMask = val2
-	val3 := uint64(s.DstAccessMask)
-	p.dstAccessMask = val3
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *MemoryBarrier2) fromC(p *cVkMemoryBarrier2) {
-	s.SrcStageMask = PipelineStageFlags2(p.srcStageMask)
-	s.SrcAccessMask = AccessFlags2(p.srcAccessMask)
-	s.DstStageMask = PipelineStageFlags2(p.dstStageMask)
-	s.DstAccessMask = AccessFlags2(p.dstAccessMask)
-}
-
-type cVkMemoryDedicatedAllocateInfo struct {
-	sType  int32
-	pNext  unsafe.Pointer
-	image  unsafe.Pointer
-	buffer unsafe.Pointer
-}
-
-type MemoryDedicatedAllocateInfo struct {
-	Next   Structure
-	Image  *Image
-	Buffer *Buffer
-}
-
-func (s *MemoryDedicatedAllocateInfo) GetType() StructureType {
-	return StructureTypeMemoryDedicatedAllocateInfo
-}
-
-func (s *MemoryDedicatedAllocateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkMemoryDedicatedAllocateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.Image != nil {
-		h0 = s.Image.handle
-	}
-	p.image = h0
-	var h1 unsafe.Pointer
-	if s.Buffer != nil {
-		h1 = s.Buffer.handle
-	}
-	p.buffer = h1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *MemoryDedicatedAllocateInfo) fromC(p *cVkMemoryDedicatedAllocateInfo) {
-	s.Image = &Image{handle: p.image}
-	s.Buffer = &Buffer{handle: p.buffer}
-}
-
-type cVkMemoryDedicatedRequirements struct {
-	sType                       int32
-	pNext                       unsafe.Pointer
-	prefersDedicatedAllocation  uint32
-	requiresDedicatedAllocation uint32
-}
-
-type MemoryDedicatedRequirements struct {
-	Next                        Structure
-	PrefersDedicatedAllocation  bool
-	RequiresDedicatedAllocation bool
-}
-
-func (s *MemoryDedicatedRequirements) GetType() StructureType {
-	return StructureTypeMemoryDedicatedRequirements
-}
-
-func (s *MemoryDedicatedRequirements) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkMemoryDedicatedRequirements)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.PrefersDedicatedAllocation {
-		val0 = 1
-	}
-	p.prefersDedicatedAllocation = val0
-	val1 := uint32(0)
-	if s.RequiresDedicatedAllocation {
-		val1 = 1
-	}
-	p.requiresDedicatedAllocation = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *MemoryDedicatedRequirements) fromC(p *cVkMemoryDedicatedRequirements) {
-	s.PrefersDedicatedAllocation = p.prefersDedicatedAllocation != 0
-	s.RequiresDedicatedAllocation = p.requiresDedicatedAllocation != 0
-}
-
 type cVkMemoryHeap struct {
 	size  uint64
 	flags uint32
@@ -16903,98 +12638,6 @@ func (s *MemoryHeap) toC() (unsafe.Pointer, func()) {
 func (s *MemoryHeap) fromC(p *cVkMemoryHeap) {
 	s.Size = uint64(p.size)
 	s.Flags = MemoryHeapFlags(p.flags)
-}
-
-type cVkMemoryMapInfo struct {
-	sType  int32
-	pNext  unsafe.Pointer
-	flags  uint32
-	memory unsafe.Pointer
-	offset uint64
-	size   uint64
-}
-
-type MemoryMapInfo struct {
-	Next   Structure
-	Flags  MemoryMapFlags
-	Memory *DeviceMemory
-	Offset uint64
-	Size   uint64
-}
-
-func (s *MemoryMapInfo) GetType() StructureType {
-	return StructureTypeMemoryMapInfo
-}
-
-func (s *MemoryMapInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkMemoryMapInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Flags)
-	p.flags = val0
-	var h1 unsafe.Pointer
-	if s.Memory != nil {
-		h1 = s.Memory.handle
-	}
-	p.memory = h1
-	val2 := uint64(s.Offset)
-	p.offset = val2
-	val3 := uint64(s.Size)
-	p.size = val3
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *MemoryMapInfo) fromC(p *cVkMemoryMapInfo) {
-	s.Flags = MemoryMapFlags(p.flags)
-	s.Memory = &DeviceMemory{handle: p.memory}
-	s.Offset = uint64(p.offset)
-	s.Size = uint64(p.size)
-}
-
-type cVkMemoryOpaqueCaptureAddressAllocateInfo struct {
-	sType                int32
-	pNext                unsafe.Pointer
-	opaqueCaptureAddress uint64
-}
-
-type MemoryOpaqueCaptureAddressAllocateInfo struct {
-	Next                 Structure
-	OpaqueCaptureAddress uint64
-}
-
-func (s *MemoryOpaqueCaptureAddressAllocateInfo) GetType() StructureType {
-	return StructureTypeMemoryOpaqueCaptureAddressAllocateInfo
-}
-
-func (s *MemoryOpaqueCaptureAddressAllocateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkMemoryOpaqueCaptureAddressAllocateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.OpaqueCaptureAddress)
-	p.opaqueCaptureAddress = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *MemoryOpaqueCaptureAddressAllocateInfo) fromC(p *cVkMemoryOpaqueCaptureAddressAllocateInfo) {
-	s.OpaqueCaptureAddress = uint64(p.opaqueCaptureAddress)
 }
 
 type cVkMemoryPriorityAllocateInfoEXT struct {
@@ -17107,73 +12750,6 @@ func (s *MemoryRequirements2) fromC(p *cVkMemoryRequirements2) {
 	s.MemoryRequirements.fromC(&p.memoryRequirements)
 }
 
-type cVkMemoryToImageCopy struct {
-	sType             int32
-	pNext             unsafe.Pointer
-	pHostPointer      unsafe.Pointer
-	memoryRowLength   uint32
-	memoryImageHeight uint32
-	imageSubresource  cVkImageSubresourceLayers
-	imageOffset       cVkOffset3D
-	imageExtent       cVkExtent3D
-}
-
-type MemoryToImageCopy struct {
-	Next              Structure
-	HostPointer       unsafe.Pointer
-	MemoryRowLength   uint32
-	MemoryImageHeight uint32
-	ImageSubresource  ImageSubresourceLayers
-	ImageOffset       Offset3D
-	ImageExtent       Extent3D
-}
-
-func (s *MemoryToImageCopy) GetType() StructureType {
-	return StructureTypeMemoryToImageCopy
-}
-
-func (s *MemoryToImageCopy) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkMemoryToImageCopy)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	p.pHostPointer = s.HostPointer
-	val0 := uint32(s.MemoryRowLength)
-	p.memoryRowLength = val0
-	val1 := uint32(s.MemoryImageHeight)
-	p.memoryImageHeight = val1
-	val2, cancel3 := s.ImageSubresource.toC()
-	cancels = append(cancels, cancel3)
-	cast4 := (*cVkImageSubresourceLayers)(val2)
-	p.imageSubresource = *cast4
-	val5, cancel6 := s.ImageOffset.toC()
-	cancels = append(cancels, cancel6)
-	cast7 := (*cVkOffset3D)(val5)
-	p.imageOffset = *cast7
-	val8, cancel9 := s.ImageExtent.toC()
-	cancels = append(cancels, cancel9)
-	cast10 := (*cVkExtent3D)(val8)
-	p.imageExtent = *cast10
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *MemoryToImageCopy) fromC(p *cVkMemoryToImageCopy) {
-	s.HostPointer = p.pHostPointer
-	s.MemoryRowLength = uint32(p.memoryRowLength)
-	s.MemoryImageHeight = uint32(p.memoryImageHeight)
-	s.ImageSubresource.fromC(&p.imageSubresource)
-	s.ImageOffset.fromC(&p.imageOffset)
-	s.ImageExtent.fromC(&p.imageExtent)
-}
-
 type cVkMemoryType struct {
 	propertyFlags uint32
 	heapIndex     uint32
@@ -17201,51 +12777,6 @@ func (s *MemoryType) toC() (unsafe.Pointer, func()) {
 func (s *MemoryType) fromC(p *cVkMemoryType) {
 	s.PropertyFlags = MemoryPropertyFlags(p.propertyFlags)
 	s.HeapIndex = uint32(p.heapIndex)
-}
-
-type cVkMemoryUnmapInfo struct {
-	sType  int32
-	pNext  unsafe.Pointer
-	flags  uint32
-	memory unsafe.Pointer
-}
-
-type MemoryUnmapInfo struct {
-	Next   Structure
-	Flags  MemoryUnmapFlags
-	Memory *DeviceMemory
-}
-
-func (s *MemoryUnmapInfo) GetType() StructureType {
-	return StructureTypeMemoryUnmapInfo
-}
-
-func (s *MemoryUnmapInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkMemoryUnmapInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Flags)
-	p.flags = val0
-	var h1 unsafe.Pointer
-	if s.Memory != nil {
-		h1 = s.Memory.handle
-	}
-	p.memory = h1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *MemoryUnmapInfo) fromC(p *cVkMemoryUnmapInfo) {
-	s.Flags = MemoryUnmapFlags(p.flags)
-	s.Memory = &DeviceMemory{handle: p.memory}
 }
 
 type cVkMultiDrawIndexedInfoEXT struct {
@@ -17410,126 +12941,6 @@ func (s *OpaqueCaptureDescriptorDataCreateInfoEXT) fromC(p *cVkOpaqueCaptureDesc
 	s.OpaqueCaptureDescriptorData = p.opaqueCaptureDescriptorData
 }
 
-type cVkPhysicalDevice16BitStorageFeatures struct {
-	sType                              int32
-	pNext                              unsafe.Pointer
-	storageBuffer16BitAccess           uint32
-	uniformAndStorageBuffer16BitAccess uint32
-	storagePushConstant16              uint32
-	storageInputOutput16               uint32
-}
-
-type PhysicalDevice16BitStorageFeatures struct {
-	Next                               Structure
-	StorageBuffer16BitAccess           bool
-	UniformAndStorageBuffer16BitAccess bool
-	StoragePushConstant16              bool
-	StorageInputOutput16               bool
-}
-
-func (s *PhysicalDevice16BitStorageFeatures) GetType() StructureType {
-	return StructureTypePhysicalDevice16bitStorageFeatures
-}
-
-func (s *PhysicalDevice16BitStorageFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDevice16BitStorageFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.StorageBuffer16BitAccess {
-		val0 = 1
-	}
-	p.storageBuffer16BitAccess = val0
-	val1 := uint32(0)
-	if s.UniformAndStorageBuffer16BitAccess {
-		val1 = 1
-	}
-	p.uniformAndStorageBuffer16BitAccess = val1
-	val2 := uint32(0)
-	if s.StoragePushConstant16 {
-		val2 = 1
-	}
-	p.storagePushConstant16 = val2
-	val3 := uint32(0)
-	if s.StorageInputOutput16 {
-		val3 = 1
-	}
-	p.storageInputOutput16 = val3
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDevice16BitStorageFeatures) fromC(p *cVkPhysicalDevice16BitStorageFeatures) {
-	s.StorageBuffer16BitAccess = p.storageBuffer16BitAccess != 0
-	s.UniformAndStorageBuffer16BitAccess = p.uniformAndStorageBuffer16BitAccess != 0
-	s.StoragePushConstant16 = p.storagePushConstant16 != 0
-	s.StorageInputOutput16 = p.storageInputOutput16 != 0
-}
-
-type cVkPhysicalDevice8BitStorageFeatures struct {
-	sType                             int32
-	pNext                             unsafe.Pointer
-	storageBuffer8BitAccess           uint32
-	uniformAndStorageBuffer8BitAccess uint32
-	storagePushConstant8              uint32
-}
-
-type PhysicalDevice8BitStorageFeatures struct {
-	Next                              Structure
-	StorageBuffer8BitAccess           bool
-	UniformAndStorageBuffer8BitAccess bool
-	StoragePushConstant8              bool
-}
-
-func (s *PhysicalDevice8BitStorageFeatures) GetType() StructureType {
-	return StructureTypePhysicalDevice8bitStorageFeatures
-}
-
-func (s *PhysicalDevice8BitStorageFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDevice8BitStorageFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.StorageBuffer8BitAccess {
-		val0 = 1
-	}
-	p.storageBuffer8BitAccess = val0
-	val1 := uint32(0)
-	if s.UniformAndStorageBuffer8BitAccess {
-		val1 = 1
-	}
-	p.uniformAndStorageBuffer8BitAccess = val1
-	val2 := uint32(0)
-	if s.StoragePushConstant8 {
-		val2 = 1
-	}
-	p.storagePushConstant8 = val2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDevice8BitStorageFeatures) fromC(p *cVkPhysicalDevice8BitStorageFeatures) {
-	s.StorageBuffer8BitAccess = p.storageBuffer8BitAccess != 0
-	s.UniformAndStorageBuffer8BitAccess = p.uniformAndStorageBuffer8BitAccess != 0
-	s.StoragePushConstant8 = p.storagePushConstant8 != 0
-}
-
 type cVkPhysicalDeviceAccelerationStructureFeaturesKHR struct {
 	sType                                                 int32
 	pNext                                                 unsafe.Pointer
@@ -17672,62 +13083,6 @@ func (s *PhysicalDeviceAccelerationStructurePropertiesKHR) fromC(p *cVkPhysicalD
 	s.MaxDescriptorSetAccelerationStructures = uint32(p.maxDescriptorSetAccelerationStructures)
 	s.MaxDescriptorSetUpdateAfterBindAccelerationStructures = uint32(p.maxDescriptorSetUpdateAfterBindAccelerationStructures)
 	s.MinAccelerationStructureScratchOffsetAlignment = uint32(p.minAccelerationStructureScratchOffsetAlignment)
-}
-
-type cVkPhysicalDeviceBufferDeviceAddressFeatures struct {
-	sType                            int32
-	pNext                            unsafe.Pointer
-	bufferDeviceAddress              uint32
-	bufferDeviceAddressCaptureReplay uint32
-	bufferDeviceAddressMultiDevice   uint32
-}
-
-type PhysicalDeviceBufferDeviceAddressFeatures struct {
-	Next                             Structure
-	BufferDeviceAddress              bool
-	BufferDeviceAddressCaptureReplay bool
-	BufferDeviceAddressMultiDevice   bool
-}
-
-func (s *PhysicalDeviceBufferDeviceAddressFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceBufferDeviceAddressFeatures
-}
-
-func (s *PhysicalDeviceBufferDeviceAddressFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceBufferDeviceAddressFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.BufferDeviceAddress {
-		val0 = 1
-	}
-	p.bufferDeviceAddress = val0
-	val1 := uint32(0)
-	if s.BufferDeviceAddressCaptureReplay {
-		val1 = 1
-	}
-	p.bufferDeviceAddressCaptureReplay = val1
-	val2 := uint32(0)
-	if s.BufferDeviceAddressMultiDevice {
-		val2 = 1
-	}
-	p.bufferDeviceAddressMultiDevice = val2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceBufferDeviceAddressFeatures) fromC(p *cVkPhysicalDeviceBufferDeviceAddressFeatures) {
-	s.BufferDeviceAddress = p.bufferDeviceAddress != 0
-	s.BufferDeviceAddressCaptureReplay = p.bufferDeviceAddressCaptureReplay != 0
-	s.BufferDeviceAddressMultiDevice = p.bufferDeviceAddressMultiDevice != 0
 }
 
 type cVkPhysicalDeviceDepthStencilResolveProperties struct {
@@ -18095,366 +13450,6 @@ func (s *PhysicalDeviceDescriptorBufferPropertiesEXT) fromC(p *cVkPhysicalDevice
 	s.DescriptorBufferAddressSpaceSize = uint64(p.descriptorBufferAddressSpaceSize)
 }
 
-type cVkPhysicalDeviceDescriptorIndexingFeatures struct {
-	sType                                              int32
-	pNext                                              unsafe.Pointer
-	shaderInputAttachmentArrayDynamicIndexing          uint32
-	shaderUniformTexelBufferArrayDynamicIndexing       uint32
-	shaderStorageTexelBufferArrayDynamicIndexing       uint32
-	shaderUniformBufferArrayNonUniformIndexing         uint32
-	shaderSampledImageArrayNonUniformIndexing          uint32
-	shaderStorageBufferArrayNonUniformIndexing         uint32
-	shaderStorageImageArrayNonUniformIndexing          uint32
-	shaderInputAttachmentArrayNonUniformIndexing       uint32
-	shaderUniformTexelBufferArrayNonUniformIndexing    uint32
-	shaderStorageTexelBufferArrayNonUniformIndexing    uint32
-	descriptorBindingUniformBufferUpdateAfterBind      uint32
-	descriptorBindingSampledImageUpdateAfterBind       uint32
-	descriptorBindingStorageImageUpdateAfterBind       uint32
-	descriptorBindingStorageBufferUpdateAfterBind      uint32
-	descriptorBindingUniformTexelBufferUpdateAfterBind uint32
-	descriptorBindingStorageTexelBufferUpdateAfterBind uint32
-	descriptorBindingUpdateUnusedWhilePending          uint32
-	descriptorBindingPartiallyBound                    uint32
-	descriptorBindingVariableDescriptorCount           uint32
-	runtimeDescriptorArray                             uint32
-}
-
-type PhysicalDeviceDescriptorIndexingFeatures struct {
-	Next                                               Structure
-	ShaderInputAttachmentArrayDynamicIndexing          bool
-	ShaderUniformTexelBufferArrayDynamicIndexing       bool
-	ShaderStorageTexelBufferArrayDynamicIndexing       bool
-	ShaderUniformBufferArrayNonUniformIndexing         bool
-	ShaderSampledImageArrayNonUniformIndexing          bool
-	ShaderStorageBufferArrayNonUniformIndexing         bool
-	ShaderStorageImageArrayNonUniformIndexing          bool
-	ShaderInputAttachmentArrayNonUniformIndexing       bool
-	ShaderUniformTexelBufferArrayNonUniformIndexing    bool
-	ShaderStorageTexelBufferArrayNonUniformIndexing    bool
-	DescriptorBindingUniformBufferUpdateAfterBind      bool
-	DescriptorBindingSampledImageUpdateAfterBind       bool
-	DescriptorBindingStorageImageUpdateAfterBind       bool
-	DescriptorBindingStorageBufferUpdateAfterBind      bool
-	DescriptorBindingUniformTexelBufferUpdateAfterBind bool
-	DescriptorBindingStorageTexelBufferUpdateAfterBind bool
-	DescriptorBindingUpdateUnusedWhilePending          bool
-	DescriptorBindingPartiallyBound                    bool
-	DescriptorBindingVariableDescriptorCount           bool
-	RuntimeDescriptorArray                             bool
-}
-
-func (s *PhysicalDeviceDescriptorIndexingFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceDescriptorIndexingFeatures
-}
-
-func (s *PhysicalDeviceDescriptorIndexingFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceDescriptorIndexingFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ShaderInputAttachmentArrayDynamicIndexing {
-		val0 = 1
-	}
-	p.shaderInputAttachmentArrayDynamicIndexing = val0
-	val1 := uint32(0)
-	if s.ShaderUniformTexelBufferArrayDynamicIndexing {
-		val1 = 1
-	}
-	p.shaderUniformTexelBufferArrayDynamicIndexing = val1
-	val2 := uint32(0)
-	if s.ShaderStorageTexelBufferArrayDynamicIndexing {
-		val2 = 1
-	}
-	p.shaderStorageTexelBufferArrayDynamicIndexing = val2
-	val3 := uint32(0)
-	if s.ShaderUniformBufferArrayNonUniformIndexing {
-		val3 = 1
-	}
-	p.shaderUniformBufferArrayNonUniformIndexing = val3
-	val4 := uint32(0)
-	if s.ShaderSampledImageArrayNonUniformIndexing {
-		val4 = 1
-	}
-	p.shaderSampledImageArrayNonUniformIndexing = val4
-	val5 := uint32(0)
-	if s.ShaderStorageBufferArrayNonUniformIndexing {
-		val5 = 1
-	}
-	p.shaderStorageBufferArrayNonUniformIndexing = val5
-	val6 := uint32(0)
-	if s.ShaderStorageImageArrayNonUniformIndexing {
-		val6 = 1
-	}
-	p.shaderStorageImageArrayNonUniformIndexing = val6
-	val7 := uint32(0)
-	if s.ShaderInputAttachmentArrayNonUniformIndexing {
-		val7 = 1
-	}
-	p.shaderInputAttachmentArrayNonUniformIndexing = val7
-	val8 := uint32(0)
-	if s.ShaderUniformTexelBufferArrayNonUniformIndexing {
-		val8 = 1
-	}
-	p.shaderUniformTexelBufferArrayNonUniformIndexing = val8
-	val9 := uint32(0)
-	if s.ShaderStorageTexelBufferArrayNonUniformIndexing {
-		val9 = 1
-	}
-	p.shaderStorageTexelBufferArrayNonUniformIndexing = val9
-	val10 := uint32(0)
-	if s.DescriptorBindingUniformBufferUpdateAfterBind {
-		val10 = 1
-	}
-	p.descriptorBindingUniformBufferUpdateAfterBind = val10
-	val11 := uint32(0)
-	if s.DescriptorBindingSampledImageUpdateAfterBind {
-		val11 = 1
-	}
-	p.descriptorBindingSampledImageUpdateAfterBind = val11
-	val12 := uint32(0)
-	if s.DescriptorBindingStorageImageUpdateAfterBind {
-		val12 = 1
-	}
-	p.descriptorBindingStorageImageUpdateAfterBind = val12
-	val13 := uint32(0)
-	if s.DescriptorBindingStorageBufferUpdateAfterBind {
-		val13 = 1
-	}
-	p.descriptorBindingStorageBufferUpdateAfterBind = val13
-	val14 := uint32(0)
-	if s.DescriptorBindingUniformTexelBufferUpdateAfterBind {
-		val14 = 1
-	}
-	p.descriptorBindingUniformTexelBufferUpdateAfterBind = val14
-	val15 := uint32(0)
-	if s.DescriptorBindingStorageTexelBufferUpdateAfterBind {
-		val15 = 1
-	}
-	p.descriptorBindingStorageTexelBufferUpdateAfterBind = val15
-	val16 := uint32(0)
-	if s.DescriptorBindingUpdateUnusedWhilePending {
-		val16 = 1
-	}
-	p.descriptorBindingUpdateUnusedWhilePending = val16
-	val17 := uint32(0)
-	if s.DescriptorBindingPartiallyBound {
-		val17 = 1
-	}
-	p.descriptorBindingPartiallyBound = val17
-	val18 := uint32(0)
-	if s.DescriptorBindingVariableDescriptorCount {
-		val18 = 1
-	}
-	p.descriptorBindingVariableDescriptorCount = val18
-	val19 := uint32(0)
-	if s.RuntimeDescriptorArray {
-		val19 = 1
-	}
-	p.runtimeDescriptorArray = val19
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceDescriptorIndexingFeatures) fromC(p *cVkPhysicalDeviceDescriptorIndexingFeatures) {
-	s.ShaderInputAttachmentArrayDynamicIndexing = p.shaderInputAttachmentArrayDynamicIndexing != 0
-	s.ShaderUniformTexelBufferArrayDynamicIndexing = p.shaderUniformTexelBufferArrayDynamicIndexing != 0
-	s.ShaderStorageTexelBufferArrayDynamicIndexing = p.shaderStorageTexelBufferArrayDynamicIndexing != 0
-	s.ShaderUniformBufferArrayNonUniformIndexing = p.shaderUniformBufferArrayNonUniformIndexing != 0
-	s.ShaderSampledImageArrayNonUniformIndexing = p.shaderSampledImageArrayNonUniformIndexing != 0
-	s.ShaderStorageBufferArrayNonUniformIndexing = p.shaderStorageBufferArrayNonUniformIndexing != 0
-	s.ShaderStorageImageArrayNonUniformIndexing = p.shaderStorageImageArrayNonUniformIndexing != 0
-	s.ShaderInputAttachmentArrayNonUniformIndexing = p.shaderInputAttachmentArrayNonUniformIndexing != 0
-	s.ShaderUniformTexelBufferArrayNonUniformIndexing = p.shaderUniformTexelBufferArrayNonUniformIndexing != 0
-	s.ShaderStorageTexelBufferArrayNonUniformIndexing = p.shaderStorageTexelBufferArrayNonUniformIndexing != 0
-	s.DescriptorBindingUniformBufferUpdateAfterBind = p.descriptorBindingUniformBufferUpdateAfterBind != 0
-	s.DescriptorBindingSampledImageUpdateAfterBind = p.descriptorBindingSampledImageUpdateAfterBind != 0
-	s.DescriptorBindingStorageImageUpdateAfterBind = p.descriptorBindingStorageImageUpdateAfterBind != 0
-	s.DescriptorBindingStorageBufferUpdateAfterBind = p.descriptorBindingStorageBufferUpdateAfterBind != 0
-	s.DescriptorBindingUniformTexelBufferUpdateAfterBind = p.descriptorBindingUniformTexelBufferUpdateAfterBind != 0
-	s.DescriptorBindingStorageTexelBufferUpdateAfterBind = p.descriptorBindingStorageTexelBufferUpdateAfterBind != 0
-	s.DescriptorBindingUpdateUnusedWhilePending = p.descriptorBindingUpdateUnusedWhilePending != 0
-	s.DescriptorBindingPartiallyBound = p.descriptorBindingPartiallyBound != 0
-	s.DescriptorBindingVariableDescriptorCount = p.descriptorBindingVariableDescriptorCount != 0
-	s.RuntimeDescriptorArray = p.runtimeDescriptorArray != 0
-}
-
-type cVkPhysicalDeviceDescriptorIndexingProperties struct {
-	sType                                                int32
-	pNext                                                unsafe.Pointer
-	maxUpdateAfterBindDescriptorsInAllPools              uint32
-	shaderUniformBufferArrayNonUniformIndexingNative     uint32
-	shaderSampledImageArrayNonUniformIndexingNative      uint32
-	shaderStorageBufferArrayNonUniformIndexingNative     uint32
-	shaderStorageImageArrayNonUniformIndexingNative      uint32
-	shaderInputAttachmentArrayNonUniformIndexingNative   uint32
-	robustBufferAccessUpdateAfterBind                    uint32
-	quadDivergentImplicitLod                             uint32
-	maxPerStageDescriptorUpdateAfterBindSamplers         uint32
-	maxPerStageDescriptorUpdateAfterBindUniformBuffers   uint32
-	maxPerStageDescriptorUpdateAfterBindStorageBuffers   uint32
-	maxPerStageDescriptorUpdateAfterBindSampledImages    uint32
-	maxPerStageDescriptorUpdateAfterBindStorageImages    uint32
-	maxPerStageDescriptorUpdateAfterBindInputAttachments uint32
-	maxPerStageUpdateAfterBindResources                  uint32
-	maxDescriptorSetUpdateAfterBindSamplers              uint32
-	maxDescriptorSetUpdateAfterBindUniformBuffers        uint32
-	maxDescriptorSetUpdateAfterBindUniformBuffersDynamic uint32
-	maxDescriptorSetUpdateAfterBindStorageBuffers        uint32
-	maxDescriptorSetUpdateAfterBindStorageBuffersDynamic uint32
-	maxDescriptorSetUpdateAfterBindSampledImages         uint32
-	maxDescriptorSetUpdateAfterBindStorageImages         uint32
-	maxDescriptorSetUpdateAfterBindInputAttachments      uint32
-}
-
-type PhysicalDeviceDescriptorIndexingProperties struct {
-	Next                                                 Structure
-	MaxUpdateAfterBindDescriptorsInAllPools              uint32
-	ShaderUniformBufferArrayNonUniformIndexingNative     bool
-	ShaderSampledImageArrayNonUniformIndexingNative      bool
-	ShaderStorageBufferArrayNonUniformIndexingNative     bool
-	ShaderStorageImageArrayNonUniformIndexingNative      bool
-	ShaderInputAttachmentArrayNonUniformIndexingNative   bool
-	RobustBufferAccessUpdateAfterBind                    bool
-	QuadDivergentImplicitLod                             bool
-	MaxPerStageDescriptorUpdateAfterBindSamplers         uint32
-	MaxPerStageDescriptorUpdateAfterBindUniformBuffers   uint32
-	MaxPerStageDescriptorUpdateAfterBindStorageBuffers   uint32
-	MaxPerStageDescriptorUpdateAfterBindSampledImages    uint32
-	MaxPerStageDescriptorUpdateAfterBindStorageImages    uint32
-	MaxPerStageDescriptorUpdateAfterBindInputAttachments uint32
-	MaxPerStageUpdateAfterBindResources                  uint32
-	MaxDescriptorSetUpdateAfterBindSamplers              uint32
-	MaxDescriptorSetUpdateAfterBindUniformBuffers        uint32
-	MaxDescriptorSetUpdateAfterBindUniformBuffersDynamic uint32
-	MaxDescriptorSetUpdateAfterBindStorageBuffers        uint32
-	MaxDescriptorSetUpdateAfterBindStorageBuffersDynamic uint32
-	MaxDescriptorSetUpdateAfterBindSampledImages         uint32
-	MaxDescriptorSetUpdateAfterBindStorageImages         uint32
-	MaxDescriptorSetUpdateAfterBindInputAttachments      uint32
-}
-
-func (s *PhysicalDeviceDescriptorIndexingProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceDescriptorIndexingProperties
-}
-
-func (s *PhysicalDeviceDescriptorIndexingProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceDescriptorIndexingProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.MaxUpdateAfterBindDescriptorsInAllPools)
-	p.maxUpdateAfterBindDescriptorsInAllPools = val0
-	val1 := uint32(0)
-	if s.ShaderUniformBufferArrayNonUniformIndexingNative {
-		val1 = 1
-	}
-	p.shaderUniformBufferArrayNonUniformIndexingNative = val1
-	val2 := uint32(0)
-	if s.ShaderSampledImageArrayNonUniformIndexingNative {
-		val2 = 1
-	}
-	p.shaderSampledImageArrayNonUniformIndexingNative = val2
-	val3 := uint32(0)
-	if s.ShaderStorageBufferArrayNonUniformIndexingNative {
-		val3 = 1
-	}
-	p.shaderStorageBufferArrayNonUniformIndexingNative = val3
-	val4 := uint32(0)
-	if s.ShaderStorageImageArrayNonUniformIndexingNative {
-		val4 = 1
-	}
-	p.shaderStorageImageArrayNonUniformIndexingNative = val4
-	val5 := uint32(0)
-	if s.ShaderInputAttachmentArrayNonUniformIndexingNative {
-		val5 = 1
-	}
-	p.shaderInputAttachmentArrayNonUniformIndexingNative = val5
-	val6 := uint32(0)
-	if s.RobustBufferAccessUpdateAfterBind {
-		val6 = 1
-	}
-	p.robustBufferAccessUpdateAfterBind = val6
-	val7 := uint32(0)
-	if s.QuadDivergentImplicitLod {
-		val7 = 1
-	}
-	p.quadDivergentImplicitLod = val7
-	val8 := uint32(s.MaxPerStageDescriptorUpdateAfterBindSamplers)
-	p.maxPerStageDescriptorUpdateAfterBindSamplers = val8
-	val9 := uint32(s.MaxPerStageDescriptorUpdateAfterBindUniformBuffers)
-	p.maxPerStageDescriptorUpdateAfterBindUniformBuffers = val9
-	val10 := uint32(s.MaxPerStageDescriptorUpdateAfterBindStorageBuffers)
-	p.maxPerStageDescriptorUpdateAfterBindStorageBuffers = val10
-	val11 := uint32(s.MaxPerStageDescriptorUpdateAfterBindSampledImages)
-	p.maxPerStageDescriptorUpdateAfterBindSampledImages = val11
-	val12 := uint32(s.MaxPerStageDescriptorUpdateAfterBindStorageImages)
-	p.maxPerStageDescriptorUpdateAfterBindStorageImages = val12
-	val13 := uint32(s.MaxPerStageDescriptorUpdateAfterBindInputAttachments)
-	p.maxPerStageDescriptorUpdateAfterBindInputAttachments = val13
-	val14 := uint32(s.MaxPerStageUpdateAfterBindResources)
-	p.maxPerStageUpdateAfterBindResources = val14
-	val15 := uint32(s.MaxDescriptorSetUpdateAfterBindSamplers)
-	p.maxDescriptorSetUpdateAfterBindSamplers = val15
-	val16 := uint32(s.MaxDescriptorSetUpdateAfterBindUniformBuffers)
-	p.maxDescriptorSetUpdateAfterBindUniformBuffers = val16
-	val17 := uint32(s.MaxDescriptorSetUpdateAfterBindUniformBuffersDynamic)
-	p.maxDescriptorSetUpdateAfterBindUniformBuffersDynamic = val17
-	val18 := uint32(s.MaxDescriptorSetUpdateAfterBindStorageBuffers)
-	p.maxDescriptorSetUpdateAfterBindStorageBuffers = val18
-	val19 := uint32(s.MaxDescriptorSetUpdateAfterBindStorageBuffersDynamic)
-	p.maxDescriptorSetUpdateAfterBindStorageBuffersDynamic = val19
-	val20 := uint32(s.MaxDescriptorSetUpdateAfterBindSampledImages)
-	p.maxDescriptorSetUpdateAfterBindSampledImages = val20
-	val21 := uint32(s.MaxDescriptorSetUpdateAfterBindStorageImages)
-	p.maxDescriptorSetUpdateAfterBindStorageImages = val21
-	val22 := uint32(s.MaxDescriptorSetUpdateAfterBindInputAttachments)
-	p.maxDescriptorSetUpdateAfterBindInputAttachments = val22
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceDescriptorIndexingProperties) fromC(p *cVkPhysicalDeviceDescriptorIndexingProperties) {
-	s.MaxUpdateAfterBindDescriptorsInAllPools = uint32(p.maxUpdateAfterBindDescriptorsInAllPools)
-	s.ShaderUniformBufferArrayNonUniformIndexingNative = p.shaderUniformBufferArrayNonUniformIndexingNative != 0
-	s.ShaderSampledImageArrayNonUniformIndexingNative = p.shaderSampledImageArrayNonUniformIndexingNative != 0
-	s.ShaderStorageBufferArrayNonUniformIndexingNative = p.shaderStorageBufferArrayNonUniformIndexingNative != 0
-	s.ShaderStorageImageArrayNonUniformIndexingNative = p.shaderStorageImageArrayNonUniformIndexingNative != 0
-	s.ShaderInputAttachmentArrayNonUniformIndexingNative = p.shaderInputAttachmentArrayNonUniformIndexingNative != 0
-	s.RobustBufferAccessUpdateAfterBind = p.robustBufferAccessUpdateAfterBind != 0
-	s.QuadDivergentImplicitLod = p.quadDivergentImplicitLod != 0
-	s.MaxPerStageDescriptorUpdateAfterBindSamplers = uint32(p.maxPerStageDescriptorUpdateAfterBindSamplers)
-	s.MaxPerStageDescriptorUpdateAfterBindUniformBuffers = uint32(p.maxPerStageDescriptorUpdateAfterBindUniformBuffers)
-	s.MaxPerStageDescriptorUpdateAfterBindStorageBuffers = uint32(p.maxPerStageDescriptorUpdateAfterBindStorageBuffers)
-	s.MaxPerStageDescriptorUpdateAfterBindSampledImages = uint32(p.maxPerStageDescriptorUpdateAfterBindSampledImages)
-	s.MaxPerStageDescriptorUpdateAfterBindStorageImages = uint32(p.maxPerStageDescriptorUpdateAfterBindStorageImages)
-	s.MaxPerStageDescriptorUpdateAfterBindInputAttachments = uint32(p.maxPerStageDescriptorUpdateAfterBindInputAttachments)
-	s.MaxPerStageUpdateAfterBindResources = uint32(p.maxPerStageUpdateAfterBindResources)
-	s.MaxDescriptorSetUpdateAfterBindSamplers = uint32(p.maxDescriptorSetUpdateAfterBindSamplers)
-	s.MaxDescriptorSetUpdateAfterBindUniformBuffers = uint32(p.maxDescriptorSetUpdateAfterBindUniformBuffers)
-	s.MaxDescriptorSetUpdateAfterBindUniformBuffersDynamic = uint32(p.maxDescriptorSetUpdateAfterBindUniformBuffersDynamic)
-	s.MaxDescriptorSetUpdateAfterBindStorageBuffers = uint32(p.maxDescriptorSetUpdateAfterBindStorageBuffers)
-	s.MaxDescriptorSetUpdateAfterBindStorageBuffersDynamic = uint32(p.maxDescriptorSetUpdateAfterBindStorageBuffersDynamic)
-	s.MaxDescriptorSetUpdateAfterBindSampledImages = uint32(p.maxDescriptorSetUpdateAfterBindSampledImages)
-	s.MaxDescriptorSetUpdateAfterBindStorageImages = uint32(p.maxDescriptorSetUpdateAfterBindStorageImages)
-	s.MaxDescriptorSetUpdateAfterBindInputAttachments = uint32(p.maxDescriptorSetUpdateAfterBindInputAttachments)
-}
-
 type cVkPhysicalDeviceDeviceGeneratedCommandsFeaturesEXT struct {
 	sType                          int32
 	pNext                          unsafe.Pointer
@@ -18599,72 +13594,6 @@ func (s *PhysicalDeviceDeviceGeneratedCommandsPropertiesEXT) fromC(p *cVkPhysica
 	s.SupportedIndirectCommandsShaderStagesShaderBinding = ShaderStageFlags(p.supportedIndirectCommandsShaderStagesShaderBinding)
 	s.DeviceGeneratedCommandsTransformFeedback = p.deviceGeneratedCommandsTransformFeedback != 0
 	s.DeviceGeneratedCommandsMultiDrawIndirectCount = p.deviceGeneratedCommandsMultiDrawIndirectCount != 0
-}
-
-type cVkPhysicalDeviceDriverProperties struct {
-	sType              int32
-	pNext              unsafe.Pointer
-	driverID           uint32
-	driverName         [256]byte
-	driverInfo         [256]byte
-	conformanceVersion cVkConformanceVersion
-}
-
-type PhysicalDeviceDriverProperties struct {
-	Next               Structure
-	DriverID           DriverId
-	DriverName         [256]byte
-	DriverInfo         [256]byte
-	ConformanceVersion ConformanceVersion
-}
-
-func (s *PhysicalDeviceDriverProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceDriverProperties
-}
-
-func (s *PhysicalDeviceDriverProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceDriverProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.DriverID)
-	p.driverID = val0
-	var arr1 [256]byte
-	for i2, elem3 := range s.DriverName {
-		val4 := byte(elem3)
-		arr1[i2] = val4
-	}
-	p.driverName = arr1
-	var arr5 [256]byte
-	for i6, elem7 := range s.DriverInfo {
-		val8 := byte(elem7)
-		arr5[i6] = val8
-	}
-	p.driverInfo = arr5
-	val9, cancel10 := s.ConformanceVersion.toC()
-	cancels = append(cancels, cancel10)
-	cast11 := (*cVkConformanceVersion)(val9)
-	p.conformanceVersion = *cast11
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceDriverProperties) fromC(p *cVkPhysicalDeviceDriverProperties) {
-	s.DriverID = DriverId(p.driverID)
-	for _i := range s.DriverName {
-		s.DriverName[_i] = byte(p.driverName[_i])
-	}
-	for _i := range s.DriverInfo {
-		s.DriverInfo[_i] = byte(p.driverInfo[_i])
-	}
-	s.ConformanceVersion.fromC(&p.conformanceVersion)
 }
 
 type cVkPhysicalDeviceDynamicRenderingFeatures struct {
@@ -19121,164 +14050,6 @@ func (s *PhysicalDeviceExtendedDynamicState3PropertiesEXT) toC() (unsafe.Pointer
 
 func (s *PhysicalDeviceExtendedDynamicState3PropertiesEXT) fromC(p *cVkPhysicalDeviceExtendedDynamicState3PropertiesEXT) {
 	s.DynamicPrimitiveTopologyUnrestricted = p.dynamicPrimitiveTopologyUnrestricted != 0
-}
-
-type cVkPhysicalDeviceExternalBufferInfo struct {
-	sType      int32
-	pNext      unsafe.Pointer
-	flags      uint32
-	usage      uint32
-	handleType uint32
-}
-
-type PhysicalDeviceExternalBufferInfo struct {
-	Next       Structure
-	Flags      BufferCreateFlags
-	Usage      BufferUsageFlags
-	HandleType ExternalMemoryHandleTypeFlagBits
-}
-
-func (s *PhysicalDeviceExternalBufferInfo) GetType() StructureType {
-	return StructureTypePhysicalDeviceExternalBufferInfo
-}
-
-func (s *PhysicalDeviceExternalBufferInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceExternalBufferInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Flags)
-	p.flags = val0
-	val1 := uint32(s.Usage)
-	p.usage = val1
-	val2 := uint32(s.HandleType)
-	p.handleType = val2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceExternalBufferInfo) fromC(p *cVkPhysicalDeviceExternalBufferInfo) {
-	s.Flags = BufferCreateFlags(p.flags)
-	s.Usage = BufferUsageFlags(p.usage)
-	s.HandleType = ExternalMemoryHandleTypeFlagBits(p.handleType)
-}
-
-type cVkPhysicalDeviceExternalFenceInfo struct {
-	sType      int32
-	pNext      unsafe.Pointer
-	handleType uint32
-}
-
-type PhysicalDeviceExternalFenceInfo struct {
-	Next       Structure
-	HandleType ExternalFenceHandleTypeFlagBits
-}
-
-func (s *PhysicalDeviceExternalFenceInfo) GetType() StructureType {
-	return StructureTypePhysicalDeviceExternalFenceInfo
-}
-
-func (s *PhysicalDeviceExternalFenceInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceExternalFenceInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.HandleType)
-	p.handleType = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceExternalFenceInfo) fromC(p *cVkPhysicalDeviceExternalFenceInfo) {
-	s.HandleType = ExternalFenceHandleTypeFlagBits(p.handleType)
-}
-
-type cVkPhysicalDeviceExternalImageFormatInfo struct {
-	sType      int32
-	pNext      unsafe.Pointer
-	handleType uint32
-}
-
-type PhysicalDeviceExternalImageFormatInfo struct {
-	Next       Structure
-	HandleType ExternalMemoryHandleTypeFlagBits
-}
-
-func (s *PhysicalDeviceExternalImageFormatInfo) GetType() StructureType {
-	return StructureTypePhysicalDeviceExternalImageFormatInfo
-}
-
-func (s *PhysicalDeviceExternalImageFormatInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceExternalImageFormatInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.HandleType)
-	p.handleType = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceExternalImageFormatInfo) fromC(p *cVkPhysicalDeviceExternalImageFormatInfo) {
-	s.HandleType = ExternalMemoryHandleTypeFlagBits(p.handleType)
-}
-
-type cVkPhysicalDeviceExternalSemaphoreInfo struct {
-	sType      int32
-	pNext      unsafe.Pointer
-	handleType uint32
-}
-
-type PhysicalDeviceExternalSemaphoreInfo struct {
-	Next       Structure
-	HandleType ExternalSemaphoreHandleTypeFlagBits
-}
-
-func (s *PhysicalDeviceExternalSemaphoreInfo) GetType() StructureType {
-	return StructureTypePhysicalDeviceExternalSemaphoreInfo
-}
-
-func (s *PhysicalDeviceExternalSemaphoreInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceExternalSemaphoreInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.HandleType)
-	p.handleType = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceExternalSemaphoreInfo) fromC(p *cVkPhysicalDeviceExternalSemaphoreInfo) {
-	s.HandleType = ExternalSemaphoreHandleTypeFlagBits(p.handleType)
 }
 
 type cVkPhysicalDeviceFeatures struct {
@@ -19740,247 +14511,6 @@ func (s *PhysicalDeviceFeatures) fromC(p *cVkPhysicalDeviceFeatures) {
 	s.InheritedQueries = p.inheritedQueries != 0
 }
 
-type cVkPhysicalDeviceFeatures2 struct {
-	sType    int32
-	pNext    unsafe.Pointer
-	features cVkPhysicalDeviceFeatures
-}
-
-type PhysicalDeviceFeatures2 struct {
-	Next     Structure
-	Features PhysicalDeviceFeatures
-}
-
-func (s *PhysicalDeviceFeatures2) GetType() StructureType {
-	return StructureTypePhysicalDeviceFeatures2
-}
-
-func (s *PhysicalDeviceFeatures2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceFeatures2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0, cancel1 := s.Features.toC()
-	cancels = append(cancels, cancel1)
-	cast2 := (*cVkPhysicalDeviceFeatures)(val0)
-	p.features = *cast2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceFeatures2) fromC(p *cVkPhysicalDeviceFeatures2) {
-	s.Features.fromC(&p.features)
-}
-
-type cVkPhysicalDeviceFloatControlsProperties struct {
-	sType                                 int32
-	pNext                                 unsafe.Pointer
-	denormBehaviorIndependence            uint32
-	roundingModeIndependence              uint32
-	shaderSignedZeroInfNanPreserveFloat16 uint32
-	shaderSignedZeroInfNanPreserveFloat32 uint32
-	shaderSignedZeroInfNanPreserveFloat64 uint32
-	shaderDenormPreserveFloat16           uint32
-	shaderDenormPreserveFloat32           uint32
-	shaderDenormPreserveFloat64           uint32
-	shaderDenormFlushToZeroFloat16        uint32
-	shaderDenormFlushToZeroFloat32        uint32
-	shaderDenormFlushToZeroFloat64        uint32
-	shaderRoundingModeRTEFloat16          uint32
-	shaderRoundingModeRTEFloat32          uint32
-	shaderRoundingModeRTEFloat64          uint32
-	shaderRoundingModeRTZFloat16          uint32
-	shaderRoundingModeRTZFloat32          uint32
-	shaderRoundingModeRTZFloat64          uint32
-}
-
-type PhysicalDeviceFloatControlsProperties struct {
-	Next                                  Structure
-	DenormBehaviorIndependence            ShaderFloatControlsIndependence
-	RoundingModeIndependence              ShaderFloatControlsIndependence
-	ShaderSignedZeroInfNanPreserveFloat16 bool
-	ShaderSignedZeroInfNanPreserveFloat32 bool
-	ShaderSignedZeroInfNanPreserveFloat64 bool
-	ShaderDenormPreserveFloat16           bool
-	ShaderDenormPreserveFloat32           bool
-	ShaderDenormPreserveFloat64           bool
-	ShaderDenormFlushToZeroFloat16        bool
-	ShaderDenormFlushToZeroFloat32        bool
-	ShaderDenormFlushToZeroFloat64        bool
-	ShaderRoundingModeRTEFloat16          bool
-	ShaderRoundingModeRTEFloat32          bool
-	ShaderRoundingModeRTEFloat64          bool
-	ShaderRoundingModeRTZFloat16          bool
-	ShaderRoundingModeRTZFloat32          bool
-	ShaderRoundingModeRTZFloat64          bool
-}
-
-func (s *PhysicalDeviceFloatControlsProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceFloatControlsProperties
-}
-
-func (s *PhysicalDeviceFloatControlsProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceFloatControlsProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.DenormBehaviorIndependence)
-	p.denormBehaviorIndependence = val0
-	val1 := uint32(s.RoundingModeIndependence)
-	p.roundingModeIndependence = val1
-	val2 := uint32(0)
-	if s.ShaderSignedZeroInfNanPreserveFloat16 {
-		val2 = 1
-	}
-	p.shaderSignedZeroInfNanPreserveFloat16 = val2
-	val3 := uint32(0)
-	if s.ShaderSignedZeroInfNanPreserveFloat32 {
-		val3 = 1
-	}
-	p.shaderSignedZeroInfNanPreserveFloat32 = val3
-	val4 := uint32(0)
-	if s.ShaderSignedZeroInfNanPreserveFloat64 {
-		val4 = 1
-	}
-	p.shaderSignedZeroInfNanPreserveFloat64 = val4
-	val5 := uint32(0)
-	if s.ShaderDenormPreserveFloat16 {
-		val5 = 1
-	}
-	p.shaderDenormPreserveFloat16 = val5
-	val6 := uint32(0)
-	if s.ShaderDenormPreserveFloat32 {
-		val6 = 1
-	}
-	p.shaderDenormPreserveFloat32 = val6
-	val7 := uint32(0)
-	if s.ShaderDenormPreserveFloat64 {
-		val7 = 1
-	}
-	p.shaderDenormPreserveFloat64 = val7
-	val8 := uint32(0)
-	if s.ShaderDenormFlushToZeroFloat16 {
-		val8 = 1
-	}
-	p.shaderDenormFlushToZeroFloat16 = val8
-	val9 := uint32(0)
-	if s.ShaderDenormFlushToZeroFloat32 {
-		val9 = 1
-	}
-	p.shaderDenormFlushToZeroFloat32 = val9
-	val10 := uint32(0)
-	if s.ShaderDenormFlushToZeroFloat64 {
-		val10 = 1
-	}
-	p.shaderDenormFlushToZeroFloat64 = val10
-	val11 := uint32(0)
-	if s.ShaderRoundingModeRTEFloat16 {
-		val11 = 1
-	}
-	p.shaderRoundingModeRTEFloat16 = val11
-	val12 := uint32(0)
-	if s.ShaderRoundingModeRTEFloat32 {
-		val12 = 1
-	}
-	p.shaderRoundingModeRTEFloat32 = val12
-	val13 := uint32(0)
-	if s.ShaderRoundingModeRTEFloat64 {
-		val13 = 1
-	}
-	p.shaderRoundingModeRTEFloat64 = val13
-	val14 := uint32(0)
-	if s.ShaderRoundingModeRTZFloat16 {
-		val14 = 1
-	}
-	p.shaderRoundingModeRTZFloat16 = val14
-	val15 := uint32(0)
-	if s.ShaderRoundingModeRTZFloat32 {
-		val15 = 1
-	}
-	p.shaderRoundingModeRTZFloat32 = val15
-	val16 := uint32(0)
-	if s.ShaderRoundingModeRTZFloat64 {
-		val16 = 1
-	}
-	p.shaderRoundingModeRTZFloat64 = val16
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceFloatControlsProperties) fromC(p *cVkPhysicalDeviceFloatControlsProperties) {
-	s.DenormBehaviorIndependence = ShaderFloatControlsIndependence(p.denormBehaviorIndependence)
-	s.RoundingModeIndependence = ShaderFloatControlsIndependence(p.roundingModeIndependence)
-	s.ShaderSignedZeroInfNanPreserveFloat16 = p.shaderSignedZeroInfNanPreserveFloat16 != 0
-	s.ShaderSignedZeroInfNanPreserveFloat32 = p.shaderSignedZeroInfNanPreserveFloat32 != 0
-	s.ShaderSignedZeroInfNanPreserveFloat64 = p.shaderSignedZeroInfNanPreserveFloat64 != 0
-	s.ShaderDenormPreserveFloat16 = p.shaderDenormPreserveFloat16 != 0
-	s.ShaderDenormPreserveFloat32 = p.shaderDenormPreserveFloat32 != 0
-	s.ShaderDenormPreserveFloat64 = p.shaderDenormPreserveFloat64 != 0
-	s.ShaderDenormFlushToZeroFloat16 = p.shaderDenormFlushToZeroFloat16 != 0
-	s.ShaderDenormFlushToZeroFloat32 = p.shaderDenormFlushToZeroFloat32 != 0
-	s.ShaderDenormFlushToZeroFloat64 = p.shaderDenormFlushToZeroFloat64 != 0
-	s.ShaderRoundingModeRTEFloat16 = p.shaderRoundingModeRTEFloat16 != 0
-	s.ShaderRoundingModeRTEFloat32 = p.shaderRoundingModeRTEFloat32 != 0
-	s.ShaderRoundingModeRTEFloat64 = p.shaderRoundingModeRTEFloat64 != 0
-	s.ShaderRoundingModeRTZFloat16 = p.shaderRoundingModeRTZFloat16 != 0
-	s.ShaderRoundingModeRTZFloat32 = p.shaderRoundingModeRTZFloat32 != 0
-	s.ShaderRoundingModeRTZFloat64 = p.shaderRoundingModeRTZFloat64 != 0
-}
-
-type cVkPhysicalDeviceGlobalPriorityQueryFeatures struct {
-	sType               int32
-	pNext               unsafe.Pointer
-	globalPriorityQuery uint32
-}
-
-type PhysicalDeviceGlobalPriorityQueryFeatures struct {
-	Next                Structure
-	GlobalPriorityQuery bool
-}
-
-func (s *PhysicalDeviceGlobalPriorityQueryFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceGlobalPriorityQueryFeatures
-}
-
-func (s *PhysicalDeviceGlobalPriorityQueryFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceGlobalPriorityQueryFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.GlobalPriorityQuery {
-		val0 = 1
-	}
-	p.globalPriorityQuery = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceGlobalPriorityQueryFeatures) fromC(p *cVkPhysicalDeviceGlobalPriorityQueryFeatures) {
-	s.GlobalPriorityQuery = p.globalPriorityQuery != 0
-}
-
 type cVkPhysicalDeviceGraphicsPipelineLibraryFeaturesEXT struct {
 	sType                   int32
 	pNext                   unsafe.Pointer
@@ -20069,411 +14599,6 @@ func (s *PhysicalDeviceGraphicsPipelineLibraryPropertiesEXT) fromC(p *cVkPhysica
 	s.GraphicsPipelineLibraryIndependentInterpolationDecoration = p.graphicsPipelineLibraryIndependentInterpolationDecoration != 0
 }
 
-type cVkPhysicalDeviceGroupProperties struct {
-	sType               int32
-	pNext               unsafe.Pointer
-	physicalDeviceCount uint32
-	physicalDevices     [32]unsafe.Pointer
-	subsetAllocation    uint32
-}
-
-type PhysicalDeviceGroupProperties struct {
-	Next             Structure
-	PhysicalDevices  [32]*PhysicalDevice
-	SubsetAllocation bool
-}
-
-func (s *PhysicalDeviceGroupProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceGroupProperties
-}
-
-func (s *PhysicalDeviceGroupProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceGroupProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var arr0 [32]unsafe.Pointer
-	for i1, elem2 := range s.PhysicalDevices {
-		var h3 unsafe.Pointer
-		if elem2 != nil {
-			h3 = elem2.handle
-		}
-		arr0[i1] = h3
-	}
-	p.physicalDevices = arr0
-	val4 := uint32(0)
-	if s.SubsetAllocation {
-		val4 = 1
-	}
-	p.subsetAllocation = val4
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceGroupProperties) fromC(p *cVkPhysicalDeviceGroupProperties) {
-	for _i := range s.PhysicalDevices {
-		s.PhysicalDevices[_i] = &PhysicalDevice{handle: p.physicalDevices[_i]}
-	}
-	s.SubsetAllocation = p.subsetAllocation != 0
-}
-
-type cVkPhysicalDeviceHostImageCopyFeatures struct {
-	sType         int32
-	pNext         unsafe.Pointer
-	hostImageCopy uint32
-}
-
-type PhysicalDeviceHostImageCopyFeatures struct {
-	Next          Structure
-	HostImageCopy bool
-}
-
-func (s *PhysicalDeviceHostImageCopyFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceHostImageCopyFeatures
-}
-
-func (s *PhysicalDeviceHostImageCopyFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceHostImageCopyFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.HostImageCopy {
-		val0 = 1
-	}
-	p.hostImageCopy = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceHostImageCopyFeatures) fromC(p *cVkPhysicalDeviceHostImageCopyFeatures) {
-	s.HostImageCopy = p.hostImageCopy != 0
-}
-
-type cVkPhysicalDeviceHostImageCopyProperties struct {
-	sType                           int32
-	pNext                           unsafe.Pointer
-	copySrcLayoutCount              uint32
-	pCopySrcLayouts                 unsafe.Pointer
-	copyDstLayoutCount              uint32
-	pCopyDstLayouts                 unsafe.Pointer
-	optimalTilingLayoutUUID         [16]uint8
-	identicalMemoryTypeRequirements uint32
-}
-
-type PhysicalDeviceHostImageCopyProperties struct {
-	Next                            Structure
-	CopySrcLayoutCount              uint32
-	CopySrcLayouts                  []ImageLayout
-	CopyDstLayoutCount              uint32
-	CopyDstLayouts                  []ImageLayout
-	OptimalTilingLayoutUUID         [16]uint8
-	IdenticalMemoryTypeRequirements bool
-}
-
-func (s *PhysicalDeviceHostImageCopyProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceHostImageCopyProperties
-}
-
-func (s *PhysicalDeviceHostImageCopyProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceHostImageCopyProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.CopySrcLayoutCount)
-	p.copySrcLayoutCount = val0
-	len1 := len(s.CopySrcLayouts)
-	var arr2 unsafe.Pointer
-	if len1 > 0 {
-		buf3 := make([]uint32, len1)
-		var pin4 runtime.Pinner
-		pin4.Pin(&buf3[0])
-		cancels = append(cancels, func() { pin4.Unpin(); runtime.KeepAlive(buf3) })
-		arr2 = unsafe.Pointer(&buf3[0])
-		for i5, elem6 := range s.CopySrcLayouts {
-			val7 := uint32(elem6)
-			buf3[i5] = val7
-		}
-	}
-	p.pCopySrcLayouts = arr2
-	val8 := uint32(s.CopyDstLayoutCount)
-	p.copyDstLayoutCount = val8
-	len9 := len(s.CopyDstLayouts)
-	var arr10 unsafe.Pointer
-	if len9 > 0 {
-		buf11 := make([]uint32, len9)
-		var pin12 runtime.Pinner
-		pin12.Pin(&buf11[0])
-		cancels = append(cancels, func() { pin12.Unpin(); runtime.KeepAlive(buf11) })
-		arr10 = unsafe.Pointer(&buf11[0])
-		for i13, elem14 := range s.CopyDstLayouts {
-			val15 := uint32(elem14)
-			buf11[i13] = val15
-		}
-	}
-	p.pCopyDstLayouts = arr10
-	var arr16 [16]uint8
-	for i17, elem18 := range s.OptimalTilingLayoutUUID {
-		val19 := uint8(elem18)
-		arr16[i17] = val19
-	}
-	p.optimalTilingLayoutUUID = arr16
-	val20 := uint32(0)
-	if s.IdenticalMemoryTypeRequirements {
-		val20 = 1
-	}
-	p.identicalMemoryTypeRequirements = val20
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceHostImageCopyProperties) fromC(p *cVkPhysicalDeviceHostImageCopyProperties) {
-	s.CopySrcLayoutCount = uint32(p.copySrcLayoutCount)
-	// TODO: fromC for CopySrcLayouts (Slice of *generator.NamedType)
-	s.CopyDstLayoutCount = uint32(p.copyDstLayoutCount)
-	// TODO: fromC for CopyDstLayouts (Slice of *generator.NamedType)
-	for _i := range s.OptimalTilingLayoutUUID {
-		s.OptimalTilingLayoutUUID[_i] = uint8(p.optimalTilingLayoutUUID[_i])
-	}
-	s.IdenticalMemoryTypeRequirements = p.identicalMemoryTypeRequirements != 0
-}
-
-type cVkPhysicalDeviceHostQueryResetFeatures struct {
-	sType          int32
-	pNext          unsafe.Pointer
-	hostQueryReset uint32
-}
-
-type PhysicalDeviceHostQueryResetFeatures struct {
-	Next           Structure
-	HostQueryReset bool
-}
-
-func (s *PhysicalDeviceHostQueryResetFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceHostQueryResetFeatures
-}
-
-func (s *PhysicalDeviceHostQueryResetFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceHostQueryResetFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.HostQueryReset {
-		val0 = 1
-	}
-	p.hostQueryReset = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceHostQueryResetFeatures) fromC(p *cVkPhysicalDeviceHostQueryResetFeatures) {
-	s.HostQueryReset = p.hostQueryReset != 0
-}
-
-type cVkPhysicalDeviceIDProperties struct {
-	sType           int32
-	pNext           unsafe.Pointer
-	deviceUUID      [16]uint8
-	driverUUID      [16]uint8
-	deviceLUID      [8]uint8
-	deviceNodeMask  uint32
-	deviceLUIDValid uint32
-}
-
-type PhysicalDeviceIDProperties struct {
-	Next            Structure
-	DeviceUUID      [16]uint8
-	DriverUUID      [16]uint8
-	DeviceLUID      [8]uint8
-	DeviceNodeMask  uint32
-	DeviceLUIDValid bool
-}
-
-func (s *PhysicalDeviceIDProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceIdProperties
-}
-
-func (s *PhysicalDeviceIDProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceIDProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var arr0 [16]uint8
-	for i1, elem2 := range s.DeviceUUID {
-		val3 := uint8(elem2)
-		arr0[i1] = val3
-	}
-	p.deviceUUID = arr0
-	var arr4 [16]uint8
-	for i5, elem6 := range s.DriverUUID {
-		val7 := uint8(elem6)
-		arr4[i5] = val7
-	}
-	p.driverUUID = arr4
-	var arr8 [8]uint8
-	for i9, elem10 := range s.DeviceLUID {
-		val11 := uint8(elem10)
-		arr8[i9] = val11
-	}
-	p.deviceLUID = arr8
-	val12 := uint32(s.DeviceNodeMask)
-	p.deviceNodeMask = val12
-	val13 := uint32(0)
-	if s.DeviceLUIDValid {
-		val13 = 1
-	}
-	p.deviceLUIDValid = val13
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceIDProperties) fromC(p *cVkPhysicalDeviceIDProperties) {
-	for _i := range s.DeviceUUID {
-		s.DeviceUUID[_i] = uint8(p.deviceUUID[_i])
-	}
-	for _i := range s.DriverUUID {
-		s.DriverUUID[_i] = uint8(p.driverUUID[_i])
-	}
-	for _i := range s.DeviceLUID {
-		s.DeviceLUID[_i] = uint8(p.deviceLUID[_i])
-	}
-	s.DeviceNodeMask = uint32(p.deviceNodeMask)
-	s.DeviceLUIDValid = p.deviceLUIDValid != 0
-}
-
-type cVkPhysicalDeviceImageFormatInfo2 struct {
-	sType  int32
-	pNext  unsafe.Pointer
-	format uint32
-	_type  uint32
-	tiling uint32
-	usage  uint32
-	flags  uint32
-}
-
-type PhysicalDeviceImageFormatInfo2 struct {
-	Next   Structure
-	Format Format
-	Type   ImageType
-	Tiling ImageTiling
-	Usage  ImageUsageFlags
-	Flags  ImageCreateFlags
-}
-
-func (s *PhysicalDeviceImageFormatInfo2) GetType() StructureType {
-	return StructureTypePhysicalDeviceImageFormatInfo2
-}
-
-func (s *PhysicalDeviceImageFormatInfo2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceImageFormatInfo2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Format)
-	p.format = val0
-	val1 := uint32(s.Type)
-	p._type = val1
-	val2 := uint32(s.Tiling)
-	p.tiling = val2
-	val3 := uint32(s.Usage)
-	p.usage = val3
-	val4 := uint32(s.Flags)
-	p.flags = val4
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceImageFormatInfo2) fromC(p *cVkPhysicalDeviceImageFormatInfo2) {
-	s.Format = Format(p.format)
-	s.Type = ImageType(p._type)
-	s.Tiling = ImageTiling(p.tiling)
-	s.Usage = ImageUsageFlags(p.usage)
-	s.Flags = ImageCreateFlags(p.flags)
-}
-
-type cVkPhysicalDeviceImageRobustnessFeatures struct {
-	sType             int32
-	pNext             unsafe.Pointer
-	robustImageAccess uint32
-}
-
-type PhysicalDeviceImageRobustnessFeatures struct {
-	Next              Structure
-	RobustImageAccess bool
-}
-
-func (s *PhysicalDeviceImageRobustnessFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceImageRobustnessFeatures
-}
-
-func (s *PhysicalDeviceImageRobustnessFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceImageRobustnessFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.RobustImageAccess {
-		val0 = 1
-	}
-	p.robustImageAccess = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceImageRobustnessFeatures) fromC(p *cVkPhysicalDeviceImageRobustnessFeatures) {
-	s.RobustImageAccess = p.robustImageAccess != 0
-}
-
 type cVkPhysicalDeviceImagelessFramebufferFeatures struct {
 	sType                int32
 	pNext                unsafe.Pointer
@@ -20512,151 +14637,6 @@ func (s *PhysicalDeviceImagelessFramebufferFeatures) toC() (unsafe.Pointer, func
 
 func (s *PhysicalDeviceImagelessFramebufferFeatures) fromC(p *cVkPhysicalDeviceImagelessFramebufferFeatures) {
 	s.ImagelessFramebuffer = p.imagelessFramebuffer != 0
-}
-
-type cVkPhysicalDeviceIndexTypeUint8Features struct {
-	sType          int32
-	pNext          unsafe.Pointer
-	indexTypeUint8 uint32
-}
-
-type PhysicalDeviceIndexTypeUint8Features struct {
-	Next           Structure
-	IndexTypeUint8 bool
-}
-
-func (s *PhysicalDeviceIndexTypeUint8Features) GetType() StructureType {
-	return StructureTypePhysicalDeviceIndexTypeUint8Features
-}
-
-func (s *PhysicalDeviceIndexTypeUint8Features) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceIndexTypeUint8Features)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.IndexTypeUint8 {
-		val0 = 1
-	}
-	p.indexTypeUint8 = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceIndexTypeUint8Features) fromC(p *cVkPhysicalDeviceIndexTypeUint8Features) {
-	s.IndexTypeUint8 = p.indexTypeUint8 != 0
-}
-
-type cVkPhysicalDeviceInlineUniformBlockFeatures struct {
-	sType                                              int32
-	pNext                                              unsafe.Pointer
-	inlineUniformBlock                                 uint32
-	descriptorBindingInlineUniformBlockUpdateAfterBind uint32
-}
-
-type PhysicalDeviceInlineUniformBlockFeatures struct {
-	Next                                               Structure
-	InlineUniformBlock                                 bool
-	DescriptorBindingInlineUniformBlockUpdateAfterBind bool
-}
-
-func (s *PhysicalDeviceInlineUniformBlockFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceInlineUniformBlockFeatures
-}
-
-func (s *PhysicalDeviceInlineUniformBlockFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceInlineUniformBlockFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.InlineUniformBlock {
-		val0 = 1
-	}
-	p.inlineUniformBlock = val0
-	val1 := uint32(0)
-	if s.DescriptorBindingInlineUniformBlockUpdateAfterBind {
-		val1 = 1
-	}
-	p.descriptorBindingInlineUniformBlockUpdateAfterBind = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceInlineUniformBlockFeatures) fromC(p *cVkPhysicalDeviceInlineUniformBlockFeatures) {
-	s.InlineUniformBlock = p.inlineUniformBlock != 0
-	s.DescriptorBindingInlineUniformBlockUpdateAfterBind = p.descriptorBindingInlineUniformBlockUpdateAfterBind != 0
-}
-
-type cVkPhysicalDeviceInlineUniformBlockProperties struct {
-	sType                                                   int32
-	pNext                                                   unsafe.Pointer
-	maxInlineUniformBlockSize                               uint32
-	maxPerStageDescriptorInlineUniformBlocks                uint32
-	maxPerStageDescriptorUpdateAfterBindInlineUniformBlocks uint32
-	maxDescriptorSetInlineUniformBlocks                     uint32
-	maxDescriptorSetUpdateAfterBindInlineUniformBlocks      uint32
-}
-
-type PhysicalDeviceInlineUniformBlockProperties struct {
-	Next                                                    Structure
-	MaxInlineUniformBlockSize                               uint32
-	MaxPerStageDescriptorInlineUniformBlocks                uint32
-	MaxPerStageDescriptorUpdateAfterBindInlineUniformBlocks uint32
-	MaxDescriptorSetInlineUniformBlocks                     uint32
-	MaxDescriptorSetUpdateAfterBindInlineUniformBlocks      uint32
-}
-
-func (s *PhysicalDeviceInlineUniformBlockProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceInlineUniformBlockProperties
-}
-
-func (s *PhysicalDeviceInlineUniformBlockProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceInlineUniformBlockProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.MaxInlineUniformBlockSize)
-	p.maxInlineUniformBlockSize = val0
-	val1 := uint32(s.MaxPerStageDescriptorInlineUniformBlocks)
-	p.maxPerStageDescriptorInlineUniformBlocks = val1
-	val2 := uint32(s.MaxPerStageDescriptorUpdateAfterBindInlineUniformBlocks)
-	p.maxPerStageDescriptorUpdateAfterBindInlineUniformBlocks = val2
-	val3 := uint32(s.MaxDescriptorSetInlineUniformBlocks)
-	p.maxDescriptorSetInlineUniformBlocks = val3
-	val4 := uint32(s.MaxDescriptorSetUpdateAfterBindInlineUniformBlocks)
-	p.maxDescriptorSetUpdateAfterBindInlineUniformBlocks = val4
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceInlineUniformBlockProperties) fromC(p *cVkPhysicalDeviceInlineUniformBlockProperties) {
-	s.MaxInlineUniformBlockSize = uint32(p.maxInlineUniformBlockSize)
-	s.MaxPerStageDescriptorInlineUniformBlocks = uint32(p.maxPerStageDescriptorInlineUniformBlocks)
-	s.MaxPerStageDescriptorUpdateAfterBindInlineUniformBlocks = uint32(p.maxPerStageDescriptorUpdateAfterBindInlineUniformBlocks)
-	s.MaxDescriptorSetInlineUniformBlocks = uint32(p.maxDescriptorSetInlineUniformBlocks)
-	s.MaxDescriptorSetUpdateAfterBindInlineUniformBlocks = uint32(p.maxDescriptorSetUpdateAfterBindInlineUniformBlocks)
 }
 
 type cVkPhysicalDeviceLimits struct {
@@ -21487,338 +15467,6 @@ func (s *PhysicalDeviceLineRasterizationPropertiesEXT) fromC(p *cVkPhysicalDevic
 	s.LineSubPixelPrecisionBits = uint32(p.lineSubPixelPrecisionBits)
 }
 
-type cVkPhysicalDeviceMaintenance3Properties struct {
-	sType                   int32
-	pNext                   unsafe.Pointer
-	maxPerSetDescriptors    uint32
-	maxMemoryAllocationSize uint64
-}
-
-type PhysicalDeviceMaintenance3Properties struct {
-	Next                    Structure
-	MaxPerSetDescriptors    uint32
-	MaxMemoryAllocationSize uint64
-}
-
-func (s *PhysicalDeviceMaintenance3Properties) GetType() StructureType {
-	return StructureTypePhysicalDeviceMaintenance3Properties
-}
-
-func (s *PhysicalDeviceMaintenance3Properties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceMaintenance3Properties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.MaxPerSetDescriptors)
-	p.maxPerSetDescriptors = val0
-	val1 := uint64(s.MaxMemoryAllocationSize)
-	p.maxMemoryAllocationSize = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceMaintenance3Properties) fromC(p *cVkPhysicalDeviceMaintenance3Properties) {
-	s.MaxPerSetDescriptors = uint32(p.maxPerSetDescriptors)
-	s.MaxMemoryAllocationSize = uint64(p.maxMemoryAllocationSize)
-}
-
-type cVkPhysicalDeviceMaintenance4Features struct {
-	sType        int32
-	pNext        unsafe.Pointer
-	maintenance4 uint32
-}
-
-type PhysicalDeviceMaintenance4Features struct {
-	Next         Structure
-	Maintenance4 bool
-}
-
-func (s *PhysicalDeviceMaintenance4Features) GetType() StructureType {
-	return StructureTypePhysicalDeviceMaintenance4Features
-}
-
-func (s *PhysicalDeviceMaintenance4Features) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceMaintenance4Features)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.Maintenance4 {
-		val0 = 1
-	}
-	p.maintenance4 = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceMaintenance4Features) fromC(p *cVkPhysicalDeviceMaintenance4Features) {
-	s.Maintenance4 = p.maintenance4 != 0
-}
-
-type cVkPhysicalDeviceMaintenance4Properties struct {
-	sType         int32
-	pNext         unsafe.Pointer
-	maxBufferSize uint64
-}
-
-type PhysicalDeviceMaintenance4Properties struct {
-	Next          Structure
-	MaxBufferSize uint64
-}
-
-func (s *PhysicalDeviceMaintenance4Properties) GetType() StructureType {
-	return StructureTypePhysicalDeviceMaintenance4Properties
-}
-
-func (s *PhysicalDeviceMaintenance4Properties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceMaintenance4Properties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.MaxBufferSize)
-	p.maxBufferSize = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceMaintenance4Properties) fromC(p *cVkPhysicalDeviceMaintenance4Properties) {
-	s.MaxBufferSize = uint64(p.maxBufferSize)
-}
-
-type cVkPhysicalDeviceMaintenance5Features struct {
-	sType        int32
-	pNext        unsafe.Pointer
-	maintenance5 uint32
-}
-
-type PhysicalDeviceMaintenance5Features struct {
-	Next         Structure
-	Maintenance5 bool
-}
-
-func (s *PhysicalDeviceMaintenance5Features) GetType() StructureType {
-	return StructureTypePhysicalDeviceMaintenance5Features
-}
-
-func (s *PhysicalDeviceMaintenance5Features) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceMaintenance5Features)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.Maintenance5 {
-		val0 = 1
-	}
-	p.maintenance5 = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceMaintenance5Features) fromC(p *cVkPhysicalDeviceMaintenance5Features) {
-	s.Maintenance5 = p.maintenance5 != 0
-}
-
-type cVkPhysicalDeviceMaintenance5Properties struct {
-	sType                                               int32
-	pNext                                               unsafe.Pointer
-	earlyFragmentMultisampleCoverageAfterSampleCounting uint32
-	earlyFragmentSampleMaskTestBeforeSampleCounting     uint32
-	depthStencilSwizzleOneSupport                       uint32
-	polygonModePointSize                                uint32
-	nonStrictSinglePixelWideLinesUseParallelogram       uint32
-	nonStrictWideLinesUseParallelogram                  uint32
-}
-
-type PhysicalDeviceMaintenance5Properties struct {
-	Next                                                Structure
-	EarlyFragmentMultisampleCoverageAfterSampleCounting bool
-	EarlyFragmentSampleMaskTestBeforeSampleCounting     bool
-	DepthStencilSwizzleOneSupport                       bool
-	PolygonModePointSize                                bool
-	NonStrictSinglePixelWideLinesUseParallelogram       bool
-	NonStrictWideLinesUseParallelogram                  bool
-}
-
-func (s *PhysicalDeviceMaintenance5Properties) GetType() StructureType {
-	return StructureTypePhysicalDeviceMaintenance5Properties
-}
-
-func (s *PhysicalDeviceMaintenance5Properties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceMaintenance5Properties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.EarlyFragmentMultisampleCoverageAfterSampleCounting {
-		val0 = 1
-	}
-	p.earlyFragmentMultisampleCoverageAfterSampleCounting = val0
-	val1 := uint32(0)
-	if s.EarlyFragmentSampleMaskTestBeforeSampleCounting {
-		val1 = 1
-	}
-	p.earlyFragmentSampleMaskTestBeforeSampleCounting = val1
-	val2 := uint32(0)
-	if s.DepthStencilSwizzleOneSupport {
-		val2 = 1
-	}
-	p.depthStencilSwizzleOneSupport = val2
-	val3 := uint32(0)
-	if s.PolygonModePointSize {
-		val3 = 1
-	}
-	p.polygonModePointSize = val3
-	val4 := uint32(0)
-	if s.NonStrictSinglePixelWideLinesUseParallelogram {
-		val4 = 1
-	}
-	p.nonStrictSinglePixelWideLinesUseParallelogram = val4
-	val5 := uint32(0)
-	if s.NonStrictWideLinesUseParallelogram {
-		val5 = 1
-	}
-	p.nonStrictWideLinesUseParallelogram = val5
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceMaintenance5Properties) fromC(p *cVkPhysicalDeviceMaintenance5Properties) {
-	s.EarlyFragmentMultisampleCoverageAfterSampleCounting = p.earlyFragmentMultisampleCoverageAfterSampleCounting != 0
-	s.EarlyFragmentSampleMaskTestBeforeSampleCounting = p.earlyFragmentSampleMaskTestBeforeSampleCounting != 0
-	s.DepthStencilSwizzleOneSupport = p.depthStencilSwizzleOneSupport != 0
-	s.PolygonModePointSize = p.polygonModePointSize != 0
-	s.NonStrictSinglePixelWideLinesUseParallelogram = p.nonStrictSinglePixelWideLinesUseParallelogram != 0
-	s.NonStrictWideLinesUseParallelogram = p.nonStrictWideLinesUseParallelogram != 0
-}
-
-type cVkPhysicalDeviceMaintenance6Features struct {
-	sType        int32
-	pNext        unsafe.Pointer
-	maintenance6 uint32
-}
-
-type PhysicalDeviceMaintenance6Features struct {
-	Next         Structure
-	Maintenance6 bool
-}
-
-func (s *PhysicalDeviceMaintenance6Features) GetType() StructureType {
-	return StructureTypePhysicalDeviceMaintenance6Features
-}
-
-func (s *PhysicalDeviceMaintenance6Features) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceMaintenance6Features)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.Maintenance6 {
-		val0 = 1
-	}
-	p.maintenance6 = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceMaintenance6Features) fromC(p *cVkPhysicalDeviceMaintenance6Features) {
-	s.Maintenance6 = p.maintenance6 != 0
-}
-
-type cVkPhysicalDeviceMaintenance6Properties struct {
-	sType                                  int32
-	pNext                                  unsafe.Pointer
-	blockTexelViewCompatibleMultipleLayers uint32
-	maxCombinedImageSamplerDescriptorCount uint32
-	fragmentShadingRateClampCombinerInputs uint32
-}
-
-type PhysicalDeviceMaintenance6Properties struct {
-	Next                                   Structure
-	BlockTexelViewCompatibleMultipleLayers bool
-	MaxCombinedImageSamplerDescriptorCount uint32
-	FragmentShadingRateClampCombinerInputs bool
-}
-
-func (s *PhysicalDeviceMaintenance6Properties) GetType() StructureType {
-	return StructureTypePhysicalDeviceMaintenance6Properties
-}
-
-func (s *PhysicalDeviceMaintenance6Properties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceMaintenance6Properties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.BlockTexelViewCompatibleMultipleLayers {
-		val0 = 1
-	}
-	p.blockTexelViewCompatibleMultipleLayers = val0
-	val1 := uint32(s.MaxCombinedImageSamplerDescriptorCount)
-	p.maxCombinedImageSamplerDescriptorCount = val1
-	val2 := uint32(0)
-	if s.FragmentShadingRateClampCombinerInputs {
-		val2 = 1
-	}
-	p.fragmentShadingRateClampCombinerInputs = val2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceMaintenance6Properties) fromC(p *cVkPhysicalDeviceMaintenance6Properties) {
-	s.BlockTexelViewCompatibleMultipleLayers = p.blockTexelViewCompatibleMultipleLayers != 0
-	s.MaxCombinedImageSamplerDescriptorCount = uint32(p.maxCombinedImageSamplerDescriptorCount)
-	s.FragmentShadingRateClampCombinerInputs = p.fragmentShadingRateClampCombinerInputs != 0
-}
-
 type cVkPhysicalDeviceMemoryBudgetPropertiesEXT struct {
 	sType      int32
 	pNext      unsafe.Pointer
@@ -21958,45 +15606,6 @@ func (s *PhysicalDeviceMemoryProperties) fromC(p *cVkPhysicalDeviceMemoryPropert
 	for _i := range s.MemoryHeaps {
 		s.MemoryHeaps[_i].fromC(&p.memoryHeaps[_i])
 	}
-}
-
-type cVkPhysicalDeviceMemoryProperties2 struct {
-	sType            int32
-	pNext            unsafe.Pointer
-	memoryProperties cVkPhysicalDeviceMemoryProperties
-}
-
-type PhysicalDeviceMemoryProperties2 struct {
-	Next             Structure
-	MemoryProperties PhysicalDeviceMemoryProperties
-}
-
-func (s *PhysicalDeviceMemoryProperties2) GetType() StructureType {
-	return StructureTypePhysicalDeviceMemoryProperties2
-}
-
-func (s *PhysicalDeviceMemoryProperties2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceMemoryProperties2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0, cancel1 := s.MemoryProperties.toC()
-	cancels = append(cancels, cancel1)
-	cast2 := (*cVkPhysicalDeviceMemoryProperties)(val0)
-	p.memoryProperties = *cast2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceMemoryProperties2) fromC(p *cVkPhysicalDeviceMemoryProperties2) {
-	s.MemoryProperties.fromC(&p.memoryProperties)
 }
 
 type cVkPhysicalDeviceMeshShaderFeaturesEXT struct {
@@ -22494,178 +16103,6 @@ func (s *PhysicalDevicePageableDeviceLocalMemoryFeaturesEXT) fromC(p *cVkPhysica
 	s.PageableDeviceLocalMemory = p.pageableDeviceLocalMemory != 0
 }
 
-type cVkPhysicalDevicePipelineCreationCacheControlFeatures struct {
-	sType                        int32
-	pNext                        unsafe.Pointer
-	pipelineCreationCacheControl uint32
-}
-
-type PhysicalDevicePipelineCreationCacheControlFeatures struct {
-	Next                         Structure
-	PipelineCreationCacheControl bool
-}
-
-func (s *PhysicalDevicePipelineCreationCacheControlFeatures) GetType() StructureType {
-	return StructureTypePhysicalDevicePipelineCreationCacheControlFeatures
-}
-
-func (s *PhysicalDevicePipelineCreationCacheControlFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDevicePipelineCreationCacheControlFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.PipelineCreationCacheControl {
-		val0 = 1
-	}
-	p.pipelineCreationCacheControl = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDevicePipelineCreationCacheControlFeatures) fromC(p *cVkPhysicalDevicePipelineCreationCacheControlFeatures) {
-	s.PipelineCreationCacheControl = p.pipelineCreationCacheControl != 0
-}
-
-type cVkPhysicalDevicePipelineProtectedAccessFeatures struct {
-	sType                   int32
-	pNext                   unsafe.Pointer
-	pipelineProtectedAccess uint32
-}
-
-type PhysicalDevicePipelineProtectedAccessFeatures struct {
-	Next                    Structure
-	PipelineProtectedAccess bool
-}
-
-func (s *PhysicalDevicePipelineProtectedAccessFeatures) GetType() StructureType {
-	return StructureTypePhysicalDevicePipelineProtectedAccessFeatures
-}
-
-func (s *PhysicalDevicePipelineProtectedAccessFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDevicePipelineProtectedAccessFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.PipelineProtectedAccess {
-		val0 = 1
-	}
-	p.pipelineProtectedAccess = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDevicePipelineProtectedAccessFeatures) fromC(p *cVkPhysicalDevicePipelineProtectedAccessFeatures) {
-	s.PipelineProtectedAccess = p.pipelineProtectedAccess != 0
-}
-
-type cVkPhysicalDevicePipelineRobustnessFeatures struct {
-	sType              int32
-	pNext              unsafe.Pointer
-	pipelineRobustness uint32
-}
-
-type PhysicalDevicePipelineRobustnessFeatures struct {
-	Next               Structure
-	PipelineRobustness bool
-}
-
-func (s *PhysicalDevicePipelineRobustnessFeatures) GetType() StructureType {
-	return StructureTypePhysicalDevicePipelineRobustnessFeatures
-}
-
-func (s *PhysicalDevicePipelineRobustnessFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDevicePipelineRobustnessFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.PipelineRobustness {
-		val0 = 1
-	}
-	p.pipelineRobustness = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDevicePipelineRobustnessFeatures) fromC(p *cVkPhysicalDevicePipelineRobustnessFeatures) {
-	s.PipelineRobustness = p.pipelineRobustness != 0
-}
-
-type cVkPhysicalDevicePipelineRobustnessProperties struct {
-	sType                           int32
-	pNext                           unsafe.Pointer
-	defaultRobustnessStorageBuffers uint32
-	defaultRobustnessUniformBuffers uint32
-	defaultRobustnessVertexInputs   uint32
-	defaultRobustnessImages         uint32
-}
-
-type PhysicalDevicePipelineRobustnessProperties struct {
-	Next                            Structure
-	DefaultRobustnessStorageBuffers PipelineRobustnessBufferBehavior
-	DefaultRobustnessUniformBuffers PipelineRobustnessBufferBehavior
-	DefaultRobustnessVertexInputs   PipelineRobustnessBufferBehavior
-	DefaultRobustnessImages         PipelineRobustnessImageBehavior
-}
-
-func (s *PhysicalDevicePipelineRobustnessProperties) GetType() StructureType {
-	return StructureTypePhysicalDevicePipelineRobustnessProperties
-}
-
-func (s *PhysicalDevicePipelineRobustnessProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDevicePipelineRobustnessProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.DefaultRobustnessStorageBuffers)
-	p.defaultRobustnessStorageBuffers = val0
-	val1 := uint32(s.DefaultRobustnessUniformBuffers)
-	p.defaultRobustnessUniformBuffers = val1
-	val2 := uint32(s.DefaultRobustnessVertexInputs)
-	p.defaultRobustnessVertexInputs = val2
-	val3 := uint32(s.DefaultRobustnessImages)
-	p.defaultRobustnessImages = val3
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDevicePipelineRobustnessProperties) fromC(p *cVkPhysicalDevicePipelineRobustnessProperties) {
-	s.DefaultRobustnessStorageBuffers = PipelineRobustnessBufferBehavior(p.defaultRobustnessStorageBuffers)
-	s.DefaultRobustnessUniformBuffers = PipelineRobustnessBufferBehavior(p.defaultRobustnessUniformBuffers)
-	s.DefaultRobustnessVertexInputs = PipelineRobustnessBufferBehavior(p.defaultRobustnessVertexInputs)
-	s.DefaultRobustnessImages = PipelineRobustnessImageBehavior(p.defaultRobustnessImages)
-}
-
 type cVkPhysicalDevicePointClippingProperties struct {
 	sType                 int32
 	pNext                 unsafe.Pointer
@@ -22701,46 +16138,6 @@ func (s *PhysicalDevicePointClippingProperties) toC() (unsafe.Pointer, func()) {
 
 func (s *PhysicalDevicePointClippingProperties) fromC(p *cVkPhysicalDevicePointClippingProperties) {
 	s.PointClippingBehavior = PointClippingBehavior(p.pointClippingBehavior)
-}
-
-type cVkPhysicalDevicePrivateDataFeatures struct {
-	sType       int32
-	pNext       unsafe.Pointer
-	privateData uint32
-}
-
-type PhysicalDevicePrivateDataFeatures struct {
-	Next        Structure
-	PrivateData bool
-}
-
-func (s *PhysicalDevicePrivateDataFeatures) GetType() StructureType {
-	return StructureTypePhysicalDevicePrivateDataFeatures
-}
-
-func (s *PhysicalDevicePrivateDataFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDevicePrivateDataFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.PrivateData {
-		val0 = 1
-	}
-	p.privateData = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDevicePrivateDataFeatures) fromC(p *cVkPhysicalDevicePrivateDataFeatures) {
-	s.PrivateData = p.privateData != 0
 }
 
 type cVkPhysicalDeviceProperties struct {
@@ -22821,162 +16218,6 @@ func (s *PhysicalDeviceProperties) fromC(p *cVkPhysicalDeviceProperties) {
 	}
 	s.Limits.fromC(&p.limits)
 	s.SparseProperties.fromC(&p.sparseProperties)
-}
-
-type cVkPhysicalDeviceProperties2 struct {
-	sType      int32
-	pNext      unsafe.Pointer
-	properties cVkPhysicalDeviceProperties
-}
-
-type PhysicalDeviceProperties2 struct {
-	Next       Structure
-	Properties PhysicalDeviceProperties
-}
-
-func (s *PhysicalDeviceProperties2) GetType() StructureType {
-	return StructureTypePhysicalDeviceProperties2
-}
-
-func (s *PhysicalDeviceProperties2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceProperties2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0, cancel1 := s.Properties.toC()
-	cancels = append(cancels, cancel1)
-	cast2 := (*cVkPhysicalDeviceProperties)(val0)
-	p.properties = *cast2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceProperties2) fromC(p *cVkPhysicalDeviceProperties2) {
-	s.Properties.fromC(&p.properties)
-}
-
-type cVkPhysicalDeviceProtectedMemoryFeatures struct {
-	sType           int32
-	pNext           unsafe.Pointer
-	protectedMemory uint32
-}
-
-type PhysicalDeviceProtectedMemoryFeatures struct {
-	Next            Structure
-	ProtectedMemory bool
-}
-
-func (s *PhysicalDeviceProtectedMemoryFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceProtectedMemoryFeatures
-}
-
-func (s *PhysicalDeviceProtectedMemoryFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceProtectedMemoryFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ProtectedMemory {
-		val0 = 1
-	}
-	p.protectedMemory = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceProtectedMemoryFeatures) fromC(p *cVkPhysicalDeviceProtectedMemoryFeatures) {
-	s.ProtectedMemory = p.protectedMemory != 0
-}
-
-type cVkPhysicalDeviceProtectedMemoryProperties struct {
-	sType            int32
-	pNext            unsafe.Pointer
-	protectedNoFault uint32
-}
-
-type PhysicalDeviceProtectedMemoryProperties struct {
-	Next             Structure
-	ProtectedNoFault bool
-}
-
-func (s *PhysicalDeviceProtectedMemoryProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceProtectedMemoryProperties
-}
-
-func (s *PhysicalDeviceProtectedMemoryProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceProtectedMemoryProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ProtectedNoFault {
-		val0 = 1
-	}
-	p.protectedNoFault = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceProtectedMemoryProperties) fromC(p *cVkPhysicalDeviceProtectedMemoryProperties) {
-	s.ProtectedNoFault = p.protectedNoFault != 0
-}
-
-type cVkPhysicalDevicePushDescriptorProperties struct {
-	sType              int32
-	pNext              unsafe.Pointer
-	maxPushDescriptors uint32
-}
-
-type PhysicalDevicePushDescriptorProperties struct {
-	Next               Structure
-	MaxPushDescriptors uint32
-}
-
-func (s *PhysicalDevicePushDescriptorProperties) GetType() StructureType {
-	return StructureTypePhysicalDevicePushDescriptorProperties
-}
-
-func (s *PhysicalDevicePushDescriptorProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDevicePushDescriptorProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.MaxPushDescriptors)
-	p.maxPushDescriptors = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDevicePushDescriptorProperties) fromC(p *cVkPhysicalDevicePushDescriptorProperties) {
-	s.MaxPushDescriptors = uint32(p.maxPushDescriptors)
 }
 
 type cVkPhysicalDeviceRayQueryFeaturesKHR struct {
@@ -23251,134 +16492,6 @@ func (s *PhysicalDeviceRayTracingPositionFetchFeaturesKHR) fromC(p *cVkPhysicalD
 	s.RayTracingPositionFetch = p.rayTracingPositionFetch != 0
 }
 
-type cVkPhysicalDeviceSamplerFilterMinmaxProperties struct {
-	sType                              int32
-	pNext                              unsafe.Pointer
-	filterMinmaxSingleComponentFormats uint32
-	filterMinmaxImageComponentMapping  uint32
-}
-
-type PhysicalDeviceSamplerFilterMinmaxProperties struct {
-	Next                               Structure
-	FilterMinmaxSingleComponentFormats bool
-	FilterMinmaxImageComponentMapping  bool
-}
-
-func (s *PhysicalDeviceSamplerFilterMinmaxProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceSamplerFilterMinmaxProperties
-}
-
-func (s *PhysicalDeviceSamplerFilterMinmaxProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceSamplerFilterMinmaxProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.FilterMinmaxSingleComponentFormats {
-		val0 = 1
-	}
-	p.filterMinmaxSingleComponentFormats = val0
-	val1 := uint32(0)
-	if s.FilterMinmaxImageComponentMapping {
-		val1 = 1
-	}
-	p.filterMinmaxImageComponentMapping = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceSamplerFilterMinmaxProperties) fromC(p *cVkPhysicalDeviceSamplerFilterMinmaxProperties) {
-	s.FilterMinmaxSingleComponentFormats = p.filterMinmaxSingleComponentFormats != 0
-	s.FilterMinmaxImageComponentMapping = p.filterMinmaxImageComponentMapping != 0
-}
-
-type cVkPhysicalDeviceSamplerYcbcrConversionFeatures struct {
-	sType                  int32
-	pNext                  unsafe.Pointer
-	samplerYcbcrConversion uint32
-}
-
-type PhysicalDeviceSamplerYcbcrConversionFeatures struct {
-	Next                   Structure
-	SamplerYcbcrConversion bool
-}
-
-func (s *PhysicalDeviceSamplerYcbcrConversionFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceSamplerYcbcrConversionFeatures
-}
-
-func (s *PhysicalDeviceSamplerYcbcrConversionFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceSamplerYcbcrConversionFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.SamplerYcbcrConversion {
-		val0 = 1
-	}
-	p.samplerYcbcrConversion = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceSamplerYcbcrConversionFeatures) fromC(p *cVkPhysicalDeviceSamplerYcbcrConversionFeatures) {
-	s.SamplerYcbcrConversion = p.samplerYcbcrConversion != 0
-}
-
-type cVkPhysicalDeviceScalarBlockLayoutFeatures struct {
-	sType             int32
-	pNext             unsafe.Pointer
-	scalarBlockLayout uint32
-}
-
-type PhysicalDeviceScalarBlockLayoutFeatures struct {
-	Next              Structure
-	ScalarBlockLayout bool
-}
-
-func (s *PhysicalDeviceScalarBlockLayoutFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceScalarBlockLayoutFeatures
-}
-
-func (s *PhysicalDeviceScalarBlockLayoutFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceScalarBlockLayoutFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ScalarBlockLayout {
-		val0 = 1
-	}
-	p.scalarBlockLayout = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceScalarBlockLayoutFeatures) fromC(p *cVkPhysicalDeviceScalarBlockLayoutFeatures) {
-	s.ScalarBlockLayout = p.scalarBlockLayout != 0
-}
-
 type cVkPhysicalDeviceSeparateDepthStencilLayoutsFeatures struct {
 	sType                       int32
 	pNext                       unsafe.Pointer
@@ -23417,94 +16530,6 @@ func (s *PhysicalDeviceSeparateDepthStencilLayoutsFeatures) toC() (unsafe.Pointe
 
 func (s *PhysicalDeviceSeparateDepthStencilLayoutsFeatures) fromC(p *cVkPhysicalDeviceSeparateDepthStencilLayoutsFeatures) {
 	s.SeparateDepthStencilLayouts = p.separateDepthStencilLayouts != 0
-}
-
-type cVkPhysicalDeviceShaderAtomicInt64Features struct {
-	sType                    int32
-	pNext                    unsafe.Pointer
-	shaderBufferInt64Atomics uint32
-	shaderSharedInt64Atomics uint32
-}
-
-type PhysicalDeviceShaderAtomicInt64Features struct {
-	Next                     Structure
-	ShaderBufferInt64Atomics bool
-	ShaderSharedInt64Atomics bool
-}
-
-func (s *PhysicalDeviceShaderAtomicInt64Features) GetType() StructureType {
-	return StructureTypePhysicalDeviceShaderAtomicInt64Features
-}
-
-func (s *PhysicalDeviceShaderAtomicInt64Features) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceShaderAtomicInt64Features)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ShaderBufferInt64Atomics {
-		val0 = 1
-	}
-	p.shaderBufferInt64Atomics = val0
-	val1 := uint32(0)
-	if s.ShaderSharedInt64Atomics {
-		val1 = 1
-	}
-	p.shaderSharedInt64Atomics = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceShaderAtomicInt64Features) fromC(p *cVkPhysicalDeviceShaderAtomicInt64Features) {
-	s.ShaderBufferInt64Atomics = p.shaderBufferInt64Atomics != 0
-	s.ShaderSharedInt64Atomics = p.shaderSharedInt64Atomics != 0
-}
-
-type cVkPhysicalDeviceShaderDemoteToHelperInvocationFeatures struct {
-	sType                          int32
-	pNext                          unsafe.Pointer
-	shaderDemoteToHelperInvocation uint32
-}
-
-type PhysicalDeviceShaderDemoteToHelperInvocationFeatures struct {
-	Next                           Structure
-	ShaderDemoteToHelperInvocation bool
-}
-
-func (s *PhysicalDeviceShaderDemoteToHelperInvocationFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceShaderDemoteToHelperInvocationFeatures
-}
-
-func (s *PhysicalDeviceShaderDemoteToHelperInvocationFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceShaderDemoteToHelperInvocationFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ShaderDemoteToHelperInvocation {
-		val0 = 1
-	}
-	p.shaderDemoteToHelperInvocation = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceShaderDemoteToHelperInvocationFeatures) fromC(p *cVkPhysicalDeviceShaderDemoteToHelperInvocationFeatures) {
-	s.ShaderDemoteToHelperInvocation = p.shaderDemoteToHelperInvocation != 0
 }
 
 type cVkPhysicalDeviceShaderDrawParameterFeatures struct {
@@ -23585,446 +16610,6 @@ func (s *PhysicalDeviceShaderDrawParametersFeatures) toC() (unsafe.Pointer, func
 
 func (s *PhysicalDeviceShaderDrawParametersFeatures) fromC(p *cVkPhysicalDeviceShaderDrawParametersFeatures) {
 	s.ShaderDrawParameters = p.shaderDrawParameters != 0
-}
-
-type cVkPhysicalDeviceShaderExpectAssumeFeatures struct {
-	sType              int32
-	pNext              unsafe.Pointer
-	shaderExpectAssume uint32
-}
-
-type PhysicalDeviceShaderExpectAssumeFeatures struct {
-	Next               Structure
-	ShaderExpectAssume bool
-}
-
-func (s *PhysicalDeviceShaderExpectAssumeFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceShaderExpectAssumeFeatures
-}
-
-func (s *PhysicalDeviceShaderExpectAssumeFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceShaderExpectAssumeFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ShaderExpectAssume {
-		val0 = 1
-	}
-	p.shaderExpectAssume = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceShaderExpectAssumeFeatures) fromC(p *cVkPhysicalDeviceShaderExpectAssumeFeatures) {
-	s.ShaderExpectAssume = p.shaderExpectAssume != 0
-}
-
-type cVkPhysicalDeviceShaderFloat16Int8Features struct {
-	sType         int32
-	pNext         unsafe.Pointer
-	shaderFloat16 uint32
-	shaderInt8    uint32
-}
-
-type PhysicalDeviceShaderFloat16Int8Features struct {
-	Next          Structure
-	ShaderFloat16 bool
-	ShaderInt8    bool
-}
-
-func (s *PhysicalDeviceShaderFloat16Int8Features) GetType() StructureType {
-	return StructureTypePhysicalDeviceShaderFloat16Int8Features
-}
-
-func (s *PhysicalDeviceShaderFloat16Int8Features) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceShaderFloat16Int8Features)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ShaderFloat16 {
-		val0 = 1
-	}
-	p.shaderFloat16 = val0
-	val1 := uint32(0)
-	if s.ShaderInt8 {
-		val1 = 1
-	}
-	p.shaderInt8 = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceShaderFloat16Int8Features) fromC(p *cVkPhysicalDeviceShaderFloat16Int8Features) {
-	s.ShaderFloat16 = p.shaderFloat16 != 0
-	s.ShaderInt8 = p.shaderInt8 != 0
-}
-
-type cVkPhysicalDeviceShaderFloatControls2Features struct {
-	sType                int32
-	pNext                unsafe.Pointer
-	shaderFloatControls2 uint32
-}
-
-type PhysicalDeviceShaderFloatControls2Features struct {
-	Next                 Structure
-	ShaderFloatControls2 bool
-}
-
-func (s *PhysicalDeviceShaderFloatControls2Features) GetType() StructureType {
-	return StructureTypePhysicalDeviceShaderFloatControls2Features
-}
-
-func (s *PhysicalDeviceShaderFloatControls2Features) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceShaderFloatControls2Features)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ShaderFloatControls2 {
-		val0 = 1
-	}
-	p.shaderFloatControls2 = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceShaderFloatControls2Features) fromC(p *cVkPhysicalDeviceShaderFloatControls2Features) {
-	s.ShaderFloatControls2 = p.shaderFloatControls2 != 0
-}
-
-type cVkPhysicalDeviceShaderIntegerDotProductFeatures struct {
-	sType                   int32
-	pNext                   unsafe.Pointer
-	shaderIntegerDotProduct uint32
-}
-
-type PhysicalDeviceShaderIntegerDotProductFeatures struct {
-	Next                    Structure
-	ShaderIntegerDotProduct bool
-}
-
-func (s *PhysicalDeviceShaderIntegerDotProductFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceShaderIntegerDotProductFeatures
-}
-
-func (s *PhysicalDeviceShaderIntegerDotProductFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceShaderIntegerDotProductFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ShaderIntegerDotProduct {
-		val0 = 1
-	}
-	p.shaderIntegerDotProduct = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceShaderIntegerDotProductFeatures) fromC(p *cVkPhysicalDeviceShaderIntegerDotProductFeatures) {
-	s.ShaderIntegerDotProduct = p.shaderIntegerDotProduct != 0
-}
-
-type cVkPhysicalDeviceShaderIntegerDotProductProperties struct {
-	sType                                                                         int32
-	pNext                                                                         unsafe.Pointer
-	integerDotProduct8BitUnsignedAccelerated                                      uint32
-	integerDotProduct8BitSignedAccelerated                                        uint32
-	integerDotProduct8BitMixedSignednessAccelerated                               uint32
-	integerDotProduct4x8BitPackedUnsignedAccelerated                              uint32
-	integerDotProduct4x8BitPackedSignedAccelerated                                uint32
-	integerDotProduct4x8BitPackedMixedSignednessAccelerated                       uint32
-	integerDotProduct16BitUnsignedAccelerated                                     uint32
-	integerDotProduct16BitSignedAccelerated                                       uint32
-	integerDotProduct16BitMixedSignednessAccelerated                              uint32
-	integerDotProduct32BitUnsignedAccelerated                                     uint32
-	integerDotProduct32BitSignedAccelerated                                       uint32
-	integerDotProduct32BitMixedSignednessAccelerated                              uint32
-	integerDotProduct64BitUnsignedAccelerated                                     uint32
-	integerDotProduct64BitSignedAccelerated                                       uint32
-	integerDotProduct64BitMixedSignednessAccelerated                              uint32
-	integerDotProductAccumulatingSaturating8BitUnsignedAccelerated                uint32
-	integerDotProductAccumulatingSaturating8BitSignedAccelerated                  uint32
-	integerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated         uint32
-	integerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated        uint32
-	integerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated          uint32
-	integerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated uint32
-	integerDotProductAccumulatingSaturating16BitUnsignedAccelerated               uint32
-	integerDotProductAccumulatingSaturating16BitSignedAccelerated                 uint32
-	integerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated        uint32
-	integerDotProductAccumulatingSaturating32BitUnsignedAccelerated               uint32
-	integerDotProductAccumulatingSaturating32BitSignedAccelerated                 uint32
-	integerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated        uint32
-	integerDotProductAccumulatingSaturating64BitUnsignedAccelerated               uint32
-	integerDotProductAccumulatingSaturating64BitSignedAccelerated                 uint32
-	integerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated        uint32
-}
-
-type PhysicalDeviceShaderIntegerDotProductProperties struct {
-	Next                                                                          Structure
-	IntegerDotProduct8BitUnsignedAccelerated                                      bool
-	IntegerDotProduct8BitSignedAccelerated                                        bool
-	IntegerDotProduct8BitMixedSignednessAccelerated                               bool
-	IntegerDotProduct4x8BitPackedUnsignedAccelerated                              bool
-	IntegerDotProduct4x8BitPackedSignedAccelerated                                bool
-	IntegerDotProduct4x8BitPackedMixedSignednessAccelerated                       bool
-	IntegerDotProduct16BitUnsignedAccelerated                                     bool
-	IntegerDotProduct16BitSignedAccelerated                                       bool
-	IntegerDotProduct16BitMixedSignednessAccelerated                              bool
-	IntegerDotProduct32BitUnsignedAccelerated                                     bool
-	IntegerDotProduct32BitSignedAccelerated                                       bool
-	IntegerDotProduct32BitMixedSignednessAccelerated                              bool
-	IntegerDotProduct64BitUnsignedAccelerated                                     bool
-	IntegerDotProduct64BitSignedAccelerated                                       bool
-	IntegerDotProduct64BitMixedSignednessAccelerated                              bool
-	IntegerDotProductAccumulatingSaturating8BitUnsignedAccelerated                bool
-	IntegerDotProductAccumulatingSaturating8BitSignedAccelerated                  bool
-	IntegerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated         bool
-	IntegerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated        bool
-	IntegerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated          bool
-	IntegerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated bool
-	IntegerDotProductAccumulatingSaturating16BitUnsignedAccelerated               bool
-	IntegerDotProductAccumulatingSaturating16BitSignedAccelerated                 bool
-	IntegerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated        bool
-	IntegerDotProductAccumulatingSaturating32BitUnsignedAccelerated               bool
-	IntegerDotProductAccumulatingSaturating32BitSignedAccelerated                 bool
-	IntegerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated        bool
-	IntegerDotProductAccumulatingSaturating64BitUnsignedAccelerated               bool
-	IntegerDotProductAccumulatingSaturating64BitSignedAccelerated                 bool
-	IntegerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated        bool
-}
-
-func (s *PhysicalDeviceShaderIntegerDotProductProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceShaderIntegerDotProductProperties
-}
-
-func (s *PhysicalDeviceShaderIntegerDotProductProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceShaderIntegerDotProductProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.IntegerDotProduct8BitUnsignedAccelerated {
-		val0 = 1
-	}
-	p.integerDotProduct8BitUnsignedAccelerated = val0
-	val1 := uint32(0)
-	if s.IntegerDotProduct8BitSignedAccelerated {
-		val1 = 1
-	}
-	p.integerDotProduct8BitSignedAccelerated = val1
-	val2 := uint32(0)
-	if s.IntegerDotProduct8BitMixedSignednessAccelerated {
-		val2 = 1
-	}
-	p.integerDotProduct8BitMixedSignednessAccelerated = val2
-	val3 := uint32(0)
-	if s.IntegerDotProduct4x8BitPackedUnsignedAccelerated {
-		val3 = 1
-	}
-	p.integerDotProduct4x8BitPackedUnsignedAccelerated = val3
-	val4 := uint32(0)
-	if s.IntegerDotProduct4x8BitPackedSignedAccelerated {
-		val4 = 1
-	}
-	p.integerDotProduct4x8BitPackedSignedAccelerated = val4
-	val5 := uint32(0)
-	if s.IntegerDotProduct4x8BitPackedMixedSignednessAccelerated {
-		val5 = 1
-	}
-	p.integerDotProduct4x8BitPackedMixedSignednessAccelerated = val5
-	val6 := uint32(0)
-	if s.IntegerDotProduct16BitUnsignedAccelerated {
-		val6 = 1
-	}
-	p.integerDotProduct16BitUnsignedAccelerated = val6
-	val7 := uint32(0)
-	if s.IntegerDotProduct16BitSignedAccelerated {
-		val7 = 1
-	}
-	p.integerDotProduct16BitSignedAccelerated = val7
-	val8 := uint32(0)
-	if s.IntegerDotProduct16BitMixedSignednessAccelerated {
-		val8 = 1
-	}
-	p.integerDotProduct16BitMixedSignednessAccelerated = val8
-	val9 := uint32(0)
-	if s.IntegerDotProduct32BitUnsignedAccelerated {
-		val9 = 1
-	}
-	p.integerDotProduct32BitUnsignedAccelerated = val9
-	val10 := uint32(0)
-	if s.IntegerDotProduct32BitSignedAccelerated {
-		val10 = 1
-	}
-	p.integerDotProduct32BitSignedAccelerated = val10
-	val11 := uint32(0)
-	if s.IntegerDotProduct32BitMixedSignednessAccelerated {
-		val11 = 1
-	}
-	p.integerDotProduct32BitMixedSignednessAccelerated = val11
-	val12 := uint32(0)
-	if s.IntegerDotProduct64BitUnsignedAccelerated {
-		val12 = 1
-	}
-	p.integerDotProduct64BitUnsignedAccelerated = val12
-	val13 := uint32(0)
-	if s.IntegerDotProduct64BitSignedAccelerated {
-		val13 = 1
-	}
-	p.integerDotProduct64BitSignedAccelerated = val13
-	val14 := uint32(0)
-	if s.IntegerDotProduct64BitMixedSignednessAccelerated {
-		val14 = 1
-	}
-	p.integerDotProduct64BitMixedSignednessAccelerated = val14
-	val15 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating8BitUnsignedAccelerated {
-		val15 = 1
-	}
-	p.integerDotProductAccumulatingSaturating8BitUnsignedAccelerated = val15
-	val16 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating8BitSignedAccelerated {
-		val16 = 1
-	}
-	p.integerDotProductAccumulatingSaturating8BitSignedAccelerated = val16
-	val17 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated {
-		val17 = 1
-	}
-	p.integerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated = val17
-	val18 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated {
-		val18 = 1
-	}
-	p.integerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated = val18
-	val19 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated {
-		val19 = 1
-	}
-	p.integerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated = val19
-	val20 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated {
-		val20 = 1
-	}
-	p.integerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated = val20
-	val21 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating16BitUnsignedAccelerated {
-		val21 = 1
-	}
-	p.integerDotProductAccumulatingSaturating16BitUnsignedAccelerated = val21
-	val22 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating16BitSignedAccelerated {
-		val22 = 1
-	}
-	p.integerDotProductAccumulatingSaturating16BitSignedAccelerated = val22
-	val23 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated {
-		val23 = 1
-	}
-	p.integerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated = val23
-	val24 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating32BitUnsignedAccelerated {
-		val24 = 1
-	}
-	p.integerDotProductAccumulatingSaturating32BitUnsignedAccelerated = val24
-	val25 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating32BitSignedAccelerated {
-		val25 = 1
-	}
-	p.integerDotProductAccumulatingSaturating32BitSignedAccelerated = val25
-	val26 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated {
-		val26 = 1
-	}
-	p.integerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated = val26
-	val27 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating64BitUnsignedAccelerated {
-		val27 = 1
-	}
-	p.integerDotProductAccumulatingSaturating64BitUnsignedAccelerated = val27
-	val28 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating64BitSignedAccelerated {
-		val28 = 1
-	}
-	p.integerDotProductAccumulatingSaturating64BitSignedAccelerated = val28
-	val29 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated {
-		val29 = 1
-	}
-	p.integerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated = val29
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceShaderIntegerDotProductProperties) fromC(p *cVkPhysicalDeviceShaderIntegerDotProductProperties) {
-	s.IntegerDotProduct8BitUnsignedAccelerated = p.integerDotProduct8BitUnsignedAccelerated != 0
-	s.IntegerDotProduct8BitSignedAccelerated = p.integerDotProduct8BitSignedAccelerated != 0
-	s.IntegerDotProduct8BitMixedSignednessAccelerated = p.integerDotProduct8BitMixedSignednessAccelerated != 0
-	s.IntegerDotProduct4x8BitPackedUnsignedAccelerated = p.integerDotProduct4x8BitPackedUnsignedAccelerated != 0
-	s.IntegerDotProduct4x8BitPackedSignedAccelerated = p.integerDotProduct4x8BitPackedSignedAccelerated != 0
-	s.IntegerDotProduct4x8BitPackedMixedSignednessAccelerated = p.integerDotProduct4x8BitPackedMixedSignednessAccelerated != 0
-	s.IntegerDotProduct16BitUnsignedAccelerated = p.integerDotProduct16BitUnsignedAccelerated != 0
-	s.IntegerDotProduct16BitSignedAccelerated = p.integerDotProduct16BitSignedAccelerated != 0
-	s.IntegerDotProduct16BitMixedSignednessAccelerated = p.integerDotProduct16BitMixedSignednessAccelerated != 0
-	s.IntegerDotProduct32BitUnsignedAccelerated = p.integerDotProduct32BitUnsignedAccelerated != 0
-	s.IntegerDotProduct32BitSignedAccelerated = p.integerDotProduct32BitSignedAccelerated != 0
-	s.IntegerDotProduct32BitMixedSignednessAccelerated = p.integerDotProduct32BitMixedSignednessAccelerated != 0
-	s.IntegerDotProduct64BitUnsignedAccelerated = p.integerDotProduct64BitUnsignedAccelerated != 0
-	s.IntegerDotProduct64BitSignedAccelerated = p.integerDotProduct64BitSignedAccelerated != 0
-	s.IntegerDotProduct64BitMixedSignednessAccelerated = p.integerDotProduct64BitMixedSignednessAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating8BitUnsignedAccelerated = p.integerDotProductAccumulatingSaturating8BitUnsignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating8BitSignedAccelerated = p.integerDotProductAccumulatingSaturating8BitSignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated = p.integerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated = p.integerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated = p.integerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated = p.integerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating16BitUnsignedAccelerated = p.integerDotProductAccumulatingSaturating16BitUnsignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating16BitSignedAccelerated = p.integerDotProductAccumulatingSaturating16BitSignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated = p.integerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating32BitUnsignedAccelerated = p.integerDotProductAccumulatingSaturating32BitUnsignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating32BitSignedAccelerated = p.integerDotProductAccumulatingSaturating32BitSignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated = p.integerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating64BitUnsignedAccelerated = p.integerDotProductAccumulatingSaturating64BitUnsignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating64BitSignedAccelerated = p.integerDotProductAccumulatingSaturating64BitSignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated = p.integerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated != 0
 }
 
 type cVkPhysicalDeviceShaderObjectFeaturesEXT struct {
@@ -24115,191 +16700,6 @@ func (s *PhysicalDeviceShaderObjectPropertiesEXT) fromC(p *cVkPhysicalDeviceShad
 	s.ShaderBinaryVersion = uint32(p.shaderBinaryVersion)
 }
 
-type cVkPhysicalDeviceShaderSubgroupExtendedTypesFeatures struct {
-	sType                       int32
-	pNext                       unsafe.Pointer
-	shaderSubgroupExtendedTypes uint32
-}
-
-type PhysicalDeviceShaderSubgroupExtendedTypesFeatures struct {
-	Next                        Structure
-	ShaderSubgroupExtendedTypes bool
-}
-
-func (s *PhysicalDeviceShaderSubgroupExtendedTypesFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceShaderSubgroupExtendedTypesFeatures
-}
-
-func (s *PhysicalDeviceShaderSubgroupExtendedTypesFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceShaderSubgroupExtendedTypesFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ShaderSubgroupExtendedTypes {
-		val0 = 1
-	}
-	p.shaderSubgroupExtendedTypes = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceShaderSubgroupExtendedTypesFeatures) fromC(p *cVkPhysicalDeviceShaderSubgroupExtendedTypesFeatures) {
-	s.ShaderSubgroupExtendedTypes = p.shaderSubgroupExtendedTypes != 0
-}
-
-type cVkPhysicalDeviceShaderSubgroupRotateFeatures struct {
-	sType                         int32
-	pNext                         unsafe.Pointer
-	shaderSubgroupRotate          uint32
-	shaderSubgroupRotateClustered uint32
-}
-
-type PhysicalDeviceShaderSubgroupRotateFeatures struct {
-	Next                          Structure
-	ShaderSubgroupRotate          bool
-	ShaderSubgroupRotateClustered bool
-}
-
-func (s *PhysicalDeviceShaderSubgroupRotateFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceShaderSubgroupRotateFeatures
-}
-
-func (s *PhysicalDeviceShaderSubgroupRotateFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceShaderSubgroupRotateFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ShaderSubgroupRotate {
-		val0 = 1
-	}
-	p.shaderSubgroupRotate = val0
-	val1 := uint32(0)
-	if s.ShaderSubgroupRotateClustered {
-		val1 = 1
-	}
-	p.shaderSubgroupRotateClustered = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceShaderSubgroupRotateFeatures) fromC(p *cVkPhysicalDeviceShaderSubgroupRotateFeatures) {
-	s.ShaderSubgroupRotate = p.shaderSubgroupRotate != 0
-	s.ShaderSubgroupRotateClustered = p.shaderSubgroupRotateClustered != 0
-}
-
-type cVkPhysicalDeviceShaderTerminateInvocationFeatures struct {
-	sType                     int32
-	pNext                     unsafe.Pointer
-	shaderTerminateInvocation uint32
-}
-
-type PhysicalDeviceShaderTerminateInvocationFeatures struct {
-	Next                      Structure
-	ShaderTerminateInvocation bool
-}
-
-func (s *PhysicalDeviceShaderTerminateInvocationFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceShaderTerminateInvocationFeatures
-}
-
-func (s *PhysicalDeviceShaderTerminateInvocationFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceShaderTerminateInvocationFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ShaderTerminateInvocation {
-		val0 = 1
-	}
-	p.shaderTerminateInvocation = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceShaderTerminateInvocationFeatures) fromC(p *cVkPhysicalDeviceShaderTerminateInvocationFeatures) {
-	s.ShaderTerminateInvocation = p.shaderTerminateInvocation != 0
-}
-
-type cVkPhysicalDeviceSparseImageFormatInfo2 struct {
-	sType   int32
-	pNext   unsafe.Pointer
-	format  uint32
-	_type   uint32
-	samples uint32
-	usage   uint32
-	tiling  uint32
-}
-
-type PhysicalDeviceSparseImageFormatInfo2 struct {
-	Next    Structure
-	Format  Format
-	Type    ImageType
-	Samples SampleCountFlagBits
-	Usage   ImageUsageFlags
-	Tiling  ImageTiling
-}
-
-func (s *PhysicalDeviceSparseImageFormatInfo2) GetType() StructureType {
-	return StructureTypePhysicalDeviceSparseImageFormatInfo2
-}
-
-func (s *PhysicalDeviceSparseImageFormatInfo2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceSparseImageFormatInfo2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Format)
-	p.format = val0
-	val1 := uint32(s.Type)
-	p._type = val1
-	val2 := uint32(s.Samples)
-	p.samples = val2
-	val3 := uint32(s.Usage)
-	p.usage = val3
-	val4 := uint32(s.Tiling)
-	p.tiling = val4
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceSparseImageFormatInfo2) fromC(p *cVkPhysicalDeviceSparseImageFormatInfo2) {
-	s.Format = Format(p.format)
-	s.Type = ImageType(p._type)
-	s.Samples = SampleCountFlagBits(p.samples)
-	s.Usage = ImageUsageFlags(p.usage)
-	s.Tiling = ImageTiling(p.tiling)
-}
-
 type cVkPhysicalDeviceSparseProperties struct {
 	residencyStandard2DBlockShape            uint32
 	residencyStandard2DMultisampleBlockShape uint32
@@ -24359,161 +16759,6 @@ func (s *PhysicalDeviceSparseProperties) fromC(p *cVkPhysicalDeviceSparsePropert
 	s.ResidencyNonResidentStrict = p.residencyNonResidentStrict != 0
 }
 
-type cVkPhysicalDeviceSubgroupProperties struct {
-	sType                     int32
-	pNext                     unsafe.Pointer
-	subgroupSize              uint32
-	supportedStages           uint32
-	supportedOperations       uint32
-	quadOperationsInAllStages uint32
-}
-
-type PhysicalDeviceSubgroupProperties struct {
-	Next                      Structure
-	SubgroupSize              uint32
-	SupportedStages           ShaderStageFlags
-	SupportedOperations       SubgroupFeatureFlags
-	QuadOperationsInAllStages bool
-}
-
-func (s *PhysicalDeviceSubgroupProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceSubgroupProperties
-}
-
-func (s *PhysicalDeviceSubgroupProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceSubgroupProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.SubgroupSize)
-	p.subgroupSize = val0
-	val1 := uint32(s.SupportedStages)
-	p.supportedStages = val1
-	val2 := uint32(s.SupportedOperations)
-	p.supportedOperations = val2
-	val3 := uint32(0)
-	if s.QuadOperationsInAllStages {
-		val3 = 1
-	}
-	p.quadOperationsInAllStages = val3
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceSubgroupProperties) fromC(p *cVkPhysicalDeviceSubgroupProperties) {
-	s.SubgroupSize = uint32(p.subgroupSize)
-	s.SupportedStages = ShaderStageFlags(p.supportedStages)
-	s.SupportedOperations = SubgroupFeatureFlags(p.supportedOperations)
-	s.QuadOperationsInAllStages = p.quadOperationsInAllStages != 0
-}
-
-type cVkPhysicalDeviceSubgroupSizeControlFeatures struct {
-	sType                int32
-	pNext                unsafe.Pointer
-	subgroupSizeControl  uint32
-	computeFullSubgroups uint32
-}
-
-type PhysicalDeviceSubgroupSizeControlFeatures struct {
-	Next                 Structure
-	SubgroupSizeControl  bool
-	ComputeFullSubgroups bool
-}
-
-func (s *PhysicalDeviceSubgroupSizeControlFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceSubgroupSizeControlFeatures
-}
-
-func (s *PhysicalDeviceSubgroupSizeControlFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceSubgroupSizeControlFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.SubgroupSizeControl {
-		val0 = 1
-	}
-	p.subgroupSizeControl = val0
-	val1 := uint32(0)
-	if s.ComputeFullSubgroups {
-		val1 = 1
-	}
-	p.computeFullSubgroups = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceSubgroupSizeControlFeatures) fromC(p *cVkPhysicalDeviceSubgroupSizeControlFeatures) {
-	s.SubgroupSizeControl = p.subgroupSizeControl != 0
-	s.ComputeFullSubgroups = p.computeFullSubgroups != 0
-}
-
-type cVkPhysicalDeviceSubgroupSizeControlProperties struct {
-	sType                        int32
-	pNext                        unsafe.Pointer
-	minSubgroupSize              uint32
-	maxSubgroupSize              uint32
-	maxComputeWorkgroupSubgroups uint32
-	requiredSubgroupSizeStages   uint32
-}
-
-type PhysicalDeviceSubgroupSizeControlProperties struct {
-	Next                         Structure
-	MinSubgroupSize              uint32
-	MaxSubgroupSize              uint32
-	MaxComputeWorkgroupSubgroups uint32
-	RequiredSubgroupSizeStages   ShaderStageFlags
-}
-
-func (s *PhysicalDeviceSubgroupSizeControlProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceSubgroupSizeControlProperties
-}
-
-func (s *PhysicalDeviceSubgroupSizeControlProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceSubgroupSizeControlProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.MinSubgroupSize)
-	p.minSubgroupSize = val0
-	val1 := uint32(s.MaxSubgroupSize)
-	p.maxSubgroupSize = val1
-	val2 := uint32(s.MaxComputeWorkgroupSubgroups)
-	p.maxComputeWorkgroupSubgroups = val2
-	val3 := uint32(s.RequiredSubgroupSizeStages)
-	p.requiredSubgroupSizeStages = val3
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceSubgroupSizeControlProperties) fromC(p *cVkPhysicalDeviceSubgroupSizeControlProperties) {
-	s.MinSubgroupSize = uint32(p.minSubgroupSize)
-	s.MaxSubgroupSize = uint32(p.maxSubgroupSize)
-	s.MaxComputeWorkgroupSubgroups = uint32(p.maxComputeWorkgroupSubgroups)
-	s.RequiredSubgroupSizeStages = ShaderStageFlags(p.requiredSubgroupSizeStages)
-}
-
 type cVkPhysicalDeviceSwapchainMaintenance1FeaturesEXT struct {
 	sType                 int32
 	pNext                 unsafe.Pointer
@@ -24552,438 +16797,6 @@ func (s *PhysicalDeviceSwapchainMaintenance1FeaturesEXT) toC() (unsafe.Pointer, 
 
 func (s *PhysicalDeviceSwapchainMaintenance1FeaturesEXT) fromC(p *cVkPhysicalDeviceSwapchainMaintenance1FeaturesEXT) {
 	s.SwapchainMaintenance1 = p.swapchainMaintenance1 != 0
-}
-
-type cVkPhysicalDeviceSynchronization2Features struct {
-	sType            int32
-	pNext            unsafe.Pointer
-	synchronization2 uint32
-}
-
-type PhysicalDeviceSynchronization2Features struct {
-	Next             Structure
-	Synchronization2 bool
-}
-
-func (s *PhysicalDeviceSynchronization2Features) GetType() StructureType {
-	return StructureTypePhysicalDeviceSynchronization2Features
-}
-
-func (s *PhysicalDeviceSynchronization2Features) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceSynchronization2Features)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.Synchronization2 {
-		val0 = 1
-	}
-	p.synchronization2 = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceSynchronization2Features) fromC(p *cVkPhysicalDeviceSynchronization2Features) {
-	s.Synchronization2 = p.synchronization2 != 0
-}
-
-type cVkPhysicalDeviceTexelBufferAlignmentProperties struct {
-	sType                                        int32
-	pNext                                        unsafe.Pointer
-	storageTexelBufferOffsetAlignmentBytes       uint64
-	storageTexelBufferOffsetSingleTexelAlignment uint32
-	uniformTexelBufferOffsetAlignmentBytes       uint64
-	uniformTexelBufferOffsetSingleTexelAlignment uint32
-}
-
-type PhysicalDeviceTexelBufferAlignmentProperties struct {
-	Next                                         Structure
-	StorageTexelBufferOffsetAlignmentBytes       uint64
-	StorageTexelBufferOffsetSingleTexelAlignment bool
-	UniformTexelBufferOffsetAlignmentBytes       uint64
-	UniformTexelBufferOffsetSingleTexelAlignment bool
-}
-
-func (s *PhysicalDeviceTexelBufferAlignmentProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceTexelBufferAlignmentProperties
-}
-
-func (s *PhysicalDeviceTexelBufferAlignmentProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceTexelBufferAlignmentProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.StorageTexelBufferOffsetAlignmentBytes)
-	p.storageTexelBufferOffsetAlignmentBytes = val0
-	val1 := uint32(0)
-	if s.StorageTexelBufferOffsetSingleTexelAlignment {
-		val1 = 1
-	}
-	p.storageTexelBufferOffsetSingleTexelAlignment = val1
-	val2 := uint64(s.UniformTexelBufferOffsetAlignmentBytes)
-	p.uniformTexelBufferOffsetAlignmentBytes = val2
-	val3 := uint32(0)
-	if s.UniformTexelBufferOffsetSingleTexelAlignment {
-		val3 = 1
-	}
-	p.uniformTexelBufferOffsetSingleTexelAlignment = val3
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceTexelBufferAlignmentProperties) fromC(p *cVkPhysicalDeviceTexelBufferAlignmentProperties) {
-	s.StorageTexelBufferOffsetAlignmentBytes = uint64(p.storageTexelBufferOffsetAlignmentBytes)
-	s.StorageTexelBufferOffsetSingleTexelAlignment = p.storageTexelBufferOffsetSingleTexelAlignment != 0
-	s.UniformTexelBufferOffsetAlignmentBytes = uint64(p.uniformTexelBufferOffsetAlignmentBytes)
-	s.UniformTexelBufferOffsetSingleTexelAlignment = p.uniformTexelBufferOffsetSingleTexelAlignment != 0
-}
-
-type cVkPhysicalDeviceTextureCompressionASTCHDRFeatures struct {
-	sType                      int32
-	pNext                      unsafe.Pointer
-	textureCompressionASTC_HDR uint32
-}
-
-type PhysicalDeviceTextureCompressionASTCHDRFeatures struct {
-	Next                       Structure
-	TextureCompressionASTC_HDR bool
-}
-
-func (s *PhysicalDeviceTextureCompressionASTCHDRFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceTextureCompressionAstcHdrFeatures
-}
-
-func (s *PhysicalDeviceTextureCompressionASTCHDRFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceTextureCompressionASTCHDRFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.TextureCompressionASTC_HDR {
-		val0 = 1
-	}
-	p.textureCompressionASTC_HDR = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceTextureCompressionASTCHDRFeatures) fromC(p *cVkPhysicalDeviceTextureCompressionASTCHDRFeatures) {
-	s.TextureCompressionASTC_HDR = p.textureCompressionASTC_HDR != 0
-}
-
-type cVkPhysicalDeviceTimelineSemaphoreFeatures struct {
-	sType             int32
-	pNext             unsafe.Pointer
-	timelineSemaphore uint32
-}
-
-type PhysicalDeviceTimelineSemaphoreFeatures struct {
-	Next              Structure
-	TimelineSemaphore bool
-}
-
-func (s *PhysicalDeviceTimelineSemaphoreFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceTimelineSemaphoreFeatures
-}
-
-func (s *PhysicalDeviceTimelineSemaphoreFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceTimelineSemaphoreFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.TimelineSemaphore {
-		val0 = 1
-	}
-	p.timelineSemaphore = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceTimelineSemaphoreFeatures) fromC(p *cVkPhysicalDeviceTimelineSemaphoreFeatures) {
-	s.TimelineSemaphore = p.timelineSemaphore != 0
-}
-
-type cVkPhysicalDeviceTimelineSemaphoreProperties struct {
-	sType                               int32
-	pNext                               unsafe.Pointer
-	maxTimelineSemaphoreValueDifference uint64
-}
-
-type PhysicalDeviceTimelineSemaphoreProperties struct {
-	Next                                Structure
-	MaxTimelineSemaphoreValueDifference uint64
-}
-
-func (s *PhysicalDeviceTimelineSemaphoreProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceTimelineSemaphoreProperties
-}
-
-func (s *PhysicalDeviceTimelineSemaphoreProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceTimelineSemaphoreProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.MaxTimelineSemaphoreValueDifference)
-	p.maxTimelineSemaphoreValueDifference = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceTimelineSemaphoreProperties) fromC(p *cVkPhysicalDeviceTimelineSemaphoreProperties) {
-	s.MaxTimelineSemaphoreValueDifference = uint64(p.maxTimelineSemaphoreValueDifference)
-}
-
-type cVkPhysicalDeviceToolProperties struct {
-	sType       int32
-	pNext       unsafe.Pointer
-	name        [256]byte
-	version     [256]byte
-	purposes    uint32
-	description [256]byte
-	layer       [256]byte
-}
-
-type PhysicalDeviceToolProperties struct {
-	Next        Structure
-	Name        [256]byte
-	Version     [256]byte
-	Purposes    ToolPurposeFlags
-	Description [256]byte
-	Layer       [256]byte
-}
-
-func (s *PhysicalDeviceToolProperties) GetType() StructureType {
-	return StructureTypePhysicalDeviceToolProperties
-}
-
-func (s *PhysicalDeviceToolProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceToolProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var arr0 [256]byte
-	for i1, elem2 := range s.Name {
-		val3 := byte(elem2)
-		arr0[i1] = val3
-	}
-	p.name = arr0
-	var arr4 [256]byte
-	for i5, elem6 := range s.Version {
-		val7 := byte(elem6)
-		arr4[i5] = val7
-	}
-	p.version = arr4
-	val8 := uint32(s.Purposes)
-	p.purposes = val8
-	var arr9 [256]byte
-	for i10, elem11 := range s.Description {
-		val12 := byte(elem11)
-		arr9[i10] = val12
-	}
-	p.description = arr9
-	var arr13 [256]byte
-	for i14, elem15 := range s.Layer {
-		val16 := byte(elem15)
-		arr13[i14] = val16
-	}
-	p.layer = arr13
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceToolProperties) fromC(p *cVkPhysicalDeviceToolProperties) {
-	for _i := range s.Name {
-		s.Name[_i] = byte(p.name[_i])
-	}
-	for _i := range s.Version {
-		s.Version[_i] = byte(p.version[_i])
-	}
-	s.Purposes = ToolPurposeFlags(p.purposes)
-	for _i := range s.Description {
-		s.Description[_i] = byte(p.description[_i])
-	}
-	for _i := range s.Layer {
-		s.Layer[_i] = byte(p.layer[_i])
-	}
-}
-
-type cVkPhysicalDeviceUniformBufferStandardLayoutFeatures struct {
-	sType                       int32
-	pNext                       unsafe.Pointer
-	uniformBufferStandardLayout uint32
-}
-
-type PhysicalDeviceUniformBufferStandardLayoutFeatures struct {
-	Next                        Structure
-	UniformBufferStandardLayout bool
-}
-
-func (s *PhysicalDeviceUniformBufferStandardLayoutFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceUniformBufferStandardLayoutFeatures
-}
-
-func (s *PhysicalDeviceUniformBufferStandardLayoutFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceUniformBufferStandardLayoutFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.UniformBufferStandardLayout {
-		val0 = 1
-	}
-	p.uniformBufferStandardLayout = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceUniformBufferStandardLayoutFeatures) fromC(p *cVkPhysicalDeviceUniformBufferStandardLayoutFeatures) {
-	s.UniformBufferStandardLayout = p.uniformBufferStandardLayout != 0
-}
-
-type cVkPhysicalDeviceVariablePointerFeatures struct {
-	sType                         int32
-	pNext                         unsafe.Pointer
-	variablePointersStorageBuffer uint32
-	variablePointers              uint32
-}
-
-type PhysicalDeviceVariablePointerFeatures struct {
-	Next                          Structure
-	VariablePointersStorageBuffer bool
-	VariablePointers              bool
-}
-
-func (s *PhysicalDeviceVariablePointerFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceVariablePointersFeatures
-}
-
-func (s *PhysicalDeviceVariablePointerFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceVariablePointerFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.VariablePointersStorageBuffer {
-		val0 = 1
-	}
-	p.variablePointersStorageBuffer = val0
-	val1 := uint32(0)
-	if s.VariablePointers {
-		val1 = 1
-	}
-	p.variablePointers = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceVariablePointerFeatures) fromC(p *cVkPhysicalDeviceVariablePointerFeatures) {
-	s.VariablePointersStorageBuffer = p.variablePointersStorageBuffer != 0
-	s.VariablePointers = p.variablePointers != 0
-}
-
-type cVkPhysicalDeviceVariablePointersFeatures struct {
-	sType                         int32
-	pNext                         unsafe.Pointer
-	variablePointersStorageBuffer uint32
-	variablePointers              uint32
-}
-
-type PhysicalDeviceVariablePointersFeatures struct {
-	Next                          Structure
-	VariablePointersStorageBuffer bool
-	VariablePointers              bool
-}
-
-func (s *PhysicalDeviceVariablePointersFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceVariablePointersFeatures
-}
-
-func (s *PhysicalDeviceVariablePointersFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceVariablePointersFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.VariablePointersStorageBuffer {
-		val0 = 1
-	}
-	p.variablePointersStorageBuffer = val0
-	val1 := uint32(0)
-	if s.VariablePointers {
-		val1 = 1
-	}
-	p.variablePointers = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceVariablePointersFeatures) fromC(p *cVkPhysicalDeviceVariablePointersFeatures) {
-	s.VariablePointersStorageBuffer = p.variablePointersStorageBuffer != 0
-	s.VariablePointers = p.variablePointers != 0
 }
 
 type cVkPhysicalDeviceVertexAttributeDivisorFeatures struct {
@@ -25077,2084 +16890,6 @@ func (s *PhysicalDeviceVertexAttributeDivisorProperties) toC() (unsafe.Pointer, 
 func (s *PhysicalDeviceVertexAttributeDivisorProperties) fromC(p *cVkPhysicalDeviceVertexAttributeDivisorProperties) {
 	s.MaxVertexAttribDivisor = uint32(p.maxVertexAttribDivisor)
 	s.SupportsNonZeroFirstInstance = p.supportsNonZeroFirstInstance != 0
-}
-
-type cVkPhysicalDeviceVulkan11Features struct {
-	sType                              int32
-	pNext                              unsafe.Pointer
-	storageBuffer16BitAccess           uint32
-	uniformAndStorageBuffer16BitAccess uint32
-	storagePushConstant16              uint32
-	storageInputOutput16               uint32
-	multiview                          uint32
-	multiviewGeometryShader            uint32
-	multiviewTessellationShader        uint32
-	variablePointersStorageBuffer      uint32
-	variablePointers                   uint32
-	protectedMemory                    uint32
-	samplerYcbcrConversion             uint32
-	shaderDrawParameters               uint32
-}
-
-type PhysicalDeviceVulkan11Features struct {
-	Next                               Structure
-	StorageBuffer16BitAccess           bool
-	UniformAndStorageBuffer16BitAccess bool
-	StoragePushConstant16              bool
-	StorageInputOutput16               bool
-	Multiview                          bool
-	MultiviewGeometryShader            bool
-	MultiviewTessellationShader        bool
-	VariablePointersStorageBuffer      bool
-	VariablePointers                   bool
-	ProtectedMemory                    bool
-	SamplerYcbcrConversion             bool
-	ShaderDrawParameters               bool
-}
-
-func (s *PhysicalDeviceVulkan11Features) GetType() StructureType {
-	return StructureTypePhysicalDeviceVulkan11Features
-}
-
-func (s *PhysicalDeviceVulkan11Features) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceVulkan11Features)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.StorageBuffer16BitAccess {
-		val0 = 1
-	}
-	p.storageBuffer16BitAccess = val0
-	val1 := uint32(0)
-	if s.UniformAndStorageBuffer16BitAccess {
-		val1 = 1
-	}
-	p.uniformAndStorageBuffer16BitAccess = val1
-	val2 := uint32(0)
-	if s.StoragePushConstant16 {
-		val2 = 1
-	}
-	p.storagePushConstant16 = val2
-	val3 := uint32(0)
-	if s.StorageInputOutput16 {
-		val3 = 1
-	}
-	p.storageInputOutput16 = val3
-	val4 := uint32(0)
-	if s.Multiview {
-		val4 = 1
-	}
-	p.multiview = val4
-	val5 := uint32(0)
-	if s.MultiviewGeometryShader {
-		val5 = 1
-	}
-	p.multiviewGeometryShader = val5
-	val6 := uint32(0)
-	if s.MultiviewTessellationShader {
-		val6 = 1
-	}
-	p.multiviewTessellationShader = val6
-	val7 := uint32(0)
-	if s.VariablePointersStorageBuffer {
-		val7 = 1
-	}
-	p.variablePointersStorageBuffer = val7
-	val8 := uint32(0)
-	if s.VariablePointers {
-		val8 = 1
-	}
-	p.variablePointers = val8
-	val9 := uint32(0)
-	if s.ProtectedMemory {
-		val9 = 1
-	}
-	p.protectedMemory = val9
-	val10 := uint32(0)
-	if s.SamplerYcbcrConversion {
-		val10 = 1
-	}
-	p.samplerYcbcrConversion = val10
-	val11 := uint32(0)
-	if s.ShaderDrawParameters {
-		val11 = 1
-	}
-	p.shaderDrawParameters = val11
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceVulkan11Features) fromC(p *cVkPhysicalDeviceVulkan11Features) {
-	s.StorageBuffer16BitAccess = p.storageBuffer16BitAccess != 0
-	s.UniformAndStorageBuffer16BitAccess = p.uniformAndStorageBuffer16BitAccess != 0
-	s.StoragePushConstant16 = p.storagePushConstant16 != 0
-	s.StorageInputOutput16 = p.storageInputOutput16 != 0
-	s.Multiview = p.multiview != 0
-	s.MultiviewGeometryShader = p.multiviewGeometryShader != 0
-	s.MultiviewTessellationShader = p.multiviewTessellationShader != 0
-	s.VariablePointersStorageBuffer = p.variablePointersStorageBuffer != 0
-	s.VariablePointers = p.variablePointers != 0
-	s.ProtectedMemory = p.protectedMemory != 0
-	s.SamplerYcbcrConversion = p.samplerYcbcrConversion != 0
-	s.ShaderDrawParameters = p.shaderDrawParameters != 0
-}
-
-type cVkPhysicalDeviceVulkan11Properties struct {
-	sType                             int32
-	pNext                             unsafe.Pointer
-	deviceUUID                        [16]uint8
-	driverUUID                        [16]uint8
-	deviceLUID                        [8]uint8
-	deviceNodeMask                    uint32
-	deviceLUIDValid                   uint32
-	subgroupSize                      uint32
-	subgroupSupportedStages           uint32
-	subgroupSupportedOperations       uint32
-	subgroupQuadOperationsInAllStages uint32
-	pointClippingBehavior             uint32
-	maxMultiviewViewCount             uint32
-	maxMultiviewInstanceIndex         uint32
-	protectedNoFault                  uint32
-	maxPerSetDescriptors              uint32
-	maxMemoryAllocationSize           uint64
-}
-
-type PhysicalDeviceVulkan11Properties struct {
-	Next                              Structure
-	DeviceUUID                        [16]uint8
-	DriverUUID                        [16]uint8
-	DeviceLUID                        [8]uint8
-	DeviceNodeMask                    uint32
-	DeviceLUIDValid                   bool
-	SubgroupSize                      uint32
-	SubgroupSupportedStages           ShaderStageFlags
-	SubgroupSupportedOperations       SubgroupFeatureFlags
-	SubgroupQuadOperationsInAllStages bool
-	PointClippingBehavior             PointClippingBehavior
-	MaxMultiviewViewCount             uint32
-	MaxMultiviewInstanceIndex         uint32
-	ProtectedNoFault                  bool
-	MaxPerSetDescriptors              uint32
-	MaxMemoryAllocationSize           uint64
-}
-
-func (s *PhysicalDeviceVulkan11Properties) GetType() StructureType {
-	return StructureTypePhysicalDeviceVulkan11Properties
-}
-
-func (s *PhysicalDeviceVulkan11Properties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceVulkan11Properties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var arr0 [16]uint8
-	for i1, elem2 := range s.DeviceUUID {
-		val3 := uint8(elem2)
-		arr0[i1] = val3
-	}
-	p.deviceUUID = arr0
-	var arr4 [16]uint8
-	for i5, elem6 := range s.DriverUUID {
-		val7 := uint8(elem6)
-		arr4[i5] = val7
-	}
-	p.driverUUID = arr4
-	var arr8 [8]uint8
-	for i9, elem10 := range s.DeviceLUID {
-		val11 := uint8(elem10)
-		arr8[i9] = val11
-	}
-	p.deviceLUID = arr8
-	val12 := uint32(s.DeviceNodeMask)
-	p.deviceNodeMask = val12
-	val13 := uint32(0)
-	if s.DeviceLUIDValid {
-		val13 = 1
-	}
-	p.deviceLUIDValid = val13
-	val14 := uint32(s.SubgroupSize)
-	p.subgroupSize = val14
-	val15 := uint32(s.SubgroupSupportedStages)
-	p.subgroupSupportedStages = val15
-	val16 := uint32(s.SubgroupSupportedOperations)
-	p.subgroupSupportedOperations = val16
-	val17 := uint32(0)
-	if s.SubgroupQuadOperationsInAllStages {
-		val17 = 1
-	}
-	p.subgroupQuadOperationsInAllStages = val17
-	val18 := uint32(s.PointClippingBehavior)
-	p.pointClippingBehavior = val18
-	val19 := uint32(s.MaxMultiviewViewCount)
-	p.maxMultiviewViewCount = val19
-	val20 := uint32(s.MaxMultiviewInstanceIndex)
-	p.maxMultiviewInstanceIndex = val20
-	val21 := uint32(0)
-	if s.ProtectedNoFault {
-		val21 = 1
-	}
-	p.protectedNoFault = val21
-	val22 := uint32(s.MaxPerSetDescriptors)
-	p.maxPerSetDescriptors = val22
-	val23 := uint64(s.MaxMemoryAllocationSize)
-	p.maxMemoryAllocationSize = val23
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceVulkan11Properties) fromC(p *cVkPhysicalDeviceVulkan11Properties) {
-	for _i := range s.DeviceUUID {
-		s.DeviceUUID[_i] = uint8(p.deviceUUID[_i])
-	}
-	for _i := range s.DriverUUID {
-		s.DriverUUID[_i] = uint8(p.driverUUID[_i])
-	}
-	for _i := range s.DeviceLUID {
-		s.DeviceLUID[_i] = uint8(p.deviceLUID[_i])
-	}
-	s.DeviceNodeMask = uint32(p.deviceNodeMask)
-	s.DeviceLUIDValid = p.deviceLUIDValid != 0
-	s.SubgroupSize = uint32(p.subgroupSize)
-	s.SubgroupSupportedStages = ShaderStageFlags(p.subgroupSupportedStages)
-	s.SubgroupSupportedOperations = SubgroupFeatureFlags(p.subgroupSupportedOperations)
-	s.SubgroupQuadOperationsInAllStages = p.subgroupQuadOperationsInAllStages != 0
-	s.PointClippingBehavior = PointClippingBehavior(p.pointClippingBehavior)
-	s.MaxMultiviewViewCount = uint32(p.maxMultiviewViewCount)
-	s.MaxMultiviewInstanceIndex = uint32(p.maxMultiviewInstanceIndex)
-	s.ProtectedNoFault = p.protectedNoFault != 0
-	s.MaxPerSetDescriptors = uint32(p.maxPerSetDescriptors)
-	s.MaxMemoryAllocationSize = uint64(p.maxMemoryAllocationSize)
-}
-
-type cVkPhysicalDeviceVulkan12Features struct {
-	sType                                              int32
-	pNext                                              unsafe.Pointer
-	samplerMirrorClampToEdge                           uint32
-	drawIndirectCount                                  uint32
-	storageBuffer8BitAccess                            uint32
-	uniformAndStorageBuffer8BitAccess                  uint32
-	storagePushConstant8                               uint32
-	shaderBufferInt64Atomics                           uint32
-	shaderSharedInt64Atomics                           uint32
-	shaderFloat16                                      uint32
-	shaderInt8                                         uint32
-	descriptorIndexing                                 uint32
-	shaderInputAttachmentArrayDynamicIndexing          uint32
-	shaderUniformTexelBufferArrayDynamicIndexing       uint32
-	shaderStorageTexelBufferArrayDynamicIndexing       uint32
-	shaderUniformBufferArrayNonUniformIndexing         uint32
-	shaderSampledImageArrayNonUniformIndexing          uint32
-	shaderStorageBufferArrayNonUniformIndexing         uint32
-	shaderStorageImageArrayNonUniformIndexing          uint32
-	shaderInputAttachmentArrayNonUniformIndexing       uint32
-	shaderUniformTexelBufferArrayNonUniformIndexing    uint32
-	shaderStorageTexelBufferArrayNonUniformIndexing    uint32
-	descriptorBindingUniformBufferUpdateAfterBind      uint32
-	descriptorBindingSampledImageUpdateAfterBind       uint32
-	descriptorBindingStorageImageUpdateAfterBind       uint32
-	descriptorBindingStorageBufferUpdateAfterBind      uint32
-	descriptorBindingUniformTexelBufferUpdateAfterBind uint32
-	descriptorBindingStorageTexelBufferUpdateAfterBind uint32
-	descriptorBindingUpdateUnusedWhilePending          uint32
-	descriptorBindingPartiallyBound                    uint32
-	descriptorBindingVariableDescriptorCount           uint32
-	runtimeDescriptorArray                             uint32
-	samplerFilterMinmax                                uint32
-	scalarBlockLayout                                  uint32
-	imagelessFramebuffer                               uint32
-	uniformBufferStandardLayout                        uint32
-	shaderSubgroupExtendedTypes                        uint32
-	separateDepthStencilLayouts                        uint32
-	hostQueryReset                                     uint32
-	timelineSemaphore                                  uint32
-	bufferDeviceAddress                                uint32
-	bufferDeviceAddressCaptureReplay                   uint32
-	bufferDeviceAddressMultiDevice                     uint32
-	vulkanMemoryModel                                  uint32
-	vulkanMemoryModelDeviceScope                       uint32
-	vulkanMemoryModelAvailabilityVisibilityChains      uint32
-	shaderOutputViewportIndex                          uint32
-	shaderOutputLayer                                  uint32
-	subgroupBroadcastDynamicId                         uint32
-}
-
-type PhysicalDeviceVulkan12Features struct {
-	Next                                               Structure
-	SamplerMirrorClampToEdge                           bool
-	DrawIndirectCount                                  bool
-	StorageBuffer8BitAccess                            bool
-	UniformAndStorageBuffer8BitAccess                  bool
-	StoragePushConstant8                               bool
-	ShaderBufferInt64Atomics                           bool
-	ShaderSharedInt64Atomics                           bool
-	ShaderFloat16                                      bool
-	ShaderInt8                                         bool
-	DescriptorIndexing                                 bool
-	ShaderInputAttachmentArrayDynamicIndexing          bool
-	ShaderUniformTexelBufferArrayDynamicIndexing       bool
-	ShaderStorageTexelBufferArrayDynamicIndexing       bool
-	ShaderUniformBufferArrayNonUniformIndexing         bool
-	ShaderSampledImageArrayNonUniformIndexing          bool
-	ShaderStorageBufferArrayNonUniformIndexing         bool
-	ShaderStorageImageArrayNonUniformIndexing          bool
-	ShaderInputAttachmentArrayNonUniformIndexing       bool
-	ShaderUniformTexelBufferArrayNonUniformIndexing    bool
-	ShaderStorageTexelBufferArrayNonUniformIndexing    bool
-	DescriptorBindingUniformBufferUpdateAfterBind      bool
-	DescriptorBindingSampledImageUpdateAfterBind       bool
-	DescriptorBindingStorageImageUpdateAfterBind       bool
-	DescriptorBindingStorageBufferUpdateAfterBind      bool
-	DescriptorBindingUniformTexelBufferUpdateAfterBind bool
-	DescriptorBindingStorageTexelBufferUpdateAfterBind bool
-	DescriptorBindingUpdateUnusedWhilePending          bool
-	DescriptorBindingPartiallyBound                    bool
-	DescriptorBindingVariableDescriptorCount           bool
-	RuntimeDescriptorArray                             bool
-	SamplerFilterMinmax                                bool
-	ScalarBlockLayout                                  bool
-	ImagelessFramebuffer                               bool
-	UniformBufferStandardLayout                        bool
-	ShaderSubgroupExtendedTypes                        bool
-	SeparateDepthStencilLayouts                        bool
-	HostQueryReset                                     bool
-	TimelineSemaphore                                  bool
-	BufferDeviceAddress                                bool
-	BufferDeviceAddressCaptureReplay                   bool
-	BufferDeviceAddressMultiDevice                     bool
-	VulkanMemoryModel                                  bool
-	VulkanMemoryModelDeviceScope                       bool
-	VulkanMemoryModelAvailabilityVisibilityChains      bool
-	ShaderOutputViewportIndex                          bool
-	ShaderOutputLayer                                  bool
-	SubgroupBroadcastDynamicId                         bool
-}
-
-func (s *PhysicalDeviceVulkan12Features) GetType() StructureType {
-	return StructureTypePhysicalDeviceVulkan12Features
-}
-
-func (s *PhysicalDeviceVulkan12Features) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceVulkan12Features)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.SamplerMirrorClampToEdge {
-		val0 = 1
-	}
-	p.samplerMirrorClampToEdge = val0
-	val1 := uint32(0)
-	if s.DrawIndirectCount {
-		val1 = 1
-	}
-	p.drawIndirectCount = val1
-	val2 := uint32(0)
-	if s.StorageBuffer8BitAccess {
-		val2 = 1
-	}
-	p.storageBuffer8BitAccess = val2
-	val3 := uint32(0)
-	if s.UniformAndStorageBuffer8BitAccess {
-		val3 = 1
-	}
-	p.uniformAndStorageBuffer8BitAccess = val3
-	val4 := uint32(0)
-	if s.StoragePushConstant8 {
-		val4 = 1
-	}
-	p.storagePushConstant8 = val4
-	val5 := uint32(0)
-	if s.ShaderBufferInt64Atomics {
-		val5 = 1
-	}
-	p.shaderBufferInt64Atomics = val5
-	val6 := uint32(0)
-	if s.ShaderSharedInt64Atomics {
-		val6 = 1
-	}
-	p.shaderSharedInt64Atomics = val6
-	val7 := uint32(0)
-	if s.ShaderFloat16 {
-		val7 = 1
-	}
-	p.shaderFloat16 = val7
-	val8 := uint32(0)
-	if s.ShaderInt8 {
-		val8 = 1
-	}
-	p.shaderInt8 = val8
-	val9 := uint32(0)
-	if s.DescriptorIndexing {
-		val9 = 1
-	}
-	p.descriptorIndexing = val9
-	val10 := uint32(0)
-	if s.ShaderInputAttachmentArrayDynamicIndexing {
-		val10 = 1
-	}
-	p.shaderInputAttachmentArrayDynamicIndexing = val10
-	val11 := uint32(0)
-	if s.ShaderUniformTexelBufferArrayDynamicIndexing {
-		val11 = 1
-	}
-	p.shaderUniformTexelBufferArrayDynamicIndexing = val11
-	val12 := uint32(0)
-	if s.ShaderStorageTexelBufferArrayDynamicIndexing {
-		val12 = 1
-	}
-	p.shaderStorageTexelBufferArrayDynamicIndexing = val12
-	val13 := uint32(0)
-	if s.ShaderUniformBufferArrayNonUniformIndexing {
-		val13 = 1
-	}
-	p.shaderUniformBufferArrayNonUniformIndexing = val13
-	val14 := uint32(0)
-	if s.ShaderSampledImageArrayNonUniformIndexing {
-		val14 = 1
-	}
-	p.shaderSampledImageArrayNonUniformIndexing = val14
-	val15 := uint32(0)
-	if s.ShaderStorageBufferArrayNonUniformIndexing {
-		val15 = 1
-	}
-	p.shaderStorageBufferArrayNonUniformIndexing = val15
-	val16 := uint32(0)
-	if s.ShaderStorageImageArrayNonUniformIndexing {
-		val16 = 1
-	}
-	p.shaderStorageImageArrayNonUniformIndexing = val16
-	val17 := uint32(0)
-	if s.ShaderInputAttachmentArrayNonUniformIndexing {
-		val17 = 1
-	}
-	p.shaderInputAttachmentArrayNonUniformIndexing = val17
-	val18 := uint32(0)
-	if s.ShaderUniformTexelBufferArrayNonUniformIndexing {
-		val18 = 1
-	}
-	p.shaderUniformTexelBufferArrayNonUniformIndexing = val18
-	val19 := uint32(0)
-	if s.ShaderStorageTexelBufferArrayNonUniformIndexing {
-		val19 = 1
-	}
-	p.shaderStorageTexelBufferArrayNonUniformIndexing = val19
-	val20 := uint32(0)
-	if s.DescriptorBindingUniformBufferUpdateAfterBind {
-		val20 = 1
-	}
-	p.descriptorBindingUniformBufferUpdateAfterBind = val20
-	val21 := uint32(0)
-	if s.DescriptorBindingSampledImageUpdateAfterBind {
-		val21 = 1
-	}
-	p.descriptorBindingSampledImageUpdateAfterBind = val21
-	val22 := uint32(0)
-	if s.DescriptorBindingStorageImageUpdateAfterBind {
-		val22 = 1
-	}
-	p.descriptorBindingStorageImageUpdateAfterBind = val22
-	val23 := uint32(0)
-	if s.DescriptorBindingStorageBufferUpdateAfterBind {
-		val23 = 1
-	}
-	p.descriptorBindingStorageBufferUpdateAfterBind = val23
-	val24 := uint32(0)
-	if s.DescriptorBindingUniformTexelBufferUpdateAfterBind {
-		val24 = 1
-	}
-	p.descriptorBindingUniformTexelBufferUpdateAfterBind = val24
-	val25 := uint32(0)
-	if s.DescriptorBindingStorageTexelBufferUpdateAfterBind {
-		val25 = 1
-	}
-	p.descriptorBindingStorageTexelBufferUpdateAfterBind = val25
-	val26 := uint32(0)
-	if s.DescriptorBindingUpdateUnusedWhilePending {
-		val26 = 1
-	}
-	p.descriptorBindingUpdateUnusedWhilePending = val26
-	val27 := uint32(0)
-	if s.DescriptorBindingPartiallyBound {
-		val27 = 1
-	}
-	p.descriptorBindingPartiallyBound = val27
-	val28 := uint32(0)
-	if s.DescriptorBindingVariableDescriptorCount {
-		val28 = 1
-	}
-	p.descriptorBindingVariableDescriptorCount = val28
-	val29 := uint32(0)
-	if s.RuntimeDescriptorArray {
-		val29 = 1
-	}
-	p.runtimeDescriptorArray = val29
-	val30 := uint32(0)
-	if s.SamplerFilterMinmax {
-		val30 = 1
-	}
-	p.samplerFilterMinmax = val30
-	val31 := uint32(0)
-	if s.ScalarBlockLayout {
-		val31 = 1
-	}
-	p.scalarBlockLayout = val31
-	val32 := uint32(0)
-	if s.ImagelessFramebuffer {
-		val32 = 1
-	}
-	p.imagelessFramebuffer = val32
-	val33 := uint32(0)
-	if s.UniformBufferStandardLayout {
-		val33 = 1
-	}
-	p.uniformBufferStandardLayout = val33
-	val34 := uint32(0)
-	if s.ShaderSubgroupExtendedTypes {
-		val34 = 1
-	}
-	p.shaderSubgroupExtendedTypes = val34
-	val35 := uint32(0)
-	if s.SeparateDepthStencilLayouts {
-		val35 = 1
-	}
-	p.separateDepthStencilLayouts = val35
-	val36 := uint32(0)
-	if s.HostQueryReset {
-		val36 = 1
-	}
-	p.hostQueryReset = val36
-	val37 := uint32(0)
-	if s.TimelineSemaphore {
-		val37 = 1
-	}
-	p.timelineSemaphore = val37
-	val38 := uint32(0)
-	if s.BufferDeviceAddress {
-		val38 = 1
-	}
-	p.bufferDeviceAddress = val38
-	val39 := uint32(0)
-	if s.BufferDeviceAddressCaptureReplay {
-		val39 = 1
-	}
-	p.bufferDeviceAddressCaptureReplay = val39
-	val40 := uint32(0)
-	if s.BufferDeviceAddressMultiDevice {
-		val40 = 1
-	}
-	p.bufferDeviceAddressMultiDevice = val40
-	val41 := uint32(0)
-	if s.VulkanMemoryModel {
-		val41 = 1
-	}
-	p.vulkanMemoryModel = val41
-	val42 := uint32(0)
-	if s.VulkanMemoryModelDeviceScope {
-		val42 = 1
-	}
-	p.vulkanMemoryModelDeviceScope = val42
-	val43 := uint32(0)
-	if s.VulkanMemoryModelAvailabilityVisibilityChains {
-		val43 = 1
-	}
-	p.vulkanMemoryModelAvailabilityVisibilityChains = val43
-	val44 := uint32(0)
-	if s.ShaderOutputViewportIndex {
-		val44 = 1
-	}
-	p.shaderOutputViewportIndex = val44
-	val45 := uint32(0)
-	if s.ShaderOutputLayer {
-		val45 = 1
-	}
-	p.shaderOutputLayer = val45
-	val46 := uint32(0)
-	if s.SubgroupBroadcastDynamicId {
-		val46 = 1
-	}
-	p.subgroupBroadcastDynamicId = val46
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceVulkan12Features) fromC(p *cVkPhysicalDeviceVulkan12Features) {
-	s.SamplerMirrorClampToEdge = p.samplerMirrorClampToEdge != 0
-	s.DrawIndirectCount = p.drawIndirectCount != 0
-	s.StorageBuffer8BitAccess = p.storageBuffer8BitAccess != 0
-	s.UniformAndStorageBuffer8BitAccess = p.uniformAndStorageBuffer8BitAccess != 0
-	s.StoragePushConstant8 = p.storagePushConstant8 != 0
-	s.ShaderBufferInt64Atomics = p.shaderBufferInt64Atomics != 0
-	s.ShaderSharedInt64Atomics = p.shaderSharedInt64Atomics != 0
-	s.ShaderFloat16 = p.shaderFloat16 != 0
-	s.ShaderInt8 = p.shaderInt8 != 0
-	s.DescriptorIndexing = p.descriptorIndexing != 0
-	s.ShaderInputAttachmentArrayDynamicIndexing = p.shaderInputAttachmentArrayDynamicIndexing != 0
-	s.ShaderUniformTexelBufferArrayDynamicIndexing = p.shaderUniformTexelBufferArrayDynamicIndexing != 0
-	s.ShaderStorageTexelBufferArrayDynamicIndexing = p.shaderStorageTexelBufferArrayDynamicIndexing != 0
-	s.ShaderUniformBufferArrayNonUniformIndexing = p.shaderUniformBufferArrayNonUniformIndexing != 0
-	s.ShaderSampledImageArrayNonUniformIndexing = p.shaderSampledImageArrayNonUniformIndexing != 0
-	s.ShaderStorageBufferArrayNonUniformIndexing = p.shaderStorageBufferArrayNonUniformIndexing != 0
-	s.ShaderStorageImageArrayNonUniformIndexing = p.shaderStorageImageArrayNonUniformIndexing != 0
-	s.ShaderInputAttachmentArrayNonUniformIndexing = p.shaderInputAttachmentArrayNonUniformIndexing != 0
-	s.ShaderUniformTexelBufferArrayNonUniformIndexing = p.shaderUniformTexelBufferArrayNonUniformIndexing != 0
-	s.ShaderStorageTexelBufferArrayNonUniformIndexing = p.shaderStorageTexelBufferArrayNonUniformIndexing != 0
-	s.DescriptorBindingUniformBufferUpdateAfterBind = p.descriptorBindingUniformBufferUpdateAfterBind != 0
-	s.DescriptorBindingSampledImageUpdateAfterBind = p.descriptorBindingSampledImageUpdateAfterBind != 0
-	s.DescriptorBindingStorageImageUpdateAfterBind = p.descriptorBindingStorageImageUpdateAfterBind != 0
-	s.DescriptorBindingStorageBufferUpdateAfterBind = p.descriptorBindingStorageBufferUpdateAfterBind != 0
-	s.DescriptorBindingUniformTexelBufferUpdateAfterBind = p.descriptorBindingUniformTexelBufferUpdateAfterBind != 0
-	s.DescriptorBindingStorageTexelBufferUpdateAfterBind = p.descriptorBindingStorageTexelBufferUpdateAfterBind != 0
-	s.DescriptorBindingUpdateUnusedWhilePending = p.descriptorBindingUpdateUnusedWhilePending != 0
-	s.DescriptorBindingPartiallyBound = p.descriptorBindingPartiallyBound != 0
-	s.DescriptorBindingVariableDescriptorCount = p.descriptorBindingVariableDescriptorCount != 0
-	s.RuntimeDescriptorArray = p.runtimeDescriptorArray != 0
-	s.SamplerFilterMinmax = p.samplerFilterMinmax != 0
-	s.ScalarBlockLayout = p.scalarBlockLayout != 0
-	s.ImagelessFramebuffer = p.imagelessFramebuffer != 0
-	s.UniformBufferStandardLayout = p.uniformBufferStandardLayout != 0
-	s.ShaderSubgroupExtendedTypes = p.shaderSubgroupExtendedTypes != 0
-	s.SeparateDepthStencilLayouts = p.separateDepthStencilLayouts != 0
-	s.HostQueryReset = p.hostQueryReset != 0
-	s.TimelineSemaphore = p.timelineSemaphore != 0
-	s.BufferDeviceAddress = p.bufferDeviceAddress != 0
-	s.BufferDeviceAddressCaptureReplay = p.bufferDeviceAddressCaptureReplay != 0
-	s.BufferDeviceAddressMultiDevice = p.bufferDeviceAddressMultiDevice != 0
-	s.VulkanMemoryModel = p.vulkanMemoryModel != 0
-	s.VulkanMemoryModelDeviceScope = p.vulkanMemoryModelDeviceScope != 0
-	s.VulkanMemoryModelAvailabilityVisibilityChains = p.vulkanMemoryModelAvailabilityVisibilityChains != 0
-	s.ShaderOutputViewportIndex = p.shaderOutputViewportIndex != 0
-	s.ShaderOutputLayer = p.shaderOutputLayer != 0
-	s.SubgroupBroadcastDynamicId = p.subgroupBroadcastDynamicId != 0
-}
-
-type cVkPhysicalDeviceVulkan12Properties struct {
-	sType                                                int32
-	pNext                                                unsafe.Pointer
-	driverID                                             uint32
-	driverName                                           [256]byte
-	driverInfo                                           [256]byte
-	conformanceVersion                                   cVkConformanceVersion
-	denormBehaviorIndependence                           uint32
-	roundingModeIndependence                             uint32
-	shaderSignedZeroInfNanPreserveFloat16                uint32
-	shaderSignedZeroInfNanPreserveFloat32                uint32
-	shaderSignedZeroInfNanPreserveFloat64                uint32
-	shaderDenormPreserveFloat16                          uint32
-	shaderDenormPreserveFloat32                          uint32
-	shaderDenormPreserveFloat64                          uint32
-	shaderDenormFlushToZeroFloat16                       uint32
-	shaderDenormFlushToZeroFloat32                       uint32
-	shaderDenormFlushToZeroFloat64                       uint32
-	shaderRoundingModeRTEFloat16                         uint32
-	shaderRoundingModeRTEFloat32                         uint32
-	shaderRoundingModeRTEFloat64                         uint32
-	shaderRoundingModeRTZFloat16                         uint32
-	shaderRoundingModeRTZFloat32                         uint32
-	shaderRoundingModeRTZFloat64                         uint32
-	maxUpdateAfterBindDescriptorsInAllPools              uint32
-	shaderUniformBufferArrayNonUniformIndexingNative     uint32
-	shaderSampledImageArrayNonUniformIndexingNative      uint32
-	shaderStorageBufferArrayNonUniformIndexingNative     uint32
-	shaderStorageImageArrayNonUniformIndexingNative      uint32
-	shaderInputAttachmentArrayNonUniformIndexingNative   uint32
-	robustBufferAccessUpdateAfterBind                    uint32
-	quadDivergentImplicitLod                             uint32
-	maxPerStageDescriptorUpdateAfterBindSamplers         uint32
-	maxPerStageDescriptorUpdateAfterBindUniformBuffers   uint32
-	maxPerStageDescriptorUpdateAfterBindStorageBuffers   uint32
-	maxPerStageDescriptorUpdateAfterBindSampledImages    uint32
-	maxPerStageDescriptorUpdateAfterBindStorageImages    uint32
-	maxPerStageDescriptorUpdateAfterBindInputAttachments uint32
-	maxPerStageUpdateAfterBindResources                  uint32
-	maxDescriptorSetUpdateAfterBindSamplers              uint32
-	maxDescriptorSetUpdateAfterBindUniformBuffers        uint32
-	maxDescriptorSetUpdateAfterBindUniformBuffersDynamic uint32
-	maxDescriptorSetUpdateAfterBindStorageBuffers        uint32
-	maxDescriptorSetUpdateAfterBindStorageBuffersDynamic uint32
-	maxDescriptorSetUpdateAfterBindSampledImages         uint32
-	maxDescriptorSetUpdateAfterBindStorageImages         uint32
-	maxDescriptorSetUpdateAfterBindInputAttachments      uint32
-	supportedDepthResolveModes                           uint32
-	supportedStencilResolveModes                         uint32
-	independentResolveNone                               uint32
-	independentResolve                                   uint32
-	filterMinmaxSingleComponentFormats                   uint32
-	filterMinmaxImageComponentMapping                    uint32
-	maxTimelineSemaphoreValueDifference                  uint64
-	framebufferIntegerColorSampleCounts                  uint32
-}
-
-type PhysicalDeviceVulkan12Properties struct {
-	Next                                                 Structure
-	DriverID                                             DriverId
-	DriverName                                           [256]byte
-	DriverInfo                                           [256]byte
-	ConformanceVersion                                   ConformanceVersion
-	DenormBehaviorIndependence                           ShaderFloatControlsIndependence
-	RoundingModeIndependence                             ShaderFloatControlsIndependence
-	ShaderSignedZeroInfNanPreserveFloat16                bool
-	ShaderSignedZeroInfNanPreserveFloat32                bool
-	ShaderSignedZeroInfNanPreserveFloat64                bool
-	ShaderDenormPreserveFloat16                          bool
-	ShaderDenormPreserveFloat32                          bool
-	ShaderDenormPreserveFloat64                          bool
-	ShaderDenormFlushToZeroFloat16                       bool
-	ShaderDenormFlushToZeroFloat32                       bool
-	ShaderDenormFlushToZeroFloat64                       bool
-	ShaderRoundingModeRTEFloat16                         bool
-	ShaderRoundingModeRTEFloat32                         bool
-	ShaderRoundingModeRTEFloat64                         bool
-	ShaderRoundingModeRTZFloat16                         bool
-	ShaderRoundingModeRTZFloat32                         bool
-	ShaderRoundingModeRTZFloat64                         bool
-	MaxUpdateAfterBindDescriptorsInAllPools              uint32
-	ShaderUniformBufferArrayNonUniformIndexingNative     bool
-	ShaderSampledImageArrayNonUniformIndexingNative      bool
-	ShaderStorageBufferArrayNonUniformIndexingNative     bool
-	ShaderStorageImageArrayNonUniformIndexingNative      bool
-	ShaderInputAttachmentArrayNonUniformIndexingNative   bool
-	RobustBufferAccessUpdateAfterBind                    bool
-	QuadDivergentImplicitLod                             bool
-	MaxPerStageDescriptorUpdateAfterBindSamplers         uint32
-	MaxPerStageDescriptorUpdateAfterBindUniformBuffers   uint32
-	MaxPerStageDescriptorUpdateAfterBindStorageBuffers   uint32
-	MaxPerStageDescriptorUpdateAfterBindSampledImages    uint32
-	MaxPerStageDescriptorUpdateAfterBindStorageImages    uint32
-	MaxPerStageDescriptorUpdateAfterBindInputAttachments uint32
-	MaxPerStageUpdateAfterBindResources                  uint32
-	MaxDescriptorSetUpdateAfterBindSamplers              uint32
-	MaxDescriptorSetUpdateAfterBindUniformBuffers        uint32
-	MaxDescriptorSetUpdateAfterBindUniformBuffersDynamic uint32
-	MaxDescriptorSetUpdateAfterBindStorageBuffers        uint32
-	MaxDescriptorSetUpdateAfterBindStorageBuffersDynamic uint32
-	MaxDescriptorSetUpdateAfterBindSampledImages         uint32
-	MaxDescriptorSetUpdateAfterBindStorageImages         uint32
-	MaxDescriptorSetUpdateAfterBindInputAttachments      uint32
-	SupportedDepthResolveModes                           ResolveModeFlags
-	SupportedStencilResolveModes                         ResolveModeFlags
-	IndependentResolveNone                               bool
-	IndependentResolve                                   bool
-	FilterMinmaxSingleComponentFormats                   bool
-	FilterMinmaxImageComponentMapping                    bool
-	MaxTimelineSemaphoreValueDifference                  uint64
-	FramebufferIntegerColorSampleCounts                  SampleCountFlags
-}
-
-func (s *PhysicalDeviceVulkan12Properties) GetType() StructureType {
-	return StructureTypePhysicalDeviceVulkan12Properties
-}
-
-func (s *PhysicalDeviceVulkan12Properties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceVulkan12Properties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.DriverID)
-	p.driverID = val0
-	var arr1 [256]byte
-	for i2, elem3 := range s.DriverName {
-		val4 := byte(elem3)
-		arr1[i2] = val4
-	}
-	p.driverName = arr1
-	var arr5 [256]byte
-	for i6, elem7 := range s.DriverInfo {
-		val8 := byte(elem7)
-		arr5[i6] = val8
-	}
-	p.driverInfo = arr5
-	val9, cancel10 := s.ConformanceVersion.toC()
-	cancels = append(cancels, cancel10)
-	cast11 := (*cVkConformanceVersion)(val9)
-	p.conformanceVersion = *cast11
-	val12 := uint32(s.DenormBehaviorIndependence)
-	p.denormBehaviorIndependence = val12
-	val13 := uint32(s.RoundingModeIndependence)
-	p.roundingModeIndependence = val13
-	val14 := uint32(0)
-	if s.ShaderSignedZeroInfNanPreserveFloat16 {
-		val14 = 1
-	}
-	p.shaderSignedZeroInfNanPreserveFloat16 = val14
-	val15 := uint32(0)
-	if s.ShaderSignedZeroInfNanPreserveFloat32 {
-		val15 = 1
-	}
-	p.shaderSignedZeroInfNanPreserveFloat32 = val15
-	val16 := uint32(0)
-	if s.ShaderSignedZeroInfNanPreserveFloat64 {
-		val16 = 1
-	}
-	p.shaderSignedZeroInfNanPreserveFloat64 = val16
-	val17 := uint32(0)
-	if s.ShaderDenormPreserveFloat16 {
-		val17 = 1
-	}
-	p.shaderDenormPreserveFloat16 = val17
-	val18 := uint32(0)
-	if s.ShaderDenormPreserveFloat32 {
-		val18 = 1
-	}
-	p.shaderDenormPreserveFloat32 = val18
-	val19 := uint32(0)
-	if s.ShaderDenormPreserveFloat64 {
-		val19 = 1
-	}
-	p.shaderDenormPreserveFloat64 = val19
-	val20 := uint32(0)
-	if s.ShaderDenormFlushToZeroFloat16 {
-		val20 = 1
-	}
-	p.shaderDenormFlushToZeroFloat16 = val20
-	val21 := uint32(0)
-	if s.ShaderDenormFlushToZeroFloat32 {
-		val21 = 1
-	}
-	p.shaderDenormFlushToZeroFloat32 = val21
-	val22 := uint32(0)
-	if s.ShaderDenormFlushToZeroFloat64 {
-		val22 = 1
-	}
-	p.shaderDenormFlushToZeroFloat64 = val22
-	val23 := uint32(0)
-	if s.ShaderRoundingModeRTEFloat16 {
-		val23 = 1
-	}
-	p.shaderRoundingModeRTEFloat16 = val23
-	val24 := uint32(0)
-	if s.ShaderRoundingModeRTEFloat32 {
-		val24 = 1
-	}
-	p.shaderRoundingModeRTEFloat32 = val24
-	val25 := uint32(0)
-	if s.ShaderRoundingModeRTEFloat64 {
-		val25 = 1
-	}
-	p.shaderRoundingModeRTEFloat64 = val25
-	val26 := uint32(0)
-	if s.ShaderRoundingModeRTZFloat16 {
-		val26 = 1
-	}
-	p.shaderRoundingModeRTZFloat16 = val26
-	val27 := uint32(0)
-	if s.ShaderRoundingModeRTZFloat32 {
-		val27 = 1
-	}
-	p.shaderRoundingModeRTZFloat32 = val27
-	val28 := uint32(0)
-	if s.ShaderRoundingModeRTZFloat64 {
-		val28 = 1
-	}
-	p.shaderRoundingModeRTZFloat64 = val28
-	val29 := uint32(s.MaxUpdateAfterBindDescriptorsInAllPools)
-	p.maxUpdateAfterBindDescriptorsInAllPools = val29
-	val30 := uint32(0)
-	if s.ShaderUniformBufferArrayNonUniformIndexingNative {
-		val30 = 1
-	}
-	p.shaderUniformBufferArrayNonUniformIndexingNative = val30
-	val31 := uint32(0)
-	if s.ShaderSampledImageArrayNonUniformIndexingNative {
-		val31 = 1
-	}
-	p.shaderSampledImageArrayNonUniformIndexingNative = val31
-	val32 := uint32(0)
-	if s.ShaderStorageBufferArrayNonUniformIndexingNative {
-		val32 = 1
-	}
-	p.shaderStorageBufferArrayNonUniformIndexingNative = val32
-	val33 := uint32(0)
-	if s.ShaderStorageImageArrayNonUniformIndexingNative {
-		val33 = 1
-	}
-	p.shaderStorageImageArrayNonUniformIndexingNative = val33
-	val34 := uint32(0)
-	if s.ShaderInputAttachmentArrayNonUniformIndexingNative {
-		val34 = 1
-	}
-	p.shaderInputAttachmentArrayNonUniformIndexingNative = val34
-	val35 := uint32(0)
-	if s.RobustBufferAccessUpdateAfterBind {
-		val35 = 1
-	}
-	p.robustBufferAccessUpdateAfterBind = val35
-	val36 := uint32(0)
-	if s.QuadDivergentImplicitLod {
-		val36 = 1
-	}
-	p.quadDivergentImplicitLod = val36
-	val37 := uint32(s.MaxPerStageDescriptorUpdateAfterBindSamplers)
-	p.maxPerStageDescriptorUpdateAfterBindSamplers = val37
-	val38 := uint32(s.MaxPerStageDescriptorUpdateAfterBindUniformBuffers)
-	p.maxPerStageDescriptorUpdateAfterBindUniformBuffers = val38
-	val39 := uint32(s.MaxPerStageDescriptorUpdateAfterBindStorageBuffers)
-	p.maxPerStageDescriptorUpdateAfterBindStorageBuffers = val39
-	val40 := uint32(s.MaxPerStageDescriptorUpdateAfterBindSampledImages)
-	p.maxPerStageDescriptorUpdateAfterBindSampledImages = val40
-	val41 := uint32(s.MaxPerStageDescriptorUpdateAfterBindStorageImages)
-	p.maxPerStageDescriptorUpdateAfterBindStorageImages = val41
-	val42 := uint32(s.MaxPerStageDescriptorUpdateAfterBindInputAttachments)
-	p.maxPerStageDescriptorUpdateAfterBindInputAttachments = val42
-	val43 := uint32(s.MaxPerStageUpdateAfterBindResources)
-	p.maxPerStageUpdateAfterBindResources = val43
-	val44 := uint32(s.MaxDescriptorSetUpdateAfterBindSamplers)
-	p.maxDescriptorSetUpdateAfterBindSamplers = val44
-	val45 := uint32(s.MaxDescriptorSetUpdateAfterBindUniformBuffers)
-	p.maxDescriptorSetUpdateAfterBindUniformBuffers = val45
-	val46 := uint32(s.MaxDescriptorSetUpdateAfterBindUniformBuffersDynamic)
-	p.maxDescriptorSetUpdateAfterBindUniformBuffersDynamic = val46
-	val47 := uint32(s.MaxDescriptorSetUpdateAfterBindStorageBuffers)
-	p.maxDescriptorSetUpdateAfterBindStorageBuffers = val47
-	val48 := uint32(s.MaxDescriptorSetUpdateAfterBindStorageBuffersDynamic)
-	p.maxDescriptorSetUpdateAfterBindStorageBuffersDynamic = val48
-	val49 := uint32(s.MaxDescriptorSetUpdateAfterBindSampledImages)
-	p.maxDescriptorSetUpdateAfterBindSampledImages = val49
-	val50 := uint32(s.MaxDescriptorSetUpdateAfterBindStorageImages)
-	p.maxDescriptorSetUpdateAfterBindStorageImages = val50
-	val51 := uint32(s.MaxDescriptorSetUpdateAfterBindInputAttachments)
-	p.maxDescriptorSetUpdateAfterBindInputAttachments = val51
-	val52 := uint32(s.SupportedDepthResolveModes)
-	p.supportedDepthResolveModes = val52
-	val53 := uint32(s.SupportedStencilResolveModes)
-	p.supportedStencilResolveModes = val53
-	val54 := uint32(0)
-	if s.IndependentResolveNone {
-		val54 = 1
-	}
-	p.independentResolveNone = val54
-	val55 := uint32(0)
-	if s.IndependentResolve {
-		val55 = 1
-	}
-	p.independentResolve = val55
-	val56 := uint32(0)
-	if s.FilterMinmaxSingleComponentFormats {
-		val56 = 1
-	}
-	p.filterMinmaxSingleComponentFormats = val56
-	val57 := uint32(0)
-	if s.FilterMinmaxImageComponentMapping {
-		val57 = 1
-	}
-	p.filterMinmaxImageComponentMapping = val57
-	val58 := uint64(s.MaxTimelineSemaphoreValueDifference)
-	p.maxTimelineSemaphoreValueDifference = val58
-	val59 := uint32(s.FramebufferIntegerColorSampleCounts)
-	p.framebufferIntegerColorSampleCounts = val59
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceVulkan12Properties) fromC(p *cVkPhysicalDeviceVulkan12Properties) {
-	s.DriverID = DriverId(p.driverID)
-	for _i := range s.DriverName {
-		s.DriverName[_i] = byte(p.driverName[_i])
-	}
-	for _i := range s.DriverInfo {
-		s.DriverInfo[_i] = byte(p.driverInfo[_i])
-	}
-	s.ConformanceVersion.fromC(&p.conformanceVersion)
-	s.DenormBehaviorIndependence = ShaderFloatControlsIndependence(p.denormBehaviorIndependence)
-	s.RoundingModeIndependence = ShaderFloatControlsIndependence(p.roundingModeIndependence)
-	s.ShaderSignedZeroInfNanPreserveFloat16 = p.shaderSignedZeroInfNanPreserveFloat16 != 0
-	s.ShaderSignedZeroInfNanPreserveFloat32 = p.shaderSignedZeroInfNanPreserveFloat32 != 0
-	s.ShaderSignedZeroInfNanPreserveFloat64 = p.shaderSignedZeroInfNanPreserveFloat64 != 0
-	s.ShaderDenormPreserveFloat16 = p.shaderDenormPreserveFloat16 != 0
-	s.ShaderDenormPreserveFloat32 = p.shaderDenormPreserveFloat32 != 0
-	s.ShaderDenormPreserveFloat64 = p.shaderDenormPreserveFloat64 != 0
-	s.ShaderDenormFlushToZeroFloat16 = p.shaderDenormFlushToZeroFloat16 != 0
-	s.ShaderDenormFlushToZeroFloat32 = p.shaderDenormFlushToZeroFloat32 != 0
-	s.ShaderDenormFlushToZeroFloat64 = p.shaderDenormFlushToZeroFloat64 != 0
-	s.ShaderRoundingModeRTEFloat16 = p.shaderRoundingModeRTEFloat16 != 0
-	s.ShaderRoundingModeRTEFloat32 = p.shaderRoundingModeRTEFloat32 != 0
-	s.ShaderRoundingModeRTEFloat64 = p.shaderRoundingModeRTEFloat64 != 0
-	s.ShaderRoundingModeRTZFloat16 = p.shaderRoundingModeRTZFloat16 != 0
-	s.ShaderRoundingModeRTZFloat32 = p.shaderRoundingModeRTZFloat32 != 0
-	s.ShaderRoundingModeRTZFloat64 = p.shaderRoundingModeRTZFloat64 != 0
-	s.MaxUpdateAfterBindDescriptorsInAllPools = uint32(p.maxUpdateAfterBindDescriptorsInAllPools)
-	s.ShaderUniformBufferArrayNonUniformIndexingNative = p.shaderUniformBufferArrayNonUniformIndexingNative != 0
-	s.ShaderSampledImageArrayNonUniformIndexingNative = p.shaderSampledImageArrayNonUniformIndexingNative != 0
-	s.ShaderStorageBufferArrayNonUniformIndexingNative = p.shaderStorageBufferArrayNonUniformIndexingNative != 0
-	s.ShaderStorageImageArrayNonUniformIndexingNative = p.shaderStorageImageArrayNonUniformIndexingNative != 0
-	s.ShaderInputAttachmentArrayNonUniformIndexingNative = p.shaderInputAttachmentArrayNonUniformIndexingNative != 0
-	s.RobustBufferAccessUpdateAfterBind = p.robustBufferAccessUpdateAfterBind != 0
-	s.QuadDivergentImplicitLod = p.quadDivergentImplicitLod != 0
-	s.MaxPerStageDescriptorUpdateAfterBindSamplers = uint32(p.maxPerStageDescriptorUpdateAfterBindSamplers)
-	s.MaxPerStageDescriptorUpdateAfterBindUniformBuffers = uint32(p.maxPerStageDescriptorUpdateAfterBindUniformBuffers)
-	s.MaxPerStageDescriptorUpdateAfterBindStorageBuffers = uint32(p.maxPerStageDescriptorUpdateAfterBindStorageBuffers)
-	s.MaxPerStageDescriptorUpdateAfterBindSampledImages = uint32(p.maxPerStageDescriptorUpdateAfterBindSampledImages)
-	s.MaxPerStageDescriptorUpdateAfterBindStorageImages = uint32(p.maxPerStageDescriptorUpdateAfterBindStorageImages)
-	s.MaxPerStageDescriptorUpdateAfterBindInputAttachments = uint32(p.maxPerStageDescriptorUpdateAfterBindInputAttachments)
-	s.MaxPerStageUpdateAfterBindResources = uint32(p.maxPerStageUpdateAfterBindResources)
-	s.MaxDescriptorSetUpdateAfterBindSamplers = uint32(p.maxDescriptorSetUpdateAfterBindSamplers)
-	s.MaxDescriptorSetUpdateAfterBindUniformBuffers = uint32(p.maxDescriptorSetUpdateAfterBindUniformBuffers)
-	s.MaxDescriptorSetUpdateAfterBindUniformBuffersDynamic = uint32(p.maxDescriptorSetUpdateAfterBindUniformBuffersDynamic)
-	s.MaxDescriptorSetUpdateAfterBindStorageBuffers = uint32(p.maxDescriptorSetUpdateAfterBindStorageBuffers)
-	s.MaxDescriptorSetUpdateAfterBindStorageBuffersDynamic = uint32(p.maxDescriptorSetUpdateAfterBindStorageBuffersDynamic)
-	s.MaxDescriptorSetUpdateAfterBindSampledImages = uint32(p.maxDescriptorSetUpdateAfterBindSampledImages)
-	s.MaxDescriptorSetUpdateAfterBindStorageImages = uint32(p.maxDescriptorSetUpdateAfterBindStorageImages)
-	s.MaxDescriptorSetUpdateAfterBindInputAttachments = uint32(p.maxDescriptorSetUpdateAfterBindInputAttachments)
-	s.SupportedDepthResolveModes = ResolveModeFlags(p.supportedDepthResolveModes)
-	s.SupportedStencilResolveModes = ResolveModeFlags(p.supportedStencilResolveModes)
-	s.IndependentResolveNone = p.independentResolveNone != 0
-	s.IndependentResolve = p.independentResolve != 0
-	s.FilterMinmaxSingleComponentFormats = p.filterMinmaxSingleComponentFormats != 0
-	s.FilterMinmaxImageComponentMapping = p.filterMinmaxImageComponentMapping != 0
-	s.MaxTimelineSemaphoreValueDifference = uint64(p.maxTimelineSemaphoreValueDifference)
-	s.FramebufferIntegerColorSampleCounts = SampleCountFlags(p.framebufferIntegerColorSampleCounts)
-}
-
-type cVkPhysicalDeviceVulkan13Features struct {
-	sType                                              int32
-	pNext                                              unsafe.Pointer
-	robustImageAccess                                  uint32
-	inlineUniformBlock                                 uint32
-	descriptorBindingInlineUniformBlockUpdateAfterBind uint32
-	pipelineCreationCacheControl                       uint32
-	privateData                                        uint32
-	shaderDemoteToHelperInvocation                     uint32
-	shaderTerminateInvocation                          uint32
-	subgroupSizeControl                                uint32
-	computeFullSubgroups                               uint32
-	synchronization2                                   uint32
-	textureCompressionASTC_HDR                         uint32
-	shaderZeroInitializeWorkgroupMemory                uint32
-	dynamicRendering                                   uint32
-	shaderIntegerDotProduct                            uint32
-	maintenance4                                       uint32
-}
-
-type PhysicalDeviceVulkan13Features struct {
-	Next                                               Structure
-	RobustImageAccess                                  bool
-	InlineUniformBlock                                 bool
-	DescriptorBindingInlineUniformBlockUpdateAfterBind bool
-	PipelineCreationCacheControl                       bool
-	PrivateData                                        bool
-	ShaderDemoteToHelperInvocation                     bool
-	ShaderTerminateInvocation                          bool
-	SubgroupSizeControl                                bool
-	ComputeFullSubgroups                               bool
-	Synchronization2                                   bool
-	TextureCompressionASTC_HDR                         bool
-	ShaderZeroInitializeWorkgroupMemory                bool
-	DynamicRendering                                   bool
-	ShaderIntegerDotProduct                            bool
-	Maintenance4                                       bool
-}
-
-func (s *PhysicalDeviceVulkan13Features) GetType() StructureType {
-	return StructureTypePhysicalDeviceVulkan13Features
-}
-
-func (s *PhysicalDeviceVulkan13Features) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceVulkan13Features)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.RobustImageAccess {
-		val0 = 1
-	}
-	p.robustImageAccess = val0
-	val1 := uint32(0)
-	if s.InlineUniformBlock {
-		val1 = 1
-	}
-	p.inlineUniformBlock = val1
-	val2 := uint32(0)
-	if s.DescriptorBindingInlineUniformBlockUpdateAfterBind {
-		val2 = 1
-	}
-	p.descriptorBindingInlineUniformBlockUpdateAfterBind = val2
-	val3 := uint32(0)
-	if s.PipelineCreationCacheControl {
-		val3 = 1
-	}
-	p.pipelineCreationCacheControl = val3
-	val4 := uint32(0)
-	if s.PrivateData {
-		val4 = 1
-	}
-	p.privateData = val4
-	val5 := uint32(0)
-	if s.ShaderDemoteToHelperInvocation {
-		val5 = 1
-	}
-	p.shaderDemoteToHelperInvocation = val5
-	val6 := uint32(0)
-	if s.ShaderTerminateInvocation {
-		val6 = 1
-	}
-	p.shaderTerminateInvocation = val6
-	val7 := uint32(0)
-	if s.SubgroupSizeControl {
-		val7 = 1
-	}
-	p.subgroupSizeControl = val7
-	val8 := uint32(0)
-	if s.ComputeFullSubgroups {
-		val8 = 1
-	}
-	p.computeFullSubgroups = val8
-	val9 := uint32(0)
-	if s.Synchronization2 {
-		val9 = 1
-	}
-	p.synchronization2 = val9
-	val10 := uint32(0)
-	if s.TextureCompressionASTC_HDR {
-		val10 = 1
-	}
-	p.textureCompressionASTC_HDR = val10
-	val11 := uint32(0)
-	if s.ShaderZeroInitializeWorkgroupMemory {
-		val11 = 1
-	}
-	p.shaderZeroInitializeWorkgroupMemory = val11
-	val12 := uint32(0)
-	if s.DynamicRendering {
-		val12 = 1
-	}
-	p.dynamicRendering = val12
-	val13 := uint32(0)
-	if s.ShaderIntegerDotProduct {
-		val13 = 1
-	}
-	p.shaderIntegerDotProduct = val13
-	val14 := uint32(0)
-	if s.Maintenance4 {
-		val14 = 1
-	}
-	p.maintenance4 = val14
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceVulkan13Features) fromC(p *cVkPhysicalDeviceVulkan13Features) {
-	s.RobustImageAccess = p.robustImageAccess != 0
-	s.InlineUniformBlock = p.inlineUniformBlock != 0
-	s.DescriptorBindingInlineUniformBlockUpdateAfterBind = p.descriptorBindingInlineUniformBlockUpdateAfterBind != 0
-	s.PipelineCreationCacheControl = p.pipelineCreationCacheControl != 0
-	s.PrivateData = p.privateData != 0
-	s.ShaderDemoteToHelperInvocation = p.shaderDemoteToHelperInvocation != 0
-	s.ShaderTerminateInvocation = p.shaderTerminateInvocation != 0
-	s.SubgroupSizeControl = p.subgroupSizeControl != 0
-	s.ComputeFullSubgroups = p.computeFullSubgroups != 0
-	s.Synchronization2 = p.synchronization2 != 0
-	s.TextureCompressionASTC_HDR = p.textureCompressionASTC_HDR != 0
-	s.ShaderZeroInitializeWorkgroupMemory = p.shaderZeroInitializeWorkgroupMemory != 0
-	s.DynamicRendering = p.dynamicRendering != 0
-	s.ShaderIntegerDotProduct = p.shaderIntegerDotProduct != 0
-	s.Maintenance4 = p.maintenance4 != 0
-}
-
-type cVkPhysicalDeviceVulkan13Properties struct {
-	sType                                                                         int32
-	pNext                                                                         unsafe.Pointer
-	minSubgroupSize                                                               uint32
-	maxSubgroupSize                                                               uint32
-	maxComputeWorkgroupSubgroups                                                  uint32
-	requiredSubgroupSizeStages                                                    uint32
-	maxInlineUniformBlockSize                                                     uint32
-	maxPerStageDescriptorInlineUniformBlocks                                      uint32
-	maxPerStageDescriptorUpdateAfterBindInlineUniformBlocks                       uint32
-	maxDescriptorSetInlineUniformBlocks                                           uint32
-	maxDescriptorSetUpdateAfterBindInlineUniformBlocks                            uint32
-	maxInlineUniformTotalSize                                                     uint32
-	integerDotProduct8BitUnsignedAccelerated                                      uint32
-	integerDotProduct8BitSignedAccelerated                                        uint32
-	integerDotProduct8BitMixedSignednessAccelerated                               uint32
-	integerDotProduct4x8BitPackedUnsignedAccelerated                              uint32
-	integerDotProduct4x8BitPackedSignedAccelerated                                uint32
-	integerDotProduct4x8BitPackedMixedSignednessAccelerated                       uint32
-	integerDotProduct16BitUnsignedAccelerated                                     uint32
-	integerDotProduct16BitSignedAccelerated                                       uint32
-	integerDotProduct16BitMixedSignednessAccelerated                              uint32
-	integerDotProduct32BitUnsignedAccelerated                                     uint32
-	integerDotProduct32BitSignedAccelerated                                       uint32
-	integerDotProduct32BitMixedSignednessAccelerated                              uint32
-	integerDotProduct64BitUnsignedAccelerated                                     uint32
-	integerDotProduct64BitSignedAccelerated                                       uint32
-	integerDotProduct64BitMixedSignednessAccelerated                              uint32
-	integerDotProductAccumulatingSaturating8BitUnsignedAccelerated                uint32
-	integerDotProductAccumulatingSaturating8BitSignedAccelerated                  uint32
-	integerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated         uint32
-	integerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated        uint32
-	integerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated          uint32
-	integerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated uint32
-	integerDotProductAccumulatingSaturating16BitUnsignedAccelerated               uint32
-	integerDotProductAccumulatingSaturating16BitSignedAccelerated                 uint32
-	integerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated        uint32
-	integerDotProductAccumulatingSaturating32BitUnsignedAccelerated               uint32
-	integerDotProductAccumulatingSaturating32BitSignedAccelerated                 uint32
-	integerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated        uint32
-	integerDotProductAccumulatingSaturating64BitUnsignedAccelerated               uint32
-	integerDotProductAccumulatingSaturating64BitSignedAccelerated                 uint32
-	integerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated        uint32
-	storageTexelBufferOffsetAlignmentBytes                                        uint64
-	storageTexelBufferOffsetSingleTexelAlignment                                  uint32
-	uniformTexelBufferOffsetAlignmentBytes                                        uint64
-	uniformTexelBufferOffsetSingleTexelAlignment                                  uint32
-	maxBufferSize                                                                 uint64
-}
-
-type PhysicalDeviceVulkan13Properties struct {
-	Next                                                                          Structure
-	MinSubgroupSize                                                               uint32
-	MaxSubgroupSize                                                               uint32
-	MaxComputeWorkgroupSubgroups                                                  uint32
-	RequiredSubgroupSizeStages                                                    ShaderStageFlags
-	MaxInlineUniformBlockSize                                                     uint32
-	MaxPerStageDescriptorInlineUniformBlocks                                      uint32
-	MaxPerStageDescriptorUpdateAfterBindInlineUniformBlocks                       uint32
-	MaxDescriptorSetInlineUniformBlocks                                           uint32
-	MaxDescriptorSetUpdateAfterBindInlineUniformBlocks                            uint32
-	MaxInlineUniformTotalSize                                                     uint32
-	IntegerDotProduct8BitUnsignedAccelerated                                      bool
-	IntegerDotProduct8BitSignedAccelerated                                        bool
-	IntegerDotProduct8BitMixedSignednessAccelerated                               bool
-	IntegerDotProduct4x8BitPackedUnsignedAccelerated                              bool
-	IntegerDotProduct4x8BitPackedSignedAccelerated                                bool
-	IntegerDotProduct4x8BitPackedMixedSignednessAccelerated                       bool
-	IntegerDotProduct16BitUnsignedAccelerated                                     bool
-	IntegerDotProduct16BitSignedAccelerated                                       bool
-	IntegerDotProduct16BitMixedSignednessAccelerated                              bool
-	IntegerDotProduct32BitUnsignedAccelerated                                     bool
-	IntegerDotProduct32BitSignedAccelerated                                       bool
-	IntegerDotProduct32BitMixedSignednessAccelerated                              bool
-	IntegerDotProduct64BitUnsignedAccelerated                                     bool
-	IntegerDotProduct64BitSignedAccelerated                                       bool
-	IntegerDotProduct64BitMixedSignednessAccelerated                              bool
-	IntegerDotProductAccumulatingSaturating8BitUnsignedAccelerated                bool
-	IntegerDotProductAccumulatingSaturating8BitSignedAccelerated                  bool
-	IntegerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated         bool
-	IntegerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated        bool
-	IntegerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated          bool
-	IntegerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated bool
-	IntegerDotProductAccumulatingSaturating16BitUnsignedAccelerated               bool
-	IntegerDotProductAccumulatingSaturating16BitSignedAccelerated                 bool
-	IntegerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated        bool
-	IntegerDotProductAccumulatingSaturating32BitUnsignedAccelerated               bool
-	IntegerDotProductAccumulatingSaturating32BitSignedAccelerated                 bool
-	IntegerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated        bool
-	IntegerDotProductAccumulatingSaturating64BitUnsignedAccelerated               bool
-	IntegerDotProductAccumulatingSaturating64BitSignedAccelerated                 bool
-	IntegerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated        bool
-	StorageTexelBufferOffsetAlignmentBytes                                        uint64
-	StorageTexelBufferOffsetSingleTexelAlignment                                  bool
-	UniformTexelBufferOffsetAlignmentBytes                                        uint64
-	UniformTexelBufferOffsetSingleTexelAlignment                                  bool
-	MaxBufferSize                                                                 uint64
-}
-
-func (s *PhysicalDeviceVulkan13Properties) GetType() StructureType {
-	return StructureTypePhysicalDeviceVulkan13Properties
-}
-
-func (s *PhysicalDeviceVulkan13Properties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceVulkan13Properties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.MinSubgroupSize)
-	p.minSubgroupSize = val0
-	val1 := uint32(s.MaxSubgroupSize)
-	p.maxSubgroupSize = val1
-	val2 := uint32(s.MaxComputeWorkgroupSubgroups)
-	p.maxComputeWorkgroupSubgroups = val2
-	val3 := uint32(s.RequiredSubgroupSizeStages)
-	p.requiredSubgroupSizeStages = val3
-	val4 := uint32(s.MaxInlineUniformBlockSize)
-	p.maxInlineUniformBlockSize = val4
-	val5 := uint32(s.MaxPerStageDescriptorInlineUniformBlocks)
-	p.maxPerStageDescriptorInlineUniformBlocks = val5
-	val6 := uint32(s.MaxPerStageDescriptorUpdateAfterBindInlineUniformBlocks)
-	p.maxPerStageDescriptorUpdateAfterBindInlineUniformBlocks = val6
-	val7 := uint32(s.MaxDescriptorSetInlineUniformBlocks)
-	p.maxDescriptorSetInlineUniformBlocks = val7
-	val8 := uint32(s.MaxDescriptorSetUpdateAfterBindInlineUniformBlocks)
-	p.maxDescriptorSetUpdateAfterBindInlineUniformBlocks = val8
-	val9 := uint32(s.MaxInlineUniformTotalSize)
-	p.maxInlineUniformTotalSize = val9
-	val10 := uint32(0)
-	if s.IntegerDotProduct8BitUnsignedAccelerated {
-		val10 = 1
-	}
-	p.integerDotProduct8BitUnsignedAccelerated = val10
-	val11 := uint32(0)
-	if s.IntegerDotProduct8BitSignedAccelerated {
-		val11 = 1
-	}
-	p.integerDotProduct8BitSignedAccelerated = val11
-	val12 := uint32(0)
-	if s.IntegerDotProduct8BitMixedSignednessAccelerated {
-		val12 = 1
-	}
-	p.integerDotProduct8BitMixedSignednessAccelerated = val12
-	val13 := uint32(0)
-	if s.IntegerDotProduct4x8BitPackedUnsignedAccelerated {
-		val13 = 1
-	}
-	p.integerDotProduct4x8BitPackedUnsignedAccelerated = val13
-	val14 := uint32(0)
-	if s.IntegerDotProduct4x8BitPackedSignedAccelerated {
-		val14 = 1
-	}
-	p.integerDotProduct4x8BitPackedSignedAccelerated = val14
-	val15 := uint32(0)
-	if s.IntegerDotProduct4x8BitPackedMixedSignednessAccelerated {
-		val15 = 1
-	}
-	p.integerDotProduct4x8BitPackedMixedSignednessAccelerated = val15
-	val16 := uint32(0)
-	if s.IntegerDotProduct16BitUnsignedAccelerated {
-		val16 = 1
-	}
-	p.integerDotProduct16BitUnsignedAccelerated = val16
-	val17 := uint32(0)
-	if s.IntegerDotProduct16BitSignedAccelerated {
-		val17 = 1
-	}
-	p.integerDotProduct16BitSignedAccelerated = val17
-	val18 := uint32(0)
-	if s.IntegerDotProduct16BitMixedSignednessAccelerated {
-		val18 = 1
-	}
-	p.integerDotProduct16BitMixedSignednessAccelerated = val18
-	val19 := uint32(0)
-	if s.IntegerDotProduct32BitUnsignedAccelerated {
-		val19 = 1
-	}
-	p.integerDotProduct32BitUnsignedAccelerated = val19
-	val20 := uint32(0)
-	if s.IntegerDotProduct32BitSignedAccelerated {
-		val20 = 1
-	}
-	p.integerDotProduct32BitSignedAccelerated = val20
-	val21 := uint32(0)
-	if s.IntegerDotProduct32BitMixedSignednessAccelerated {
-		val21 = 1
-	}
-	p.integerDotProduct32BitMixedSignednessAccelerated = val21
-	val22 := uint32(0)
-	if s.IntegerDotProduct64BitUnsignedAccelerated {
-		val22 = 1
-	}
-	p.integerDotProduct64BitUnsignedAccelerated = val22
-	val23 := uint32(0)
-	if s.IntegerDotProduct64BitSignedAccelerated {
-		val23 = 1
-	}
-	p.integerDotProduct64BitSignedAccelerated = val23
-	val24 := uint32(0)
-	if s.IntegerDotProduct64BitMixedSignednessAccelerated {
-		val24 = 1
-	}
-	p.integerDotProduct64BitMixedSignednessAccelerated = val24
-	val25 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating8BitUnsignedAccelerated {
-		val25 = 1
-	}
-	p.integerDotProductAccumulatingSaturating8BitUnsignedAccelerated = val25
-	val26 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating8BitSignedAccelerated {
-		val26 = 1
-	}
-	p.integerDotProductAccumulatingSaturating8BitSignedAccelerated = val26
-	val27 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated {
-		val27 = 1
-	}
-	p.integerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated = val27
-	val28 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated {
-		val28 = 1
-	}
-	p.integerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated = val28
-	val29 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated {
-		val29 = 1
-	}
-	p.integerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated = val29
-	val30 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated {
-		val30 = 1
-	}
-	p.integerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated = val30
-	val31 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating16BitUnsignedAccelerated {
-		val31 = 1
-	}
-	p.integerDotProductAccumulatingSaturating16BitUnsignedAccelerated = val31
-	val32 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating16BitSignedAccelerated {
-		val32 = 1
-	}
-	p.integerDotProductAccumulatingSaturating16BitSignedAccelerated = val32
-	val33 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated {
-		val33 = 1
-	}
-	p.integerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated = val33
-	val34 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating32BitUnsignedAccelerated {
-		val34 = 1
-	}
-	p.integerDotProductAccumulatingSaturating32BitUnsignedAccelerated = val34
-	val35 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating32BitSignedAccelerated {
-		val35 = 1
-	}
-	p.integerDotProductAccumulatingSaturating32BitSignedAccelerated = val35
-	val36 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated {
-		val36 = 1
-	}
-	p.integerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated = val36
-	val37 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating64BitUnsignedAccelerated {
-		val37 = 1
-	}
-	p.integerDotProductAccumulatingSaturating64BitUnsignedAccelerated = val37
-	val38 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating64BitSignedAccelerated {
-		val38 = 1
-	}
-	p.integerDotProductAccumulatingSaturating64BitSignedAccelerated = val38
-	val39 := uint32(0)
-	if s.IntegerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated {
-		val39 = 1
-	}
-	p.integerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated = val39
-	val40 := uint64(s.StorageTexelBufferOffsetAlignmentBytes)
-	p.storageTexelBufferOffsetAlignmentBytes = val40
-	val41 := uint32(0)
-	if s.StorageTexelBufferOffsetSingleTexelAlignment {
-		val41 = 1
-	}
-	p.storageTexelBufferOffsetSingleTexelAlignment = val41
-	val42 := uint64(s.UniformTexelBufferOffsetAlignmentBytes)
-	p.uniformTexelBufferOffsetAlignmentBytes = val42
-	val43 := uint32(0)
-	if s.UniformTexelBufferOffsetSingleTexelAlignment {
-		val43 = 1
-	}
-	p.uniformTexelBufferOffsetSingleTexelAlignment = val43
-	val44 := uint64(s.MaxBufferSize)
-	p.maxBufferSize = val44
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceVulkan13Properties) fromC(p *cVkPhysicalDeviceVulkan13Properties) {
-	s.MinSubgroupSize = uint32(p.minSubgroupSize)
-	s.MaxSubgroupSize = uint32(p.maxSubgroupSize)
-	s.MaxComputeWorkgroupSubgroups = uint32(p.maxComputeWorkgroupSubgroups)
-	s.RequiredSubgroupSizeStages = ShaderStageFlags(p.requiredSubgroupSizeStages)
-	s.MaxInlineUniformBlockSize = uint32(p.maxInlineUniformBlockSize)
-	s.MaxPerStageDescriptorInlineUniformBlocks = uint32(p.maxPerStageDescriptorInlineUniformBlocks)
-	s.MaxPerStageDescriptorUpdateAfterBindInlineUniformBlocks = uint32(p.maxPerStageDescriptorUpdateAfterBindInlineUniformBlocks)
-	s.MaxDescriptorSetInlineUniformBlocks = uint32(p.maxDescriptorSetInlineUniformBlocks)
-	s.MaxDescriptorSetUpdateAfterBindInlineUniformBlocks = uint32(p.maxDescriptorSetUpdateAfterBindInlineUniformBlocks)
-	s.MaxInlineUniformTotalSize = uint32(p.maxInlineUniformTotalSize)
-	s.IntegerDotProduct8BitUnsignedAccelerated = p.integerDotProduct8BitUnsignedAccelerated != 0
-	s.IntegerDotProduct8BitSignedAccelerated = p.integerDotProduct8BitSignedAccelerated != 0
-	s.IntegerDotProduct8BitMixedSignednessAccelerated = p.integerDotProduct8BitMixedSignednessAccelerated != 0
-	s.IntegerDotProduct4x8BitPackedUnsignedAccelerated = p.integerDotProduct4x8BitPackedUnsignedAccelerated != 0
-	s.IntegerDotProduct4x8BitPackedSignedAccelerated = p.integerDotProduct4x8BitPackedSignedAccelerated != 0
-	s.IntegerDotProduct4x8BitPackedMixedSignednessAccelerated = p.integerDotProduct4x8BitPackedMixedSignednessAccelerated != 0
-	s.IntegerDotProduct16BitUnsignedAccelerated = p.integerDotProduct16BitUnsignedAccelerated != 0
-	s.IntegerDotProduct16BitSignedAccelerated = p.integerDotProduct16BitSignedAccelerated != 0
-	s.IntegerDotProduct16BitMixedSignednessAccelerated = p.integerDotProduct16BitMixedSignednessAccelerated != 0
-	s.IntegerDotProduct32BitUnsignedAccelerated = p.integerDotProduct32BitUnsignedAccelerated != 0
-	s.IntegerDotProduct32BitSignedAccelerated = p.integerDotProduct32BitSignedAccelerated != 0
-	s.IntegerDotProduct32BitMixedSignednessAccelerated = p.integerDotProduct32BitMixedSignednessAccelerated != 0
-	s.IntegerDotProduct64BitUnsignedAccelerated = p.integerDotProduct64BitUnsignedAccelerated != 0
-	s.IntegerDotProduct64BitSignedAccelerated = p.integerDotProduct64BitSignedAccelerated != 0
-	s.IntegerDotProduct64BitMixedSignednessAccelerated = p.integerDotProduct64BitMixedSignednessAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating8BitUnsignedAccelerated = p.integerDotProductAccumulatingSaturating8BitUnsignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating8BitSignedAccelerated = p.integerDotProductAccumulatingSaturating8BitSignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated = p.integerDotProductAccumulatingSaturating8BitMixedSignednessAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated = p.integerDotProductAccumulatingSaturating4x8BitPackedUnsignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated = p.integerDotProductAccumulatingSaturating4x8BitPackedSignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated = p.integerDotProductAccumulatingSaturating4x8BitPackedMixedSignednessAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating16BitUnsignedAccelerated = p.integerDotProductAccumulatingSaturating16BitUnsignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating16BitSignedAccelerated = p.integerDotProductAccumulatingSaturating16BitSignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated = p.integerDotProductAccumulatingSaturating16BitMixedSignednessAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating32BitUnsignedAccelerated = p.integerDotProductAccumulatingSaturating32BitUnsignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating32BitSignedAccelerated = p.integerDotProductAccumulatingSaturating32BitSignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated = p.integerDotProductAccumulatingSaturating32BitMixedSignednessAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating64BitUnsignedAccelerated = p.integerDotProductAccumulatingSaturating64BitUnsignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating64BitSignedAccelerated = p.integerDotProductAccumulatingSaturating64BitSignedAccelerated != 0
-	s.IntegerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated = p.integerDotProductAccumulatingSaturating64BitMixedSignednessAccelerated != 0
-	s.StorageTexelBufferOffsetAlignmentBytes = uint64(p.storageTexelBufferOffsetAlignmentBytes)
-	s.StorageTexelBufferOffsetSingleTexelAlignment = p.storageTexelBufferOffsetSingleTexelAlignment != 0
-	s.UniformTexelBufferOffsetAlignmentBytes = uint64(p.uniformTexelBufferOffsetAlignmentBytes)
-	s.UniformTexelBufferOffsetSingleTexelAlignment = p.uniformTexelBufferOffsetSingleTexelAlignment != 0
-	s.MaxBufferSize = uint64(p.maxBufferSize)
-}
-
-type cVkPhysicalDeviceVulkan14Features struct {
-	sType                                  int32
-	pNext                                  unsafe.Pointer
-	globalPriorityQuery                    uint32
-	shaderSubgroupRotate                   uint32
-	shaderSubgroupRotateClustered          uint32
-	shaderFloatControls2                   uint32
-	shaderExpectAssume                     uint32
-	rectangularLines                       uint32
-	bresenhamLines                         uint32
-	smoothLines                            uint32
-	stippledRectangularLines               uint32
-	stippledBresenhamLines                 uint32
-	stippledSmoothLines                    uint32
-	vertexAttributeInstanceRateDivisor     uint32
-	vertexAttributeInstanceRateZeroDivisor uint32
-	indexTypeUint8                         uint32
-	dynamicRenderingLocalRead              uint32
-	maintenance5                           uint32
-	maintenance6                           uint32
-	pipelineProtectedAccess                uint32
-	pipelineRobustness                     uint32
-	hostImageCopy                          uint32
-	pushDescriptor                         uint32
-}
-
-type PhysicalDeviceVulkan14Features struct {
-	Next                                   Structure
-	GlobalPriorityQuery                    bool
-	ShaderSubgroupRotate                   bool
-	ShaderSubgroupRotateClustered          bool
-	ShaderFloatControls2                   bool
-	ShaderExpectAssume                     bool
-	RectangularLines                       bool
-	BresenhamLines                         bool
-	SmoothLines                            bool
-	StippledRectangularLines               bool
-	StippledBresenhamLines                 bool
-	StippledSmoothLines                    bool
-	VertexAttributeInstanceRateDivisor     bool
-	VertexAttributeInstanceRateZeroDivisor bool
-	IndexTypeUint8                         bool
-	DynamicRenderingLocalRead              bool
-	Maintenance5                           bool
-	Maintenance6                           bool
-	PipelineProtectedAccess                bool
-	PipelineRobustness                     bool
-	HostImageCopy                          bool
-	PushDescriptor                         bool
-}
-
-func (s *PhysicalDeviceVulkan14Features) GetType() StructureType {
-	return StructureTypePhysicalDeviceVulkan14Features
-}
-
-func (s *PhysicalDeviceVulkan14Features) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceVulkan14Features)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.GlobalPriorityQuery {
-		val0 = 1
-	}
-	p.globalPriorityQuery = val0
-	val1 := uint32(0)
-	if s.ShaderSubgroupRotate {
-		val1 = 1
-	}
-	p.shaderSubgroupRotate = val1
-	val2 := uint32(0)
-	if s.ShaderSubgroupRotateClustered {
-		val2 = 1
-	}
-	p.shaderSubgroupRotateClustered = val2
-	val3 := uint32(0)
-	if s.ShaderFloatControls2 {
-		val3 = 1
-	}
-	p.shaderFloatControls2 = val3
-	val4 := uint32(0)
-	if s.ShaderExpectAssume {
-		val4 = 1
-	}
-	p.shaderExpectAssume = val4
-	val5 := uint32(0)
-	if s.RectangularLines {
-		val5 = 1
-	}
-	p.rectangularLines = val5
-	val6 := uint32(0)
-	if s.BresenhamLines {
-		val6 = 1
-	}
-	p.bresenhamLines = val6
-	val7 := uint32(0)
-	if s.SmoothLines {
-		val7 = 1
-	}
-	p.smoothLines = val7
-	val8 := uint32(0)
-	if s.StippledRectangularLines {
-		val8 = 1
-	}
-	p.stippledRectangularLines = val8
-	val9 := uint32(0)
-	if s.StippledBresenhamLines {
-		val9 = 1
-	}
-	p.stippledBresenhamLines = val9
-	val10 := uint32(0)
-	if s.StippledSmoothLines {
-		val10 = 1
-	}
-	p.stippledSmoothLines = val10
-	val11 := uint32(0)
-	if s.VertexAttributeInstanceRateDivisor {
-		val11 = 1
-	}
-	p.vertexAttributeInstanceRateDivisor = val11
-	val12 := uint32(0)
-	if s.VertexAttributeInstanceRateZeroDivisor {
-		val12 = 1
-	}
-	p.vertexAttributeInstanceRateZeroDivisor = val12
-	val13 := uint32(0)
-	if s.IndexTypeUint8 {
-		val13 = 1
-	}
-	p.indexTypeUint8 = val13
-	val14 := uint32(0)
-	if s.DynamicRenderingLocalRead {
-		val14 = 1
-	}
-	p.dynamicRenderingLocalRead = val14
-	val15 := uint32(0)
-	if s.Maintenance5 {
-		val15 = 1
-	}
-	p.maintenance5 = val15
-	val16 := uint32(0)
-	if s.Maintenance6 {
-		val16 = 1
-	}
-	p.maintenance6 = val16
-	val17 := uint32(0)
-	if s.PipelineProtectedAccess {
-		val17 = 1
-	}
-	p.pipelineProtectedAccess = val17
-	val18 := uint32(0)
-	if s.PipelineRobustness {
-		val18 = 1
-	}
-	p.pipelineRobustness = val18
-	val19 := uint32(0)
-	if s.HostImageCopy {
-		val19 = 1
-	}
-	p.hostImageCopy = val19
-	val20 := uint32(0)
-	if s.PushDescriptor {
-		val20 = 1
-	}
-	p.pushDescriptor = val20
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceVulkan14Features) fromC(p *cVkPhysicalDeviceVulkan14Features) {
-	s.GlobalPriorityQuery = p.globalPriorityQuery != 0
-	s.ShaderSubgroupRotate = p.shaderSubgroupRotate != 0
-	s.ShaderSubgroupRotateClustered = p.shaderSubgroupRotateClustered != 0
-	s.ShaderFloatControls2 = p.shaderFloatControls2 != 0
-	s.ShaderExpectAssume = p.shaderExpectAssume != 0
-	s.RectangularLines = p.rectangularLines != 0
-	s.BresenhamLines = p.bresenhamLines != 0
-	s.SmoothLines = p.smoothLines != 0
-	s.StippledRectangularLines = p.stippledRectangularLines != 0
-	s.StippledBresenhamLines = p.stippledBresenhamLines != 0
-	s.StippledSmoothLines = p.stippledSmoothLines != 0
-	s.VertexAttributeInstanceRateDivisor = p.vertexAttributeInstanceRateDivisor != 0
-	s.VertexAttributeInstanceRateZeroDivisor = p.vertexAttributeInstanceRateZeroDivisor != 0
-	s.IndexTypeUint8 = p.indexTypeUint8 != 0
-	s.DynamicRenderingLocalRead = p.dynamicRenderingLocalRead != 0
-	s.Maintenance5 = p.maintenance5 != 0
-	s.Maintenance6 = p.maintenance6 != 0
-	s.PipelineProtectedAccess = p.pipelineProtectedAccess != 0
-	s.PipelineRobustness = p.pipelineRobustness != 0
-	s.HostImageCopy = p.hostImageCopy != 0
-	s.PushDescriptor = p.pushDescriptor != 0
-}
-
-type cVkPhysicalDeviceVulkan14Properties struct {
-	sType                                               int32
-	pNext                                               unsafe.Pointer
-	lineSubPixelPrecisionBits                           uint32
-	maxVertexAttribDivisor                              uint32
-	supportsNonZeroFirstInstance                        uint32
-	maxPushDescriptors                                  uint32
-	dynamicRenderingLocalReadDepthStencilAttachments    uint32
-	dynamicRenderingLocalReadMultisampledAttachments    uint32
-	earlyFragmentMultisampleCoverageAfterSampleCounting uint32
-	earlyFragmentSampleMaskTestBeforeSampleCounting     uint32
-	depthStencilSwizzleOneSupport                       uint32
-	polygonModePointSize                                uint32
-	nonStrictSinglePixelWideLinesUseParallelogram       uint32
-	nonStrictWideLinesUseParallelogram                  uint32
-	blockTexelViewCompatibleMultipleLayers              uint32
-	maxCombinedImageSamplerDescriptorCount              uint32
-	fragmentShadingRateClampCombinerInputs              uint32
-	defaultRobustnessStorageBuffers                     uint32
-	defaultRobustnessUniformBuffers                     uint32
-	defaultRobustnessVertexInputs                       uint32
-	defaultRobustnessImages                             uint32
-	copySrcLayoutCount                                  uint32
-	pCopySrcLayouts                                     unsafe.Pointer
-	copyDstLayoutCount                                  uint32
-	pCopyDstLayouts                                     unsafe.Pointer
-	optimalTilingLayoutUUID                             [16]uint8
-	identicalMemoryTypeRequirements                     uint32
-}
-
-type PhysicalDeviceVulkan14Properties struct {
-	Next                                                Structure
-	LineSubPixelPrecisionBits                           uint32
-	MaxVertexAttribDivisor                              uint32
-	SupportsNonZeroFirstInstance                        bool
-	MaxPushDescriptors                                  uint32
-	DynamicRenderingLocalReadDepthStencilAttachments    bool
-	DynamicRenderingLocalReadMultisampledAttachments    bool
-	EarlyFragmentMultisampleCoverageAfterSampleCounting bool
-	EarlyFragmentSampleMaskTestBeforeSampleCounting     bool
-	DepthStencilSwizzleOneSupport                       bool
-	PolygonModePointSize                                bool
-	NonStrictSinglePixelWideLinesUseParallelogram       bool
-	NonStrictWideLinesUseParallelogram                  bool
-	BlockTexelViewCompatibleMultipleLayers              bool
-	MaxCombinedImageSamplerDescriptorCount              uint32
-	FragmentShadingRateClampCombinerInputs              bool
-	DefaultRobustnessStorageBuffers                     PipelineRobustnessBufferBehavior
-	DefaultRobustnessUniformBuffers                     PipelineRobustnessBufferBehavior
-	DefaultRobustnessVertexInputs                       PipelineRobustnessBufferBehavior
-	DefaultRobustnessImages                             PipelineRobustnessImageBehavior
-	CopySrcLayoutCount                                  uint32
-	CopySrcLayouts                                      []ImageLayout
-	CopyDstLayoutCount                                  uint32
-	CopyDstLayouts                                      []ImageLayout
-	OptimalTilingLayoutUUID                             [16]uint8
-	IdenticalMemoryTypeRequirements                     bool
-}
-
-func (s *PhysicalDeviceVulkan14Properties) GetType() StructureType {
-	return StructureTypePhysicalDeviceVulkan14Properties
-}
-
-func (s *PhysicalDeviceVulkan14Properties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceVulkan14Properties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.LineSubPixelPrecisionBits)
-	p.lineSubPixelPrecisionBits = val0
-	val1 := uint32(s.MaxVertexAttribDivisor)
-	p.maxVertexAttribDivisor = val1
-	val2 := uint32(0)
-	if s.SupportsNonZeroFirstInstance {
-		val2 = 1
-	}
-	p.supportsNonZeroFirstInstance = val2
-	val3 := uint32(s.MaxPushDescriptors)
-	p.maxPushDescriptors = val3
-	val4 := uint32(0)
-	if s.DynamicRenderingLocalReadDepthStencilAttachments {
-		val4 = 1
-	}
-	p.dynamicRenderingLocalReadDepthStencilAttachments = val4
-	val5 := uint32(0)
-	if s.DynamicRenderingLocalReadMultisampledAttachments {
-		val5 = 1
-	}
-	p.dynamicRenderingLocalReadMultisampledAttachments = val5
-	val6 := uint32(0)
-	if s.EarlyFragmentMultisampleCoverageAfterSampleCounting {
-		val6 = 1
-	}
-	p.earlyFragmentMultisampleCoverageAfterSampleCounting = val6
-	val7 := uint32(0)
-	if s.EarlyFragmentSampleMaskTestBeforeSampleCounting {
-		val7 = 1
-	}
-	p.earlyFragmentSampleMaskTestBeforeSampleCounting = val7
-	val8 := uint32(0)
-	if s.DepthStencilSwizzleOneSupport {
-		val8 = 1
-	}
-	p.depthStencilSwizzleOneSupport = val8
-	val9 := uint32(0)
-	if s.PolygonModePointSize {
-		val9 = 1
-	}
-	p.polygonModePointSize = val9
-	val10 := uint32(0)
-	if s.NonStrictSinglePixelWideLinesUseParallelogram {
-		val10 = 1
-	}
-	p.nonStrictSinglePixelWideLinesUseParallelogram = val10
-	val11 := uint32(0)
-	if s.NonStrictWideLinesUseParallelogram {
-		val11 = 1
-	}
-	p.nonStrictWideLinesUseParallelogram = val11
-	val12 := uint32(0)
-	if s.BlockTexelViewCompatibleMultipleLayers {
-		val12 = 1
-	}
-	p.blockTexelViewCompatibleMultipleLayers = val12
-	val13 := uint32(s.MaxCombinedImageSamplerDescriptorCount)
-	p.maxCombinedImageSamplerDescriptorCount = val13
-	val14 := uint32(0)
-	if s.FragmentShadingRateClampCombinerInputs {
-		val14 = 1
-	}
-	p.fragmentShadingRateClampCombinerInputs = val14
-	val15 := uint32(s.DefaultRobustnessStorageBuffers)
-	p.defaultRobustnessStorageBuffers = val15
-	val16 := uint32(s.DefaultRobustnessUniformBuffers)
-	p.defaultRobustnessUniformBuffers = val16
-	val17 := uint32(s.DefaultRobustnessVertexInputs)
-	p.defaultRobustnessVertexInputs = val17
-	val18 := uint32(s.DefaultRobustnessImages)
-	p.defaultRobustnessImages = val18
-	val19 := uint32(s.CopySrcLayoutCount)
-	p.copySrcLayoutCount = val19
-	len20 := len(s.CopySrcLayouts)
-	var arr21 unsafe.Pointer
-	if len20 > 0 {
-		buf22 := make([]uint32, len20)
-		var pin23 runtime.Pinner
-		pin23.Pin(&buf22[0])
-		cancels = append(cancels, func() { pin23.Unpin(); runtime.KeepAlive(buf22) })
-		arr21 = unsafe.Pointer(&buf22[0])
-		for i24, elem25 := range s.CopySrcLayouts {
-			val26 := uint32(elem25)
-			buf22[i24] = val26
-		}
-	}
-	p.pCopySrcLayouts = arr21
-	val27 := uint32(s.CopyDstLayoutCount)
-	p.copyDstLayoutCount = val27
-	len28 := len(s.CopyDstLayouts)
-	var arr29 unsafe.Pointer
-	if len28 > 0 {
-		buf30 := make([]uint32, len28)
-		var pin31 runtime.Pinner
-		pin31.Pin(&buf30[0])
-		cancels = append(cancels, func() { pin31.Unpin(); runtime.KeepAlive(buf30) })
-		arr29 = unsafe.Pointer(&buf30[0])
-		for i32, elem33 := range s.CopyDstLayouts {
-			val34 := uint32(elem33)
-			buf30[i32] = val34
-		}
-	}
-	p.pCopyDstLayouts = arr29
-	var arr35 [16]uint8
-	for i36, elem37 := range s.OptimalTilingLayoutUUID {
-		val38 := uint8(elem37)
-		arr35[i36] = val38
-	}
-	p.optimalTilingLayoutUUID = arr35
-	val39 := uint32(0)
-	if s.IdenticalMemoryTypeRequirements {
-		val39 = 1
-	}
-	p.identicalMemoryTypeRequirements = val39
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceVulkan14Properties) fromC(p *cVkPhysicalDeviceVulkan14Properties) {
-	s.LineSubPixelPrecisionBits = uint32(p.lineSubPixelPrecisionBits)
-	s.MaxVertexAttribDivisor = uint32(p.maxVertexAttribDivisor)
-	s.SupportsNonZeroFirstInstance = p.supportsNonZeroFirstInstance != 0
-	s.MaxPushDescriptors = uint32(p.maxPushDescriptors)
-	s.DynamicRenderingLocalReadDepthStencilAttachments = p.dynamicRenderingLocalReadDepthStencilAttachments != 0
-	s.DynamicRenderingLocalReadMultisampledAttachments = p.dynamicRenderingLocalReadMultisampledAttachments != 0
-	s.EarlyFragmentMultisampleCoverageAfterSampleCounting = p.earlyFragmentMultisampleCoverageAfterSampleCounting != 0
-	s.EarlyFragmentSampleMaskTestBeforeSampleCounting = p.earlyFragmentSampleMaskTestBeforeSampleCounting != 0
-	s.DepthStencilSwizzleOneSupport = p.depthStencilSwizzleOneSupport != 0
-	s.PolygonModePointSize = p.polygonModePointSize != 0
-	s.NonStrictSinglePixelWideLinesUseParallelogram = p.nonStrictSinglePixelWideLinesUseParallelogram != 0
-	s.NonStrictWideLinesUseParallelogram = p.nonStrictWideLinesUseParallelogram != 0
-	s.BlockTexelViewCompatibleMultipleLayers = p.blockTexelViewCompatibleMultipleLayers != 0
-	s.MaxCombinedImageSamplerDescriptorCount = uint32(p.maxCombinedImageSamplerDescriptorCount)
-	s.FragmentShadingRateClampCombinerInputs = p.fragmentShadingRateClampCombinerInputs != 0
-	s.DefaultRobustnessStorageBuffers = PipelineRobustnessBufferBehavior(p.defaultRobustnessStorageBuffers)
-	s.DefaultRobustnessUniformBuffers = PipelineRobustnessBufferBehavior(p.defaultRobustnessUniformBuffers)
-	s.DefaultRobustnessVertexInputs = PipelineRobustnessBufferBehavior(p.defaultRobustnessVertexInputs)
-	s.DefaultRobustnessImages = PipelineRobustnessImageBehavior(p.defaultRobustnessImages)
-	s.CopySrcLayoutCount = uint32(p.copySrcLayoutCount)
-	// TODO: fromC for CopySrcLayouts (Slice of *generator.NamedType)
-	s.CopyDstLayoutCount = uint32(p.copyDstLayoutCount)
-	// TODO: fromC for CopyDstLayouts (Slice of *generator.NamedType)
-	for _i := range s.OptimalTilingLayoutUUID {
-		s.OptimalTilingLayoutUUID[_i] = uint8(p.optimalTilingLayoutUUID[_i])
-	}
-	s.IdenticalMemoryTypeRequirements = p.identicalMemoryTypeRequirements != 0
-}
-
-type cVkPhysicalDeviceVulkanMemoryModelFeatures struct {
-	sType                                         int32
-	pNext                                         unsafe.Pointer
-	vulkanMemoryModel                             uint32
-	vulkanMemoryModelDeviceScope                  uint32
-	vulkanMemoryModelAvailabilityVisibilityChains uint32
-}
-
-type PhysicalDeviceVulkanMemoryModelFeatures struct {
-	Next                                          Structure
-	VulkanMemoryModel                             bool
-	VulkanMemoryModelDeviceScope                  bool
-	VulkanMemoryModelAvailabilityVisibilityChains bool
-}
-
-func (s *PhysicalDeviceVulkanMemoryModelFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceVulkanMemoryModelFeatures
-}
-
-func (s *PhysicalDeviceVulkanMemoryModelFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceVulkanMemoryModelFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.VulkanMemoryModel {
-		val0 = 1
-	}
-	p.vulkanMemoryModel = val0
-	val1 := uint32(0)
-	if s.VulkanMemoryModelDeviceScope {
-		val1 = 1
-	}
-	p.vulkanMemoryModelDeviceScope = val1
-	val2 := uint32(0)
-	if s.VulkanMemoryModelAvailabilityVisibilityChains {
-		val2 = 1
-	}
-	p.vulkanMemoryModelAvailabilityVisibilityChains = val2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceVulkanMemoryModelFeatures) fromC(p *cVkPhysicalDeviceVulkanMemoryModelFeatures) {
-	s.VulkanMemoryModel = p.vulkanMemoryModel != 0
-	s.VulkanMemoryModelDeviceScope = p.vulkanMemoryModelDeviceScope != 0
-	s.VulkanMemoryModelAvailabilityVisibilityChains = p.vulkanMemoryModelAvailabilityVisibilityChains != 0
-}
-
-type cVkPhysicalDeviceZeroInitializeWorkgroupMemoryFeatures struct {
-	sType                               int32
-	pNext                               unsafe.Pointer
-	shaderZeroInitializeWorkgroupMemory uint32
-}
-
-type PhysicalDeviceZeroInitializeWorkgroupMemoryFeatures struct {
-	Next                                Structure
-	ShaderZeroInitializeWorkgroupMemory bool
-}
-
-func (s *PhysicalDeviceZeroInitializeWorkgroupMemoryFeatures) GetType() StructureType {
-	return StructureTypePhysicalDeviceZeroInitializeWorkgroupMemoryFeatures
-}
-
-func (s *PhysicalDeviceZeroInitializeWorkgroupMemoryFeatures) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPhysicalDeviceZeroInitializeWorkgroupMemoryFeatures)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ShaderZeroInitializeWorkgroupMemory {
-		val0 = 1
-	}
-	p.shaderZeroInitializeWorkgroupMemory = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PhysicalDeviceZeroInitializeWorkgroupMemoryFeatures) fromC(p *cVkPhysicalDeviceZeroInitializeWorkgroupMemoryFeatures) {
-	s.ShaderZeroInitializeWorkgroupMemory = p.shaderZeroInitializeWorkgroupMemory != 0
 }
 
 type cVkPipelineCacheCreateInfo struct {
@@ -27407,143 +17142,6 @@ func (s *PipelineColorBlendStateCreateInfo) fromC(p *cVkPipelineColorBlendStateC
 	}
 	for _i := range s.BlendConstants {
 		s.BlendConstants[_i] = float32(p.blendConstants[_i])
-	}
-}
-
-type cVkPipelineCreateFlags2CreateInfo struct {
-	sType int32
-	pNext unsafe.Pointer
-	flags uint64
-}
-
-type PipelineCreateFlags2CreateInfo struct {
-	Next  Structure
-	Flags PipelineCreateFlags2
-}
-
-func (s *PipelineCreateFlags2CreateInfo) GetType() StructureType {
-	return StructureTypePipelineCreateFlags2CreateInfo
-}
-
-func (s *PipelineCreateFlags2CreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPipelineCreateFlags2CreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.Flags)
-	p.flags = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PipelineCreateFlags2CreateInfo) fromC(p *cVkPipelineCreateFlags2CreateInfo) {
-	s.Flags = PipelineCreateFlags2(p.flags)
-}
-
-type cVkPipelineCreationFeedback struct {
-	flags    uint32
-	duration uint64
-}
-
-type PipelineCreationFeedback struct {
-	Flags    PipelineCreationFeedbackFlags
-	Duration uint64
-}
-
-func (s *PipelineCreationFeedback) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPipelineCreationFeedback)
-	val0 := uint32(s.Flags)
-	p.flags = val0
-	val1 := uint64(s.Duration)
-	p.duration = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PipelineCreationFeedback) fromC(p *cVkPipelineCreationFeedback) {
-	s.Flags = PipelineCreationFeedbackFlags(p.flags)
-	s.Duration = uint64(p.duration)
-}
-
-type cVkPipelineCreationFeedbackCreateInfo struct {
-	sType                              int32
-	pNext                              unsafe.Pointer
-	pPipelineCreationFeedback          unsafe.Pointer
-	pipelineStageCreationFeedbackCount uint32
-	pPipelineStageCreationFeedbacks    unsafe.Pointer
-}
-
-type PipelineCreationFeedbackCreateInfo struct {
-	Next                           Structure
-	PipelineCreationFeedback       *PipelineCreationFeedback
-	PipelineStageCreationFeedbacks []PipelineCreationFeedback
-}
-
-func (s *PipelineCreationFeedbackCreateInfo) GetType() StructureType {
-	return StructureTypePipelineCreationFeedbackCreateInfo
-}
-
-func (s *PipelineCreationFeedbackCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPipelineCreationFeedbackCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var ptr0 unsafe.Pointer
-	if s.PipelineCreationFeedback != nil {
-		val1, cancel2 := s.PipelineCreationFeedback.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	p.pPipelineCreationFeedback = ptr0
-	len3 := len(s.PipelineStageCreationFeedbacks)
-	var arr4 unsafe.Pointer
-	if len3 > 0 {
-		buf5 := make([]cVkPipelineCreationFeedback, len3)
-		var pin6 runtime.Pinner
-		pin6.Pin(&buf5[0])
-		cancels = append(cancels, func() { pin6.Unpin(); runtime.KeepAlive(buf5) })
-		arr4 = unsafe.Pointer(&buf5[0])
-		for i7, elem8 := range s.PipelineStageCreationFeedbacks {
-			val9, cancel10 := elem8.toC()
-			cancels = append(cancels, cancel10)
-			cast11 := (*cVkPipelineCreationFeedback)(val9)
-			buf5[i7] = *cast11
-		}
-	}
-	p.pPipelineStageCreationFeedbacks = arr4
-	p.pipelineStageCreationFeedbackCount = uint32(len(s.PipelineStageCreationFeedbacks))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PipelineCreationFeedbackCreateInfo) fromC(p *cVkPipelineCreationFeedbackCreateInfo) {
-	if p.pPipelineCreationFeedback != nil {
-		s.PipelineCreationFeedback.fromC((*cVkPipelineCreationFeedback)(p.pPipelineCreationFeedback))
-	}
-	if p.pipelineStageCreationFeedbackCount > 0 && p.pPipelineStageCreationFeedbacks != nil {
-		s.PipelineStageCreationFeedbacks = make([]PipelineCreationFeedback, p.pipelineStageCreationFeedbackCount)
-		for i0 := range s.PipelineStageCreationFeedbacks {
-			elem1 := (*[1 << 30]cVkPipelineCreationFeedback)(unsafe.Pointer(p.pPipelineStageCreationFeedbacks))[i0]
-			s.PipelineStageCreationFeedbacks[i0].fromC(&elem1)
-		}
 	}
 }
 
@@ -28260,58 +17858,6 @@ func (s *PipelineRenderingCreateInfo) fromC(p *cVkPipelineRenderingCreateInfo) {
 	s.StencilAttachmentFormat = Format(p.stencilAttachmentFormat)
 }
 
-type cVkPipelineRobustnessCreateInfo struct {
-	sType          int32
-	pNext          unsafe.Pointer
-	storageBuffers uint32
-	uniformBuffers uint32
-	vertexInputs   uint32
-	images         uint32
-}
-
-type PipelineRobustnessCreateInfo struct {
-	Next           Structure
-	StorageBuffers PipelineRobustnessBufferBehavior
-	UniformBuffers PipelineRobustnessBufferBehavior
-	VertexInputs   PipelineRobustnessBufferBehavior
-	Images         PipelineRobustnessImageBehavior
-}
-
-func (s *PipelineRobustnessCreateInfo) GetType() StructureType {
-	return StructureTypePipelineRobustnessCreateInfo
-}
-
-func (s *PipelineRobustnessCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPipelineRobustnessCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.StorageBuffers)
-	p.storageBuffers = val0
-	val1 := uint32(s.UniformBuffers)
-	p.uniformBuffers = val1
-	val2 := uint32(s.VertexInputs)
-	p.vertexInputs = val2
-	val3 := uint32(s.Images)
-	p.images = val3
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PipelineRobustnessCreateInfo) fromC(p *cVkPipelineRobustnessCreateInfo) {
-	s.StorageBuffers = PipelineRobustnessBufferBehavior(p.storageBuffers)
-	s.UniformBuffers = PipelineRobustnessBufferBehavior(p.uniformBuffers)
-	s.VertexInputs = PipelineRobustnessBufferBehavior(p.vertexInputs)
-	s.Images = PipelineRobustnessImageBehavior(p.images)
-}
-
 type cVkPipelineShaderStageCreateInfo struct {
 	sType               int32
 	pNext               unsafe.Pointer
@@ -28383,43 +17929,6 @@ func (s *PipelineShaderStageCreateInfo) fromC(p *cVkPipelineShaderStageCreateInf
 	if p.pSpecializationInfo != nil {
 		s.SpecializationInfo.fromC((*cVkSpecializationInfo)(p.pSpecializationInfo))
 	}
-}
-
-type cVkPipelineShaderStageRequiredSubgroupSizeCreateInfo struct {
-	sType                int32
-	pNext                unsafe.Pointer
-	requiredSubgroupSize uint32
-}
-
-type PipelineShaderStageRequiredSubgroupSizeCreateInfo struct {
-	Next                 Structure
-	RequiredSubgroupSize uint32
-}
-
-func (s *PipelineShaderStageRequiredSubgroupSizeCreateInfo) GetType() StructureType {
-	return StructureTypePipelineShaderStageRequiredSubgroupSizeCreateInfo
-}
-
-func (s *PipelineShaderStageRequiredSubgroupSizeCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPipelineShaderStageRequiredSubgroupSizeCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.RequiredSubgroupSize)
-	p.requiredSubgroupSize = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PipelineShaderStageRequiredSubgroupSizeCreateInfo) fromC(p *cVkPipelineShaderStageRequiredSubgroupSizeCreateInfo) {
-	s.RequiredSubgroupSize = uint32(p.requiredSubgroupSize)
 }
 
 type cVkPipelineTessellationDomainOriginStateCreateInfo struct {
@@ -28876,83 +18385,6 @@ func (s *PresentInfoKHR) fromC(p *cVkPresentInfoKHR) {
 	// TODO: fromC for Results (Slice of *generator.NamedType)
 }
 
-type cVkPrivateDataSlotCreateInfo struct {
-	sType int32
-	pNext unsafe.Pointer
-	flags uint32
-}
-
-type PrivateDataSlotCreateInfo struct {
-	Next  Structure
-	Flags PrivateDataSlotCreateFlags
-}
-
-func (s *PrivateDataSlotCreateInfo) GetType() StructureType {
-	return StructureTypePrivateDataSlotCreateInfo
-}
-
-func (s *PrivateDataSlotCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPrivateDataSlotCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Flags)
-	p.flags = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PrivateDataSlotCreateInfo) fromC(p *cVkPrivateDataSlotCreateInfo) {
-	s.Flags = PrivateDataSlotCreateFlags(p.flags)
-}
-
-type cVkProtectedSubmitInfo struct {
-	sType           int32
-	pNext           unsafe.Pointer
-	protectedSubmit uint32
-}
-
-type ProtectedSubmitInfo struct {
-	Next            Structure
-	ProtectedSubmit bool
-}
-
-func (s *ProtectedSubmitInfo) GetType() StructureType {
-	return StructureTypeProtectedSubmitInfo
-}
-
-func (s *ProtectedSubmitInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkProtectedSubmitInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(0)
-	if s.ProtectedSubmit {
-		val0 = 1
-	}
-	p.protectedSubmit = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *ProtectedSubmitInfo) fromC(p *cVkProtectedSubmitInfo) {
-	s.ProtectedSubmit = p.protectedSubmit != 0
-}
-
 type cVkPushConstantRange struct {
 	stageFlags uint32
 	offset     uint32
@@ -28985,203 +18417,6 @@ func (s *PushConstantRange) fromC(p *cVkPushConstantRange) {
 	s.StageFlags = ShaderStageFlags(p.stageFlags)
 	s.Offset = uint32(p.offset)
 	s.Size = uint32(p.size)
-}
-
-type cVkPushConstantsInfo struct {
-	sType      int32
-	pNext      unsafe.Pointer
-	layout     unsafe.Pointer
-	stageFlags uint32
-	offset     uint32
-	size       uint32
-	pValues    unsafe.Pointer
-}
-
-type PushConstantsInfo struct {
-	Next       Structure
-	Layout     *PipelineLayout
-	StageFlags ShaderStageFlags
-	Offset     uint32
-	Values     []byte
-}
-
-func (s *PushConstantsInfo) GetType() StructureType {
-	return StructureTypePushConstantsInfo
-}
-
-func (s *PushConstantsInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPushConstantsInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.Layout != nil {
-		h0 = s.Layout.handle
-	}
-	p.layout = h0
-	val1 := uint32(s.StageFlags)
-	p.stageFlags = val1
-	val2 := uint32(s.Offset)
-	p.offset = val2
-	var ptr3 unsafe.Pointer
-	if len(s.Values) > 0 {
-		ptr3 = unsafe.Pointer(&s.Values[0])
-	}
-	p.pValues = ptr3
-	p.size = uint32(len(s.Values))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PushConstantsInfo) fromC(p *cVkPushConstantsInfo) {
-	s.Layout = &PipelineLayout{handle: p.layout}
-	s.StageFlags = ShaderStageFlags(p.stageFlags)
-	s.Offset = uint32(p.offset)
-	if p.size > 0 && p.pValues != nil {
-		s.Values = make([]byte, p.size)
-		copy(s.Values, unsafe.Slice((*byte)(p.pValues), p.size))
-	}
-}
-
-type cVkPushDescriptorSetInfo struct {
-	sType                int32
-	pNext                unsafe.Pointer
-	stageFlags           uint32
-	layout               unsafe.Pointer
-	set                  uint32
-	descriptorWriteCount uint32
-	pDescriptorWrites    unsafe.Pointer
-}
-
-type PushDescriptorSetInfo struct {
-	Next             Structure
-	StageFlags       ShaderStageFlags
-	Layout           *PipelineLayout
-	Set              uint32
-	DescriptorWrites []WriteDescriptorSet
-}
-
-func (s *PushDescriptorSetInfo) GetType() StructureType {
-	return StructureTypePushDescriptorSetInfo
-}
-
-func (s *PushDescriptorSetInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPushDescriptorSetInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.StageFlags)
-	p.stageFlags = val0
-	var h1 unsafe.Pointer
-	if s.Layout != nil {
-		h1 = s.Layout.handle
-	}
-	p.layout = h1
-	val2 := uint32(s.Set)
-	p.set = val2
-	len3 := len(s.DescriptorWrites)
-	var arr4 unsafe.Pointer
-	if len3 > 0 {
-		buf5 := make([]cVkWriteDescriptorSet, len3)
-		var pin6 runtime.Pinner
-		pin6.Pin(&buf5[0])
-		cancels = append(cancels, func() { pin6.Unpin(); runtime.KeepAlive(buf5) })
-		arr4 = unsafe.Pointer(&buf5[0])
-		for i7, elem8 := range s.DescriptorWrites {
-			val9, cancel10 := elem8.toC()
-			cancels = append(cancels, cancel10)
-			cast11 := (*cVkWriteDescriptorSet)(val9)
-			buf5[i7] = *cast11
-		}
-	}
-	p.pDescriptorWrites = arr4
-	p.descriptorWriteCount = uint32(len(s.DescriptorWrites))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PushDescriptorSetInfo) fromC(p *cVkPushDescriptorSetInfo) {
-	s.StageFlags = ShaderStageFlags(p.stageFlags)
-	s.Layout = &PipelineLayout{handle: p.layout}
-	s.Set = uint32(p.set)
-	if p.descriptorWriteCount > 0 && p.pDescriptorWrites != nil {
-		s.DescriptorWrites = make([]WriteDescriptorSet, p.descriptorWriteCount)
-		for i0 := range s.DescriptorWrites {
-			elem1 := (*[1 << 30]cVkWriteDescriptorSet)(unsafe.Pointer(p.pDescriptorWrites))[i0]
-			s.DescriptorWrites[i0].fromC(&elem1)
-		}
-	}
-}
-
-type cVkPushDescriptorSetWithTemplateInfo struct {
-	sType                    int32
-	pNext                    unsafe.Pointer
-	descriptorUpdateTemplate unsafe.Pointer
-	layout                   unsafe.Pointer
-	set                      uint32
-	pData                    unsafe.Pointer
-}
-
-type PushDescriptorSetWithTemplateInfo struct {
-	Next                     Structure
-	DescriptorUpdateTemplate *DescriptorUpdateTemplate
-	Layout                   *PipelineLayout
-	Set                      uint32
-	Data                     unsafe.Pointer
-}
-
-func (s *PushDescriptorSetWithTemplateInfo) GetType() StructureType {
-	return StructureTypePushDescriptorSetWithTemplateInfo
-}
-
-func (s *PushDescriptorSetWithTemplateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkPushDescriptorSetWithTemplateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.DescriptorUpdateTemplate != nil {
-		h0 = s.DescriptorUpdateTemplate.handle
-	}
-	p.descriptorUpdateTemplate = h0
-	var h1 unsafe.Pointer
-	if s.Layout != nil {
-		h1 = s.Layout.handle
-	}
-	p.layout = h1
-	val2 := uint32(s.Set)
-	p.set = val2
-	p.pData = s.Data
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *PushDescriptorSetWithTemplateInfo) fromC(p *cVkPushDescriptorSetWithTemplateInfo) {
-	s.DescriptorUpdateTemplate = &DescriptorUpdateTemplate{handle: p.descriptorUpdateTemplate}
-	s.Layout = &PipelineLayout{handle: p.layout}
-	s.Set = uint32(p.set)
-	s.Data = p.pData
 }
 
 type cVkQueryPoolCreateInfo struct {
@@ -29236,50 +18471,6 @@ func (s *QueryPoolCreateInfo) fromC(p *cVkQueryPoolCreateInfo) {
 	s.PipelineStatistics = QueryPipelineStatisticFlags(p.pipelineStatistics)
 }
 
-type cVkQueueFamilyGlobalPriorityProperties struct {
-	sType         int32
-	pNext         unsafe.Pointer
-	priorityCount uint32
-	priorities    [16]uint32
-}
-
-type QueueFamilyGlobalPriorityProperties struct {
-	Next       Structure
-	Priorities [16]QueueGlobalPriority
-}
-
-func (s *QueueFamilyGlobalPriorityProperties) GetType() StructureType {
-	return StructureTypeQueueFamilyGlobalPriorityProperties
-}
-
-func (s *QueueFamilyGlobalPriorityProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkQueueFamilyGlobalPriorityProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var arr0 [16]uint32
-	for i1, elem2 := range s.Priorities {
-		val3 := uint32(elem2)
-		arr0[i1] = val3
-	}
-	p.priorities = arr0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *QueueFamilyGlobalPriorityProperties) fromC(p *cVkQueueFamilyGlobalPriorityProperties) {
-	for _i := range s.Priorities {
-		s.Priorities[_i] = QueueGlobalPriority(p.priorities[_i])
-	}
-}
-
 type cVkQueueFamilyProperties struct {
 	queueFlags                  uint32
 	queueCount                  uint32
@@ -29319,45 +18510,6 @@ func (s *QueueFamilyProperties) fromC(p *cVkQueueFamilyProperties) {
 	s.QueueCount = uint32(p.queueCount)
 	s.TimestampValidBits = uint32(p.timestampValidBits)
 	s.MinImageTransferGranularity.fromC(&p.minImageTransferGranularity)
-}
-
-type cVkQueueFamilyProperties2 struct {
-	sType                 int32
-	pNext                 unsafe.Pointer
-	queueFamilyProperties cVkQueueFamilyProperties
-}
-
-type QueueFamilyProperties2 struct {
-	Next                  Structure
-	QueueFamilyProperties QueueFamilyProperties
-}
-
-func (s *QueueFamilyProperties2) GetType() StructureType {
-	return StructureTypeQueueFamilyProperties2
-}
-
-func (s *QueueFamilyProperties2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkQueueFamilyProperties2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0, cancel1 := s.QueueFamilyProperties.toC()
-	cancels = append(cancels, cancel1)
-	cast2 := (*cVkQueueFamilyProperties)(val0)
-	p.queueFamilyProperties = *cast2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *QueueFamilyProperties2) fromC(p *cVkQueueFamilyProperties2) {
-	s.QueueFamilyProperties.fromC(&p.queueFamilyProperties)
 }
 
 type cVkRayTracingPipelineCreateInfoKHR struct {
@@ -30909,197 +20061,6 @@ func (s *SamplerCreateInfo) fromC(p *cVkSamplerCreateInfo) {
 	s.UnnormalizedCoordinates = p.unnormalizedCoordinates != 0
 }
 
-type cVkSamplerReductionModeCreateInfo struct {
-	sType         int32
-	pNext         unsafe.Pointer
-	reductionMode uint32
-}
-
-type SamplerReductionModeCreateInfo struct {
-	Next          Structure
-	ReductionMode SamplerReductionMode
-}
-
-func (s *SamplerReductionModeCreateInfo) GetType() StructureType {
-	return StructureTypeSamplerReductionModeCreateInfo
-}
-
-func (s *SamplerReductionModeCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkSamplerReductionModeCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.ReductionMode)
-	p.reductionMode = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *SamplerReductionModeCreateInfo) fromC(p *cVkSamplerReductionModeCreateInfo) {
-	s.ReductionMode = SamplerReductionMode(p.reductionMode)
-}
-
-type cVkSamplerYcbcrConversionCreateInfo struct {
-	sType                       int32
-	pNext                       unsafe.Pointer
-	format                      uint32
-	ycbcrModel                  uint32
-	ycbcrRange                  uint32
-	components                  cVkComponentMapping
-	xChromaOffset               uint32
-	yChromaOffset               uint32
-	chromaFilter                uint32
-	forceExplicitReconstruction uint32
-}
-
-type SamplerYcbcrConversionCreateInfo struct {
-	Next                        Structure
-	Format                      Format
-	YcbcrModel                  SamplerYcbcrModelConversion
-	YcbcrRange                  SamplerYcbcrRange
-	Components                  ComponentMapping
-	XChromaOffset               ChromaLocation
-	YChromaOffset               ChromaLocation
-	ChromaFilter                Filter
-	ForceExplicitReconstruction bool
-}
-
-func (s *SamplerYcbcrConversionCreateInfo) GetType() StructureType {
-	return StructureTypeSamplerYcbcrConversionCreateInfo
-}
-
-func (s *SamplerYcbcrConversionCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkSamplerYcbcrConversionCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Format)
-	p.format = val0
-	val1 := uint32(s.YcbcrModel)
-	p.ycbcrModel = val1
-	val2 := uint32(s.YcbcrRange)
-	p.ycbcrRange = val2
-	val3, cancel4 := s.Components.toC()
-	cancels = append(cancels, cancel4)
-	cast5 := (*cVkComponentMapping)(val3)
-	p.components = *cast5
-	val6 := uint32(s.XChromaOffset)
-	p.xChromaOffset = val6
-	val7 := uint32(s.YChromaOffset)
-	p.yChromaOffset = val7
-	val8 := uint32(s.ChromaFilter)
-	p.chromaFilter = val8
-	val9 := uint32(0)
-	if s.ForceExplicitReconstruction {
-		val9 = 1
-	}
-	p.forceExplicitReconstruction = val9
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *SamplerYcbcrConversionCreateInfo) fromC(p *cVkSamplerYcbcrConversionCreateInfo) {
-	s.Format = Format(p.format)
-	s.YcbcrModel = SamplerYcbcrModelConversion(p.ycbcrModel)
-	s.YcbcrRange = SamplerYcbcrRange(p.ycbcrRange)
-	s.Components.fromC(&p.components)
-	s.XChromaOffset = ChromaLocation(p.xChromaOffset)
-	s.YChromaOffset = ChromaLocation(p.yChromaOffset)
-	s.ChromaFilter = Filter(p.chromaFilter)
-	s.ForceExplicitReconstruction = p.forceExplicitReconstruction != 0
-}
-
-type cVkSamplerYcbcrConversionImageFormatProperties struct {
-	sType                               int32
-	pNext                               unsafe.Pointer
-	combinedImageSamplerDescriptorCount uint32
-}
-
-type SamplerYcbcrConversionImageFormatProperties struct {
-	Next                                Structure
-	CombinedImageSamplerDescriptorCount uint32
-}
-
-func (s *SamplerYcbcrConversionImageFormatProperties) GetType() StructureType {
-	return StructureTypeSamplerYcbcrConversionImageFormatProperties
-}
-
-func (s *SamplerYcbcrConversionImageFormatProperties) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkSamplerYcbcrConversionImageFormatProperties)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.CombinedImageSamplerDescriptorCount)
-	p.combinedImageSamplerDescriptorCount = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *SamplerYcbcrConversionImageFormatProperties) fromC(p *cVkSamplerYcbcrConversionImageFormatProperties) {
-	s.CombinedImageSamplerDescriptorCount = uint32(p.combinedImageSamplerDescriptorCount)
-}
-
-type cVkSamplerYcbcrConversionInfo struct {
-	sType      int32
-	pNext      unsafe.Pointer
-	conversion unsafe.Pointer
-}
-
-type SamplerYcbcrConversionInfo struct {
-	Next       Structure
-	Conversion *SamplerYcbcrConversion
-}
-
-func (s *SamplerYcbcrConversionInfo) GetType() StructureType {
-	return StructureTypeSamplerYcbcrConversionInfo
-}
-
-func (s *SamplerYcbcrConversionInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkSamplerYcbcrConversionInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.Conversion != nil {
-		h0 = s.Conversion.handle
-	}
-	p.conversion = h0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *SamplerYcbcrConversionInfo) fromC(p *cVkSamplerYcbcrConversionInfo) {
-	s.Conversion = &SamplerYcbcrConversion{handle: p.conversion}
-}
-
 type cVkSemaphoreCreateInfo struct {
 	sType int32
 	pNext unsafe.Pointer
@@ -31135,237 +20096,6 @@ func (s *SemaphoreCreateInfo) toC() (unsafe.Pointer, func()) {
 
 func (s *SemaphoreCreateInfo) fromC(p *cVkSemaphoreCreateInfo) {
 	s.Flags = SemaphoreCreateFlags(p.flags)
-}
-
-type cVkSemaphoreSignalInfo struct {
-	sType     int32
-	pNext     unsafe.Pointer
-	semaphore unsafe.Pointer
-	value     uint64
-}
-
-type SemaphoreSignalInfo struct {
-	Next      Structure
-	Semaphore *Semaphore
-	Value     uint64
-}
-
-func (s *SemaphoreSignalInfo) GetType() StructureType {
-	return StructureTypeSemaphoreSignalInfo
-}
-
-func (s *SemaphoreSignalInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkSemaphoreSignalInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.Semaphore != nil {
-		h0 = s.Semaphore.handle
-	}
-	p.semaphore = h0
-	val1 := uint64(s.Value)
-	p.value = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *SemaphoreSignalInfo) fromC(p *cVkSemaphoreSignalInfo) {
-	s.Semaphore = &Semaphore{handle: p.semaphore}
-	s.Value = uint64(p.value)
-}
-
-type cVkSemaphoreSubmitInfo struct {
-	sType       int32
-	pNext       unsafe.Pointer
-	semaphore   unsafe.Pointer
-	value       uint64
-	stageMask   uint64
-	deviceIndex uint32
-}
-
-type SemaphoreSubmitInfo struct {
-	Next        Structure
-	Semaphore   *Semaphore
-	Value       uint64
-	StageMask   PipelineStageFlags2
-	DeviceIndex uint32
-}
-
-func (s *SemaphoreSubmitInfo) GetType() StructureType {
-	return StructureTypeSemaphoreSubmitInfo
-}
-
-func (s *SemaphoreSubmitInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkSemaphoreSubmitInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var h0 unsafe.Pointer
-	if s.Semaphore != nil {
-		h0 = s.Semaphore.handle
-	}
-	p.semaphore = h0
-	val1 := uint64(s.Value)
-	p.value = val1
-	val2 := uint64(s.StageMask)
-	p.stageMask = val2
-	val3 := uint32(s.DeviceIndex)
-	p.deviceIndex = val3
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *SemaphoreSubmitInfo) fromC(p *cVkSemaphoreSubmitInfo) {
-	s.Semaphore = &Semaphore{handle: p.semaphore}
-	s.Value = uint64(p.value)
-	s.StageMask = PipelineStageFlags2(p.stageMask)
-	s.DeviceIndex = uint32(p.deviceIndex)
-}
-
-type cVkSemaphoreTypeCreateInfo struct {
-	sType         int32
-	pNext         unsafe.Pointer
-	semaphoreType uint32
-	initialValue  uint64
-}
-
-type SemaphoreTypeCreateInfo struct {
-	Next          Structure
-	SemaphoreType SemaphoreType
-	InitialValue  uint64
-}
-
-func (s *SemaphoreTypeCreateInfo) GetType() StructureType {
-	return StructureTypeSemaphoreTypeCreateInfo
-}
-
-func (s *SemaphoreTypeCreateInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkSemaphoreTypeCreateInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.SemaphoreType)
-	p.semaphoreType = val0
-	val1 := uint64(s.InitialValue)
-	p.initialValue = val1
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *SemaphoreTypeCreateInfo) fromC(p *cVkSemaphoreTypeCreateInfo) {
-	s.SemaphoreType = SemaphoreType(p.semaphoreType)
-	s.InitialValue = uint64(p.initialValue)
-}
-
-type cVkSemaphoreWaitInfo struct {
-	sType          int32
-	pNext          unsafe.Pointer
-	flags          uint32
-	semaphoreCount uint32
-	pSemaphores    unsafe.Pointer
-	pValues        unsafe.Pointer
-}
-
-type SemaphoreWaitInfo struct {
-	Next           Structure
-	Flags          SemaphoreWaitFlags
-	SemaphoreCount uint32
-	Semaphores     []*Semaphore
-	Values         []uint64
-}
-
-func (s *SemaphoreWaitInfo) GetType() StructureType {
-	return StructureTypeSemaphoreWaitInfo
-}
-
-func (s *SemaphoreWaitInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkSemaphoreWaitInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Flags)
-	p.flags = val0
-	val1 := uint32(s.SemaphoreCount)
-	p.semaphoreCount = val1
-	len2 := len(s.Semaphores)
-	var arr3 unsafe.Pointer
-	if len2 > 0 {
-		buf4 := make([]unsafe.Pointer, len2)
-		var pin5 runtime.Pinner
-		pin5.Pin(&buf4[0])
-		cancels = append(cancels, func() { pin5.Unpin(); runtime.KeepAlive(buf4) })
-		arr3 = unsafe.Pointer(&buf4[0])
-		for i6, elem7 := range s.Semaphores {
-			var h8 unsafe.Pointer
-			if elem7 != nil {
-				h8 = elem7.handle
-			}
-			buf4[i6] = h8
-		}
-	}
-	p.pSemaphores = arr3
-	len9 := len(s.Values)
-	var arr10 unsafe.Pointer
-	if len9 > 0 {
-		buf11 := make([]uint64, len9)
-		var pin12 runtime.Pinner
-		pin12.Pin(&buf11[0])
-		cancels = append(cancels, func() { pin12.Unpin(); runtime.KeepAlive(buf11) })
-		arr10 = unsafe.Pointer(&buf11[0])
-		for i13, elem14 := range s.Values {
-			val15 := uint64(elem14)
-			buf11[i13] = val15
-		}
-	}
-	p.pValues = arr10
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *SemaphoreWaitInfo) fromC(p *cVkSemaphoreWaitInfo) {
-	s.Flags = SemaphoreWaitFlags(p.flags)
-	s.SemaphoreCount = uint32(p.semaphoreCount)
-	if p.semaphoreCount > 0 && p.pSemaphores != nil {
-		s.Semaphores = make([]*Semaphore, p.semaphoreCount)
-		for i0 := range s.Semaphores {
-			s.Semaphores[i0] = &Semaphore{handle: (*[1 << 30]unsafe.Pointer)(unsafe.Pointer(p.pSemaphores))[i0]}
-		}
-	}
-	if p.semaphoreCount > 0 && p.pValues != nil {
-		s.Values = make([]uint64, p.semaphoreCount)
-		for i2 := range s.Values {
-			s.Values[i2] = uint64((*[1 << 30]uint64)(unsafe.Pointer(p.pValues))[i2])
-		}
-	}
 }
 
 type cVkShaderCreateInfoEXT struct {
@@ -31704,45 +20434,6 @@ func (s *SparseImageFormatProperties) fromC(p *cVkSparseImageFormatProperties) {
 	s.Flags = SparseImageFormatFlags(p.flags)
 }
 
-type cVkSparseImageFormatProperties2 struct {
-	sType      int32
-	pNext      unsafe.Pointer
-	properties cVkSparseImageFormatProperties
-}
-
-type SparseImageFormatProperties2 struct {
-	Next       Structure
-	Properties SparseImageFormatProperties
-}
-
-func (s *SparseImageFormatProperties2) GetType() StructureType {
-	return StructureTypeSparseImageFormatProperties2
-}
-
-func (s *SparseImageFormatProperties2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkSparseImageFormatProperties2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0, cancel1 := s.Properties.toC()
-	cancels = append(cancels, cancel1)
-	cast2 := (*cVkSparseImageFormatProperties)(val0)
-	p.properties = *cast2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *SparseImageFormatProperties2) fromC(p *cVkSparseImageFormatProperties2) {
-	s.Properties.fromC(&p.properties)
-}
-
 type cVkSparseImageMemoryBind struct {
 	subresource  cVkImageSubresource
 	offset       cVkOffset3D
@@ -31899,45 +20590,6 @@ func (s *SparseImageMemoryRequirements) fromC(p *cVkSparseImageMemoryRequirement
 	s.ImageMipTailSize = uint64(p.imageMipTailSize)
 	s.ImageMipTailOffset = uint64(p.imageMipTailOffset)
 	s.ImageMipTailStride = uint64(p.imageMipTailStride)
-}
-
-type cVkSparseImageMemoryRequirements2 struct {
-	sType              int32
-	pNext              unsafe.Pointer
-	memoryRequirements cVkSparseImageMemoryRequirements
-}
-
-type SparseImageMemoryRequirements2 struct {
-	Next               Structure
-	MemoryRequirements SparseImageMemoryRequirements
-}
-
-func (s *SparseImageMemoryRequirements2) GetType() StructureType {
-	return StructureTypeSparseImageMemoryRequirements2
-}
-
-func (s *SparseImageMemoryRequirements2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkSparseImageMemoryRequirements2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0, cancel1 := s.MemoryRequirements.toC()
-	cancels = append(cancels, cancel1)
-	cast2 := (*cVkSparseImageMemoryRequirements)(val0)
-	p.memoryRequirements = *cast2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *SparseImageMemoryRequirements2) fromC(p *cVkSparseImageMemoryRequirements2) {
-	s.MemoryRequirements.fromC(&p.memoryRequirements)
 }
 
 type cVkSparseImageOpaqueMemoryBindInfo struct {
@@ -32351,124 +21003,6 @@ func (s *SubmitInfo) fromC(p *cVkSubmitInfo) {
 		s.SignalSemaphores = make([]*Semaphore, p.signalSemaphoreCount)
 		for i6 := range s.SignalSemaphores {
 			s.SignalSemaphores[i6] = &Semaphore{handle: (*[1 << 30]unsafe.Pointer)(unsafe.Pointer(p.pSignalSemaphores))[i6]}
-		}
-	}
-}
-
-type cVkSubmitInfo2 struct {
-	sType                    int32
-	pNext                    unsafe.Pointer
-	flags                    uint32
-	waitSemaphoreInfoCount   uint32
-	pWaitSemaphoreInfos      unsafe.Pointer
-	commandBufferInfoCount   uint32
-	pCommandBufferInfos      unsafe.Pointer
-	signalSemaphoreInfoCount uint32
-	pSignalSemaphoreInfos    unsafe.Pointer
-}
-
-type SubmitInfo2 struct {
-	Next                 Structure
-	Flags                SubmitFlags
-	WaitSemaphoreInfos   []SemaphoreSubmitInfo
-	CommandBufferInfos   []CommandBufferSubmitInfo
-	SignalSemaphoreInfos []SemaphoreSubmitInfo
-}
-
-func (s *SubmitInfo2) GetType() StructureType {
-	return StructureTypeSubmitInfo2
-}
-
-func (s *SubmitInfo2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkSubmitInfo2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.Flags)
-	p.flags = val0
-	len1 := len(s.WaitSemaphoreInfos)
-	var arr2 unsafe.Pointer
-	if len1 > 0 {
-		buf3 := make([]cVkSemaphoreSubmitInfo, len1)
-		var pin4 runtime.Pinner
-		pin4.Pin(&buf3[0])
-		cancels = append(cancels, func() { pin4.Unpin(); runtime.KeepAlive(buf3) })
-		arr2 = unsafe.Pointer(&buf3[0])
-		for i5, elem6 := range s.WaitSemaphoreInfos {
-			val7, cancel8 := elem6.toC()
-			cancels = append(cancels, cancel8)
-			cast9 := (*cVkSemaphoreSubmitInfo)(val7)
-			buf3[i5] = *cast9
-		}
-	}
-	p.pWaitSemaphoreInfos = arr2
-	p.waitSemaphoreInfoCount = uint32(len(s.WaitSemaphoreInfos))
-	len10 := len(s.CommandBufferInfos)
-	var arr11 unsafe.Pointer
-	if len10 > 0 {
-		buf12 := make([]cVkCommandBufferSubmitInfo, len10)
-		var pin13 runtime.Pinner
-		pin13.Pin(&buf12[0])
-		cancels = append(cancels, func() { pin13.Unpin(); runtime.KeepAlive(buf12) })
-		arr11 = unsafe.Pointer(&buf12[0])
-		for i14, elem15 := range s.CommandBufferInfos {
-			val16, cancel17 := elem15.toC()
-			cancels = append(cancels, cancel17)
-			cast18 := (*cVkCommandBufferSubmitInfo)(val16)
-			buf12[i14] = *cast18
-		}
-	}
-	p.pCommandBufferInfos = arr11
-	p.commandBufferInfoCount = uint32(len(s.CommandBufferInfos))
-	len19 := len(s.SignalSemaphoreInfos)
-	var arr20 unsafe.Pointer
-	if len19 > 0 {
-		buf21 := make([]cVkSemaphoreSubmitInfo, len19)
-		var pin22 runtime.Pinner
-		pin22.Pin(&buf21[0])
-		cancels = append(cancels, func() { pin22.Unpin(); runtime.KeepAlive(buf21) })
-		arr20 = unsafe.Pointer(&buf21[0])
-		for i23, elem24 := range s.SignalSemaphoreInfos {
-			val25, cancel26 := elem24.toC()
-			cancels = append(cancels, cancel26)
-			cast27 := (*cVkSemaphoreSubmitInfo)(val25)
-			buf21[i23] = *cast27
-		}
-	}
-	p.pSignalSemaphoreInfos = arr20
-	p.signalSemaphoreInfoCount = uint32(len(s.SignalSemaphoreInfos))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *SubmitInfo2) fromC(p *cVkSubmitInfo2) {
-	s.Flags = SubmitFlags(p.flags)
-	if p.waitSemaphoreInfoCount > 0 && p.pWaitSemaphoreInfos != nil {
-		s.WaitSemaphoreInfos = make([]SemaphoreSubmitInfo, p.waitSemaphoreInfoCount)
-		for i0 := range s.WaitSemaphoreInfos {
-			elem1 := (*[1 << 30]cVkSemaphoreSubmitInfo)(unsafe.Pointer(p.pWaitSemaphoreInfos))[i0]
-			s.WaitSemaphoreInfos[i0].fromC(&elem1)
-		}
-	}
-	if p.commandBufferInfoCount > 0 && p.pCommandBufferInfos != nil {
-		s.CommandBufferInfos = make([]CommandBufferSubmitInfo, p.commandBufferInfoCount)
-		for i2 := range s.CommandBufferInfos {
-			elem3 := (*[1 << 30]cVkCommandBufferSubmitInfo)(unsafe.Pointer(p.pCommandBufferInfos))[i2]
-			s.CommandBufferInfos[i2].fromC(&elem3)
-		}
-	}
-	if p.signalSemaphoreInfoCount > 0 && p.pSignalSemaphoreInfos != nil {
-		s.SignalSemaphoreInfos = make([]SemaphoreSubmitInfo, p.signalSemaphoreInfoCount)
-		for i4 := range s.SignalSemaphoreInfos {
-			elem5 := (*[1 << 30]cVkSemaphoreSubmitInfo)(unsafe.Pointer(p.pSignalSemaphoreInfos))[i4]
-			s.SignalSemaphoreInfos[i4].fromC(&elem5)
 		}
 	}
 }
@@ -33034,43 +21568,6 @@ func (s *SubpassEndInfo) toC() (unsafe.Pointer, func()) {
 func (s *SubpassEndInfo) fromC(p *cVkSubpassEndInfo) {
 }
 
-type cVkSubresourceHostMemcpySize struct {
-	sType int32
-	pNext unsafe.Pointer
-	size  uint64
-}
-
-type SubresourceHostMemcpySize struct {
-	Next Structure
-	Size uint64
-}
-
-func (s *SubresourceHostMemcpySize) GetType() StructureType {
-	return StructureTypeSubresourceHostMemcpySize
-}
-
-func (s *SubresourceHostMemcpySize) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkSubresourceHostMemcpySize)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint64(s.Size)
-	p.size = val0
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *SubresourceHostMemcpySize) fromC(p *cVkSubresourceHostMemcpySize) {
-	s.Size = uint64(p.size)
-}
-
 type cVkSubresourceLayout struct {
 	offset     uint64
 	size       uint64
@@ -33113,45 +21610,6 @@ func (s *SubresourceLayout) fromC(p *cVkSubresourceLayout) {
 	s.RowPitch = uint64(p.rowPitch)
 	s.ArrayPitch = uint64(p.arrayPitch)
 	s.DepthPitch = uint64(p.depthPitch)
-}
-
-type cVkSubresourceLayout2 struct {
-	sType             int32
-	pNext             unsafe.Pointer
-	subresourceLayout cVkSubresourceLayout
-}
-
-type SubresourceLayout2 struct {
-	Next              Structure
-	SubresourceLayout SubresourceLayout
-}
-
-func (s *SubresourceLayout2) GetType() StructureType {
-	return StructureTypeSubresourceLayout2
-}
-
-func (s *SubresourceLayout2) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkSubresourceLayout2)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0, cancel1 := s.SubresourceLayout.toC()
-	cancels = append(cancels, cancel1)
-	cast2 := (*cVkSubresourceLayout)(val0)
-	p.subresourceLayout = *cast2
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *SubresourceLayout2) fromC(p *cVkSubresourceLayout2) {
-	s.SubresourceLayout.fromC(&p.subresourceLayout)
 }
 
 type cVkSurfaceCapabilitiesKHR struct {
@@ -33753,92 +22211,6 @@ func (s *SwapchainPresentScalingCreateInfoEXT) fromC(p *cVkSwapchainPresentScali
 	s.ScalingBehavior = PresentScalingFlagsKHR(p.scalingBehavior)
 	s.PresentGravityX = PresentGravityFlagsKHR(p.presentGravityX)
 	s.PresentGravityY = PresentGravityFlagsKHR(p.presentGravityY)
-}
-
-type cVkTimelineSemaphoreSubmitInfo struct {
-	sType                     int32
-	pNext                     unsafe.Pointer
-	waitSemaphoreValueCount   uint32
-	pWaitSemaphoreValues      unsafe.Pointer
-	signalSemaphoreValueCount uint32
-	pSignalSemaphoreValues    unsafe.Pointer
-}
-
-type TimelineSemaphoreSubmitInfo struct {
-	Next                      Structure
-	WaitSemaphoreValueCount   uint32
-	WaitSemaphoreValues       []uint64
-	SignalSemaphoreValueCount uint32
-	SignalSemaphoreValues     []uint64
-}
-
-func (s *TimelineSemaphoreSubmitInfo) GetType() StructureType {
-	return StructureTypeTimelineSemaphoreSubmitInfo
-}
-
-func (s *TimelineSemaphoreSubmitInfo) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkTimelineSemaphoreSubmitInfo)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	val0 := uint32(s.WaitSemaphoreValueCount)
-	p.waitSemaphoreValueCount = val0
-	len1 := len(s.WaitSemaphoreValues)
-	var arr2 unsafe.Pointer
-	if len1 > 0 {
-		buf3 := make([]uint64, len1)
-		var pin4 runtime.Pinner
-		pin4.Pin(&buf3[0])
-		cancels = append(cancels, func() { pin4.Unpin(); runtime.KeepAlive(buf3) })
-		arr2 = unsafe.Pointer(&buf3[0])
-		for i5, elem6 := range s.WaitSemaphoreValues {
-			val7 := uint64(elem6)
-			buf3[i5] = val7
-		}
-	}
-	p.pWaitSemaphoreValues = arr2
-	val8 := uint32(s.SignalSemaphoreValueCount)
-	p.signalSemaphoreValueCount = val8
-	len9 := len(s.SignalSemaphoreValues)
-	var arr10 unsafe.Pointer
-	if len9 > 0 {
-		buf11 := make([]uint64, len9)
-		var pin12 runtime.Pinner
-		pin12.Pin(&buf11[0])
-		cancels = append(cancels, func() { pin12.Unpin(); runtime.KeepAlive(buf11) })
-		arr10 = unsafe.Pointer(&buf11[0])
-		for i13, elem14 := range s.SignalSemaphoreValues {
-			val15 := uint64(elem14)
-			buf11[i13] = val15
-		}
-	}
-	p.pSignalSemaphoreValues = arr10
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *TimelineSemaphoreSubmitInfo) fromC(p *cVkTimelineSemaphoreSubmitInfo) {
-	s.WaitSemaphoreValueCount = uint32(p.waitSemaphoreValueCount)
-	if p.waitSemaphoreValueCount > 0 && p.pWaitSemaphoreValues != nil {
-		s.WaitSemaphoreValues = make([]uint64, p.waitSemaphoreValueCount)
-		for i0 := range s.WaitSemaphoreValues {
-			s.WaitSemaphoreValues[i0] = uint64((*[1 << 30]uint64)(unsafe.Pointer(p.pWaitSemaphoreValues))[i0])
-		}
-	}
-	s.SignalSemaphoreValueCount = uint32(p.signalSemaphoreValueCount)
-	if p.signalSemaphoreValueCount > 0 && p.pSignalSemaphoreValues != nil {
-		s.SignalSemaphoreValues = make([]uint64, p.signalSemaphoreValueCount)
-		for i2 := range s.SignalSemaphoreValues {
-			s.SignalSemaphoreValues[i2] = uint64((*[1 << 30]uint64)(unsafe.Pointer(p.pSignalSemaphoreValues))[i2])
-		}
-	}
 }
 
 type cVkTraceRaysIndirectCommand2KHR struct {
@@ -34558,51 +22930,6 @@ func (s *WriteDescriptorSetAccelerationStructureKHR) fromC(p *cVkWriteDescriptor
 	}
 }
 
-type cVkWriteDescriptorSetInlineUniformBlock struct {
-	sType    int32
-	pNext    unsafe.Pointer
-	dataSize uint32
-	pData    unsafe.Pointer
-}
-
-type WriteDescriptorSetInlineUniformBlock struct {
-	Next Structure
-	Data []byte
-}
-
-func (s *WriteDescriptorSetInlineUniformBlock) GetType() StructureType {
-	return StructureTypeWriteDescriptorSetInlineUniformBlock
-}
-
-func (s *WriteDescriptorSetInlineUniformBlock) toC() (unsafe.Pointer, func()) {
-	cancels := make([]func(), 0)
-	p := new(cVkWriteDescriptorSetInlineUniformBlock)
-	p.sType = int32(s.GetType())
-	if s.Next != nil {
-		nextPtr, nextCancel := s.Next.toC()
-		cancels = append(cancels, nextCancel)
-		p.pNext = nextPtr
-	}
-	var ptr0 unsafe.Pointer
-	if len(s.Data) > 0 {
-		ptr0 = unsafe.Pointer(&s.Data[0])
-	}
-	p.pData = ptr0
-	p.dataSize = uint32(len(s.Data))
-	return unsafe.Pointer(p), func() {
-		for _, cancel := range cancels {
-			cancel()
-		}
-	}
-}
-
-func (s *WriteDescriptorSetInlineUniformBlock) fromC(p *cVkWriteDescriptorSetInlineUniformBlock) {
-	if p.dataSize > 0 && p.pData != nil {
-		s.Data = make([]byte, p.dataSize)
-		copy(s.Data, unsafe.Slice((*byte)(p.pData), p.dataSize))
-	}
-}
-
 type cVkWriteIndirectExecutionSetPipelineEXT struct {
 	sType    int32
 	pNext    unsafe.Pointer
@@ -34959,45 +23286,6 @@ func (h Device) BindBufferMemory(
 	return nil
 }
 
-func (h Device) BindBufferMemory2(
-	BindInfos []BindBufferMemoryInfo,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	bindInfoCount := uint32(len(BindInfos))
-	len0 := len(BindInfos)
-	var arr1 unsafe.Pointer
-	if len0 > 0 {
-		buf2 := make([]cVkBindBufferMemoryInfo, len0)
-		var pin3 runtime.Pinner
-		pin3.Pin(&buf2[0])
-		cancels = append(cancels, func() { pin3.Unpin(); runtime.KeepAlive(buf2) })
-		arr1 = unsafe.Pointer(&buf2[0])
-		for i4, elem5 := range BindInfos {
-			val6, cancel7 := elem5.toC()
-			cancels = append(cancels, cancel7)
-			cast8 := (*cVkBindBufferMemoryInfo)(val6)
-			buf2[i4] = *cast8
-		}
-	}
-	var _ret int32
-	ffi.CallFunction(&_cif_vkBindBufferMemory2, h.table.vkBindBufferMemory2, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&bindInfoCount),
-		unsafe.Pointer(&arr1),
-	})
-	if _ret != int32(Success) {
-		return Result(_ret)
-	}
-	return nil
-}
-
 func (h Device) BindImageMemory(
 	image *Image,
 	memory *DeviceMemory,
@@ -35026,45 +23314,6 @@ func (h Device) BindImageMemory(
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&h1),
 		unsafe.Pointer(&val2),
-	})
-	if _ret != int32(Success) {
-		return Result(_ret)
-	}
-	return nil
-}
-
-func (h Device) BindImageMemory2(
-	BindInfos []BindImageMemoryInfo,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	bindInfoCount := uint32(len(BindInfos))
-	len0 := len(BindInfos)
-	var arr1 unsafe.Pointer
-	if len0 > 0 {
-		buf2 := make([]cVkBindImageMemoryInfo, len0)
-		var pin3 runtime.Pinner
-		pin3.Pin(&buf2[0])
-		cancels = append(cancels, func() { pin3.Unpin(); runtime.KeepAlive(buf2) })
-		arr1 = unsafe.Pointer(&buf2[0])
-		for i4, elem5 := range BindInfos {
-			val6, cancel7 := elem5.toC()
-			cancels = append(cancels, cancel7)
-			cast8 := (*cVkBindImageMemoryInfo)(val6)
-			buf2[i4] = *cast8
-		}
-	}
-	var _ret int32
-	ffi.CallFunction(&_cif_vkBindImageMemory2, h.table.vkBindImageMemory2, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&bindInfoCount),
-		unsafe.Pointer(&arr1),
 	})
 	if _ret != int32(Success) {
 		return Result(_ret)
@@ -35385,29 +23634,6 @@ func (h CommandBuffer) BindDescriptorSets(
 		unsafe.Pointer(&arr4),
 		unsafe.Pointer(&dynamicOffsetCount),
 		unsafe.Pointer(&arr11),
-	})
-}
-
-func (h CommandBuffer) BindDescriptorSets2(
-	BindDescriptorSetsInfo *BindDescriptorSetsInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if BindDescriptorSetsInfo != nil {
-		val1, cancel2 := BindDescriptorSetsInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	ffi.CallFunction(&_cif_vkCmdBindDescriptorSets2, h.table.vkCmdBindDescriptorSets2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
 	})
 }
 
@@ -36119,29 +24345,6 @@ func (h CommandBuffer) CopyBuffer(
 	})
 }
 
-func (h CommandBuffer) CopyBuffer2(
-	CopyBufferInfo *CopyBufferInfo2,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if CopyBufferInfo != nil {
-		val1, cancel2 := CopyBufferInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	ffi.CallFunction(&_cif_vkCmdCopyBuffer2, h.table.vkCmdCopyBuffer2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-	})
-}
-
 func (h CommandBuffer) CopyBufferToImage(
 	srcBuffer *Buffer,
 	dstImage *Image,
@@ -36188,29 +24391,6 @@ func (h CommandBuffer) CopyBufferToImage(
 		unsafe.Pointer(&val2),
 		unsafe.Pointer(&regionCount),
 		unsafe.Pointer(&arr4),
-	})
-}
-
-func (h CommandBuffer) CopyBufferToImage2(
-	CopyBufferToImageInfo *CopyBufferToImageInfo2,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if CopyBufferToImageInfo != nil {
-		val1, cancel2 := CopyBufferToImageInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	ffi.CallFunction(&_cif_vkCmdCopyBufferToImage2, h.table.vkCmdCopyBufferToImage2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
 	})
 }
 
@@ -36266,29 +24446,6 @@ func (h CommandBuffer) CopyImage(
 	})
 }
 
-func (h CommandBuffer) CopyImage2(
-	CopyImageInfo *CopyImageInfo2,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if CopyImageInfo != nil {
-		val1, cancel2 := CopyImageInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	ffi.CallFunction(&_cif_vkCmdCopyImage2, h.table.vkCmdCopyImage2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-	})
-}
-
 func (h CommandBuffer) CopyImageToBuffer(
 	srcImage *Image,
 	srcImageLayout ImageLayout,
@@ -36335,29 +24492,6 @@ func (h CommandBuffer) CopyImageToBuffer(
 		unsafe.Pointer(&h2),
 		unsafe.Pointer(&regionCount),
 		unsafe.Pointer(&arr4),
-	})
-}
-
-func (h CommandBuffer) CopyImageToBuffer2(
-	CopyImageToBufferInfo *CopyImageToBufferInfo2,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if CopyImageToBufferInfo != nil {
-		val1, cancel2 := CopyImageToBufferInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	ffi.CallFunction(&_cif_vkCmdCopyImageToBuffer2, h.table.vkCmdCopyImageToBuffer2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
 	})
 }
 
@@ -36447,39 +24581,6 @@ func (h CommandBuffer) Dispatch(
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
 		unsafe.Pointer(&val2),
-	})
-}
-
-func (h CommandBuffer) DispatchBase(
-	baseGroupX uint32,
-	baseGroupY uint32,
-	baseGroupZ uint32,
-	groupCountX uint32,
-	groupCountY uint32,
-	groupCountZ uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	val0 := uint32(baseGroupX)
-	val1 := uint32(baseGroupY)
-	val2 := uint32(baseGroupZ)
-	val3 := uint32(groupCountX)
-	val4 := uint32(groupCountY)
-	val5 := uint32(groupCountZ)
-	ffi.CallFunction(&_cif_vkCmdDispatchBase, h.table.vkCmdDispatchBase, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&val0),
-		unsafe.Pointer(&val1),
-		unsafe.Pointer(&val2),
-		unsafe.Pointer(&val3),
-		unsafe.Pointer(&val4),
-		unsafe.Pointer(&val5),
 	})
 }
 
@@ -37225,29 +25326,6 @@ func (h CommandBuffer) PipelineBarrier(
 	})
 }
 
-func (h CommandBuffer) PipelineBarrier2(
-	DependencyInfo *DependencyInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if DependencyInfo != nil {
-		val1, cancel2 := DependencyInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	ffi.CallFunction(&_cif_vkCmdPipelineBarrier2, h.table.vkCmdPipelineBarrier2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-	})
-}
-
 func (h CommandBuffer) PreprocessGeneratedCommandsEXT(
 	GeneratedCommandsInfo *GeneratedCommandsInfoEXT,
 	stateCommandBuffer *CommandBuffer,
@@ -37313,153 +25391,6 @@ func (h CommandBuffer) PushConstants(
 	})
 }
 
-func (h CommandBuffer) PushConstants2(
-	PushConstantsInfo *PushConstantsInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if PushConstantsInfo != nil {
-		val1, cancel2 := PushConstantsInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	ffi.CallFunction(&_cif_vkCmdPushConstants2, h.table.vkCmdPushConstants2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-	})
-}
-
-func (h CommandBuffer) PushDescriptorSet(
-	pipelineBindPoint PipelineBindPoint,
-	layout *PipelineLayout,
-	set uint32,
-	DescriptorWrites []WriteDescriptorSet,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	val0 := uint32(pipelineBindPoint)
-	var h1 unsafe.Pointer
-	if layout != nil {
-		h1 = layout.handle
-	}
-	val2 := uint32(set)
-	descriptorWriteCount := uint32(len(DescriptorWrites))
-	len3 := len(DescriptorWrites)
-	var arr4 unsafe.Pointer
-	if len3 > 0 {
-		buf5 := make([]cVkWriteDescriptorSet, len3)
-		var pin6 runtime.Pinner
-		pin6.Pin(&buf5[0])
-		cancels = append(cancels, func() { pin6.Unpin(); runtime.KeepAlive(buf5) })
-		arr4 = unsafe.Pointer(&buf5[0])
-		for i7, elem8 := range DescriptorWrites {
-			val9, cancel10 := elem8.toC()
-			cancels = append(cancels, cancel10)
-			cast11 := (*cVkWriteDescriptorSet)(val9)
-			buf5[i7] = *cast11
-		}
-	}
-	ffi.CallFunction(&_cif_vkCmdPushDescriptorSet, h.table.vkCmdPushDescriptorSet, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&val0),
-		unsafe.Pointer(&h1),
-		unsafe.Pointer(&val2),
-		unsafe.Pointer(&descriptorWriteCount),
-		unsafe.Pointer(&arr4),
-	})
-}
-
-func (h CommandBuffer) PushDescriptorSet2(
-	PushDescriptorSetInfo *PushDescriptorSetInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if PushDescriptorSetInfo != nil {
-		val1, cancel2 := PushDescriptorSetInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	ffi.CallFunction(&_cif_vkCmdPushDescriptorSet2, h.table.vkCmdPushDescriptorSet2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-	})
-}
-
-func (h CommandBuffer) PushDescriptorSetWithTemplate(
-	descriptorUpdateTemplate *DescriptorUpdateTemplate,
-	layout *PipelineLayout,
-	set uint32,
-	Data unsafe.Pointer,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var h0 unsafe.Pointer
-	if descriptorUpdateTemplate != nil {
-		h0 = descriptorUpdateTemplate.handle
-	}
-	var h1 unsafe.Pointer
-	if layout != nil {
-		h1 = layout.handle
-	}
-	val2 := uint32(set)
-	ffi.CallFunction(&_cif_vkCmdPushDescriptorSetWithTemplate, h.table.vkCmdPushDescriptorSetWithTemplate, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&h0),
-		unsafe.Pointer(&h1),
-		unsafe.Pointer(&val2),
-		unsafe.Pointer(&Data),
-	})
-}
-
-func (h CommandBuffer) PushDescriptorSetWithTemplate2(
-	PushDescriptorSetWithTemplateInfo *PushDescriptorSetWithTemplateInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if PushDescriptorSetWithTemplateInfo != nil {
-		val1, cancel2 := PushDescriptorSetWithTemplateInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	ffi.CallFunction(&_cif_vkCmdPushDescriptorSetWithTemplate2, h.table.vkCmdPushDescriptorSetWithTemplate2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-	})
-}
-
 func (h CommandBuffer) ResetEvent(
 	event *Event,
 	stageMask PipelineStageFlags,
@@ -37478,30 +25409,6 @@ func (h CommandBuffer) ResetEvent(
 	}
 	val1 := uint32(stageMask)
 	ffi.CallFunction(&_cif_vkCmdResetEvent, h.table.vkCmdResetEvent, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&h0),
-		unsafe.Pointer(&val1),
-	})
-}
-
-func (h CommandBuffer) ResetEvent2(
-	event *Event,
-	stageMask PipelineStageFlags2,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var h0 unsafe.Pointer
-	if event != nil {
-		h0 = event.handle
-	}
-	val1 := uint64(stageMask)
-	ffi.CallFunction(&_cif_vkCmdResetEvent2, h.table.vkCmdResetEvent2, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -38280,24 +26187,6 @@ func (h CommandBuffer) SetDescriptorBufferOffsetsEXT(
 	})
 }
 
-func (h CommandBuffer) SetDeviceMask(
-	deviceMask uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	val0 := uint32(deviceMask)
-	ffi.CallFunction(&_cif_vkCmdSetDeviceMask, h.table.vkCmdSetDeviceMask, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&val0),
-	})
-}
-
 func (h CommandBuffer) SetEvent(
 	event *Event,
 	stageMask PipelineStageFlags,
@@ -38319,35 +26208,6 @@ func (h CommandBuffer) SetEvent(
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
-	})
-}
-
-func (h CommandBuffer) SetEvent2(
-	event *Event,
-	DependencyInfo *DependencyInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var h0 unsafe.Pointer
-	if event != nil {
-		h0 = event.handle
-	}
-	var ptr1 unsafe.Pointer
-	if DependencyInfo != nil {
-		val2, cancel3 := DependencyInfo.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = val2
-	}
-	ffi.CallFunction(&_cif_vkCmdSetEvent2, h.table.vkCmdSetEvent2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&h0),
-		unsafe.Pointer(&ptr1),
 	})
 }
 
@@ -39454,58 +27314,6 @@ func (h CommandBuffer) WaitEvents(
 	})
 }
 
-func (h CommandBuffer) WaitEvents2(
-	Events []*Event,
-	DependencyInfos []DependencyInfo,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	eventCount := uint32(len(Events))
-	len0 := len(Events)
-	var arr1 unsafe.Pointer
-	if len0 > 0 {
-		buf2 := make([]unsafe.Pointer, len0)
-		var pin3 runtime.Pinner
-		pin3.Pin(&buf2[0])
-		cancels = append(cancels, func() { pin3.Unpin(); runtime.KeepAlive(buf2) })
-		arr1 = unsafe.Pointer(&buf2[0])
-		for i4, elem5 := range Events {
-			var h6 unsafe.Pointer
-			if elem5 != nil {
-				h6 = elem5.handle
-			}
-			buf2[i4] = h6
-		}
-	}
-	len7 := len(DependencyInfos)
-	var arr8 unsafe.Pointer
-	if len7 > 0 {
-		buf9 := make([]cVkDependencyInfo, len7)
-		var pin10 runtime.Pinner
-		pin10.Pin(&buf9[0])
-		cancels = append(cancels, func() { pin10.Unpin(); runtime.KeepAlive(buf9) })
-		arr8 = unsafe.Pointer(&buf9[0])
-		for i11, elem12 := range DependencyInfos {
-			val13, cancel14 := elem12.toC()
-			cancels = append(cancels, cancel14)
-			cast15 := (*cVkDependencyInfo)(val13)
-			buf9[i11] = *cast15
-		}
-	}
-	ffi.CallFunction(&_cif_vkCmdWaitEvents2, h.table.vkCmdWaitEvents2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&eventCount),
-		unsafe.Pointer(&arr1),
-		unsafe.Pointer(&arr8),
-	})
-}
-
 func (h CommandBuffer) WriteAccelerationStructuresPropertiesKHR(
 	AccelerationStructures []*AccelerationStructureKHR,
 	queryType QueryType,
@@ -39573,33 +27381,6 @@ func (h CommandBuffer) WriteTimestamp(
 	}
 	val2 := uint32(query)
 	ffi.CallFunction(&_cif_vkCmdWriteTimestamp, h.table.vkCmdWriteTimestamp, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&val0),
-		unsafe.Pointer(&h1),
-		unsafe.Pointer(&val2),
-	})
-}
-
-func (h CommandBuffer) WriteTimestamp2(
-	stage PipelineStageFlags2,
-	queryPool *QueryPool,
-	query uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	val0 := uint64(stage)
-	var h1 unsafe.Pointer
-	if queryPool != nil {
-		h1 = queryPool.handle
-	}
-	val2 := uint32(query)
-	ffi.CallFunction(&_cif_vkCmdWriteTimestamp2, h.table.vkCmdWriteTimestamp2, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&h1),
@@ -39675,62 +27456,6 @@ func (h Device) CopyAccelerationStructureToMemoryKHR(
 	return nil
 }
 
-func (h Device) CopyImageToImage(
-	CopyImageToImageInfo *CopyImageToImageInfo,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if CopyImageToImageInfo != nil {
-		val1, cancel2 := CopyImageToImageInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var _ret int32
-	ffi.CallFunction(&_cif_vkCopyImageToImage, h.table.vkCopyImageToImage, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-	})
-	if _ret != int32(Success) {
-		return Result(_ret)
-	}
-	return nil
-}
-
-func (h Device) CopyImageToMemory(
-	CopyImageToMemoryInfo *CopyImageToMemoryInfo,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if CopyImageToMemoryInfo != nil {
-		val1, cancel2 := CopyImageToMemoryInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var _ret int32
-	ffi.CallFunction(&_cif_vkCopyImageToMemory, h.table.vkCopyImageToMemory, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-	})
-	if _ret != int32(Success) {
-		return Result(_ret)
-	}
-	return nil
-}
-
 func (h Device) CopyMemoryToAccelerationStructureKHR(
 	deferredOperation *DeferredOperationKHR,
 	Info *CopyMemoryToAccelerationStructureInfoKHR,
@@ -39758,34 +27483,6 @@ func (h Device) CopyMemoryToAccelerationStructureKHR(
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
-	})
-	if _ret != int32(Success) {
-		return Result(_ret)
-	}
-	return nil
-}
-
-func (h Device) CopyMemoryToImage(
-	CopyMemoryToImageInfo *CopyMemoryToImageInfo,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if CopyMemoryToImageInfo != nil {
-		val1, cancel2 := CopyMemoryToImageInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var _ret int32
-	ffi.CallFunction(&_cif_vkCopyMemoryToImage, h.table.vkCopyMemoryToImage, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
 	})
 	if _ret != int32(Success) {
 		return Result(_ret)
@@ -40179,47 +27876,6 @@ func (h Device) CreateDescriptorSetLayout(
 		return nil, Result(_ret)
 	}
 	h6 := &DescriptorSetLayout{handle: unsafe.Pointer(setLayoutOut)}
-	h6.table = h.table
-	return h6, nil
-}
-
-func (h Device) CreateDescriptorUpdateTemplate(
-	CreateInfo *DescriptorUpdateTemplateCreateInfo,
-	Allocator *AllocationCallbacks,
-) (*DescriptorUpdateTemplate, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if CreateInfo != nil {
-		val1, cancel2 := CreateInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var ptr3 unsafe.Pointer
-	if Allocator != nil {
-		val4, cancel5 := Allocator.toC()
-		cancels = append(cancels, cancel5)
-		ptr3 = val4
-	}
-	var descriptorUpdateTemplateOut unsafe.Pointer
-	_descriptorUpdateTemplateOutSlot := unsafe.Pointer(&descriptorUpdateTemplateOut)
-	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateDescriptorUpdateTemplate, h.table.vkCreateDescriptorUpdateTemplate, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&ptr3),
-		unsafe.Pointer(&_descriptorUpdateTemplateOutSlot),
-	})
-	if _ret != int32(Success) {
-		return nil, Result(_ret)
-	}
-	h6 := &DescriptorUpdateTemplate{handle: unsafe.Pointer(descriptorUpdateTemplateOut)}
 	h6.table = h.table
 	return h6, nil
 }
@@ -40741,47 +28397,6 @@ func (h Device) CreatePipelineLayout(
 	return h6, nil
 }
 
-func (h Device) CreatePrivateDataSlot(
-	CreateInfo *PrivateDataSlotCreateInfo,
-	Allocator *AllocationCallbacks,
-) (*PrivateDataSlot, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if CreateInfo != nil {
-		val1, cancel2 := CreateInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var ptr3 unsafe.Pointer
-	if Allocator != nil {
-		val4, cancel5 := Allocator.toC()
-		cancels = append(cancels, cancel5)
-		ptr3 = val4
-	}
-	var privateDataSlotOut unsafe.Pointer
-	_privateDataSlotOutSlot := unsafe.Pointer(&privateDataSlotOut)
-	var _ret int32
-	ffi.CallFunction(&_cif_vkCreatePrivateDataSlot, h.table.vkCreatePrivateDataSlot, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&ptr3),
-		unsafe.Pointer(&_privateDataSlotOutSlot),
-	})
-	if _ret != int32(Success) {
-		return nil, Result(_ret)
-	}
-	h6 := &PrivateDataSlot{handle: unsafe.Pointer(privateDataSlotOut)}
-	h6.table = h.table
-	return h6, nil
-}
-
 func (h Device) CreateQueryPool(
 	CreateInfo *QueryPoolCreateInfo,
 	Allocator *AllocationCallbacks,
@@ -41017,46 +28632,6 @@ func (h Device) CreateSampler(
 	}
 	h6 := &Sampler{handle: unsafe.Pointer(samplerOut)}
 	h6.table = h.table
-	return h6, nil
-}
-
-func (h Device) CreateSamplerYcbcrConversion(
-	CreateInfo *SamplerYcbcrConversionCreateInfo,
-	Allocator *AllocationCallbacks,
-) (*SamplerYcbcrConversion, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if CreateInfo != nil {
-		val1, cancel2 := CreateInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var ptr3 unsafe.Pointer
-	if Allocator != nil {
-		val4, cancel5 := Allocator.toC()
-		cancels = append(cancels, cancel5)
-		ptr3 = val4
-	}
-	var ycbcrConversionOut unsafe.Pointer
-	_ycbcrConversionOutSlot := unsafe.Pointer(&ycbcrConversionOut)
-	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateSamplerYcbcrConversion, h.table.vkCreateSamplerYcbcrConversion, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&ptr3),
-		unsafe.Pointer(&_ycbcrConversionOutSlot),
-	})
-	if _ret != int32(Success) {
-		return nil, Result(_ret)
-	}
-	h6 := &SamplerYcbcrConversion{handle: unsafe.Pointer(ycbcrConversionOut)}
 	return h6, nil
 }
 
@@ -41527,38 +29102,6 @@ func (h Device) DestroyDescriptorSetLayout(
 	})
 }
 
-func (h Device) DestroyDescriptorUpdateTemplate(
-	descriptorUpdateTemplate *DescriptorUpdateTemplate,
-	Allocator *AllocationCallbacks,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var h0 unsafe.Pointer
-	if descriptorUpdateTemplate != nil {
-		h0 = descriptorUpdateTemplate.handle
-	}
-	var ptr1 unsafe.Pointer
-	if Allocator != nil {
-		val2, cancel3 := Allocator.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = val2
-	}
-	if descriptorUpdateTemplate != nil && descriptorUpdateTemplate.cleanup != nil {
-		descriptorUpdateTemplate.cleanup()
-	}
-	ffi.CallFunction(&_cif_vkDestroyDescriptorUpdateTemplate, h.table.vkDestroyDescriptorUpdateTemplate, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&h0),
-		unsafe.Pointer(&ptr1),
-	})
-}
-
 func (h Device) Destroy(
 	Allocator *AllocationCallbacks,
 ) {
@@ -41925,38 +29468,6 @@ func (h Device) DestroyPipelineLayout(
 	})
 }
 
-func (h Device) DestroyPrivateDataSlot(
-	privateDataSlot *PrivateDataSlot,
-	Allocator *AllocationCallbacks,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var h0 unsafe.Pointer
-	if privateDataSlot != nil {
-		h0 = privateDataSlot.handle
-	}
-	var ptr1 unsafe.Pointer
-	if Allocator != nil {
-		val2, cancel3 := Allocator.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = val2
-	}
-	if privateDataSlot != nil && privateDataSlot.cleanup != nil {
-		privateDataSlot.cleanup()
-	}
-	ffi.CallFunction(&_cif_vkDestroyPrivateDataSlot, h.table.vkDestroyPrivateDataSlot, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&h0),
-		unsafe.Pointer(&ptr1),
-	})
-}
-
 func (h Device) DestroyQueryPool(
 	queryPool *QueryPool,
 	Allocator *AllocationCallbacks,
@@ -42047,38 +29558,6 @@ func (h Device) DestroySampler(
 		sampler.cleanup()
 	}
 	ffi.CallFunction(&_cif_vkDestroySampler, h.table.vkDestroySampler, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&h0),
-		unsafe.Pointer(&ptr1),
-	})
-}
-
-func (h Device) DestroySamplerYcbcrConversion(
-	ycbcrConversion *SamplerYcbcrConversion,
-	Allocator *AllocationCallbacks,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var h0 unsafe.Pointer
-	if ycbcrConversion != nil {
-		h0 = ycbcrConversion.handle
-	}
-	var ptr1 unsafe.Pointer
-	if Allocator != nil {
-		val2, cancel3 := Allocator.toC()
-		cancels = append(cancels, cancel3)
-		ptr1 = val2
-	}
-	if ycbcrConversion != nil && ycbcrConversion.cleanup != nil {
-		ycbcrConversion.cleanup()
-	}
-	ffi.CallFunction(&_cif_vkDestroySamplerYcbcrConversion, h.table.vkDestroySamplerYcbcrConversion, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -42491,76 +29970,6 @@ func EnumerateInstanceLayerProperties() ([]LayerProperties, error) {
 	return out, nil
 }
 
-func EnumerateInstanceVersion() (uint32, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	var apiVersionOut uint32
-	_apiVersionOutSlot := unsafe.Pointer(&apiVersionOut)
-	var _ret int32
-	ffi.CallFunction(&_cif_vkEnumerateInstanceVersion, _fn_vkEnumerateInstanceVersion, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_apiVersionOutSlot),
-	})
-	if _ret != int32(Success) {
-		return 0, Result(_ret)
-	}
-	val0 := uint32(apiVersionOut)
-	return val0, nil
-}
-
-func (h Instance) EnumeratePhysicalDeviceGroups() ([]PhysicalDeviceGroupProperties, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
-	var _nilSlot unsafe.Pointer
-	var _ret int32
-	ffi.CallFunction(&_cif_vkEnumeratePhysicalDeviceGroups, h.table.vkEnumeratePhysicalDeviceGroups, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&_countSlot),
-		unsafe.Pointer(&_nilSlot),
-	})
-	if _ret != int32(Success) && _ret != int32(Incomplete) {
-		return nil, Result(_ret)
-	}
-	if _count == 0 {
-		return nil, nil
-	}
-
-	_arr := make([]cVkPhysicalDeviceGroupProperties, _count)
-	var _arrPin runtime.Pinner
-	_arrSlot := unsafe.Pointer(&_arr[0])
-	_arrPin.Pin(&_arr[0])
-	defer _arrPin.Unpin()
-
-	ffi.CallFunction(&_cif_vkEnumeratePhysicalDeviceGroups, h.table.vkEnumeratePhysicalDeviceGroups, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&_countSlot),
-		unsafe.Pointer(&_arrSlot),
-	})
-	if _ret != int32(Success) {
-		return nil, Result(_ret)
-	}
-
-	out := make([]PhysicalDeviceGroupProperties, int(_count))
-	for i, v := range _arr {
-		var val0 PhysicalDeviceGroupProperties
-		val0.fromC(&v)
-		out[i] = val0
-	}
-	return out, nil
-}
-
 func (h Instance) EnumeratePhysicalDevices() ([]*PhysicalDevice, error) {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -42878,32 +30287,6 @@ func (h Device) GetAccelerationStructureOpaqueCaptureDescriptorDataEXT(
 	return nil
 }
 
-func (h Device) GetBufferAddress(
-	Info *BufferDeviceAddressInfo,
-) uint64 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if Info != nil {
-		val1, cancel2 := Info.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var _ret uint64
-	ffi.CallFunction(&_cif_vkGetBufferDeviceAddress, h.table.vkGetBufferDeviceAddress, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-	})
-	val3 := uint64(_ret)
-	return val3
-}
-
 func (h Device) GetBufferMemoryRequirements(
 	buffer *Buffer,
 ) MemoryRequirements {
@@ -42929,62 +30312,6 @@ func (h Device) GetBufferMemoryRequirements(
 	var val1 MemoryRequirements
 	val1.fromC(&memoryRequirementsOut)
 	return val1
-}
-
-func (h Device) GetBufferMemoryRequirements2(
-	Info *BufferMemoryRequirementsInfo2,
-) MemoryRequirements2 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if Info != nil {
-		val1, cancel2 := Info.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var memoryRequirementsOut cVkMemoryRequirements2
-	memoryRequirementsOut.sType = int32(StructureTypeMemoryRequirements2)
-	_memoryRequirementsOutSlot := unsafe.Pointer(&memoryRequirementsOut)
-	ffi.CallFunction(&_cif_vkGetBufferMemoryRequirements2, h.table.vkGetBufferMemoryRequirements2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&_memoryRequirementsOutSlot),
-	})
-	var val3 MemoryRequirements2
-	val3.fromC(&memoryRequirementsOut)
-	return val3
-}
-
-func (h Device) GetBufferOpaqueCaptureAddress(
-	Info *BufferDeviceAddressInfo,
-) uint64 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if Info != nil {
-		val1, cancel2 := Info.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var _ret uint64
-	ffi.CallFunction(&_cif_vkGetBufferOpaqueCaptureAddress, h.table.vkGetBufferOpaqueCaptureAddress, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-	})
-	val3 := uint64(_ret)
-	return val3
 }
 
 func (h Device) GetBufferOpaqueCaptureDescriptorDataEXT(
@@ -43154,36 +30481,6 @@ func (h Device) GetDescriptorSetLayoutSizeEXT(
 	return val1
 }
 
-func (h Device) GetDescriptorSetLayoutSupport(
-	CreateInfo *DescriptorSetLayoutCreateInfo,
-) DescriptorSetLayoutSupport {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if CreateInfo != nil {
-		val1, cancel2 := CreateInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var supportOut cVkDescriptorSetLayoutSupport
-	supportOut.sType = int32(StructureTypeDescriptorSetLayoutSupport)
-	_supportOutSlot := unsafe.Pointer(&supportOut)
-	ffi.CallFunction(&_cif_vkGetDescriptorSetLayoutSupport, h.table.vkGetDescriptorSetLayoutSupport, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&_supportOutSlot),
-	})
-	var val3 DescriptorSetLayoutSupport
-	val3.fromC(&supportOut)
-	return val3
-}
-
 func (h Device) GetAccelerationStructureCompatibilityKHR(
 	VersionInfo *AccelerationStructureVersionInfoKHR,
 	Compatibility *AccelerationStructureCompatibilityKHR,
@@ -43211,38 +30508,6 @@ func (h Device) GetAccelerationStructureCompatibilityKHR(
 	ffi.CallFunction(&_cif_vkGetDeviceAccelerationStructureCompatibilityKHR, h.table.vkGetDeviceAccelerationStructureCompatibilityKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&ptr3),
-	})
-}
-
-func (h Device) GetGroupPeerMemoryFeatures(
-	heapIndex uint32,
-	localDeviceIndex uint32,
-	remoteDeviceIndex uint32,
-	PeerMemoryFeatures *PeerMemoryFeatureFlags,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	val0 := uint32(heapIndex)
-	val1 := uint32(localDeviceIndex)
-	val2 := uint32(remoteDeviceIndex)
-	var ptr3 unsafe.Pointer
-	if PeerMemoryFeatures != nil {
-		val4 := uint32(*PeerMemoryFeatures)
-		inner5 := val4
-		ptr3 = unsafe.Pointer(&inner5)
-	}
-	ffi.CallFunction(&_cif_vkGetDeviceGroupPeerMemoryFeatures, h.table.vkGetDeviceGroupPeerMemoryFeatures, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&val0),
-		unsafe.Pointer(&val1),
-		unsafe.Pointer(&val2),
 		unsafe.Pointer(&ptr3),
 	})
 }
@@ -43306,117 +30571,6 @@ func (h Device) GetGroupSurfacePresentModesKHR(
 	return nil
 }
 
-func (h Device) GetImageMemoryRequirements(
-	Info *DeviceImageMemoryRequirements,
-) MemoryRequirements2 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if Info != nil {
-		val1, cancel2 := Info.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var memoryRequirementsOut cVkMemoryRequirements2
-	memoryRequirementsOut.sType = int32(StructureTypeMemoryRequirements2)
-	_memoryRequirementsOutSlot := unsafe.Pointer(&memoryRequirementsOut)
-	ffi.CallFunction(&_cif_vkGetDeviceImageMemoryRequirements, h.table.vkGetDeviceImageMemoryRequirements, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&_memoryRequirementsOutSlot),
-	})
-	var val3 MemoryRequirements2
-	val3.fromC(&memoryRequirementsOut)
-	return val3
-}
-
-func (h Device) GetImageSparseMemoryRequirements(
-	Info *DeviceImageMemoryRequirements,
-) []SparseImageMemoryRequirements2 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if Info != nil {
-		val1, cancel2 := Info.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
-	var _nilSlot unsafe.Pointer
-	ffi.CallFunction(&_cif_vkGetDeviceImageSparseMemoryRequirements, h.table.vkGetDeviceImageSparseMemoryRequirements, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&_countSlot),
-		unsafe.Pointer(&_nilSlot),
-	})
-	if _count == 0 {
-		return nil
-	}
-
-	_arr := make([]cVkSparseImageMemoryRequirements2, _count)
-	var _arrPin runtime.Pinner
-	_arrSlot := unsafe.Pointer(&_arr[0])
-	_arrPin.Pin(&_arr[0])
-	defer _arrPin.Unpin()
-
-	ffi.CallFunction(&_cif_vkGetDeviceImageSparseMemoryRequirements, h.table.vkGetDeviceImageSparseMemoryRequirements, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&_countSlot),
-		unsafe.Pointer(&_arrSlot),
-	})
-	out := make([]SparseImageMemoryRequirements2, int(_count))
-	for i, v := range _arr {
-		var val3 SparseImageMemoryRequirements2
-		val3.fromC(&v)
-		out[i] = val3
-	}
-	return out
-}
-
-func (h Device) GetImageSubresourceLayout(
-	Info *DeviceImageSubresourceInfo,
-) SubresourceLayout2 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if Info != nil {
-		val1, cancel2 := Info.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var layoutOut cVkSubresourceLayout2
-	layoutOut.sType = int32(StructureTypeSubresourceLayout2)
-	_layoutOutSlot := unsafe.Pointer(&layoutOut)
-	ffi.CallFunction(&_cif_vkGetDeviceImageSubresourceLayout, h.table.vkGetDeviceImageSubresourceLayout, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&_layoutOutSlot),
-	})
-	var val3 SubresourceLayout2
-	val3.fromC(&layoutOut)
-	return val3
-}
-
 func (h Device) GetMemoryCommitment(
 	memory *DeviceMemory,
 ) uint64 {
@@ -43441,32 +30595,6 @@ func (h Device) GetMemoryCommitment(
 	})
 	val1 := uint64(committedMemoryInBytesOut)
 	return val1
-}
-
-func (h Device) GetMemoryOpaqueCaptureAddress(
-	Info *DeviceMemoryOpaqueCaptureAddressInfo,
-) uint64 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if Info != nil {
-		val1, cancel2 := Info.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var _ret uint64
-	ffi.CallFunction(&_cif_vkGetDeviceMemoryOpaqueCaptureAddress, h.table.vkGetDeviceMemoryOpaqueCaptureAddress, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-	})
-	val3 := uint64(_ret)
-	return val3
 }
 
 func (h Device) GetProcAddr(
@@ -43520,35 +30648,6 @@ func (h Device) GetQueue(
 	h2 := &Queue{handle: unsafe.Pointer(queueOut)}
 	h2.table = h.table
 	return h2
-}
-
-func (h Device) GetQueue2(
-	QueueInfo *DeviceQueueInfo2,
-) *Queue {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if QueueInfo != nil {
-		val1, cancel2 := QueueInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var queueOut unsafe.Pointer
-	_queueOutSlot := unsafe.Pointer(&queueOut)
-	ffi.CallFunction(&_cif_vkGetDeviceQueue2, h.table.vkGetDeviceQueue2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&_queueOutSlot),
-	})
-	h3 := &Queue{handle: unsafe.Pointer(queueOut)}
-	h3.table = h.table
-	return h3
 }
 
 func (h Device) GetEventStatus(
@@ -43633,9 +30732,9 @@ func (h Device) GetGeneratedCommandsMemoryRequirementsEXT(
 	return val3
 }
 
-func (h Device) GetImageMemoryRequirements2(
-	Info *ImageMemoryRequirementsInfo2,
-) MemoryRequirements2 {
+func (h Device) GetImageMemoryRequirements(
+	image *Image,
+) MemoryRequirements {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -43644,23 +30743,20 @@ func (h Device) GetImageMemoryRequirements2(
 	}()
 
 	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if Info != nil {
-		val1, cancel2 := Info.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
+	var h0 unsafe.Pointer
+	if image != nil {
+		h0 = image.handle
 	}
-	var memoryRequirementsOut cVkMemoryRequirements2
-	memoryRequirementsOut.sType = int32(StructureTypeMemoryRequirements2)
+	var memoryRequirementsOut cVkMemoryRequirements
 	_memoryRequirementsOutSlot := unsafe.Pointer(&memoryRequirementsOut)
-	ffi.CallFunction(&_cif_vkGetImageMemoryRequirements2, h.table.vkGetImageMemoryRequirements2, nil, []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkGetImageMemoryRequirements, h.table.vkGetImageMemoryRequirements, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
+		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_memoryRequirementsOutSlot),
 	})
-	var val3 MemoryRequirements2
-	val3.fromC(&memoryRequirementsOut)
-	return val3
+	var val1 MemoryRequirements
+	val1.fromC(&memoryRequirementsOut)
+	return val1
 }
 
 func (h Device) GetImageOpaqueCaptureDescriptorDataEXT(
@@ -43693,9 +30789,9 @@ func (h Device) GetImageOpaqueCaptureDescriptorDataEXT(
 	return nil
 }
 
-func (h Device) GetImageSparseMemoryRequirements2(
-	Info *ImageSparseMemoryRequirementsInfo2,
-) []SparseImageMemoryRequirements2 {
+func (h Device) GetImageSparseMemoryRequirements(
+	image *Image,
+) []SparseImageMemoryRequirements {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -43704,18 +30800,16 @@ func (h Device) GetImageSparseMemoryRequirements2(
 	}()
 
 	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if Info != nil {
-		val1, cancel2 := Info.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
+	var h0 unsafe.Pointer
+	if image != nil {
+		h0 = image.handle
 	}
 	var _count uint32
 	_countSlot := unsafe.Pointer(&_count)
 	var _nilSlot unsafe.Pointer
-	ffi.CallFunction(&_cif_vkGetImageSparseMemoryRequirements2, h.table.vkGetImageSparseMemoryRequirements2, nil, []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkGetImageSparseMemoryRequirements, h.table.vkGetImageSparseMemoryRequirements, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
+		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_nilSlot),
 	})
@@ -43723,31 +30817,31 @@ func (h Device) GetImageSparseMemoryRequirements2(
 		return nil
 	}
 
-	_arr := make([]cVkSparseImageMemoryRequirements2, _count)
+	_arr := make([]cVkSparseImageMemoryRequirements, _count)
 	var _arrPin runtime.Pinner
 	_arrSlot := unsafe.Pointer(&_arr[0])
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkGetImageSparseMemoryRequirements2, h.table.vkGetImageSparseMemoryRequirements2, nil, []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkGetImageSparseMemoryRequirements, h.table.vkGetImageSparseMemoryRequirements, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
+		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_arrSlot),
 	})
-	out := make([]SparseImageMemoryRequirements2, int(_count))
+	out := make([]SparseImageMemoryRequirements, int(_count))
 	for i, v := range _arr {
-		var val3 SparseImageMemoryRequirements2
-		val3.fromC(&v)
-		out[i] = val3
+		var val1 SparseImageMemoryRequirements
+		val1.fromC(&v)
+		out[i] = val1
 	}
 	return out
 }
 
-func (h Device) GetImageSubresourceLayout2(
+func (h Device) GetImageSubresourceLayout(
 	image *Image,
-	Subresource *ImageSubresource2,
-) SubresourceLayout2 {
+	Subresource *ImageSubresource,
+) SubresourceLayout {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -43766,16 +30860,15 @@ func (h Device) GetImageSubresourceLayout2(
 		cancels = append(cancels, cancel3)
 		ptr1 = val2
 	}
-	var layoutOut cVkSubresourceLayout2
-	layoutOut.sType = int32(StructureTypeSubresourceLayout2)
+	var layoutOut cVkSubresourceLayout
 	_layoutOutSlot := unsafe.Pointer(&layoutOut)
-	ffi.CallFunction(&_cif_vkGetImageSubresourceLayout2, h.table.vkGetImageSubresourceLayout2, nil, []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkGetImageSubresourceLayout, h.table.vkGetImageSubresourceLayout, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
 		unsafe.Pointer(&_layoutOutSlot),
 	})
-	var val4 SubresourceLayout2
+	var val4 SubresourceLayout
 	val4.fromC(&layoutOut)
 	return val4
 }
@@ -43836,96 +30929,6 @@ func (h Instance) GetProcAddr(
 	return fn3
 }
 
-func (h PhysicalDevice) GetExternalBufferProperties(
-	ExternalBufferInfo *PhysicalDeviceExternalBufferInfo,
-) ExternalBufferProperties {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if ExternalBufferInfo != nil {
-		val1, cancel2 := ExternalBufferInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var externalBufferPropertiesOut cVkExternalBufferProperties
-	externalBufferPropertiesOut.sType = int32(StructureTypeExternalBufferProperties)
-	_externalBufferPropertiesOutSlot := unsafe.Pointer(&externalBufferPropertiesOut)
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceExternalBufferProperties, h.table.vkGetPhysicalDeviceExternalBufferProperties, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&_externalBufferPropertiesOutSlot),
-	})
-	var val3 ExternalBufferProperties
-	val3.fromC(&externalBufferPropertiesOut)
-	return val3
-}
-
-func (h PhysicalDevice) GetExternalFenceProperties(
-	ExternalFenceInfo *PhysicalDeviceExternalFenceInfo,
-) ExternalFenceProperties {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if ExternalFenceInfo != nil {
-		val1, cancel2 := ExternalFenceInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var externalFencePropertiesOut cVkExternalFenceProperties
-	externalFencePropertiesOut.sType = int32(StructureTypeExternalFenceProperties)
-	_externalFencePropertiesOutSlot := unsafe.Pointer(&externalFencePropertiesOut)
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceExternalFenceProperties, h.table.vkGetPhysicalDeviceExternalFenceProperties, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&_externalFencePropertiesOutSlot),
-	})
-	var val3 ExternalFenceProperties
-	val3.fromC(&externalFencePropertiesOut)
-	return val3
-}
-
-func (h PhysicalDevice) GetExternalSemaphoreProperties(
-	ExternalSemaphoreInfo *PhysicalDeviceExternalSemaphoreInfo,
-) ExternalSemaphoreProperties {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if ExternalSemaphoreInfo != nil {
-		val1, cancel2 := ExternalSemaphoreInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var externalSemaphorePropertiesOut cVkExternalSemaphoreProperties
-	externalSemaphorePropertiesOut.sType = int32(StructureTypeExternalSemaphoreProperties)
-	_externalSemaphorePropertiesOutSlot := unsafe.Pointer(&externalSemaphorePropertiesOut)
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceExternalSemaphoreProperties, h.table.vkGetPhysicalDeviceExternalSemaphoreProperties, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&_externalSemaphorePropertiesOutSlot),
-	})
-	var val3 ExternalSemaphoreProperties
-	val3.fromC(&externalSemaphorePropertiesOut)
-	return val3
-}
-
 func (h PhysicalDevice) GetFeatures() PhysicalDeviceFeatures {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -43942,27 +30945,6 @@ func (h PhysicalDevice) GetFeatures() PhysicalDeviceFeatures {
 		unsafe.Pointer(&_featuresOutSlot),
 	})
 	var val0 PhysicalDeviceFeatures
-	val0.fromC(&featuresOut)
-	return val0
-}
-
-func (h PhysicalDevice) GetFeatures2() PhysicalDeviceFeatures2 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var featuresOut cVkPhysicalDeviceFeatures2
-	featuresOut.sType = int32(StructureTypePhysicalDeviceFeatures2)
-	_featuresOutSlot := unsafe.Pointer(&featuresOut)
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceFeatures2, h.table.vkGetPhysicalDeviceFeatures2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&_featuresOutSlot),
-	})
-	var val0 PhysicalDeviceFeatures2
 	val0.fromC(&featuresOut)
 	return val0
 }
@@ -43987,31 +30969,6 @@ func (h PhysicalDevice) GetFormatProperties(
 		unsafe.Pointer(&_formatPropertiesOutSlot),
 	})
 	var val1 FormatProperties
-	val1.fromC(&formatPropertiesOut)
-	return val1
-}
-
-func (h PhysicalDevice) GetFormatProperties2(
-	format Format,
-) FormatProperties2 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	val0 := uint32(format)
-	var formatPropertiesOut cVkFormatProperties2
-	formatPropertiesOut.sType = int32(StructureTypeFormatProperties2)
-	_formatPropertiesOutSlot := unsafe.Pointer(&formatPropertiesOut)
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceFormatProperties2, h.table.vkGetPhysicalDeviceFormatProperties2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&val0),
-		unsafe.Pointer(&_formatPropertiesOutSlot),
-	})
-	var val1 FormatProperties2
 	val1.fromC(&formatPropertiesOut)
 	return val1
 }
@@ -44056,40 +31013,6 @@ func (h PhysicalDevice) GetImageFormatProperties(
 	return val5, nil
 }
 
-func (h PhysicalDevice) GetImageFormatProperties2(
-	ImageFormatInfo *PhysicalDeviceImageFormatInfo2,
-) (ImageFormatProperties2, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if ImageFormatInfo != nil {
-		val1, cancel2 := ImageFormatInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var imageFormatPropertiesOut cVkImageFormatProperties2
-	imageFormatPropertiesOut.sType = int32(StructureTypeImageFormatProperties2)
-	_imageFormatPropertiesOutSlot := unsafe.Pointer(&imageFormatPropertiesOut)
-	var _ret int32
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceImageFormatProperties2, h.table.vkGetPhysicalDeviceImageFormatProperties2, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&_imageFormatPropertiesOutSlot),
-	})
-	if _ret != int32(Success) {
-		return ImageFormatProperties2{}, Result(_ret)
-	}
-	var val3 ImageFormatProperties2
-	val3.fromC(&imageFormatPropertiesOut)
-	return val3, nil
-}
-
 func (h PhysicalDevice) GetMemoryProperties() PhysicalDeviceMemoryProperties {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -44106,27 +31029,6 @@ func (h PhysicalDevice) GetMemoryProperties() PhysicalDeviceMemoryProperties {
 		unsafe.Pointer(&_memoryPropertiesOutSlot),
 	})
 	var val0 PhysicalDeviceMemoryProperties
-	val0.fromC(&memoryPropertiesOut)
-	return val0
-}
-
-func (h PhysicalDevice) GetMemoryProperties2() PhysicalDeviceMemoryProperties2 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var memoryPropertiesOut cVkPhysicalDeviceMemoryProperties2
-	memoryPropertiesOut.sType = int32(StructureTypePhysicalDeviceMemoryProperties2)
-	_memoryPropertiesOutSlot := unsafe.Pointer(&memoryPropertiesOut)
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceMemoryProperties2, h.table.vkGetPhysicalDeviceMemoryProperties2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&_memoryPropertiesOutSlot),
-	})
-	var val0 PhysicalDeviceMemoryProperties2
 	val0.fromC(&memoryPropertiesOut)
 	return val0
 }
@@ -44208,27 +31110,6 @@ func (h PhysicalDevice) GetProperties() PhysicalDeviceProperties {
 	return val0
 }
 
-func (h PhysicalDevice) GetProperties2() PhysicalDeviceProperties2 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var propertiesOut cVkPhysicalDeviceProperties2
-	propertiesOut.sType = int32(StructureTypePhysicalDeviceProperties2)
-	_propertiesOutSlot := unsafe.Pointer(&propertiesOut)
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceProperties2, h.table.vkGetPhysicalDeviceProperties2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&_propertiesOutSlot),
-	})
-	var val0 PhysicalDeviceProperties2
-	val0.fromC(&propertiesOut)
-	return val0
-}
-
 func (h PhysicalDevice) GetQueueFamilyProperties() []QueueFamilyProperties {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -44264,47 +31145,6 @@ func (h PhysicalDevice) GetQueueFamilyProperties() []QueueFamilyProperties {
 	out := make([]QueueFamilyProperties, int(_count))
 	for i, v := range _arr {
 		var val0 QueueFamilyProperties
-		val0.fromC(&v)
-		out[i] = val0
-	}
-	return out
-}
-
-func (h PhysicalDevice) GetQueueFamilyProperties2() []QueueFamilyProperties2 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
-	var _nilSlot unsafe.Pointer
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceQueueFamilyProperties2, h.table.vkGetPhysicalDeviceQueueFamilyProperties2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&_countSlot),
-		unsafe.Pointer(&_nilSlot),
-	})
-	if _count == 0 {
-		return nil
-	}
-
-	_arr := make([]cVkQueueFamilyProperties2, _count)
-	var _arrPin runtime.Pinner
-	_arrSlot := unsafe.Pointer(&_arr[0])
-	_arrPin.Pin(&_arr[0])
-	defer _arrPin.Unpin()
-
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceQueueFamilyProperties2, h.table.vkGetPhysicalDeviceQueueFamilyProperties2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&_countSlot),
-		unsafe.Pointer(&_arrSlot),
-	})
-	out := make([]QueueFamilyProperties2, int(_count))
-	for i, v := range _arr {
-		var val0 QueueFamilyProperties2
 		val0.fromC(&v)
 		out[i] = val0
 	}
@@ -44369,57 +31209,6 @@ func (h PhysicalDevice) GetSparseImageFormatProperties(
 		var val5 SparseImageFormatProperties
 		val5.fromC(&v)
 		out[i] = val5
-	}
-	return out
-}
-
-func (h PhysicalDevice) GetSparseImageFormatProperties2(
-	FormatInfo *PhysicalDeviceSparseImageFormatInfo2,
-) []SparseImageFormatProperties2 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if FormatInfo != nil {
-		val1, cancel2 := FormatInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
-	var _nilSlot unsafe.Pointer
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceSparseImageFormatProperties2, h.table.vkGetPhysicalDeviceSparseImageFormatProperties2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&_countSlot),
-		unsafe.Pointer(&_nilSlot),
-	})
-	if _count == 0 {
-		return nil
-	}
-
-	_arr := make([]cVkSparseImageFormatProperties2, _count)
-	var _arrPin runtime.Pinner
-	_arrSlot := unsafe.Pointer(&_arr[0])
-	_arrPin.Pin(&_arr[0])
-	defer _arrPin.Unpin()
-
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceSparseImageFormatProperties2, h.table.vkGetPhysicalDeviceSparseImageFormatProperties2, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&_countSlot),
-		unsafe.Pointer(&_arrSlot),
-	})
-	out := make([]SparseImageFormatProperties2, int(_count))
-	for i, v := range _arr {
-		var val3 SparseImageFormatProperties2
-		val3.fromC(&v)
-		out[i] = val3
 	}
 	return out
 }
@@ -44601,55 +31390,6 @@ func (h PhysicalDevice) GetSurfaceSupportKHR(
 	return val2, nil
 }
 
-func (h PhysicalDevice) GetToolProperties() ([]PhysicalDeviceToolProperties, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
-	var _nilSlot unsafe.Pointer
-	var _ret int32
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceToolProperties, h.table.vkGetPhysicalDeviceToolProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&_countSlot),
-		unsafe.Pointer(&_nilSlot),
-	})
-	if _ret != int32(Success) && _ret != int32(Incomplete) {
-		return nil, Result(_ret)
-	}
-	if _count == 0 {
-		return nil, nil
-	}
-
-	_arr := make([]cVkPhysicalDeviceToolProperties, _count)
-	var _arrPin runtime.Pinner
-	_arrSlot := unsafe.Pointer(&_arr[0])
-	_arrPin.Pin(&_arr[0])
-	defer _arrPin.Unpin()
-
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceToolProperties, h.table.vkGetPhysicalDeviceToolProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&_countSlot),
-		unsafe.Pointer(&_arrSlot),
-	})
-	if _ret != int32(Success) {
-		return nil, Result(_ret)
-	}
-
-	out := make([]PhysicalDeviceToolProperties, int(_count))
-	for i, v := range _arr {
-		var val0 PhysicalDeviceToolProperties
-		val0.fromC(&v)
-		out[i] = val0
-	}
-	return out, nil
-}
-
 func (h Device) GetPipelineCacheData(
 	pipelineCache *PipelineCache,
 ) ([]byte, error) {
@@ -44699,38 +31439,6 @@ func (h Device) GetPipelineCacheData(
 	}
 
 	return _buf, nil
-}
-
-func (h Device) GetPrivateData(
-	objectType ObjectType,
-	objectHandle uint64,
-	privateDataSlot *PrivateDataSlot,
-) uint64 {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	val0 := uint32(objectType)
-	val1 := uint64(objectHandle)
-	var h2 unsafe.Pointer
-	if privateDataSlot != nil {
-		h2 = privateDataSlot.handle
-	}
-	var dataOut uint64
-	_dataOutSlot := unsafe.Pointer(&dataOut)
-	ffi.CallFunction(&_cif_vkGetPrivateData, h.table.vkGetPrivateData, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&val0),
-		unsafe.Pointer(&val1),
-		unsafe.Pointer(&h2),
-		unsafe.Pointer(&_dataOutSlot),
-	})
-	val3 := uint64(dataOut)
-	return val3
 }
 
 func (h Device) GetQueryPoolResults(
@@ -44978,36 +31686,6 @@ func (h Device) GetSamplerOpaqueCaptureDescriptorDataEXT(
 	return nil
 }
 
-func (h Device) GetSemaphoreCounterValue(
-	semaphore *Semaphore,
-) (uint64, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var h0 unsafe.Pointer
-	if semaphore != nil {
-		h0 = semaphore.handle
-	}
-	var valueOut uint64
-	_valueOutSlot := unsafe.Pointer(&valueOut)
-	var _ret int32
-	ffi.CallFunction(&_cif_vkGetSemaphoreCounterValue, h.table.vkGetSemaphoreCounterValue, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&h0),
-		unsafe.Pointer(&_valueOutSlot),
-	})
-	if _ret != int32(Success) {
-		return 0, Result(_ret)
-	}
-	val1 := uint64(valueOut)
-	return val1, nil
-}
-
 func (h Device) GetShaderBinaryDataEXT(
 	shader *ShaderEXT,
 ) ([]byte, error) {
@@ -45185,37 +31863,6 @@ func (h Device) MapMemory(
 		unsafe.Pointer(&val1),
 		unsafe.Pointer(&val2),
 		unsafe.Pointer(&val3),
-		unsafe.Pointer(&_pDataOutSlot),
-	})
-	if _ret != int32(Success) {
-		return nil, Result(_ret)
-	}
-	return unsafe.Pointer(pDataOut), nil
-}
-
-func (h Device) MapMemory2(
-	MemoryMapInfo *MemoryMapInfo,
-) (unsafe.Pointer, error) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if MemoryMapInfo != nil {
-		val1, cancel2 := MemoryMapInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var pDataOut unsafe.Pointer
-	_pDataOutSlot := unsafe.Pointer(&pDataOut)
-	var _ret int32
-	ffi.CallFunction(&_cif_vkMapMemory2, h.table.vkMapMemory2, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&_pDataOutSlot),
 	})
 	if _ret != int32(Success) {
@@ -45448,51 +32095,6 @@ func (h Queue) Submit(
 	return nil
 }
 
-func (h Queue) Submit2(
-	Submits []SubmitInfo2,
-	fence *Fence,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	submitCount := uint32(len(Submits))
-	len0 := len(Submits)
-	var arr1 unsafe.Pointer
-	if len0 > 0 {
-		buf2 := make([]cVkSubmitInfo2, len0)
-		var pin3 runtime.Pinner
-		pin3.Pin(&buf2[0])
-		cancels = append(cancels, func() { pin3.Unpin(); runtime.KeepAlive(buf2) })
-		arr1 = unsafe.Pointer(&buf2[0])
-		for i4, elem5 := range Submits {
-			val6, cancel7 := elem5.toC()
-			cancels = append(cancels, cancel7)
-			cast8 := (*cVkSubmitInfo2)(val6)
-			buf2[i4] = *cast8
-		}
-	}
-	var h9 unsafe.Pointer
-	if fence != nil {
-		h9 = fence.handle
-	}
-	var _ret int32
-	ffi.CallFunction(&_cif_vkQueueSubmit2, h.table.vkQueueSubmit2, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&submitCount),
-		unsafe.Pointer(&arr1),
-		unsafe.Pointer(&h9),
-	})
-	if _ret != int32(Success) {
-		return Result(_ret)
-	}
-	return nil
-}
-
 func (h Queue) WaitIdle() error {
 	cancels := make([]func(), 0)
 	defer func() {
@@ -45659,33 +32261,6 @@ func (h Device) ResetFences(
 	return nil
 }
 
-func (h Device) ResetQueryPool(
-	queryPool *QueryPool,
-	firstQuery uint32,
-	queryCount uint32,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var h0 unsafe.Pointer
-	if queryPool != nil {
-		h0 = queryPool.handle
-	}
-	val1 := uint32(firstQuery)
-	val2 := uint32(queryCount)
-	ffi.CallFunction(&_cif_vkResetQueryPool, h.table.vkResetQueryPool, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&h0),
-		unsafe.Pointer(&val1),
-		unsafe.Pointer(&val2),
-	})
-}
-
 func (h Device) SetDebugUtilsObjectNameEXT(
 	NameInfo *DebugUtilsObjectNameInfoEXT,
 ) error {
@@ -45792,69 +32367,6 @@ func (h Device) SetEvent(
 	return nil
 }
 
-func (h Device) SetPrivateData(
-	objectType ObjectType,
-	objectHandle uint64,
-	privateDataSlot *PrivateDataSlot,
-	data uint64,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	val0 := uint32(objectType)
-	val1 := uint64(objectHandle)
-	var h2 unsafe.Pointer
-	if privateDataSlot != nil {
-		h2 = privateDataSlot.handle
-	}
-	val3 := uint64(data)
-	var _ret int32
-	ffi.CallFunction(&_cif_vkSetPrivateData, h.table.vkSetPrivateData, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&val0),
-		unsafe.Pointer(&val1),
-		unsafe.Pointer(&h2),
-		unsafe.Pointer(&val3),
-	})
-	if _ret != int32(Success) {
-		return Result(_ret)
-	}
-	return nil
-}
-
-func (h Device) SignalSemaphore(
-	SignalInfo *SemaphoreSignalInfo,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if SignalInfo != nil {
-		val1, cancel2 := SignalInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var _ret int32
-	ffi.CallFunction(&_cif_vkSignalSemaphore, h.table.vkSignalSemaphore, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-	})
-	if _ret != int32(Success) {
-		return Result(_ret)
-	}
-	return nil
-}
-
 func (h Instance) SubmitDebugUtilsMessageEXT(
 	messageSeverity DebugUtilsMessageSeverityFlagBitsEXT,
 	messageTypes DebugUtilsMessageTypeFlagsEXT,
@@ -45884,69 +32396,6 @@ func (h Instance) SubmitDebugUtilsMessageEXT(
 	})
 }
 
-func (h Device) TransitionImageLayout(
-	Transitions []HostImageLayoutTransitionInfo,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	transitionCount := uint32(len(Transitions))
-	len0 := len(Transitions)
-	var arr1 unsafe.Pointer
-	if len0 > 0 {
-		buf2 := make([]cVkHostImageLayoutTransitionInfo, len0)
-		var pin3 runtime.Pinner
-		pin3.Pin(&buf2[0])
-		cancels = append(cancels, func() { pin3.Unpin(); runtime.KeepAlive(buf2) })
-		arr1 = unsafe.Pointer(&buf2[0])
-		for i4, elem5 := range Transitions {
-			val6, cancel7 := elem5.toC()
-			cancels = append(cancels, cancel7)
-			cast8 := (*cVkHostImageLayoutTransitionInfo)(val6)
-			buf2[i4] = *cast8
-		}
-	}
-	var _ret int32
-	ffi.CallFunction(&_cif_vkTransitionImageLayout, h.table.vkTransitionImageLayout, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&transitionCount),
-		unsafe.Pointer(&arr1),
-	})
-	if _ret != int32(Success) {
-		return Result(_ret)
-	}
-	return nil
-}
-
-func (h Device) TrimCommandPool(
-	commandPool *CommandPool,
-	flags CommandPoolTrimFlags,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var h0 unsafe.Pointer
-	if commandPool != nil {
-		h0 = commandPool.handle
-	}
-	val1 := uint32(flags)
-	ffi.CallFunction(&_cif_vkTrimCommandPool, h.table.vkTrimCommandPool, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&h0),
-		unsafe.Pointer(&val1),
-	})
-}
-
 func (h Device) UnmapMemory(
 	memory *DeviceMemory,
 ) {
@@ -45965,63 +32414,6 @@ func (h Device) UnmapMemory(
 	ffi.CallFunction(&_cif_vkUnmapMemory, h.table.vkUnmapMemory, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
-	})
-}
-
-func (h Device) UnmapMemory2(
-	MemoryUnmapInfo *MemoryUnmapInfo,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if MemoryUnmapInfo != nil {
-		val1, cancel2 := MemoryUnmapInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	var _ret int32
-	ffi.CallFunction(&_cif_vkUnmapMemory2, h.table.vkUnmapMemory2, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-	})
-	if _ret != int32(Success) {
-		return Result(_ret)
-	}
-	return nil
-}
-
-func (h Device) UpdateDescriptorSetWithTemplate(
-	descriptorSet *DescriptorSet,
-	descriptorUpdateTemplate *DescriptorUpdateTemplate,
-	Data unsafe.Pointer,
-) {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var h0 unsafe.Pointer
-	if descriptorSet != nil {
-		h0 = descriptorSet.handle
-	}
-	var h1 unsafe.Pointer
-	if descriptorUpdateTemplate != nil {
-		h1 = descriptorUpdateTemplate.handle
-	}
-	ffi.CallFunction(&_cif_vkUpdateDescriptorSetWithTemplate, h.table.vkUpdateDescriptorSetWithTemplate, nil, []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&h0),
-		unsafe.Pointer(&h1),
-		unsafe.Pointer(&Data),
 	})
 }
 
@@ -46207,37 +32599,6 @@ func (h Device) WaitForFences(
 	return nil
 }
 
-func (h Device) WaitSemaphores(
-	WaitInfo *SemaphoreWaitInfo,
-	timeout uint64,
-) error {
-	cancels := make([]func(), 0)
-	defer func() {
-		for _, c := range cancels {
-			c()
-		}
-	}()
-
-	_recv := h.handle
-	var ptr0 unsafe.Pointer
-	if WaitInfo != nil {
-		val1, cancel2 := WaitInfo.toC()
-		cancels = append(cancels, cancel2)
-		ptr0 = val1
-	}
-	val3 := uint64(timeout)
-	var _ret int32
-	ffi.CallFunction(&_cif_vkWaitSemaphores, h.table.vkWaitSemaphores, unsafe.Pointer(&_ret), []unsafe.Pointer{
-		unsafe.Pointer(&_recv),
-		unsafe.Pointer(&ptr0),
-		unsafe.Pointer(&val3),
-	})
-	if _ret != int32(Success) {
-		return Result(_ret)
-	}
-	return nil
-}
-
 func (h Device) WriteAccelerationStructuresPropertiesKHR(
 	AccelerationStructures []*AccelerationStructureKHR,
 	queryType QueryType,
@@ -46300,9 +32661,7 @@ var _cif_vkAllocateDescriptorSets types.CallInterface
 var _cif_vkAllocateMemory types.CallInterface
 var _cif_vkBeginCommandBuffer types.CallInterface
 var _cif_vkBindBufferMemory types.CallInterface
-var _cif_vkBindBufferMemory2 types.CallInterface
 var _cif_vkBindImageMemory types.CallInterface
-var _cif_vkBindImageMemory2 types.CallInterface
 var _cif_vkBuildAccelerationStructuresKHR types.CallInterface
 var _cif_vkCmdBeginDebugUtilsLabelEXT types.CallInterface
 var _cif_vkCmdBeginQuery types.CallInterface
@@ -46312,7 +32671,6 @@ var _cif_vkCmdBeginRendering types.CallInterface
 var _cif_vkCmdBindDescriptorBufferEmbeddedSamplersEXT types.CallInterface
 var _cif_vkCmdBindDescriptorBuffersEXT types.CallInterface
 var _cif_vkCmdBindDescriptorSets types.CallInterface
-var _cif_vkCmdBindDescriptorSets2 types.CallInterface
 var _cif_vkCmdBindIndexBuffer types.CallInterface
 var _cif_vkCmdBindIndexBuffer2 types.CallInterface
 var _cif_vkCmdBindPipeline types.CallInterface
@@ -46329,17 +32687,12 @@ var _cif_vkCmdClearDepthStencilImage types.CallInterface
 var _cif_vkCmdCopyAccelerationStructureKHR types.CallInterface
 var _cif_vkCmdCopyAccelerationStructureToMemoryKHR types.CallInterface
 var _cif_vkCmdCopyBuffer types.CallInterface
-var _cif_vkCmdCopyBuffer2 types.CallInterface
 var _cif_vkCmdCopyBufferToImage types.CallInterface
-var _cif_vkCmdCopyBufferToImage2 types.CallInterface
 var _cif_vkCmdCopyImage types.CallInterface
-var _cif_vkCmdCopyImage2 types.CallInterface
 var _cif_vkCmdCopyImageToBuffer types.CallInterface
-var _cif_vkCmdCopyImageToBuffer2 types.CallInterface
 var _cif_vkCmdCopyMemoryToAccelerationStructureKHR types.CallInterface
 var _cif_vkCmdCopyQueryPoolResults types.CallInterface
 var _cif_vkCmdDispatch types.CallInterface
-var _cif_vkCmdDispatchBase types.CallInterface
 var _cif_vkCmdDispatchIndirect types.CallInterface
 var _cif_vkCmdDraw types.CallInterface
 var _cif_vkCmdDrawIndexed types.CallInterface
@@ -46364,16 +32717,9 @@ var _cif_vkCmdInsertDebugUtilsLabelEXT types.CallInterface
 var _cif_vkCmdNextSubpass types.CallInterface
 var _cif_vkCmdNextSubpass2 types.CallInterface
 var _cif_vkCmdPipelineBarrier types.CallInterface
-var _cif_vkCmdPipelineBarrier2 types.CallInterface
 var _cif_vkCmdPreprocessGeneratedCommandsEXT types.CallInterface
 var _cif_vkCmdPushConstants types.CallInterface
-var _cif_vkCmdPushConstants2 types.CallInterface
-var _cif_vkCmdPushDescriptorSet types.CallInterface
-var _cif_vkCmdPushDescriptorSet2 types.CallInterface
-var _cif_vkCmdPushDescriptorSetWithTemplate types.CallInterface
-var _cif_vkCmdPushDescriptorSetWithTemplate2 types.CallInterface
 var _cif_vkCmdResetEvent types.CallInterface
-var _cif_vkCmdResetEvent2 types.CallInterface
 var _cif_vkCmdResetQueryPool types.CallInterface
 var _cif_vkCmdResolveImage types.CallInterface
 var _cif_vkCmdResolveImage2 types.CallInterface
@@ -46404,9 +32750,7 @@ var _cif_vkCmdSetDepthCompareOp types.CallInterface
 var _cif_vkCmdSetDepthTestEnable types.CallInterface
 var _cif_vkCmdSetDepthWriteEnable types.CallInterface
 var _cif_vkCmdSetDescriptorBufferOffsetsEXT types.CallInterface
-var _cif_vkCmdSetDeviceMask types.CallInterface
 var _cif_vkCmdSetEvent types.CallInterface
-var _cif_vkCmdSetEvent2 types.CallInterface
 var _cif_vkCmdSetExtraPrimitiveOverestimationSizeEXT types.CallInterface
 var _cif_vkCmdSetFrontFace types.CallInterface
 var _cif_vkCmdSetLineRasterizationModeEXT types.CallInterface
@@ -46448,16 +32792,11 @@ var _cif_vkCmdTraceRaysIndirectKHR types.CallInterface
 var _cif_vkCmdTraceRaysKHR types.CallInterface
 var _cif_vkCmdUpdateBuffer types.CallInterface
 var _cif_vkCmdWaitEvents types.CallInterface
-var _cif_vkCmdWaitEvents2 types.CallInterface
 var _cif_vkCmdWriteAccelerationStructuresPropertiesKHR types.CallInterface
 var _cif_vkCmdWriteTimestamp types.CallInterface
-var _cif_vkCmdWriteTimestamp2 types.CallInterface
 var _cif_vkCopyAccelerationStructureKHR types.CallInterface
 var _cif_vkCopyAccelerationStructureToMemoryKHR types.CallInterface
-var _cif_vkCopyImageToImage types.CallInterface
-var _cif_vkCopyImageToMemory types.CallInterface
 var _cif_vkCopyMemoryToAccelerationStructureKHR types.CallInterface
-var _cif_vkCopyMemoryToImage types.CallInterface
 var _cif_vkCreateAccelerationStructureKHR types.CallInterface
 var _cif_vkCreateBuffer types.CallInterface
 var _cif_vkCreateBufferView types.CallInterface
@@ -46467,7 +32806,6 @@ var _cif_vkCreateDebugUtilsMessengerEXT types.CallInterface
 var _cif_vkCreateDeferredOperationKHR types.CallInterface
 var _cif_vkCreateDescriptorPool types.CallInterface
 var _cif_vkCreateDescriptorSetLayout types.CallInterface
-var _cif_vkCreateDescriptorUpdateTemplate types.CallInterface
 var _cif_vkCreateDevice types.CallInterface
 var _cif_vkCreateEvent types.CallInterface
 var _cif_vkCreateFence types.CallInterface
@@ -46483,13 +32821,11 @@ var _cif_vkCreateMacOSSurfaceMVK types.CallInterface
 var _cif_vkCreateMetalSurfaceEXT types.CallInterface
 var _cif_vkCreatePipelineCache types.CallInterface
 var _cif_vkCreatePipelineLayout types.CallInterface
-var _cif_vkCreatePrivateDataSlot types.CallInterface
 var _cif_vkCreateQueryPool types.CallInterface
 var _cif_vkCreateRayTracingPipelinesKHR types.CallInterface
 var _cif_vkCreateRenderPass types.CallInterface
 var _cif_vkCreateRenderPass2 types.CallInterface
 var _cif_vkCreateSampler types.CallInterface
-var _cif_vkCreateSamplerYcbcrConversion types.CallInterface
 var _cif_vkCreateSemaphore types.CallInterface
 var _cif_vkCreateShaderModule types.CallInterface
 var _cif_vkCreateShadersEXT types.CallInterface
@@ -46507,7 +32843,6 @@ var _cif_vkDestroyDebugUtilsMessengerEXT types.CallInterface
 var _cif_vkDestroyDeferredOperationKHR types.CallInterface
 var _cif_vkDestroyDescriptorPool types.CallInterface
 var _cif_vkDestroyDescriptorSetLayout types.CallInterface
-var _cif_vkDestroyDescriptorUpdateTemplate types.CallInterface
 var _cif_vkDestroyDevice types.CallInterface
 var _cif_vkDestroyEvent types.CallInterface
 var _cif_vkDestroyFence types.CallInterface
@@ -46520,11 +32855,9 @@ var _cif_vkDestroyInstance types.CallInterface
 var _cif_vkDestroyPipeline types.CallInterface
 var _cif_vkDestroyPipelineCache types.CallInterface
 var _cif_vkDestroyPipelineLayout types.CallInterface
-var _cif_vkDestroyPrivateDataSlot types.CallInterface
 var _cif_vkDestroyQueryPool types.CallInterface
 var _cif_vkDestroyRenderPass types.CallInterface
 var _cif_vkDestroySampler types.CallInterface
-var _cif_vkDestroySamplerYcbcrConversion types.CallInterface
 var _cif_vkDestroySemaphore types.CallInterface
 var _cif_vkDestroyShaderEXT types.CallInterface
 var _cif_vkDestroyShaderModule types.CallInterface
@@ -46538,9 +32871,6 @@ var _cif_vkEnumerateInstanceExtensionProperties types.CallInterface
 var _fn_vkEnumerateInstanceExtensionProperties unsafe.Pointer
 var _cif_vkEnumerateInstanceLayerProperties types.CallInterface
 var _fn_vkEnumerateInstanceLayerProperties unsafe.Pointer
-var _cif_vkEnumerateInstanceVersion types.CallInterface
-var _fn_vkEnumerateInstanceVersion unsafe.Pointer
-var _cif_vkEnumeratePhysicalDeviceGroups types.CallInterface
 var _cif_vkEnumeratePhysicalDevices types.CallInterface
 var _cif_vkFlushMappedMemoryRanges types.CallInterface
 var _cif_vkFreeCommandBuffers types.CallInterface
@@ -46549,71 +32879,45 @@ var _cif_vkFreeMemory types.CallInterface
 var _cif_vkGetAccelerationStructureBuildSizesKHR types.CallInterface
 var _cif_vkGetAccelerationStructureDeviceAddressKHR types.CallInterface
 var _cif_vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT types.CallInterface
-var _cif_vkGetBufferDeviceAddress types.CallInterface
 var _cif_vkGetBufferMemoryRequirements types.CallInterface
-var _cif_vkGetBufferMemoryRequirements2 types.CallInterface
-var _cif_vkGetBufferOpaqueCaptureAddress types.CallInterface
 var _cif_vkGetBufferOpaqueCaptureDescriptorDataEXT types.CallInterface
 var _cif_vkGetDeferredOperationMaxConcurrencyKHR types.CallInterface
 var _cif_vkGetDeferredOperationResultKHR types.CallInterface
 var _cif_vkGetDescriptorEXT types.CallInterface
 var _cif_vkGetDescriptorSetLayoutBindingOffsetEXT types.CallInterface
 var _cif_vkGetDescriptorSetLayoutSizeEXT types.CallInterface
-var _cif_vkGetDescriptorSetLayoutSupport types.CallInterface
 var _cif_vkGetDeviceAccelerationStructureCompatibilityKHR types.CallInterface
-var _cif_vkGetDeviceBufferMemoryRequirements types.CallInterface
-var _cif_vkGetDeviceGroupPeerMemoryFeatures types.CallInterface
 var _cif_vkGetDeviceGroupPresentCapabilitiesKHR types.CallInterface
 var _cif_vkGetDeviceGroupSurfacePresentModesKHR types.CallInterface
-var _cif_vkGetDeviceImageMemoryRequirements types.CallInterface
-var _cif_vkGetDeviceImageSparseMemoryRequirements types.CallInterface
-var _cif_vkGetDeviceImageSubresourceLayout types.CallInterface
 var _cif_vkGetDeviceMemoryCommitment types.CallInterface
-var _cif_vkGetDeviceMemoryOpaqueCaptureAddress types.CallInterface
 var _cif_vkGetDeviceProcAddr types.CallInterface
 var _cif_vkGetDeviceQueue types.CallInterface
-var _cif_vkGetDeviceQueue2 types.CallInterface
 var _cif_vkGetEventStatus types.CallInterface
 var _cif_vkGetFenceStatus types.CallInterface
 var _cif_vkGetGeneratedCommandsMemoryRequirementsEXT types.CallInterface
 var _cif_vkGetImageMemoryRequirements types.CallInterface
-var _cif_vkGetImageMemoryRequirements2 types.CallInterface
 var _cif_vkGetImageOpaqueCaptureDescriptorDataEXT types.CallInterface
 var _cif_vkGetImageSparseMemoryRequirements types.CallInterface
-var _cif_vkGetImageSparseMemoryRequirements2 types.CallInterface
 var _cif_vkGetImageSubresourceLayout types.CallInterface
-var _cif_vkGetImageSubresourceLayout2 types.CallInterface
 var _cif_vkGetImageViewOpaqueCaptureDescriptorDataEXT types.CallInterface
 var _cif_vkGetInstanceProcAddr types.CallInterface
-var _cif_vkGetPhysicalDeviceExternalBufferProperties types.CallInterface
-var _cif_vkGetPhysicalDeviceExternalFenceProperties types.CallInterface
-var _cif_vkGetPhysicalDeviceExternalSemaphoreProperties types.CallInterface
 var _cif_vkGetPhysicalDeviceFeatures types.CallInterface
-var _cif_vkGetPhysicalDeviceFeatures2 types.CallInterface
 var _cif_vkGetPhysicalDeviceFormatProperties types.CallInterface
-var _cif_vkGetPhysicalDeviceFormatProperties2 types.CallInterface
 var _cif_vkGetPhysicalDeviceImageFormatProperties types.CallInterface
-var _cif_vkGetPhysicalDeviceImageFormatProperties2 types.CallInterface
 var _cif_vkGetPhysicalDeviceMemoryProperties types.CallInterface
-var _cif_vkGetPhysicalDeviceMemoryProperties2 types.CallInterface
 var _cif_vkGetPhysicalDevicePresentRectanglesKHR types.CallInterface
 var _cif_vkGetPhysicalDeviceProperties types.CallInterface
-var _cif_vkGetPhysicalDeviceProperties2 types.CallInterface
 var _cif_vkGetPhysicalDeviceQueueFamilyProperties types.CallInterface
-var _cif_vkGetPhysicalDeviceQueueFamilyProperties2 types.CallInterface
 var _cif_vkGetPhysicalDeviceSparseImageFormatProperties types.CallInterface
-var _cif_vkGetPhysicalDeviceSparseImageFormatProperties2 types.CallInterface
 var _cif_vkGetPhysicalDeviceSurfaceCapabilitiesKHR types.CallInterface
 var _cif_vkGetPhysicalDeviceSurfaceFormatsKHR types.CallInterface
 var _cif_vkGetPhysicalDeviceSurfacePresentModesKHR types.CallInterface
 var _cif_vkGetPhysicalDeviceSurfaceSupportKHR types.CallInterface
-var _cif_vkGetPhysicalDeviceToolProperties types.CallInterface
 var _cif_vkGetPhysicalDeviceWaylandPresentationSupportKHR types.CallInterface
 var _cif_vkGetPhysicalDeviceWin32PresentationSupportKHR types.CallInterface
 var _cif_vkGetPhysicalDeviceXcbPresentationSupportKHR types.CallInterface
 var _cif_vkGetPhysicalDeviceXlibPresentationSupportKHR types.CallInterface
 var _cif_vkGetPipelineCacheData types.CallInterface
-var _cif_vkGetPrivateData types.CallInterface
 var _cif_vkGetQueryPoolResults types.CallInterface
 var _cif_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR types.CallInterface
 var _cif_vkGetRayTracingShaderGroupHandlesKHR types.CallInterface
@@ -46621,12 +32925,10 @@ var _cif_vkGetRayTracingShaderGroupStackSizeKHR types.CallInterface
 var _cif_vkGetRenderAreaGranularity types.CallInterface
 var _cif_vkGetRenderingAreaGranularity types.CallInterface
 var _cif_vkGetSamplerOpaqueCaptureDescriptorDataEXT types.CallInterface
-var _cif_vkGetSemaphoreCounterValue types.CallInterface
 var _cif_vkGetShaderBinaryDataEXT types.CallInterface
 var _cif_vkGetSwapchainImagesKHR types.CallInterface
 var _cif_vkInvalidateMappedMemoryRanges types.CallInterface
 var _cif_vkMapMemory types.CallInterface
-var _cif_vkMapMemory2 types.CallInterface
 var _cif_vkMergePipelineCaches types.CallInterface
 var _cif_vkQueueBeginDebugUtilsLabelEXT types.CallInterface
 var _cif_vkQueueBindSparse types.CallInterface
@@ -46634,31 +32936,22 @@ var _cif_vkQueueEndDebugUtilsLabelEXT types.CallInterface
 var _cif_vkQueueInsertDebugUtilsLabelEXT types.CallInterface
 var _cif_vkQueuePresentKHR types.CallInterface
 var _cif_vkQueueSubmit types.CallInterface
-var _cif_vkQueueSubmit2 types.CallInterface
 var _cif_vkQueueWaitIdle types.CallInterface
 var _cif_vkResetCommandBuffer types.CallInterface
 var _cif_vkResetCommandPool types.CallInterface
 var _cif_vkResetDescriptorPool types.CallInterface
 var _cif_vkResetEvent types.CallInterface
 var _cif_vkResetFences types.CallInterface
-var _cif_vkResetQueryPool types.CallInterface
 var _cif_vkSetDebugUtilsObjectNameEXT types.CallInterface
 var _cif_vkSetDebugUtilsObjectTagEXT types.CallInterface
 var _cif_vkSetDeviceMemoryPriorityEXT types.CallInterface
 var _cif_vkSetEvent types.CallInterface
-var _cif_vkSetPrivateData types.CallInterface
-var _cif_vkSignalSemaphore types.CallInterface
 var _cif_vkSubmitDebugUtilsMessageEXT types.CallInterface
-var _cif_vkTransitionImageLayout types.CallInterface
-var _cif_vkTrimCommandPool types.CallInterface
 var _cif_vkUnmapMemory types.CallInterface
-var _cif_vkUnmapMemory2 types.CallInterface
-var _cif_vkUpdateDescriptorSetWithTemplate types.CallInterface
 var _cif_vkUpdateDescriptorSets types.CallInterface
 var _cif_vkUpdateIndirectExecutionSetPipelineEXT types.CallInterface
 var _cif_vkUpdateIndirectExecutionSetShaderEXT types.CallInterface
 var _cif_vkWaitForFences types.CallInterface
-var _cif_vkWaitSemaphores types.CallInterface
 var _cif_vkWriteAccelerationStructuresPropertiesKHR types.CallInterface
 
 func _initInstanceTable(handle unsafe.Pointer) *instanceTable {
@@ -46677,32 +32970,20 @@ func _initInstanceTable(handle unsafe.Pointer) *instanceTable {
 	t.vkDestroySurfaceKHR = _loadProc(handle, "vkDestroySurfaceKHR")
 	t.vkEnumerateDeviceExtensionProperties = _loadProc(handle, "vkEnumerateDeviceExtensionProperties")
 	t.vkEnumerateDeviceLayerProperties = _loadProc(handle, "vkEnumerateDeviceLayerProperties")
-	t.vkEnumeratePhysicalDeviceGroups = _loadProc(handle, "vkEnumeratePhysicalDeviceGroups")
 	t.vkEnumeratePhysicalDevices = _loadProc(handle, "vkEnumeratePhysicalDevices")
 	t.vkGetInstanceProcAddr = _loadProc(handle, "vkGetInstanceProcAddr")
-	t.vkGetPhysicalDeviceExternalBufferProperties = _loadProc(handle, "vkGetPhysicalDeviceExternalBufferProperties")
-	t.vkGetPhysicalDeviceExternalFenceProperties = _loadProc(handle, "vkGetPhysicalDeviceExternalFenceProperties")
-	t.vkGetPhysicalDeviceExternalSemaphoreProperties = _loadProc(handle, "vkGetPhysicalDeviceExternalSemaphoreProperties")
 	t.vkGetPhysicalDeviceFeatures = _loadProc(handle, "vkGetPhysicalDeviceFeatures")
-	t.vkGetPhysicalDeviceFeatures2 = _loadProc(handle, "vkGetPhysicalDeviceFeatures2")
 	t.vkGetPhysicalDeviceFormatProperties = _loadProc(handle, "vkGetPhysicalDeviceFormatProperties")
-	t.vkGetPhysicalDeviceFormatProperties2 = _loadProc(handle, "vkGetPhysicalDeviceFormatProperties2")
 	t.vkGetPhysicalDeviceImageFormatProperties = _loadProc(handle, "vkGetPhysicalDeviceImageFormatProperties")
-	t.vkGetPhysicalDeviceImageFormatProperties2 = _loadProc(handle, "vkGetPhysicalDeviceImageFormatProperties2")
 	t.vkGetPhysicalDeviceMemoryProperties = _loadProc(handle, "vkGetPhysicalDeviceMemoryProperties")
-	t.vkGetPhysicalDeviceMemoryProperties2 = _loadProc(handle, "vkGetPhysicalDeviceMemoryProperties2")
 	t.vkGetPhysicalDevicePresentRectanglesKHR = _loadProc(handle, "vkGetPhysicalDevicePresentRectanglesKHR")
 	t.vkGetPhysicalDeviceProperties = _loadProc(handle, "vkGetPhysicalDeviceProperties")
-	t.vkGetPhysicalDeviceProperties2 = _loadProc(handle, "vkGetPhysicalDeviceProperties2")
 	t.vkGetPhysicalDeviceQueueFamilyProperties = _loadProc(handle, "vkGetPhysicalDeviceQueueFamilyProperties")
-	t.vkGetPhysicalDeviceQueueFamilyProperties2 = _loadProc(handle, "vkGetPhysicalDeviceQueueFamilyProperties2")
 	t.vkGetPhysicalDeviceSparseImageFormatProperties = _loadProc(handle, "vkGetPhysicalDeviceSparseImageFormatProperties")
-	t.vkGetPhysicalDeviceSparseImageFormatProperties2 = _loadProc(handle, "vkGetPhysicalDeviceSparseImageFormatProperties2")
 	t.vkGetPhysicalDeviceSurfaceCapabilitiesKHR = _loadProc(handle, "vkGetPhysicalDeviceSurfaceCapabilitiesKHR")
 	t.vkGetPhysicalDeviceSurfaceFormatsKHR = _loadProc(handle, "vkGetPhysicalDeviceSurfaceFormatsKHR")
 	t.vkGetPhysicalDeviceSurfacePresentModesKHR = _loadProc(handle, "vkGetPhysicalDeviceSurfacePresentModesKHR")
 	t.vkGetPhysicalDeviceSurfaceSupportKHR = _loadProc(handle, "vkGetPhysicalDeviceSurfaceSupportKHR")
-	t.vkGetPhysicalDeviceToolProperties = _loadProc(handle, "vkGetPhysicalDeviceToolProperties")
 	t.vkGetPhysicalDeviceWaylandPresentationSupportKHR = _loadProc(handle, "vkGetPhysicalDeviceWaylandPresentationSupportKHR")
 	t.vkGetPhysicalDeviceWin32PresentationSupportKHR = _loadProc(handle, "vkGetPhysicalDeviceWin32PresentationSupportKHR")
 	t.vkGetPhysicalDeviceXcbPresentationSupportKHR = _loadProc(handle, "vkGetPhysicalDeviceXcbPresentationSupportKHR")
@@ -46720,9 +33001,7 @@ func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
 	t.vkAllocateMemory = _loadDeviceProc(handle, "vkAllocateMemory")
 	t.vkBeginCommandBuffer = _loadDeviceProc(handle, "vkBeginCommandBuffer")
 	t.vkBindBufferMemory = _loadDeviceProc(handle, "vkBindBufferMemory")
-	t.vkBindBufferMemory2 = _loadDeviceProc(handle, "vkBindBufferMemory2")
 	t.vkBindImageMemory = _loadDeviceProc(handle, "vkBindImageMemory")
-	t.vkBindImageMemory2 = _loadDeviceProc(handle, "vkBindImageMemory2")
 	t.vkBuildAccelerationStructuresKHR = _loadDeviceProc(handle, "vkBuildAccelerationStructuresKHR")
 	t.vkCmdBeginDebugUtilsLabelEXT = _loadDeviceProc(handle, "vkCmdBeginDebugUtilsLabelEXT")
 	t.vkCmdBeginQuery = _loadDeviceProc(handle, "vkCmdBeginQuery")
@@ -46732,7 +33011,6 @@ func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
 	t.vkCmdBindDescriptorBufferEmbeddedSamplersEXT = _loadDeviceProc(handle, "vkCmdBindDescriptorBufferEmbeddedSamplersEXT")
 	t.vkCmdBindDescriptorBuffersEXT = _loadDeviceProc(handle, "vkCmdBindDescriptorBuffersEXT")
 	t.vkCmdBindDescriptorSets = _loadDeviceProc(handle, "vkCmdBindDescriptorSets")
-	t.vkCmdBindDescriptorSets2 = _loadDeviceProc(handle, "vkCmdBindDescriptorSets2")
 	t.vkCmdBindIndexBuffer = _loadDeviceProc(handle, "vkCmdBindIndexBuffer")
 	t.vkCmdBindIndexBuffer2 = _loadDeviceProc(handle, "vkCmdBindIndexBuffer2")
 	t.vkCmdBindPipeline = _loadDeviceProc(handle, "vkCmdBindPipeline")
@@ -46749,17 +33027,12 @@ func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
 	t.vkCmdCopyAccelerationStructureKHR = _loadDeviceProc(handle, "vkCmdCopyAccelerationStructureKHR")
 	t.vkCmdCopyAccelerationStructureToMemoryKHR = _loadDeviceProc(handle, "vkCmdCopyAccelerationStructureToMemoryKHR")
 	t.vkCmdCopyBuffer = _loadDeviceProc(handle, "vkCmdCopyBuffer")
-	t.vkCmdCopyBuffer2 = _loadDeviceProc(handle, "vkCmdCopyBuffer2")
 	t.vkCmdCopyBufferToImage = _loadDeviceProc(handle, "vkCmdCopyBufferToImage")
-	t.vkCmdCopyBufferToImage2 = _loadDeviceProc(handle, "vkCmdCopyBufferToImage2")
 	t.vkCmdCopyImage = _loadDeviceProc(handle, "vkCmdCopyImage")
-	t.vkCmdCopyImage2 = _loadDeviceProc(handle, "vkCmdCopyImage2")
 	t.vkCmdCopyImageToBuffer = _loadDeviceProc(handle, "vkCmdCopyImageToBuffer")
-	t.vkCmdCopyImageToBuffer2 = _loadDeviceProc(handle, "vkCmdCopyImageToBuffer2")
 	t.vkCmdCopyMemoryToAccelerationStructureKHR = _loadDeviceProc(handle, "vkCmdCopyMemoryToAccelerationStructureKHR")
 	t.vkCmdCopyQueryPoolResults = _loadDeviceProc(handle, "vkCmdCopyQueryPoolResults")
 	t.vkCmdDispatch = _loadDeviceProc(handle, "vkCmdDispatch")
-	t.vkCmdDispatchBase = _loadDeviceProc(handle, "vkCmdDispatchBase")
 	t.vkCmdDispatchIndirect = _loadDeviceProc(handle, "vkCmdDispatchIndirect")
 	t.vkCmdDraw = _loadDeviceProc(handle, "vkCmdDraw")
 	t.vkCmdDrawIndexed = _loadDeviceProc(handle, "vkCmdDrawIndexed")
@@ -46784,16 +33057,9 @@ func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
 	t.vkCmdNextSubpass = _loadDeviceProc(handle, "vkCmdNextSubpass")
 	t.vkCmdNextSubpass2 = _loadDeviceProc(handle, "vkCmdNextSubpass2")
 	t.vkCmdPipelineBarrier = _loadDeviceProc(handle, "vkCmdPipelineBarrier")
-	t.vkCmdPipelineBarrier2 = _loadDeviceProc(handle, "vkCmdPipelineBarrier2")
 	t.vkCmdPreprocessGeneratedCommandsEXT = _loadDeviceProc(handle, "vkCmdPreprocessGeneratedCommandsEXT")
 	t.vkCmdPushConstants = _loadDeviceProc(handle, "vkCmdPushConstants")
-	t.vkCmdPushConstants2 = _loadDeviceProc(handle, "vkCmdPushConstants2")
-	t.vkCmdPushDescriptorSet = _loadDeviceProc(handle, "vkCmdPushDescriptorSet")
-	t.vkCmdPushDescriptorSet2 = _loadDeviceProc(handle, "vkCmdPushDescriptorSet2")
-	t.vkCmdPushDescriptorSetWithTemplate = _loadDeviceProc(handle, "vkCmdPushDescriptorSetWithTemplate")
-	t.vkCmdPushDescriptorSetWithTemplate2 = _loadDeviceProc(handle, "vkCmdPushDescriptorSetWithTemplate2")
 	t.vkCmdResetEvent = _loadDeviceProc(handle, "vkCmdResetEvent")
-	t.vkCmdResetEvent2 = _loadDeviceProc(handle, "vkCmdResetEvent2")
 	t.vkCmdResetQueryPool = _loadDeviceProc(handle, "vkCmdResetQueryPool")
 	t.vkCmdResolveImage = _loadDeviceProc(handle, "vkCmdResolveImage")
 	t.vkCmdResolveImage2 = _loadDeviceProc(handle, "vkCmdResolveImage2")
@@ -46824,9 +33090,7 @@ func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
 	t.vkCmdSetDepthTestEnable = _loadDeviceProc(handle, "vkCmdSetDepthTestEnable")
 	t.vkCmdSetDepthWriteEnable = _loadDeviceProc(handle, "vkCmdSetDepthWriteEnable")
 	t.vkCmdSetDescriptorBufferOffsetsEXT = _loadDeviceProc(handle, "vkCmdSetDescriptorBufferOffsetsEXT")
-	t.vkCmdSetDeviceMask = _loadDeviceProc(handle, "vkCmdSetDeviceMask")
 	t.vkCmdSetEvent = _loadDeviceProc(handle, "vkCmdSetEvent")
-	t.vkCmdSetEvent2 = _loadDeviceProc(handle, "vkCmdSetEvent2")
 	t.vkCmdSetExtraPrimitiveOverestimationSizeEXT = _loadDeviceProc(handle, "vkCmdSetExtraPrimitiveOverestimationSizeEXT")
 	t.vkCmdSetFrontFace = _loadDeviceProc(handle, "vkCmdSetFrontFace")
 	t.vkCmdSetLineRasterizationModeEXT = _loadDeviceProc(handle, "vkCmdSetLineRasterizationModeEXT")
@@ -46868,16 +33132,11 @@ func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
 	t.vkCmdTraceRaysKHR = _loadDeviceProc(handle, "vkCmdTraceRaysKHR")
 	t.vkCmdUpdateBuffer = _loadDeviceProc(handle, "vkCmdUpdateBuffer")
 	t.vkCmdWaitEvents = _loadDeviceProc(handle, "vkCmdWaitEvents")
-	t.vkCmdWaitEvents2 = _loadDeviceProc(handle, "vkCmdWaitEvents2")
 	t.vkCmdWriteAccelerationStructuresPropertiesKHR = _loadDeviceProc(handle, "vkCmdWriteAccelerationStructuresPropertiesKHR")
 	t.vkCmdWriteTimestamp = _loadDeviceProc(handle, "vkCmdWriteTimestamp")
-	t.vkCmdWriteTimestamp2 = _loadDeviceProc(handle, "vkCmdWriteTimestamp2")
 	t.vkCopyAccelerationStructureKHR = _loadDeviceProc(handle, "vkCopyAccelerationStructureKHR")
 	t.vkCopyAccelerationStructureToMemoryKHR = _loadDeviceProc(handle, "vkCopyAccelerationStructureToMemoryKHR")
-	t.vkCopyImageToImage = _loadDeviceProc(handle, "vkCopyImageToImage")
-	t.vkCopyImageToMemory = _loadDeviceProc(handle, "vkCopyImageToMemory")
 	t.vkCopyMemoryToAccelerationStructureKHR = _loadDeviceProc(handle, "vkCopyMemoryToAccelerationStructureKHR")
-	t.vkCopyMemoryToImage = _loadDeviceProc(handle, "vkCopyMemoryToImage")
 	t.vkCreateAccelerationStructureKHR = _loadDeviceProc(handle, "vkCreateAccelerationStructureKHR")
 	t.vkCreateBuffer = _loadDeviceProc(handle, "vkCreateBuffer")
 	t.vkCreateBufferView = _loadDeviceProc(handle, "vkCreateBufferView")
@@ -46886,7 +33145,6 @@ func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
 	t.vkCreateDeferredOperationKHR = _loadDeviceProc(handle, "vkCreateDeferredOperationKHR")
 	t.vkCreateDescriptorPool = _loadDeviceProc(handle, "vkCreateDescriptorPool")
 	t.vkCreateDescriptorSetLayout = _loadDeviceProc(handle, "vkCreateDescriptorSetLayout")
-	t.vkCreateDescriptorUpdateTemplate = _loadDeviceProc(handle, "vkCreateDescriptorUpdateTemplate")
 	t.vkCreateEvent = _loadDeviceProc(handle, "vkCreateEvent")
 	t.vkCreateFence = _loadDeviceProc(handle, "vkCreateFence")
 	t.vkCreateFramebuffer = _loadDeviceProc(handle, "vkCreateFramebuffer")
@@ -46897,13 +33155,11 @@ func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
 	t.vkCreateIndirectExecutionSetEXT = _loadDeviceProc(handle, "vkCreateIndirectExecutionSetEXT")
 	t.vkCreatePipelineCache = _loadDeviceProc(handle, "vkCreatePipelineCache")
 	t.vkCreatePipelineLayout = _loadDeviceProc(handle, "vkCreatePipelineLayout")
-	t.vkCreatePrivateDataSlot = _loadDeviceProc(handle, "vkCreatePrivateDataSlot")
 	t.vkCreateQueryPool = _loadDeviceProc(handle, "vkCreateQueryPool")
 	t.vkCreateRayTracingPipelinesKHR = _loadDeviceProc(handle, "vkCreateRayTracingPipelinesKHR")
 	t.vkCreateRenderPass = _loadDeviceProc(handle, "vkCreateRenderPass")
 	t.vkCreateRenderPass2 = _loadDeviceProc(handle, "vkCreateRenderPass2")
 	t.vkCreateSampler = _loadDeviceProc(handle, "vkCreateSampler")
-	t.vkCreateSamplerYcbcrConversion = _loadDeviceProc(handle, "vkCreateSamplerYcbcrConversion")
 	t.vkCreateSemaphore = _loadDeviceProc(handle, "vkCreateSemaphore")
 	t.vkCreateShaderModule = _loadDeviceProc(handle, "vkCreateShaderModule")
 	t.vkCreateShadersEXT = _loadDeviceProc(handle, "vkCreateShadersEXT")
@@ -46916,7 +33172,6 @@ func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
 	t.vkDestroyDeferredOperationKHR = _loadDeviceProc(handle, "vkDestroyDeferredOperationKHR")
 	t.vkDestroyDescriptorPool = _loadDeviceProc(handle, "vkDestroyDescriptorPool")
 	t.vkDestroyDescriptorSetLayout = _loadDeviceProc(handle, "vkDestroyDescriptorSetLayout")
-	t.vkDestroyDescriptorUpdateTemplate = _loadDeviceProc(handle, "vkDestroyDescriptorUpdateTemplate")
 	t.vkDestroyDevice = _loadDeviceProc(handle, "vkDestroyDevice")
 	t.vkDestroyEvent = _loadDeviceProc(handle, "vkDestroyEvent")
 	t.vkDestroyFence = _loadDeviceProc(handle, "vkDestroyFence")
@@ -46928,11 +33183,9 @@ func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
 	t.vkDestroyPipeline = _loadDeviceProc(handle, "vkDestroyPipeline")
 	t.vkDestroyPipelineCache = _loadDeviceProc(handle, "vkDestroyPipelineCache")
 	t.vkDestroyPipelineLayout = _loadDeviceProc(handle, "vkDestroyPipelineLayout")
-	t.vkDestroyPrivateDataSlot = _loadDeviceProc(handle, "vkDestroyPrivateDataSlot")
 	t.vkDestroyQueryPool = _loadDeviceProc(handle, "vkDestroyQueryPool")
 	t.vkDestroyRenderPass = _loadDeviceProc(handle, "vkDestroyRenderPass")
 	t.vkDestroySampler = _loadDeviceProc(handle, "vkDestroySampler")
-	t.vkDestroySamplerYcbcrConversion = _loadDeviceProc(handle, "vkDestroySamplerYcbcrConversion")
 	t.vkDestroySemaphore = _loadDeviceProc(handle, "vkDestroySemaphore")
 	t.vkDestroyShaderEXT = _loadDeviceProc(handle, "vkDestroyShaderEXT")
 	t.vkDestroyShaderModule = _loadDeviceProc(handle, "vkDestroyShaderModule")
@@ -46946,43 +33199,28 @@ func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
 	t.vkGetAccelerationStructureBuildSizesKHR = _loadDeviceProc(handle, "vkGetAccelerationStructureBuildSizesKHR")
 	t.vkGetAccelerationStructureDeviceAddressKHR = _loadDeviceProc(handle, "vkGetAccelerationStructureDeviceAddressKHR")
 	t.vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT = _loadDeviceProc(handle, "vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT")
-	t.vkGetBufferDeviceAddress = _loadDeviceProc(handle, "vkGetBufferDeviceAddress")
 	t.vkGetBufferMemoryRequirements = _loadDeviceProc(handle, "vkGetBufferMemoryRequirements")
-	t.vkGetBufferMemoryRequirements2 = _loadDeviceProc(handle, "vkGetBufferMemoryRequirements2")
-	t.vkGetBufferOpaqueCaptureAddress = _loadDeviceProc(handle, "vkGetBufferOpaqueCaptureAddress")
 	t.vkGetBufferOpaqueCaptureDescriptorDataEXT = _loadDeviceProc(handle, "vkGetBufferOpaqueCaptureDescriptorDataEXT")
 	t.vkGetDeferredOperationMaxConcurrencyKHR = _loadDeviceProc(handle, "vkGetDeferredOperationMaxConcurrencyKHR")
 	t.vkGetDeferredOperationResultKHR = _loadDeviceProc(handle, "vkGetDeferredOperationResultKHR")
 	t.vkGetDescriptorEXT = _loadDeviceProc(handle, "vkGetDescriptorEXT")
 	t.vkGetDescriptorSetLayoutBindingOffsetEXT = _loadDeviceProc(handle, "vkGetDescriptorSetLayoutBindingOffsetEXT")
 	t.vkGetDescriptorSetLayoutSizeEXT = _loadDeviceProc(handle, "vkGetDescriptorSetLayoutSizeEXT")
-	t.vkGetDescriptorSetLayoutSupport = _loadDeviceProc(handle, "vkGetDescriptorSetLayoutSupport")
 	t.vkGetDeviceAccelerationStructureCompatibilityKHR = _loadDeviceProc(handle, "vkGetDeviceAccelerationStructureCompatibilityKHR")
-	t.vkGetDeviceBufferMemoryRequirements = _loadDeviceProc(handle, "vkGetDeviceBufferMemoryRequirements")
-	t.vkGetDeviceGroupPeerMemoryFeatures = _loadDeviceProc(handle, "vkGetDeviceGroupPeerMemoryFeatures")
 	t.vkGetDeviceGroupPresentCapabilitiesKHR = _loadDeviceProc(handle, "vkGetDeviceGroupPresentCapabilitiesKHR")
 	t.vkGetDeviceGroupSurfacePresentModesKHR = _loadDeviceProc(handle, "vkGetDeviceGroupSurfacePresentModesKHR")
-	t.vkGetDeviceImageMemoryRequirements = _loadDeviceProc(handle, "vkGetDeviceImageMemoryRequirements")
-	t.vkGetDeviceImageSparseMemoryRequirements = _loadDeviceProc(handle, "vkGetDeviceImageSparseMemoryRequirements")
-	t.vkGetDeviceImageSubresourceLayout = _loadDeviceProc(handle, "vkGetDeviceImageSubresourceLayout")
 	t.vkGetDeviceMemoryCommitment = _loadDeviceProc(handle, "vkGetDeviceMemoryCommitment")
-	t.vkGetDeviceMemoryOpaqueCaptureAddress = _loadDeviceProc(handle, "vkGetDeviceMemoryOpaqueCaptureAddress")
 	t.vkGetDeviceProcAddr = _loadDeviceProc(handle, "vkGetDeviceProcAddr")
 	t.vkGetDeviceQueue = _loadDeviceProc(handle, "vkGetDeviceQueue")
-	t.vkGetDeviceQueue2 = _loadDeviceProc(handle, "vkGetDeviceQueue2")
 	t.vkGetEventStatus = _loadDeviceProc(handle, "vkGetEventStatus")
 	t.vkGetFenceStatus = _loadDeviceProc(handle, "vkGetFenceStatus")
 	t.vkGetGeneratedCommandsMemoryRequirementsEXT = _loadDeviceProc(handle, "vkGetGeneratedCommandsMemoryRequirementsEXT")
 	t.vkGetImageMemoryRequirements = _loadDeviceProc(handle, "vkGetImageMemoryRequirements")
-	t.vkGetImageMemoryRequirements2 = _loadDeviceProc(handle, "vkGetImageMemoryRequirements2")
 	t.vkGetImageOpaqueCaptureDescriptorDataEXT = _loadDeviceProc(handle, "vkGetImageOpaqueCaptureDescriptorDataEXT")
 	t.vkGetImageSparseMemoryRequirements = _loadDeviceProc(handle, "vkGetImageSparseMemoryRequirements")
-	t.vkGetImageSparseMemoryRequirements2 = _loadDeviceProc(handle, "vkGetImageSparseMemoryRequirements2")
 	t.vkGetImageSubresourceLayout = _loadDeviceProc(handle, "vkGetImageSubresourceLayout")
-	t.vkGetImageSubresourceLayout2 = _loadDeviceProc(handle, "vkGetImageSubresourceLayout2")
 	t.vkGetImageViewOpaqueCaptureDescriptorDataEXT = _loadDeviceProc(handle, "vkGetImageViewOpaqueCaptureDescriptorDataEXT")
 	t.vkGetPipelineCacheData = _loadDeviceProc(handle, "vkGetPipelineCacheData")
-	t.vkGetPrivateData = _loadDeviceProc(handle, "vkGetPrivateData")
 	t.vkGetQueryPoolResults = _loadDeviceProc(handle, "vkGetQueryPoolResults")
 	t.vkGetRayTracingCaptureReplayShaderGroupHandlesKHR = _loadDeviceProc(handle, "vkGetRayTracingCaptureReplayShaderGroupHandlesKHR")
 	t.vkGetRayTracingShaderGroupHandlesKHR = _loadDeviceProc(handle, "vkGetRayTracingShaderGroupHandlesKHR")
@@ -46990,12 +33228,10 @@ func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
 	t.vkGetRenderAreaGranularity = _loadDeviceProc(handle, "vkGetRenderAreaGranularity")
 	t.vkGetRenderingAreaGranularity = _loadDeviceProc(handle, "vkGetRenderingAreaGranularity")
 	t.vkGetSamplerOpaqueCaptureDescriptorDataEXT = _loadDeviceProc(handle, "vkGetSamplerOpaqueCaptureDescriptorDataEXT")
-	t.vkGetSemaphoreCounterValue = _loadDeviceProc(handle, "vkGetSemaphoreCounterValue")
 	t.vkGetShaderBinaryDataEXT = _loadDeviceProc(handle, "vkGetShaderBinaryDataEXT")
 	t.vkGetSwapchainImagesKHR = _loadDeviceProc(handle, "vkGetSwapchainImagesKHR")
 	t.vkInvalidateMappedMemoryRanges = _loadDeviceProc(handle, "vkInvalidateMappedMemoryRanges")
 	t.vkMapMemory = _loadDeviceProc(handle, "vkMapMemory")
-	t.vkMapMemory2 = _loadDeviceProc(handle, "vkMapMemory2")
 	t.vkMergePipelineCaches = _loadDeviceProc(handle, "vkMergePipelineCaches")
 	t.vkQueueBeginDebugUtilsLabelEXT = _loadDeviceProc(handle, "vkQueueBeginDebugUtilsLabelEXT")
 	t.vkQueueBindSparse = _loadDeviceProc(handle, "vkQueueBindSparse")
@@ -47003,30 +33239,21 @@ func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
 	t.vkQueueInsertDebugUtilsLabelEXT = _loadDeviceProc(handle, "vkQueueInsertDebugUtilsLabelEXT")
 	t.vkQueuePresentKHR = _loadDeviceProc(handle, "vkQueuePresentKHR")
 	t.vkQueueSubmit = _loadDeviceProc(handle, "vkQueueSubmit")
-	t.vkQueueSubmit2 = _loadDeviceProc(handle, "vkQueueSubmit2")
 	t.vkQueueWaitIdle = _loadDeviceProc(handle, "vkQueueWaitIdle")
 	t.vkResetCommandBuffer = _loadDeviceProc(handle, "vkResetCommandBuffer")
 	t.vkResetCommandPool = _loadDeviceProc(handle, "vkResetCommandPool")
 	t.vkResetDescriptorPool = _loadDeviceProc(handle, "vkResetDescriptorPool")
 	t.vkResetEvent = _loadDeviceProc(handle, "vkResetEvent")
 	t.vkResetFences = _loadDeviceProc(handle, "vkResetFences")
-	t.vkResetQueryPool = _loadDeviceProc(handle, "vkResetQueryPool")
 	t.vkSetDebugUtilsObjectNameEXT = _loadDeviceProc(handle, "vkSetDebugUtilsObjectNameEXT")
 	t.vkSetDebugUtilsObjectTagEXT = _loadDeviceProc(handle, "vkSetDebugUtilsObjectTagEXT")
 	t.vkSetDeviceMemoryPriorityEXT = _loadDeviceProc(handle, "vkSetDeviceMemoryPriorityEXT")
 	t.vkSetEvent = _loadDeviceProc(handle, "vkSetEvent")
-	t.vkSetPrivateData = _loadDeviceProc(handle, "vkSetPrivateData")
-	t.vkSignalSemaphore = _loadDeviceProc(handle, "vkSignalSemaphore")
-	t.vkTransitionImageLayout = _loadDeviceProc(handle, "vkTransitionImageLayout")
-	t.vkTrimCommandPool = _loadDeviceProc(handle, "vkTrimCommandPool")
 	t.vkUnmapMemory = _loadDeviceProc(handle, "vkUnmapMemory")
-	t.vkUnmapMemory2 = _loadDeviceProc(handle, "vkUnmapMemory2")
-	t.vkUpdateDescriptorSetWithTemplate = _loadDeviceProc(handle, "vkUpdateDescriptorSetWithTemplate")
 	t.vkUpdateDescriptorSets = _loadDeviceProc(handle, "vkUpdateDescriptorSets")
 	t.vkUpdateIndirectExecutionSetPipelineEXT = _loadDeviceProc(handle, "vkUpdateIndirectExecutionSetPipelineEXT")
 	t.vkUpdateIndirectExecutionSetShaderEXT = _loadDeviceProc(handle, "vkUpdateIndirectExecutionSetShaderEXT")
 	t.vkWaitForFences = _loadDeviceProc(handle, "vkWaitForFences")
-	t.vkWaitSemaphores = _loadDeviceProc(handle, "vkWaitSemaphores")
 	t.vkWriteAccelerationStructuresPropertiesKHR = _loadDeviceProc(handle, "vkWriteAccelerationStructuresPropertiesKHR")
 	return t
 }
@@ -47054,7 +33281,6 @@ func Initialize() error {
 	_fn_vkCreateInstance = _loadProc(nil, "vkCreateInstance")
 	_fn_vkEnumerateInstanceExtensionProperties = _loadProc(nil, "vkEnumerateInstanceExtensionProperties")
 	_fn_vkEnumerateInstanceLayerProperties = _loadProc(nil, "vkEnumerateInstanceLayerProperties")
-	_fn_vkEnumerateInstanceVersion = _loadProc(nil, "vkEnumerateInstanceVersion")
 
 	// Prepare all call interfaces
 	ffi.PrepareCallInterface(&_cif_vkAcquireNextImage2KHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                            //nolint
@@ -47064,9 +33290,7 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkAllocateMemory, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                     //nolint
 	ffi.PrepareCallInterface(&_cif_vkBeginCommandBuffer, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                           //nolint
 	ffi.PrepareCallInterface(&_cif_vkBindBufferMemory, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor})                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkBindBufferMemory2, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                //nolint
 	ffi.PrepareCallInterface(&_cif_vkBindImageMemory, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor})                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkBindImageMemory2, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                 //nolint
 	ffi.PrepareCallInterface(&_cif_vkBuildAccelerationStructuresKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                         //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdBeginDebugUtilsLabelEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                     //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdBeginQuery, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
@@ -47076,7 +33300,6 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkCmdBindDescriptorBufferEmbeddedSamplersEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                            //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdBindDescriptorBuffersEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                        //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdBindDescriptorSets, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBindDescriptorSets2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                         //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdBindIndexBuffer, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                    //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdBindIndexBuffer2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                       //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdBindPipeline, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                   //nolint
@@ -47093,17 +33316,12 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkCmdCopyAccelerationStructureKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdCopyAccelerationStructureToMemoryKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                        //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdCopyBuffer, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdCopyBuffer2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                 //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdCopyBufferToImage, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdCopyBufferToImage2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                          //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdCopyImage, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdCopyImage2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                  //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdCopyImageToBuffer, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdCopyImageToBuffer2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                          //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdCopyMemoryToAccelerationStructureKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                        //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdCopyQueryPoolResults, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor})                                                                              //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdDispatch, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDispatchBase, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                     //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdDispatchIndirect, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor})                                                                                                                                                                                                                                //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdDraw, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                     //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdDrawIndexed, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.SInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                  //nolint
@@ -47128,16 +33346,9 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkCmdNextSubpass, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                 //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdNextSubpass2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdPipelineBarrier, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdPipelineBarrier2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                            //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdPreprocessGeneratedCommandsEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                 //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdPushConstants, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdPushConstants2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdPushDescriptorSet, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdPushDescriptorSet2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdPushDescriptorSetWithTemplate, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdPushDescriptorSetWithTemplate2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                              //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdResetEvent, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdResetEvent2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                    //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdResetQueryPool, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                      //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdResolveImage, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdResolveImage2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                               //nolint
@@ -47168,9 +33379,7 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkCmdSetDepthTestEnable, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                           //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdSetDepthWriteEnable, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                          //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdSetDescriptorBufferOffsetsEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetDeviceMask, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                                //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdSetEvent, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetEvent2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                      //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdSetExtraPrimitiveOverestimationSizeEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.FloatTypeDescriptor})                                                                                                                                                                                                                                        //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdSetFrontFace, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdSetLineRasterizationModeEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                 //nolint
@@ -47212,16 +33421,11 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkCmdTraceRaysKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                     //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdUpdateBuffer, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                           //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdWaitEvents, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor}) //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdWaitEvents2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                        //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdWriteAccelerationStructuresPropertiesKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                  //nolint
 	ffi.PrepareCallInterface(&_cif_vkCmdWriteTimestamp, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdWriteTimestamp2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                    //nolint
 	ffi.PrepareCallInterface(&_cif_vkCopyAccelerationStructureKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                    //nolint
 	ffi.PrepareCallInterface(&_cif_vkCopyAccelerationStructureToMemoryKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCopyImageToImage, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkCopyImageToMemory, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                            //nolint
 	ffi.PrepareCallInterface(&_cif_vkCopyMemoryToAccelerationStructureKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCopyMemoryToImage, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                            //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateAccelerationStructureKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                     //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateBuffer, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                       //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateBufferView, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                   //nolint
@@ -47231,7 +33435,6 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkCreateDeferredOperationKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                      //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateDescriptorPool, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                               //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateDescriptorSetLayout, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateDescriptorUpdateTemplate, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                     //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateDevice, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                       //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateEvent, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                        //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateFence, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                        //nolint
@@ -47246,13 +33449,11 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkCreateMetalSurfaceEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                              //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreatePipelineCache, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreatePipelineLayout, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreatePrivateDataSlot, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                              //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateQueryPool, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                    //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateRayTracingPipelinesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                 //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateRenderPass, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateRenderPass2, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                  //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateSampler, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateSamplerYcbcrConversion, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                       //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateSemaphore, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                    //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateShaderModule, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                 //nolint
 	ffi.PrepareCallInterface(&_cif_vkCreateShadersEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                       //nolint
@@ -47270,7 +33471,6 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkDestroyDeferredOperationKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                       //nolint
 	ffi.PrepareCallInterface(&_cif_vkDestroyDescriptorPool, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                             //nolint
 	ffi.PrepareCallInterface(&_cif_vkDestroyDescriptorSetLayout, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyDescriptorUpdateTemplate, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkDestroyDevice, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                  //nolint
 	ffi.PrepareCallInterface(&_cif_vkDestroyEvent, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                      //nolint
 	ffi.PrepareCallInterface(&_cif_vkDestroyFence, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                      //nolint
@@ -47283,11 +33483,9 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkDestroyPipeline, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkDestroyPipelineCache, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                              //nolint
 	ffi.PrepareCallInterface(&_cif_vkDestroyPipelineLayout, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyPrivateDataSlot, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                            //nolint
 	ffi.PrepareCallInterface(&_cif_vkDestroyQueryPool, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                  //nolint
 	ffi.PrepareCallInterface(&_cif_vkDestroyRenderPass, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                 //nolint
 	ffi.PrepareCallInterface(&_cif_vkDestroySampler, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroySamplerYcbcrConversion, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                     //nolint
 	ffi.PrepareCallInterface(&_cif_vkDestroySemaphore, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                  //nolint
 	ffi.PrepareCallInterface(&_cif_vkDestroyShaderEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                  //nolint
 	ffi.PrepareCallInterface(&_cif_vkDestroyShaderModule, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                               //nolint
@@ -47299,8 +33497,6 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkEnumerateDeviceLayerProperties, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                  //nolint
 	ffi.PrepareCallInterface(&_cif_vkEnumerateInstanceExtensionProperties, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                            //nolint
 	ffi.PrepareCallInterface(&_cif_vkEnumerateInstanceLayerProperties, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkEnumerateInstanceVersion, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkEnumeratePhysicalDeviceGroups, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkEnumeratePhysicalDevices, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                        //nolint
 	ffi.PrepareCallInterface(&_cif_vkFlushMappedMemoryRanges, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                          //nolint
 	ffi.PrepareCallInterface(&_cif_vkFreeCommandBuffers, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                    //nolint
@@ -47309,71 +33505,45 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkGetAccelerationStructureBuildSizesKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetAccelerationStructureDeviceAddressKHR, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                    //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetBufferDeviceAddress, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                      //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetBufferMemoryRequirements, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetBufferMemoryRequirements2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetBufferOpaqueCaptureAddress, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                               //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetBufferOpaqueCaptureDescriptorDataEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetDeferredOperationMaxConcurrencyKHR, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                       //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetDeferredOperationResultKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetDescriptorEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                     //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetDescriptorSetLayoutBindingOffsetEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetDescriptorSetLayoutSizeEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDescriptorSetLayoutSupport, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                     //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetDeviceAccelerationStructureCompatibilityKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceBufferMemoryRequirements, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceGroupPeerMemoryFeatures, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                           //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetDeviceGroupPresentCapabilitiesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                         //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetDeviceGroupSurfacePresentModesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceImageMemoryRequirements, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceImageSparseMemoryRequirements, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceImageSubresourceLayout, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetDeviceMemoryCommitment, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceMemoryOpaqueCaptureAddress, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                         //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetDeviceProcAddr, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                           //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetDeviceQueue, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceQueue2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetEventStatus, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                               //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetFenceStatus, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                               //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetGeneratedCommandsMemoryRequirementsEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetImageMemoryRequirements, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetImageMemoryRequirements2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                       //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetImageOpaqueCaptureDescriptorDataEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                          //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetImageSparseMemoryRequirements, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetImageSparseMemoryRequirements2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                    //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetImageSubresourceLayout, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetImageSubresourceLayout2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                           //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetImageViewOpaqueCaptureDescriptorDataEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                      //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetInstanceProcAddr, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceExternalBufferProperties, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceExternalFenceProperties, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceExternalSemaphoreProperties, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                      //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceFeatures, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceFeatures2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                     //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceFormatProperties, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceFormatProperties2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceImageFormatProperties, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceImageFormatProperties2, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceMemoryProperties, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceMemoryProperties2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                             //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDevicePresentRectanglesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                              //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceProperties, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceProperties2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceQueueFamilyProperties, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceQueueFamilyProperties2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                           //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceSparseImageFormatProperties, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceSparseImageFormatProperties2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                        //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceSurfaceCapabilitiesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceSurfaceFormatsKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                 //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceSurfacePresentModesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                            //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceSurfaceSupportKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceToolProperties, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                 //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceWaylandPresentationSupportKHR, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                  //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceWin32PresentationSupportKHR, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                 //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceXcbPresentationSupportKHR, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                         //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceXlibPresentationSupportKHR, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                        //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetPipelineCacheData, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPrivateData, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                           //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetQueryPoolResults, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor})                                                                               //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                            //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetRayTracingShaderGroupHandlesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                         //nolint
@@ -47381,12 +33551,10 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkGetRenderAreaGranularity, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                          //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetRenderingAreaGranularity, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                       //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetSamplerOpaqueCaptureDescriptorDataEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetSemaphoreCounterValue, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                        //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetShaderBinaryDataEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                             //nolint
 	ffi.PrepareCallInterface(&_cif_vkGetSwapchainImagesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                              //nolint
 	ffi.PrepareCallInterface(&_cif_vkInvalidateMappedMemoryRanges, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                     //nolint
 	ffi.PrepareCallInterface(&_cif_vkMapMemory, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkMapMemory2, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                      //nolint
 	ffi.PrepareCallInterface(&_cif_vkMergePipelineCaches, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                 //nolint
 	ffi.PrepareCallInterface(&_cif_vkQueueBeginDebugUtilsLabelEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkQueueBindSparse, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                     //nolint
@@ -47394,31 +33562,22 @@ func Initialize() error {
 	ffi.PrepareCallInterface(&_cif_vkQueueInsertDebugUtilsLabelEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                  //nolint
 	ffi.PrepareCallInterface(&_cif_vkQueuePresentKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                              //nolint
 	ffi.PrepareCallInterface(&_cif_vkQueueSubmit, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkQueueSubmit2, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                        //nolint
 	ffi.PrepareCallInterface(&_cif_vkQueueWaitIdle, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                                             //nolint
 	ffi.PrepareCallInterface(&_cif_vkResetCommandBuffer, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                           //nolint
 	ffi.PrepareCallInterface(&_cif_vkResetCommandPool, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                //nolint
 	ffi.PrepareCallInterface(&_cif_vkResetDescriptorPool, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                             //nolint
 	ffi.PrepareCallInterface(&_cif_vkResetEvent, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkResetFences, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkResetQueryPool, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                         //nolint
 	ffi.PrepareCallInterface(&_cif_vkSetDebugUtilsObjectNameEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkSetDebugUtilsObjectTagEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                    //nolint
 	ffi.PrepareCallInterface(&_cif_vkSetDeviceMemoryPriorityEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.FloatTypeDescriptor})                                                                                                                                                                                                                          //nolint
 	ffi.PrepareCallInterface(&_cif_vkSetEvent, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkSetPrivateData, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor})                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkSignalSemaphore, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                              //nolint
 	ffi.PrepareCallInterface(&_cif_vkSubmitDebugUtilsMessageEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkTransitionImageLayout, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkTrimCommandPool, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkUnmapMemory, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkUnmapMemory2, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkUpdateDescriptorSetWithTemplate, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                      //nolint
 	ffi.PrepareCallInterface(&_cif_vkUpdateDescriptorSets, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                      //nolint
 	ffi.PrepareCallInterface(&_cif_vkUpdateIndirectExecutionSetPipelineEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                 //nolint
 	ffi.PrepareCallInterface(&_cif_vkUpdateIndirectExecutionSetShaderEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkWaitForFences, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt64TypeDescriptor})                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkWaitSemaphores, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor})                                                                                                                                                                                                                                   //nolint
 	ffi.PrepareCallInterface(&_cif_vkWriteAccelerationStructuresPropertiesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                     //nolint
 
 	return nil
