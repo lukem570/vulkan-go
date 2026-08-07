@@ -4943,6 +4943,9 @@ const (
 	StructureTypePhysicalDeviceComputeOccupancyPriorityFeaturesNV                StructureType = 1000645001
 	StructureTypePhysicalDeviceMaintenance11FeaturesKHR                          StructureType = 1000657000
 	StructureTypeQueueFamilyOptimalImageTransferGranularityPropertiesKHR         StructureType = 1000657001
+	StructureTypePhysicalDeviceCooperativeMatrixMaintenance1FeaturesEXT          StructureType = 1000659000
+	StructureTypePhysicalDeviceCooperativeMatrixInfo2EXT                         StructureType = 1000659001
+	StructureTypeCooperativeMatrixProperties2EXT                                 StructureType = 1000659002
 	StructureTypePhysicalDeviceShaderSubgroupPartitionedFeaturesEXT              StructureType = 1000662000
 	StructureTypeUbmSurfaceCreateInfoSEC                                         StructureType = 1000664000
 	StructureTypeFormatProperties4KHR                                            StructureType = 1000668000
