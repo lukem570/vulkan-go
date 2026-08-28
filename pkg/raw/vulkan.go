@@ -4966,6 +4966,7 @@ const (
 	StructureTypePhysicalDeviceImageTilingControlFeaturesEXT                     StructureType = 1000687000
 	StructureTypeImageTilingControlCreateInfoEXT                                 StructureType = 1000687001
 	StructureTypePhysicalDeviceCooperativeMatrixDecodeVectorFeaturesNV           StructureType = 1000689000
+	StructureTypePhysicalDevicePrivateDataBaseHandleFeaturesNV                   StructureType = 1000707000
 )
 
 type SubpassContents uint32
