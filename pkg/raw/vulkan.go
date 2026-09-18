@@ -4969,6 +4969,7 @@ const (
 	StructureTypeImageTilingControlCreateInfoEXT                                     StructureType = 1000687001
 	StructureTypePhysicalDeviceCooperativeMatrixDecodeVectorFeaturesNV               StructureType = 1000689000
 	StructureTypePhysicalDevicePrivateDataBaseHandleFeaturesNV                       StructureType = 1000707000
+	StructureTypePhysicalDeviceInfoPropertiesINTEL                                   StructureType = 1000708000
 	StructureTypePhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE   StructureType = 1000709000
 	StructureTypePhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE StructureType = 1000709001
 	StructureTypeBufferDeviceAddressAlignmentAllocateInfoVALVE                       StructureType = 1000709002
