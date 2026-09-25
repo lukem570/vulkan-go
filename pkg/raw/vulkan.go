@@ -20126,18 +20126,16 @@ type cVkShaderCreateInfoEXT struct {
 }
 
 type ShaderCreateInfoEXT struct {
-	Next                   Structure
-	Flags                  ShaderCreateFlagsEXT
-	Stage                  ShaderStageFlagBits
-	NextStage              ShaderStageFlags
-	CodeType               ShaderCodeTypeEXT
-	Code                   []byte
-	Name                   string
-	SetLayoutCount         uint32
-	SetLayouts             []*DescriptorSetLayout
-	PushConstantRangeCount uint32
-	PushConstantRanges     []PushConstantRange
-	SpecializationInfo     *SpecializationInfo
+	Next               Structure
+	Flags              ShaderCreateFlagsEXT
+	Stage              ShaderStageFlagBits
+	NextStage          ShaderStageFlags
+	CodeType           ShaderCodeTypeEXT
+	Code               []byte
+	Name               string
+	SetLayouts         []*DescriptorSetLayout
+	PushConstantRanges []PushConstantRange
+	SpecializationInfo *SpecializationInfo
 }
 
 func (s *ShaderCreateInfoEXT) GetType() StructureType {
@@ -20173,50 +20171,48 @@ func (s *ShaderCreateInfoEXT) toC() (unsafe.Pointer, func()) {
 	cancels = append(cancels, func() { pin6.Unpin(); runtime.KeepAlive(cstr5) })
 	ptr7 := unsafe.Pointer(&cstr5[0])
 	p.pName = ptr7
-	val8 := uint32(s.SetLayoutCount)
-	p.setLayoutCount = val8
-	len9 := len(s.SetLayouts)
-	var arr10 unsafe.Pointer
-	if len9 > 0 {
-		buf11 := make([]unsafe.Pointer, len9)
-		var pin12 runtime.Pinner
-		pin12.Pin(&buf11[0])
-		cancels = append(cancels, func() { pin12.Unpin(); runtime.KeepAlive(buf11) })
-		arr10 = unsafe.Pointer(&buf11[0])
-		for i13, elem14 := range s.SetLayouts {
-			var h15 unsafe.Pointer
-			if elem14 != nil {
-				h15 = elem14.handle
+	len8 := len(s.SetLayouts)
+	var arr9 unsafe.Pointer
+	if len8 > 0 {
+		buf10 := make([]unsafe.Pointer, len8)
+		var pin11 runtime.Pinner
+		pin11.Pin(&buf10[0])
+		cancels = append(cancels, func() { pin11.Unpin(); runtime.KeepAlive(buf10) })
+		arr9 = unsafe.Pointer(&buf10[0])
+		for i12, elem13 := range s.SetLayouts {
+			var h14 unsafe.Pointer
+			if elem13 != nil {
+				h14 = elem13.handle
 			}
-			buf11[i13] = h15
+			buf10[i12] = h14
 		}
 	}
-	p.pSetLayouts = arr10
-	val16 := uint32(s.PushConstantRangeCount)
-	p.pushConstantRangeCount = val16
-	len17 := len(s.PushConstantRanges)
-	var arr18 unsafe.Pointer
-	if len17 > 0 {
-		buf19 := make([]cVkPushConstantRange, len17)
-		var pin20 runtime.Pinner
-		pin20.Pin(&buf19[0])
-		cancels = append(cancels, func() { pin20.Unpin(); runtime.KeepAlive(buf19) })
-		arr18 = unsafe.Pointer(&buf19[0])
-		for i21, elem22 := range s.PushConstantRanges {
-			val23, cancel24 := elem22.toC()
-			cancels = append(cancels, cancel24)
-			cast25 := (*cVkPushConstantRange)(val23)
-			buf19[i21] = *cast25
+	p.pSetLayouts = arr9
+	p.setLayoutCount = uint32(len(s.SetLayouts))
+	len15 := len(s.PushConstantRanges)
+	var arr16 unsafe.Pointer
+	if len15 > 0 {
+		buf17 := make([]cVkPushConstantRange, len15)
+		var pin18 runtime.Pinner
+		pin18.Pin(&buf17[0])
+		cancels = append(cancels, func() { pin18.Unpin(); runtime.KeepAlive(buf17) })
+		arr16 = unsafe.Pointer(&buf17[0])
+		for i19, elem20 := range s.PushConstantRanges {
+			val21, cancel22 := elem20.toC()
+			cancels = append(cancels, cancel22)
+			cast23 := (*cVkPushConstantRange)(val21)
+			buf17[i19] = *cast23
 		}
 	}
-	p.pPushConstantRanges = arr18
-	var ptr26 unsafe.Pointer
+	p.pPushConstantRanges = arr16
+	p.pushConstantRangeCount = uint32(len(s.PushConstantRanges))
+	var ptr24 unsafe.Pointer
 	if s.SpecializationInfo != nil {
-		val27, cancel28 := s.SpecializationInfo.toC()
-		cancels = append(cancels, cancel28)
-		ptr26 = val27
+		val25, cancel26 := s.SpecializationInfo.toC()
+		cancels = append(cancels, cancel26)
+		ptr24 = val25
 	}
-	p.pSpecializationInfo = ptr26
+	p.pSpecializationInfo = ptr24
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
@@ -20236,14 +20232,12 @@ func (s *ShaderCreateInfoEXT) fromC(p *cVkShaderCreateInfoEXT) {
 	if p.pName != nil {
 		s.Name = _cGoString(p.pName)
 	}
-	s.SetLayoutCount = uint32(p.setLayoutCount)
 	if p.setLayoutCount > 0 && p.pSetLayouts != nil {
 		s.SetLayouts = make([]*DescriptorSetLayout, p.setLayoutCount)
 		for i0 := range s.SetLayouts {
 			s.SetLayouts[i0] = &DescriptorSetLayout{handle: (*[1 << 30]unsafe.Pointer)(unsafe.Pointer(p.pSetLayouts))[i0]}
 		}
 	}
-	s.PushConstantRangeCount = uint32(p.pushConstantRangeCount)
 	if p.pushConstantRangeCount > 0 && p.pPushConstantRanges != nil {
 		s.PushConstantRanges = make([]PushConstantRange, p.pushConstantRangeCount)
 		for i2 := range s.PushConstantRanges {
