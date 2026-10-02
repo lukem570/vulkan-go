@@ -4957,6 +4957,7 @@ const (
 	StructureTypePhysicalDeviceExtendedFlagsFeaturesKHR                              StructureType = 1000668004
 	StructureTypeImageStencilUsage2CreateInfoKHR                                     StructureType = 1000668005
 	StructureTypeSharedPresentSurfaceCapabilities2KHR                                StructureType = 1000668006
+	StructureTypePhysicalDeviceCooperativeMatrixLayoutsFeaturesARM                   StructureType = 1000670000
 	StructureTypePhysicalDeviceShaderOcpMicroscalingTypesFeaturesEXT                 StructureType = 1000672000
 	StructureTypePhysicalDeviceShaderMixedFloatDotProductFeaturesVALVE               StructureType = 1000673000
 	StructureTypePhysicalDeviceThrottleHintFeaturesSEC                               StructureType = 1000674000
