@@ -1,8 +1,11 @@
 # vulkan-go
 
 Unofficial Go bindings for Vulkan, automatically generated from `vk.xml`.
-For changes made to the api check (api-changes.md)[docs/api-changes.md].
-Vulkan-go also has a no cgo mode.
+For changes made to the API, see [api-changes.md](docs/api-changes.md).
+
+CGo-free by default. Building with `CGO_ENABLED=1` switches to a libffi backend
+instead, so the bindings also work inside a program that needs cgo — see
+[backends.md](docs/backends.md).
 
 ## Installing
 
@@ -20,8 +23,8 @@ if err := vk.Initialize(); err != nil {
 
 instance, err := vk.CreateInstance(&vk.InstanceCreateInfo{
 	ApplicationInfo: &vk.ApplicationInfo{
-    ApplicationName: "my-app",
-    ApiVersion:      vk.MakeAPIVersion(0, 1, 4, 0),
+		ApplicationName: "my-app",
+		ApiVersion:      vk.MakeAPIVersion(0, 1, 4, 0),
 	},
 }, nil)
 if err != nil {
@@ -37,10 +40,10 @@ props := physDev.GetProperties()
 log.Println(vk.GoString(props.DeviceName[:]))
 
 device, err := physDev.CreateDevice(&vk.DeviceCreateInfo{
-    QueueCreateInfos: []vk.DeviceQueueCreateInfo{{
-        QueueFamilyIndex: 0,
-        QueuePriorities:  []float32{1.0},
-    }},
+	QueueCreateInfos: []vk.DeviceQueueCreateInfo{{
+		QueueFamilyIndex: 0,
+		QueuePriorities:  []float32{1.0},
+	}},
 }, nil)
 if err != nil {
 	log.Fatal(err)
