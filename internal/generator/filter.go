@@ -28,6 +28,15 @@ type Enabled struct {
 // Vulkan version and extensions.
 func Filter(r *Registry, c *Config) *ReducedRegistry {
 	f := &filter{registry: r, config: c}
+
+	// Drop enumerants belonging to other API variants before anything else
+	// looks at them. vk.xml is a combined registry: it carries the vulkansc
+	// feature and every reserved-but-disabled extension alongside the real
+	// ones, and none of those appear in the Vulkan headers.
+	for _, e := range r.Enums {
+		e.FilterAPI(c.API)
+	}
+
 	f.buildIndexes()
 
 	enabled := &Enabled{

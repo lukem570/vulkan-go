@@ -68,23 +68,23 @@ type CommandParam struct {
 
 // GenerateCIFDecl emits the CIF var and function pointer var (global commands only).
 func (c *GoCommand) GenerateCIFDecl() string {
-	return fmt.Sprintf("var _cif_%s types.CallInterface\nvar _fn_%s unsafe.Pointer\n", c.CName, c.CName)
+	return fmt.Sprintf("var _cif_%s ffi.CIF\nvar _fn_%s unsafe.Pointer\n", c.CName, c.CName)
 }
 
 // GenerateCIFOnly emits just the CIF var (for instance/device commands whose fn ptr lives in a dispatch table).
 func (c *GoCommand) GenerateCIFOnly() string {
-	return fmt.Sprintf("var _cif_%s types.CallInterface\n", c.CName)
+	return fmt.Sprintf("var _cif_%s ffi.CIF\n", c.CName)
 }
 
 // GenerateCIFPrepare emits only the ffi.PrepareCallInterface line for a command.
 func (c *GoCommand) GenerateCIFPrepare() string {
-	retDesc := goffiReturnDesc(c.CReturnType)
+	retDesc := abiReturnDesc(c.CReturnType)
 	var argDescs []string
 	for _, p := range c.CParams {
-		argDescs = append(argDescs, cParamGoffiDesc(p.Type))
+		argDescs = append(argDescs, cParamABIDesc(p.Type))
 	}
 	argDescStr := strings.Join(argDescs, ", ")
-	return fmt.Sprintf("\tffi.PrepareCallInterface(&_cif_%s, types.DefaultCall, %s, []*types.TypeDescriptor{%s}) //nolint\n",
+	return fmt.Sprintf("\tffi.Prepare(&_cif_%s, %s, []ffi.Type{%s}) //nolint\n",
 		c.CName, retDesc, argDescStr)
 }
 
@@ -204,6 +204,7 @@ func (c *GoCommand) GenerateWrapper(sTypes map[string]string) string {
 	}
 
 	// Output param slots
+	var outBoxes [][2]string
 	for _, op := range c.OutParams {
 		varName := sanitizeIdent(op.Name) + "Out"
 		if op.IsArray {
@@ -225,17 +226,29 @@ func (c *GoCommand) GenerateWrapper(sTypes map[string]string) string {
 			default:
 				cType = op.Type.CName()
 			}
-			b.WriteString(fmt.Sprintf("\tvar %s %s\n", varName, cType))
+			// Storage the driver writes through must not live on the
+			// goroutine stack: a Go callback firing during the call (a debug
+			// messenger, say) can grow and relocate that stack, leaving the
+			// driver writing to an address that is no longer ours. new() plus
+			// Pin puts it on the heap and keeps it there.
+			boxVar := "_" + varName + "Box"
+			b.WriteString(fmt.Sprintf("\t%s := new(%s)\n", boxVar, cType))
+			b.WriteString(fmt.Sprintf("\tvar _%sPin runtime.Pinner\n", varName))
+			b.WriteString(fmt.Sprintf("\t_%sPin.Pin(%s)\n", varName, boxVar))
+			b.WriteString(fmt.Sprintf("\tdefer _%sPin.Unpin()\n", varName))
+			b.WriteString(fmt.Sprintf("\t%s := %s\n", varName, "*"+boxVar))
+			_ = varName
 			// Pre-set sType for struct outputs that need it
 			if st, ok := op.Type.(*StructType); ok {
 				if stype, ok := sTypes[st.Name]; ok {
-					b.WriteString(fmt.Sprintf("\t%s.sType = int32(%s)\n", varName, stype))
+					b.WriteString(fmt.Sprintf("\t%s.sType = int32(%s)\n", boxVar, stype))
 				}
 			}
-			// Slot holds &varName so goffi passes the pointer-to-storage to C.
 			slotVar := "_" + varName + "Slot"
-			b.WriteString(fmt.Sprintf("\t%s := unsafe.Pointer(&%s)\n", slotVar, varName))
+			b.WriteString(fmt.Sprintf("\t%s := unsafe.Pointer(%s)\n", slotVar, boxVar))
 			ffiArgExprs = append(ffiArgExprs, "unsafe.Pointer(&"+slotVar+")")
+			// After the call, read the value back out of the box.
+			outBoxes = append(outBoxes, [2]string{varName, boxVar})
 		}
 	}
 
@@ -246,14 +259,19 @@ func (c *GoCommand) GenerateWrapper(sTypes map[string]string) string {
 			retCType = c.ReturnType.CName()
 		}
 		b.WriteString(fmt.Sprintf("\tvar _ret %s\n", retCType))
-		b.WriteString(fmt.Sprintf("\tffi.CallFunction(&_cif_%s, %s, unsafe.Pointer(&_ret), []unsafe.Pointer{\n", c.CName, fnExpr)) //nolint
+		b.WriteString(fmt.Sprintf("\tffi.Call(&_cif_%s, %s, unsafe.Pointer(&_ret), []unsafe.Pointer{\n", c.CName, fnExpr)) //nolint
 	} else {
-		b.WriteString(fmt.Sprintf("\tffi.CallFunction(&_cif_%s, %s, nil, []unsafe.Pointer{\n", c.CName, fnExpr)) //nolint
+		b.WriteString(fmt.Sprintf("\tffi.Call(&_cif_%s, %s, nil, []unsafe.Pointer{\n", c.CName, fnExpr)) //nolint
 	}
 	for _, ae := range ffiArgExprs {
 		b.WriteString("\t\t" + ae + ",\n")
 	}
 	b.WriteString("\t})\n")
+
+	// Read heap-boxed out params back into their locals.
+	for _, box := range outBoxes {
+		b.WriteString(fmt.Sprintf("\t%s = *%s\n", box[0], box[1]))
+	}
 
 	// Error check
 	if c.HasError {
@@ -444,8 +462,11 @@ func (c *GoCommand) generateEnumerateWrapper() string {
 	}
 
 	// Slots for count and array params
-	b.WriteString("\tvar _count uint32\n")
-	b.WriteString("\t_countSlot := unsafe.Pointer(&_count)\n")
+	b.WriteString("\t_countBox := new(uint32)\n")
+	b.WriteString("\tvar _countPin runtime.Pinner\n")
+	b.WriteString("\t_countPin.Pin(_countBox)\n")
+	b.WriteString("\tdefer _countPin.Unpin()\n")
+	b.WriteString("\t_countSlot := unsafe.Pointer(_countBox)\n")
 	b.WriteString("\tvar _nilSlot unsafe.Pointer\n")
 
 	var retDecl, retPtr string
@@ -461,7 +482,7 @@ func (c *GoCommand) generateEnumerateWrapper() string {
 
 	// First call: count only
 	firstArgs := append(append([]string{}, inputArgExprs...), "unsafe.Pointer(&_countSlot)", "unsafe.Pointer(&_nilSlot)")
-	b.WriteString(fmt.Sprintf("\tffi.CallFunction(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
+	b.WriteString(fmt.Sprintf("\tffi.Call(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
 	for _, ae := range firstArgs {
 		b.WriteString("\t\t" + ae + ",\n")
 	}
@@ -472,7 +493,7 @@ func (c *GoCommand) generateEnumerateWrapper() string {
 		b.WriteString("\t\treturn nil, Result(_ret)\n")
 		b.WriteString("\t}\n")
 	}
-	b.WriteString("\tif _count == 0 {\n")
+	b.WriteString("\t_count := *_countBox\n\tif _count == 0 {\n")
 	if c.HasError {
 		b.WriteString("\t\treturn nil, nil\n")
 	} else {
@@ -489,7 +510,7 @@ func (c *GoCommand) generateEnumerateWrapper() string {
 
 	// Second call: fill array
 	secondArgs := append(append([]string{}, inputArgExprs...), "unsafe.Pointer(&_countSlot)", "unsafe.Pointer(&_arrSlot)")
-	b.WriteString(fmt.Sprintf("\tffi.CallFunction(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
+	b.WriteString(fmt.Sprintf("\tffi.Call(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
 	for _, ae := range secondArgs {
 		b.WriteString("\t\t" + ae + ",\n")
 	}
@@ -501,8 +522,12 @@ func (c *GoCommand) generateEnumerateWrapper() string {
 		b.WriteString("\t}\n\n")
 	}
 
-	// Convert C array to Go slice
+	// Convert C array to Go slice. The second call can report fewer items
+	// than the first, so take the count the driver left in the box.
+	b.WriteString("\t_count = *_countBox\n")
+	b.WriteString(fmt.Sprintf("\tif int(_count) > len(_arr) {\n\t\t_count = uint32(len(_arr))\n\t}\n"))
 	b.WriteString(fmt.Sprintf("\tout := make(%s, int(_count))\n", sliceType))
+	b.WriteString("\t_arr = _arr[:_count]\n")
 	b.WriteString("\tfor i, v := range _arr {\n")
 	convG := &CodeGen{varIndex: g.varIndex}
 	goVal := ep.ElementType.GenerateFromC(convG, "v")
@@ -582,8 +607,11 @@ func (c *GoCommand) generateByteDataWrapper() string {
 	}
 
 	// First call: get data size
-	b.WriteString("\tvar _dataSize uintptr\n")
-	b.WriteString("\t_dataSizeSlot := unsafe.Pointer(&_dataSize)\n")
+	b.WriteString("\t_dataSizeBox := new(uintptr)\n")
+	b.WriteString("\tvar _dataSizePin runtime.Pinner\n")
+	b.WriteString("\t_dataSizePin.Pin(_dataSizeBox)\n")
+	b.WriteString("\tdefer _dataSizePin.Unpin()\n")
+	b.WriteString("\t_dataSizeSlot := unsafe.Pointer(_dataSizeBox)\n")
 	b.WriteString("\tvar _nilSlot unsafe.Pointer\n")
 
 	var retPtr string
@@ -595,7 +623,7 @@ func (c *GoCommand) generateByteDataWrapper() string {
 	}
 
 	firstArgs := append(append([]string{}, inputArgExprs...), "unsafe.Pointer(&_dataSizeSlot)", "unsafe.Pointer(&_nilSlot)")
-	b.WriteString(fmt.Sprintf("\tffi.CallFunction(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
+	b.WriteString(fmt.Sprintf("\tffi.Call(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
 	for _, ae := range firstArgs {
 		b.WriteString("\t\t" + ae + ",\n")
 	}
@@ -606,6 +634,7 @@ func (c *GoCommand) generateByteDataWrapper() string {
 		b.WriteString("\t\treturn nil, Result(_ret)\n")
 		b.WriteString("\t}\n")
 	}
+	b.WriteString("\t_dataSize := *_dataSizeBox\n")
 	b.WriteString("\tif _dataSize == 0 {\n")
 	if c.HasError {
 		b.WriteString("\t\treturn nil, nil\n")
@@ -623,7 +652,7 @@ func (c *GoCommand) generateByteDataWrapper() string {
 
 	// Second call: fill buffer
 	secondArgs := append(append([]string{}, inputArgExprs...), "unsafe.Pointer(&_dataSizeSlot)", "unsafe.Pointer(&_bufSlot)")
-	b.WriteString(fmt.Sprintf("\tffi.CallFunction(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
+	b.WriteString(fmt.Sprintf("\tffi.Call(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
 	for _, ae := range secondArgs {
 		b.WriteString("\t\t" + ae + ",\n")
 	}

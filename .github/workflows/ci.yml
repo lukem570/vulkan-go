@@ -1,0 +1,112 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - road-to-v1
+
+# A new push to the same ref makes an in-flight run irrelevant.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # goffi is incompatible with CGo, and a stray go.work must not shadow the
+  # module. Both are non-negotiable for this repository.
+  CGO_ENABLED: "0"
+  GOWORK: "off"
+
+jobs:
+  test:
+    name: test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # One platform failing should not hide the result on the others: each
+      # runner verifies a different set of platform structs.
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # vk.xml for the generator, include/ for the ABI probe.
+          submodules: recursive
+
+      - uses: actions/setup-go@v5
+        with:
+          # go.mod is the single source of truth for the toolchain version.
+          go-version-file: go.mod
+
+      # The ABI probe compiles against the real platform headers. Without these
+      # the xlib, xcb and wayland groups skip themselves rather than verifying
+      # anything, so install them to get actual coverage.
+      - name: Install platform development headers
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libx11-dev libxcb1-dev libwayland-dev
+
+      - name: Generate bindings
+        run: go run ./cmd/vkgen
+
+      # Catches the failure mode where the generator is changed but v1/ is not
+      # regenerated, which otherwise goes unnoticed until someone else runs
+      # `task generate` and gets an unrelated diff. Linux only: the matrix
+      # runners differ in line-ending handling.
+      - name: Check committed bindings are up to date
+        if: runner.os == 'Linux'
+        run: |
+          if [ -n "$(git status --porcelain v1/)" ]; then
+            echo "::error::v1/ does not match the generator's current output."
+            echo "Run 'task generate' and commit the result."
+            git status --porcelain v1/
+            git diff -- v1/ | head -n 200
+            exit 1
+          fi
+
+      - name: Vet
+        run: go vet ./internal/... ./cmd/... ./v1/...
+
+      # examples/ is excluded: it go:embeds test.spv, which is gitignored and
+      # only exists once glslc has run. `task test:compute` covers that path,
+      # and it needs a GPU.
+      - name: Test
+        run: go test ./internal/... ./v1/...
+
+  cross-compile:
+    name: cross-compile
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Generate bindings
+        run: go run ./cmd/vkgen
+
+      # The per-platform generated files are split by build tag, so a
+      # regression in one of them is invisible to a build on any other
+      # platform. This is the cheapest way to compile all of them.
+      - name: Build every supported target
+        run: |
+          for target in \
+            linux/amd64 linux/arm64 \
+            windows/amd64 windows/arm64 \
+            darwin/amd64 darwin/arm64
+          do
+            echo "::group::$target"
+            GOOS="${target%/*}" GOARCH="${target#*/}" go build ./v1
+            echo "::endgroup::"
+          done

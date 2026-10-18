@@ -1,0 +1,256 @@
+
+type instanceTable struct {
+}
+
+type deviceTable struct {
+}
+
+type Result uint32
+
+const (
+	Success Result = 0
+)
+
+func (v Result) Error() string {
+	switch v {
+	case Success:
+		return "Success"
+	default:
+		return fmt.Sprintf("Result(%d)", int(v))
+	}
+}
+
+type cVkGoldenHolder struct {
+	tag     uint8
+	_pad0   [3]byte
+	payload cVkGoldenUnion
+	trailer uint32
+}
+
+type GoldenHolder struct {
+	Tag     uint8
+	Payload GoldenUnion
+	Trailer uint32
+}
+
+func (s *GoldenHolder) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := new(cVkGoldenHolder)
+	val0 := uint8(s.Tag)
+	p.tag = val0
+	val1, cancel2 := s.Payload.toC()
+	cancels = append(cancels, cancel2)
+	cast3 := (*cVkGoldenUnion)(val1)
+	p.payload = *cast3
+	val4 := uint32(s.Trailer)
+	p.trailer = val4
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+	}
+}
+
+func (s *GoldenHolder) fromC(p *cVkGoldenHolder) {
+	s.Tag = uint8(p.tag)
+	s.Payload.fromC(&p.payload)
+	s.Trailer = uint32(p.trailer)
+}
+
+type cVkGoldenIdentity struct {
+	uuid       [16]uint8
+	generation uint32
+}
+
+type GoldenIdentity struct {
+	Uuid       [16]uint8
+	Generation uint32
+}
+
+func (s *GoldenIdentity) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := new(cVkGoldenIdentity)
+	var arr0 [16]uint8
+	for i1, elem2 := range s.Uuid {
+		val3 := uint8(elem2)
+		arr0[i1] = val3
+	}
+	p.uuid = arr0
+	val4 := uint32(s.Generation)
+	p.generation = val4
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+	}
+}
+
+func (s *GoldenIdentity) fromC(p *cVkGoldenIdentity) {
+	for _i := range s.Uuid {
+		s.Uuid[_i] = uint8(p.uuid[_i])
+	}
+	s.Generation = uint32(p.generation)
+}
+
+type cVkGoldenInstance struct {
+	transform cVkGoldenTransform
+	_bitpack0 uint32
+	reference uint64
+}
+
+type GoldenInstance struct {
+	Transform           GoldenTransform
+	InstanceCustomIndex uint32
+	Mask                uint32
+	Reference           uint64
+}
+
+func (s *GoldenInstance) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := new(cVkGoldenInstance)
+	val0, cancel1 := s.Transform.toC()
+	cancels = append(cancels, cancel1)
+	cast2 := (*cVkGoldenTransform)(val0)
+	p.transform = *cast2
+	p._bitpack0 |= (uint32(s.InstanceCustomIndex) & 0xffffff) << 0
+	p._bitpack0 |= (uint32(s.Mask) & 0xff) << 24
+	val3 := uint64(s.Reference)
+	p.reference = val3
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+	}
+}
+
+func (s *GoldenInstance) fromC(p *cVkGoldenInstance) {
+	s.Transform.fromC(&p.transform)
+	s.InstanceCustomIndex = uint32((p._bitpack0 >> 0) & 0xffffff)
+	s.Mask = uint32((p._bitpack0 >> 24) & 0xff)
+	s.Reference = uint64(p.reference)
+}
+
+type cVkGoldenTransform struct {
+	matrix [3][4]float32
+}
+
+type GoldenTransform struct {
+	Matrix [3][4]float32
+}
+
+func (s *GoldenTransform) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := new(cVkGoldenTransform)
+	var arr0 [3][4]float32
+	for i1, elem2 := range s.Matrix {
+		var arr3 [4]float32
+		for i4, elem5 := range elem2 {
+			val6 := float32(elem5)
+			arr3[i4] = val6
+		}
+		arr0[i1] = arr3
+	}
+	p.matrix = arr0
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+	}
+}
+
+func (s *GoldenTransform) fromC(p *cVkGoldenTransform) {
+	for _i := range s.Matrix {
+		for _j := range s.Matrix[_i] {
+			s.Matrix[_i][_j] = float32(p.matrix[_i][_j])
+		}
+	}
+}
+
+type cVkGoldenUnion [16]byte
+
+type GoldenUnion [16]byte
+
+func NewGoldenUnionFloat32(val [4]float32) GoldenUnion {
+	var u GoldenUnion
+	*(*[4]float32)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func NewGoldenUnionInt32(val [4]int32) GoldenUnion {
+	var u GoldenUnion
+	*(*[4]int32)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func NewGoldenUnionUint32(val [4]uint32) GoldenUnion {
+	var u GoldenUnion
+	*(*[4]uint32)(unsafe.Pointer(&u[0])) = val
+	return u
+}
+
+func (u *GoldenUnion) Float32() [4]float32 {
+	return *(*[4]float32)(unsafe.Pointer(&u[0]))
+}
+
+func (u *GoldenUnion) Int32() [4]int32 {
+	return *(*[4]int32)(unsafe.Pointer(&u[0]))
+}
+
+func (u *GoldenUnion) Uint32() [4]uint32 {
+	return *(*[4]uint32)(unsafe.Pointer(&u[0]))
+}
+
+func (s *GoldenUnion) toC() (unsafe.Pointer, func()) {
+	p := new(cVkGoldenUnion)
+	copy((*p)[:], s[:])
+	return unsafe.Pointer(p), func() {}
+}
+
+func (s *GoldenUnion) fromC(p *cVkGoldenUnion) {
+	copy(s[:], (*p)[:])
+}
+
+// ---------------------------------------------------------------------------
+// Handle cleanups
+//
+// Each handle is destroyed by the garbage collector through a runtime.AddCleanup
+// registered at creation. Cleanup arguments hold the parent handle so parents
+// outlive their children, and never the handle being destroyed.
+// ---------------------------------------------------------------------------
+
+func _initInstanceTable(handle unsafe.Pointer) *instanceTable {
+	_vkGetDeviceProcAddr = _loadProc(handle, "vkGetDeviceProcAddr")
+	t := &instanceTable{}
+	return t
+}
+
+func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
+	t := &deviceTable{}
+	return t
+}
+
+// Initialize loads the Vulkan library and global function pointers.
+// Must be called before any other Vulkan function.
+// Instance and device function pointers are loaded automatically
+// by CreateInstance and CreateDevice respectively.
+func Initialize() error {
+	lib, err := ffi.LoadLibrary(_vulkanLibName())
+	if err != nil {
+		return fmt.Errorf("vulkan: %w", err)
+	}
+	_vkLib = lib
+
+	gipaFn, err := ffi.Symbol(lib, "vkGetInstanceProcAddr")
+	if err != nil {
+		return fmt.Errorf("vulkan: %w", err)
+	}
+	_vkGetInstanceProcAddr = gipaFn
+	ffi.Prepare(&_cif_vkGetInstanceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer}) //nolint
+	ffi.Prepare(&_cif_vkGetDeviceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer})   //nolint
+
+	// Load global commands
+
+	// Prepare all call interfaces
+
+	return nil
+}

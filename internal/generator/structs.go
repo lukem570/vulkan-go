@@ -64,29 +64,41 @@ func (s *Structured) bitfieldMap() map[string]bitpackEntry {
 	return result
 }
 
-// GenerateCLayoutStruct emits the unexported cVkFoo struct (or [N]byte for unions)
-// that mirrors the C memory layout used for FFI calls.
-func (s *Structured) GenerateCLayoutStruct(structs map[string]*Structured) string {
-	if s == nil {
-		return ""
-	}
-	if s.IsUnion {
-		sz := computeUnionLayoutSize(s, structs)
-		return fmt.Sprintf("type c%s [%d]byte\n\n", s.CName, sz)
+// cLayoutField is one field of the emitted cVkFoo struct, in declaration order.
+//
+// CName is the corresponding member name in the real C struct, or "" for
+// synthetic fields that have no C counterpart: explicit padding and the uint32
+// words that bitfield members are folded into. Synthetic fields have no
+// offsetof() to compare against, so ABI checks skip them.
+type cLayoutField struct {
+	GoName string
+	GoType string
+	CName  string
+}
+
+// cLayoutFields returns the fields of the cVkFoo struct in declaration order.
+//
+// This is the single source of truth for the C-layout struct: both
+// GenerateCLayoutStruct and the ABI conformance data are derived from it, so
+// the two cannot disagree about field order, padding, or bitfield packing.
+func (s *Structured) cLayoutFields(structs map[string]*Structured) []cLayoutField {
+	if s == nil || s.IsUnion {
+		return nil
 	}
 
-	var b strings.Builder
-	b.WriteString(fmt.Sprintf("type c%s struct {\n", s.CName))
+	var fields []cLayoutField
 
 	// Track byte offset to detect where explicit padding is needed.
 	// Go aligns primitives and non-union structs automatically, but union fields
 	// are represented as [N]byte (alignment 1), so Go won't pad before them.
 	offset := 0
 	if s.HasSType {
-		b.WriteString("\tsType int32\n")
-		// sType int32 at offset 0 (size 4), then pNext unsafe.Pointer
+		// sType int32 at offset 0 (size 4), then pNext unsafe.Pointer.
 		// Go inserts 4 bytes of implicit padding to align pNext to 8.
-		b.WriteString("\tpNext unsafe.Pointer\n")
+		fields = append(fields,
+			cLayoutField{GoName: "sType", GoType: "int32", CName: "sType"},
+			cLayoutField{GoName: "pNext", GoType: "unsafe.Pointer", CName: "pNext"},
+		)
 		offset = 16
 	}
 
@@ -117,7 +129,10 @@ func (s *Structured) GenerateCLayoutStruct(structs map[string]*Structured) strin
 			if cAlign > goAlign {
 				cOffset := alignUpInt(offset, cAlign)
 				if gap := cOffset - goOffset; gap > 0 {
-					b.WriteString(fmt.Sprintf("\t_pad%d [%d]byte\n", padCount, gap))
+					fields = append(fields, cLayoutField{
+						GoName: fmt.Sprintf("_pad%d", padCount),
+						GoType: fmt.Sprintf("[%d]byte", gap),
+					})
 					padCount++
 				}
 				offset = cOffset
@@ -125,8 +140,11 @@ func (s *Structured) GenerateCLayoutStruct(structs map[string]*Structured) strin
 				offset = goOffset
 			}
 
-			fieldName := sanitizeCField(f.CName)
-			b.WriteString(fmt.Sprintf("\t%s %s\n", fieldName, f.Type.CName()))
+			fields = append(fields, cLayoutField{
+				GoName: sanitizeCField(f.CName),
+				GoType: f.Type.CName(),
+				CName:  f.CName,
+			})
 			offset += fieldTypeLayoutSize(f.Type, structs)
 			continue
 		}
@@ -142,11 +160,30 @@ func (s *Structured) GenerateCLayoutStruct(structs map[string]*Structured) strin
 		packName := fmt.Sprintf("_bitpack%d", packIdx)
 		if !emittedPacks[packName] {
 			emittedPacks[packName] = true
-			b.WriteString(fmt.Sprintf("\t%s uint32\n", packName))
+			fields = append(fields, cLayoutField{GoName: packName, GoType: "uint32"})
 		}
 		bitOffset += f.BitWidth
 	}
 
+	return fields
+}
+
+// GenerateCLayoutStruct emits the unexported cVkFoo struct (or [N]byte for unions)
+// that mirrors the C memory layout used for FFI calls.
+func (s *Structured) GenerateCLayoutStruct(structs map[string]*Structured) string {
+	if s == nil {
+		return ""
+	}
+	if s.IsUnion {
+		sz := computeUnionLayoutSize(s, structs)
+		return fmt.Sprintf("type c%s [%d]byte\n\n", s.CName, sz)
+	}
+
+	var b strings.Builder
+	b.WriteString(fmt.Sprintf("type c%s struct {\n", s.CName))
+	for _, f := range s.cLayoutFields(structs) {
+		b.WriteString(fmt.Sprintf("\t%s %s\n", f.GoName, f.GoType))
+	}
 	b.WriteString("}\n\n")
 	return b.String()
 }
@@ -569,15 +606,15 @@ func (s *Structured) GenerateCallbacksSupport() string {
 	// ffi.NewCallback trampolines (package-level vars)
 	for _, f := range pfnFields {
 		fp := f.Type.(*GoFuncPointer)
-		b.WriteString(s.generateGoffiTrampoline(f, fp, holderType, registryName))
+		b.WriteString(s.generateABITrampoline(f, fp, holderType, registryName))
 	}
 
 	return b.String()
 }
 
-// generateGoffiTrampoline emits a package-level var holding a ffi.NewCallback
+// generateABITrampoline emits a package-level var holding a ffi.NewCallback
 // trampoline for a single PFN field.
-func (s *Structured) generateGoffiTrampoline(field StructField, fp *GoFuncPointer, holderType, registryName string) string {
+func (s *Structured) generateABITrampoline(field StructField, fp *GoFuncPointer, holderType, registryName string) string {
 	trampolineName := "_trampoline_" + s.GoName + "_" + field.GoName
 
 	// Build Go func params using CName() (Go primitive types matching C ABI).

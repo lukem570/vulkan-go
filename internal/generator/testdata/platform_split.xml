@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Fixture: platform splitting.
+
+  An extension carrying a platform attribute has its structs, handles and
+  commands tagged with that platform, and PlatformBuildTag routes them into a
+  build-tagged file of their own (xlib/xcb/wayland all land in the linux file).
+  The external C types from the platform's own headers - Display*, Window - map
+  to unsafe.Pointer and uintptr rather than anything in the Vulkan type system.
+
+  Rendered through GeneratePlatformFiles.
+-->
+<registry>
+    <platforms>
+        <platform name="xlib" protect="VK_USE_PLATFORM_XLIB_KHR" comment="X Window System, Xlib client library"/>
+    </platforms>
+
+    <types>
+        <type category="handle" objtypeenum="VK_OBJECT_TYPE_INSTANCE">VK_DEFINE_HANDLE(<name>VkInstance</name>)</type>
+        <type category="handle" parent="VkInstance" objtypeenum="VK_OBJECT_TYPE_SURFACE_KHR">VK_DEFINE_NON_DISPATCHABLE_HANDLE(<name>VkGoldenSurfaceKHR</name>)</type>
+
+        <type category="struct" name="VkGoldenXlibSurfaceCreateInfoKHR">
+            <member values="VK_STRUCTURE_TYPE_GOLDEN_XLIB_SURFACE_CREATE_INFO_KHR"><type>VkStructureType</type> <name>sType</name></member>
+            <member optional="true">const <type>void</type>* <name>pNext</name></member>
+            <member><type>uint32_t</type> <name>flags</name></member>
+            <member><type>Display</type>* <name>dpy</name></member>
+            <member><type>Window</type> <name>window</name></member>
+        </type>
+    </types>
+
+    <enums name="VkResult" type="enum">
+        <enum value="0" name="VK_SUCCESS"/>
+        <enum value="-1" name="VK_ERROR_OUT_OF_HOST_MEMORY"/>
+    </enums>
+
+    <enums name="VkStructureType" type="enum">
+        <enum value="1" name="VK_STRUCTURE_TYPE_GOLDEN_XLIB_SURFACE_CREATE_INFO_KHR"/>
+    </enums>
+
+    <commands>
+        <command successcodes="VK_SUCCESS" errorcodes="VK_ERROR_OUT_OF_HOST_MEMORY">
+            <proto><type>VkResult</type> <name>vkCreateGoldenXlibSurfaceKHR</name></proto>
+            <param><type>VkInstance</type> <name>instance</name></param>
+            <param>const <type>VkGoldenXlibSurfaceCreateInfoKHR</type>* <name>pCreateInfo</name></param>
+            <param><type>VkGoldenSurfaceKHR</type>* <name>pSurface</name></param>
+        </command>
+    </commands>
+
+    <feature api="vulkan" name="VK_VERSION_1_0" number="1.0" comment="golden fixture">
+        <require>
+            <type name="VkResult"/>
+            <type name="VkStructureType"/>
+            <type name="VkInstance"/>
+        </require>
+    </feature>
+
+    <extensions>
+        <extension name="VK_KHR_golden_surface" number="401" type="instance" platform="xlib" supported="vulkan">
+            <require>
+                <type name="VkGoldenSurfaceKHR"/>
+                <type name="VkGoldenXlibSurfaceCreateInfoKHR"/>
+                <command name="vkCreateGoldenXlibSurfaceKHR"/>
+            </require>
+        </extension>
+    </extensions>
+</registry>

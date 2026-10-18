@@ -45,6 +45,20 @@ func main() {
 		log.Printf("Generated %s", path)
 	}
 
+	// ABI conformance data. Must follow GeneratePackage, which decides via
+	// SetReserved which enumerants the package actually declares.
+	for _, af := range reduced.GenerateABIDataFiles(pkgName) {
+		path := "v1/abi_data_test.go"
+		if af.BuildTag != "" {
+			path = fmt.Sprintf("v1/abi_data_%s_test.go", af.BuildTag)
+		}
+		err = generator.WriteFile(path, af.Content)
+		if err != nil {
+			log.Fatalf("WriteFile (%s): %v", path, err)
+		}
+		log.Printf("Generated %s", path)
+	}
+
 	log.Printf(
 		"Generated v1/vulkan.go (%d commands, %d structs, %d enums, %d handles)",
 		len(reduced.Commands),

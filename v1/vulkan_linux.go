@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/go-webgpu/goffi/ffi"
+	"github.com/lukem570/vulkan-go/internal/ffi"
 )
 
 type cVkWaylandSurfaceCreateInfoKHR struct {
@@ -176,15 +176,20 @@ func (h *Instance) CreateWaylandSurfaceKHR(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var surfaceOut unsafe.Pointer
-	_surfaceOutSlot := unsafe.Pointer(&surfaceOut)
+	_surfaceOutBox := new(unsafe.Pointer)
+	var _surfaceOutPin runtime.Pinner
+	_surfaceOutPin.Pin(_surfaceOutBox)
+	defer _surfaceOutPin.Unpin()
+	surfaceOut := *_surfaceOutBox
+	_surfaceOutSlot := unsafe.Pointer(_surfaceOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateWaylandSurfaceKHR, h.table.vkCreateWaylandSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateWaylandSurfaceKHR, h.table.vkCreateWaylandSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_surfaceOutSlot),
 	})
+	surfaceOut = *_surfaceOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -224,15 +229,20 @@ func (h *Instance) CreateXcbSurfaceKHR(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var surfaceOut unsafe.Pointer
-	_surfaceOutSlot := unsafe.Pointer(&surfaceOut)
+	_surfaceOutBox := new(unsafe.Pointer)
+	var _surfaceOutPin runtime.Pinner
+	_surfaceOutPin.Pin(_surfaceOutBox)
+	defer _surfaceOutPin.Unpin()
+	surfaceOut := *_surfaceOutBox
+	_surfaceOutSlot := unsafe.Pointer(_surfaceOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateXcbSurfaceKHR, h.table.vkCreateXcbSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateXcbSurfaceKHR, h.table.vkCreateXcbSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_surfaceOutSlot),
 	})
+	surfaceOut = *_surfaceOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -272,15 +282,20 @@ func (h *Instance) CreateXlibSurfaceKHR(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var surfaceOut unsafe.Pointer
-	_surfaceOutSlot := unsafe.Pointer(&surfaceOut)
+	_surfaceOutBox := new(unsafe.Pointer)
+	var _surfaceOutPin runtime.Pinner
+	_surfaceOutPin.Pin(_surfaceOutBox)
+	defer _surfaceOutPin.Unpin()
+	surfaceOut := *_surfaceOutBox
+	_surfaceOutSlot := unsafe.Pointer(_surfaceOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateXlibSurfaceKHR, h.table.vkCreateXlibSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateXlibSurfaceKHR, h.table.vkCreateXlibSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_surfaceOutSlot),
 	})
+	surfaceOut = *_surfaceOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -311,7 +326,7 @@ func (h *PhysicalDevice) GetWaylandPresentationSupportKHR(
 	val0 := uint32(queueFamilyIndex)
 	ext1 := unsafe.Pointer(display)
 	var _ret uint32
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceWaylandPresentationSupportKHR, h.table.vkGetPhysicalDeviceWaylandPresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceWaylandPresentationSupportKHR, h.table.vkGetPhysicalDeviceWaylandPresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&ext1),
@@ -337,7 +352,7 @@ func (h *PhysicalDevice) GetXcbPresentationSupportKHR(
 	ext1 := unsafe.Pointer(connection)
 	ext2 := uint32(visual_id)
 	var _ret uint32
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceXcbPresentationSupportKHR, h.table.vkGetPhysicalDeviceXcbPresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceXcbPresentationSupportKHR, h.table.vkGetPhysicalDeviceXcbPresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&ext1),
@@ -364,7 +379,7 @@ func (h *PhysicalDevice) GetXlibPresentationSupportKHR(
 	ext1 := unsafe.Pointer(dpy)
 	ext2 := uintptr(visualID)
 	var _ret uint32
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceXlibPresentationSupportKHR, h.table.vkGetPhysicalDeviceXlibPresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceXlibPresentationSupportKHR, h.table.vkGetPhysicalDeviceXlibPresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&ext1),

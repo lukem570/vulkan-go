@@ -36,6 +36,56 @@ type EnumElement struct {
 	BitPos   *int
 	Parent   *Enum
 	Platform string // non-empty for platform-specific extension values
+
+	// APIConstraints holds every api= / supported= attribute value that applies
+	// to this enumerant: its own, its <require> block's, and its enclosing
+	// feature's or extension's. All of them must cover the target API, so they
+	// intersect rather than override — an extension supported for
+	// "vulkan,vulkansc" can hold a block marked api="vulkansc".
+	//
+	// This is what keeps `vulkansc`-only and `supported="disabled"` enumerants
+	// out of the package: no Vulkan header defines them, so emitting a Go
+	// constant for one is a promise that cannot be kept.
+	APIConstraints []string
+}
+
+// apiSupported reports whether a single api= / supported= attribute value
+// covers the API the bindings are being generated for. An empty value is
+// unconstrained; "disabled" matches nothing.
+func apiSupported(list, api string) bool {
+	if list == "" {
+		return true
+	}
+	for _, entry := range strings.Split(list, ",") {
+		if strings.TrimSpace(entry) == api {
+			return true
+		}
+	}
+	return false
+}
+
+// apisSatisfied reports whether every constraint covers the target API.
+func apisSatisfied(constraints []string, api string) bool {
+	for _, c := range constraints {
+		if !apiSupported(c, api) {
+			return false
+		}
+	}
+	return true
+}
+
+// FilterAPI drops elements that do not belong to the given API variant.
+func (e *Enum) FilterAPI(api string) {
+	if e == nil {
+		return
+	}
+	kept := make([]*EnumElement, 0, len(e.Elements))
+	for _, el := range e.Elements {
+		if el != nil && apisSatisfied(el.APIConstraints, api) {
+			kept = append(kept, el)
+		}
+	}
+	e.Elements = kept
 }
 
 func (e *EnumAlias) Generate() string {
@@ -58,17 +108,16 @@ func (e *Enum) SetReserved(reserved map[string]bool) {
 	e.Elements = filtered
 }
 
-// Generate emits the type declaration and const block for this enum.
-// If platformFilter is non-empty, only elements matching that platform are
-// emitted and the type declaration is omitted (it lives in the core file).
-func (e *Enum) Generate(platformFilter ...string) string {
+// generatedElements returns the elements Generate will emit constants for, in
+// emission order. It is the single source of truth for which enumerants reach
+// the generated package, shared with the ABI conformance data so the two cannot
+// disagree.
+//
+// SetReserved must already have run: it prunes Elements of names that collide
+// with other Go declarations.
+func (e *Enum) generatedElements(platform string) []*EnumElement {
 	if e == nil {
-		return ""
-	}
-
-	platform := ""
-	if len(platformFilter) > 0 {
-		platform = platformFilter[0]
+		return nil
 	}
 
 	// Deduplicate elements by GoName — extensions can re-add elements already
@@ -90,6 +139,23 @@ func (e *Enum) Generate(platformFilter ...string) string {
 		deduped = append(deduped, el)
 	}
 
+	return deduped
+}
+
+// Generate emits the type declaration and const block for this enum.
+// If platformFilter is non-empty, only elements matching that platform are
+// emitted and the type declaration is omitted (it lives in the core file).
+func (e *Enum) Generate(platformFilter ...string) string {
+	if e == nil {
+		return ""
+	}
+
+	platform := ""
+	if len(platformFilter) > 0 {
+		platform = platformFilter[0]
+	}
+
+	deduped := e.generatedElements(platform)
 	if len(deduped) == 0 {
 		return ""
 	}
