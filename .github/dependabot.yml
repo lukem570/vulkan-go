@@ -2,7 +2,7 @@ version: 2
 
 updates:
   # Go modules — goffi and yaml.v3. Generated bindings depend on goffi's API,
-  # so a bump here can require regenerating pkg/raw (`task generate`).
+  # so a bump here can require regenerating v1/ (`task generate`).
   - package-ecosystem: gomod
     directory: /
     schedule:

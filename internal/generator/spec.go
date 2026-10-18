@@ -101,9 +101,29 @@ const goffiCallbacksHeader = `import (
 `
 
 // runtimeHelpers is emitted into the main generated file after the import block.
-// It provides the Structure interface, _cGoString helper, and surface utilities.
+// It provides the Structure interface, the version/string helpers, the
+// _cGoString helper, and surface utilities.
 // Initialize/LoadInstance/LoadDevice are generated separately by output.go.
 const runtimeHelpers = `
+// MakeAPIVersion packs a Vulkan API version number, equivalent to the
+// VK_MAKE_API_VERSION macro.
+func MakeAPIVersion(variant, major, minor, patch uint32) uint32 {
+	return (variant << 29) | (major << 22) | (minor << 12) | patch
+}
+
+// GoString converts a null-padded C char array to a Go string. Fixed-size
+// array fields (DeviceName, DriverName, ...) must be sliced at the call site:
+//
+//	name := vk.GoString(props.DeviceName[:])
+func GoString(b []byte) string {
+	for i, v := range b {
+		if v == 0 {
+			return string(b[:i])
+		}
+	}
+	return string(b)
+}
+
 // Structure is the interface implemented by all Vulkan structs that carry
 // an sType / pNext chain.
 type Structure interface {

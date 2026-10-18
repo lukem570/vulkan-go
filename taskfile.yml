@@ -12,10 +12,10 @@ tasks:
     env:
       GOWORK: "off"
     cmds:
-      - rm -rf ./pkg/raw
-      - mkdir -p ./pkg/raw
-      - go run ./cmd/gen/main.go
-      
+      - rm -rf ./v1
+      - mkdir -p ./v1
+      - go run ./cmd/vkgen
+
   test:
     desc: Test Vulkan compute (no CGo required)
     deps: [ 'generate' ]
@@ -23,14 +23,5 @@ tasks:
       CGO_ENABLED: "0"
       GOWORK: "off"
     cmds:
-      - glslc -o ./test/compute/test.spv ./test/compute/test.comp
-      - go run ./test/compute/test.go
-
-  test-surface:
-    desc: Test Vulkan surface rendering (requires CGo for GLFW)
-    deps: [ 'generate' ]
-    env:
-      GOWORK: "off"
-    cmds:
-      - go run ./test/surface/test.go
-      
+      - glslc -o ./examples/compute/test.spv ./examples/compute/test.comp
+      - go run ./examples/compute
