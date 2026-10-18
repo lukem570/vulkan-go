@@ -1,0 +1,30 @@
+version: 2
+
+updates:
+  # Go modules — goffi and yaml.v3. Generated bindings depend on goffi's API,
+  # so a bump here can require regenerating pkg/raw (`task generate`).
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: deps
+
+  # Action versions used by .github/workflows/update.yml.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+# Not configured: gitsubmodule. mod/Vulkan-Headers is already bumped every six
+# hours by the Update Vulkan Bindings workflow, which regenerates and tags in
+# the same run; a Dependabot PR for it would only duplicate that.

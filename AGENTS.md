@@ -94,6 +94,10 @@ Adding an extension or platform is a `config.yml` edit, not a code change.
 `vk.xml` moved, regenerates, commits as `github-actions`, tags, and pushes to
 whatever branch it is on.
 
+`.github/dependabot.yml` covers Go modules and action versions weekly. The
+submodule is deliberately left to the workflow above. A goffi bump may need
+`task generate` re-run on the Dependabot branch before it is mergeable.
+
 Tags are derived from `VK_HEADER_VERSION_COMPLETE` in `vulkan_core.h`, i.e.
 `v1.4.365` means *Vulkan header 1.4.365*, not library semver. Any v1 release
 plan has to resolve that collision: the module's `v1.x` tag space is already
