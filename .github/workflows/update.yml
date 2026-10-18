@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
           fetch-depth: 0
@@ -39,7 +39,7 @@ jobs:
 
       - name: Setup Go
         if: steps.changes.outputs.changed == 'true'
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
           # go.mod is the single source of truth. A hardcoded version here only
           # worked by way of the toolchain auto-download.
