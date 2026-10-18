@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Generated bindings: collapse diffs on GitHub and keep them out of the
+# repository's language statistics. Regenerate with `task generate`.
+v1/*.go linguist-generated=true

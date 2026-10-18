@@ -8,8 +8,7 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/lukem570/vulkan-go/pkg/raw"
-	"github.com/lukem570/vulkan-go/pkg/util"
+	vk "github.com/lukem570/vulkan-go/v1"
 )
 
 var _ embed.FS
@@ -53,7 +52,7 @@ func run() error {
 			ApplicationVersion: 1,
 			EngineName:         "vulkan-go",
 			EngineVersion:      1,
-			ApiVersion:         vkutil.VkMakeApiVersion(0, 1, 4, 0),
+			ApiVersion:         vk.MakeAPIVersion(0, 1, 4, 0),
 		},
 		EnabledExtensionNames: []string{
 			"VK_KHR_portability_enumeration",

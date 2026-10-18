@@ -27,8 +27,7 @@ CGO_ENABLED=0 go get github.com/lukem570/vulkan-go
 
 ```go
 import (
-    vk "github.com/lukem570/vulkan-go/pkg/raw"
-    vkutil "github.com/lukem570/vulkan-go/pkg/util"
+    vk "github.com/lukem570/vulkan-go/v1"
 )
 
 // Initialize Vulkan (loads the shared library and global function pointers)
@@ -40,7 +39,7 @@ if err := vk.Initialize(); err != nil {
 instance, err := vk.CreateInstance(&vk.InstanceCreateInfo{
     ApplicationInfo: &vk.ApplicationInfo{
         ApplicationName: "my-app",
-        ApiVersion:      vkutil.VkMakeApiVersion(0, 1, 4, 0),
+        ApiVersion:      vk.MakeAPIVersion(0, 1, 4, 0),
     },
 }, nil)
 if err != nil {
@@ -55,11 +54,11 @@ device, err := physicalDevice.CreateDevice(&vk.DeviceCreateInfo{...}, nil)
 
 ## Examples
 
-See the [test/](./test) directory for full working examples:
+See the [examples/](./examples) directory for full working examples:
 
-- [compute](./test/compute/) — headless compute pipeline with buffer readback
+- [compute](./examples/compute/) — headless compute pipeline with buffer readback
 
-> **Note:** The windowed examples ([triangle](./test/triangle/), [surface](./test/surface/)) use [go-gl/glfw](https://github.com/go-gl/glfw) which requires CGo and is therefore incompatible with this library. A pure-Go windowing library is planned as a replacement.
+> **Note:** There are no windowed examples. [go-gl/glfw](https://github.com/go-gl/glfw) requires CGo and is therefore incompatible with this library; a pure-Go windowing library is planned as a replacement.
 
 ## API Changes from Vulkan
 
@@ -180,7 +179,7 @@ surface := vk.SurfaceKHRFromHandle(handleValue)
 
 ## Code Generation
 
-Bindings are generated from `mod/Vulkan-Headers/registry/vk.xml` using the generator in [cmd/gen/](./cmd/gen/). Configuration (API version, extensions, platforms) is in [config.yml](./config.yml).
+Bindings are generated from `mod/Vulkan-Headers/registry/vk.xml` using the generator in [cmd/vkgen/](./cmd/vkgen/). Configuration (API version, extensions, platforms) is in [config.yml](./config.yml).
 
 ```sh
 task generate
@@ -190,10 +189,22 @@ Or manually:
 
 ```sh
 git submodule update --init mod/Vulkan-Headers
-go run ./cmd/gen
+go run ./cmd/vkgen
 ```
 
-Generated output: `pkg/raw/vulkan.go`, `pkg/raw/vulkan_linux.go`, `pkg/raw/vulkan_windows.go`, `pkg/raw/vulkan_darwin.go`
+Generated output: `v1/vulkan.go`, `v1/callbacks.go`, `v1/vulkan_linux.go`, `v1/vulkan_windows.go`, `v1/vulkan_darwin.go`
+
+## Versioning
+
+The import path carries the API generation: `v1` is a commitment to the binding
+conventions described above, independent of which Vulkan headers the code was
+generated from. If those conventions ever have to change, a `v2` package will
+appear beside it rather than silently breaking `v1` callers.
+
+Release tags are derived from the Vulkan header version — `v1.4.365` means
+*Vulkan headers 1.4.365*, not Go-library semver. Pin an exact tag if you need
+reproducibility; do not read a tag bump as a compatibility signal in either
+direction.
 
 ## Overhead
 

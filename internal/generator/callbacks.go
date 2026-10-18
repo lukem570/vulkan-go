@@ -2,7 +2,7 @@ package generator
 
 import "strings"
 
-// GenerateCallbacksFile generates pkg/raw/callbacks.go containing the
+// GenerateCallbacksFile generates v1/callbacks.go containing the
 // per-struct callback holder types, sync.Map registries, and //export bridge
 // functions needed by the C trampolines.
 func (r *ReducedRegistry) GenerateCallbacksFile(pkg string) string {
