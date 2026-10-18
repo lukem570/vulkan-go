@@ -1,6 +1,11 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
+# Golden files are compared byte for byte against generator output, which is
+# always LF. Without this they check out as CRLF on Windows and every golden
+# test fails on a line-ending difference that the diff cannot show.
+internal/generator/testdata/* text eol=lf
+
 # Generated bindings: collapse diffs on GitHub and keep them out of the
 # repository's language statistics. Regenerate with `task generate`.
 v1/*.go linguist-generated=true
