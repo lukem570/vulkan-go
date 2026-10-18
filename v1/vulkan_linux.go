@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/lukem570/vulkan-go/internal/ffi"
+	"github.com/go-webgpu/goffi/ffi"
 )
 
 type cVkWaylandSurfaceCreateInfoKHR struct {
@@ -183,7 +183,7 @@ func (h *Instance) CreateWaylandSurfaceKHR(
 	surfaceOut := *_surfaceOutBox
 	_surfaceOutSlot := unsafe.Pointer(_surfaceOutBox)
 	var _ret int32
-	ffi.Call(&_cif_vkCreateWaylandSurfaceKHR, h.table.vkCreateWaylandSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkCreateWaylandSurfaceKHR, h.table.vkCreateWaylandSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
@@ -236,7 +236,7 @@ func (h *Instance) CreateXcbSurfaceKHR(
 	surfaceOut := *_surfaceOutBox
 	_surfaceOutSlot := unsafe.Pointer(_surfaceOutBox)
 	var _ret int32
-	ffi.Call(&_cif_vkCreateXcbSurfaceKHR, h.table.vkCreateXcbSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkCreateXcbSurfaceKHR, h.table.vkCreateXcbSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
@@ -289,7 +289,7 @@ func (h *Instance) CreateXlibSurfaceKHR(
 	surfaceOut := *_surfaceOutBox
 	_surfaceOutSlot := unsafe.Pointer(_surfaceOutBox)
 	var _ret int32
-	ffi.Call(&_cif_vkCreateXlibSurfaceKHR, h.table.vkCreateXlibSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkCreateXlibSurfaceKHR, h.table.vkCreateXlibSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
@@ -326,7 +326,7 @@ func (h *PhysicalDevice) GetWaylandPresentationSupportKHR(
 	val0 := uint32(queueFamilyIndex)
 	ext1 := unsafe.Pointer(display)
 	var _ret uint32
-	ffi.Call(&_cif_vkGetPhysicalDeviceWaylandPresentationSupportKHR, h.table.vkGetPhysicalDeviceWaylandPresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkGetPhysicalDeviceWaylandPresentationSupportKHR, h.table.vkGetPhysicalDeviceWaylandPresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&ext1),
@@ -352,7 +352,7 @@ func (h *PhysicalDevice) GetXcbPresentationSupportKHR(
 	ext1 := unsafe.Pointer(connection)
 	ext2 := uint32(visual_id)
 	var _ret uint32
-	ffi.Call(&_cif_vkGetPhysicalDeviceXcbPresentationSupportKHR, h.table.vkGetPhysicalDeviceXcbPresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkGetPhysicalDeviceXcbPresentationSupportKHR, h.table.vkGetPhysicalDeviceXcbPresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&ext1),
@@ -379,7 +379,7 @@ func (h *PhysicalDevice) GetXlibPresentationSupportKHR(
 	ext1 := unsafe.Pointer(dpy)
 	ext2 := uintptr(visualID)
 	var _ret uint32
-	ffi.Call(&_cif_vkGetPhysicalDeviceXlibPresentationSupportKHR, h.table.vkGetPhysicalDeviceXlibPresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkGetPhysicalDeviceXlibPresentationSupportKHR, h.table.vkGetPhysicalDeviceXlibPresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&ext1),

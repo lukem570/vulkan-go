@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/lukem570/vulkan-go/internal/ffi"
+	"github.com/go-webgpu/goffi/ffi"
 )
 
 type cVkMacOSSurfaceCreateInfoMVK struct {
@@ -125,7 +125,7 @@ func (h *Instance) CreateMacOSSurfaceMVK(
 	surfaceOut := *_surfaceOutBox
 	_surfaceOutSlot := unsafe.Pointer(_surfaceOutBox)
 	var _ret int32
-	ffi.Call(&_cif_vkCreateMacOSSurfaceMVK, h.table.vkCreateMacOSSurfaceMVK, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkCreateMacOSSurfaceMVK, h.table.vkCreateMacOSSurfaceMVK, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
@@ -178,7 +178,7 @@ func (h *Instance) CreateMetalSurfaceEXT(
 	surfaceOut := *_surfaceOutBox
 	_surfaceOutSlot := unsafe.Pointer(_surfaceOutBox)
 	var _ret int32
-	ffi.Call(&_cif_vkCreateMetalSurfaceEXT, h.table.vkCreateMetalSurfaceEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkCreateMetalSurfaceEXT, h.table.vkCreateMetalSurfaceEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),

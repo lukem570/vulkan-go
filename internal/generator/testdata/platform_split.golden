@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/lukem570/vulkan-go/internal/ffi"
+	"github.com/go-webgpu/goffi/ffi"
 )
 
 type GoldenSurfaceKHR struct {
@@ -91,7 +91,7 @@ func (h *Instance) CreateGoldenXlibSurfaceKHR(
 	surfaceOut := *_surfaceOutBox
 	_surfaceOutSlot := unsafe.Pointer(_surfaceOutBox)
 	var _ret int32
-	ffi.Call(&_cif_vkCreateGoldenXlibSurfaceKHR, h.table.vkCreateGoldenXlibSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkCreateGoldenXlibSurfaceKHR, h.table.vkCreateGoldenXlibSurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&_surfaceOutSlot),

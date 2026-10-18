@@ -5,8 +5,6 @@ package vk
 import (
 	"sync"
 	"unsafe"
-
-	"github.com/lukem570/vulkan-go/internal/ffi"
 )
 
 type allocationCallbacksCallbacks struct {
@@ -20,7 +18,7 @@ type allocationCallbacksCallbacks struct {
 
 var allocationCallbacksCallbackRegistry sync.Map
 
-var _trampoline_AllocationCallbacks_Allocation uintptr = ffi.NewCallback(func(p0 unsafe.Pointer, p1 uintptr, p2 uintptr, p3 uint32) unsafe.Pointer {
+var _trampoline_AllocationCallbacks_Allocation uintptr = _newCallback(func(p0 unsafe.Pointer, p1 uintptr, p2 uintptr, p3 uint32) unsafe.Pointer {
 	v, ok := allocationCallbacksCallbackRegistry.Load(p3)
 	if !ok {
 		return nil
@@ -33,7 +31,7 @@ var _trampoline_AllocationCallbacks_Allocation uintptr = ffi.NewCallback(func(p0
 	return result
 })
 
-var _trampoline_AllocationCallbacks_Reallocation uintptr = ffi.NewCallback(func(p0 unsafe.Pointer, p1 unsafe.Pointer, p2 uintptr, p3 uintptr, p4 uint32) unsafe.Pointer {
+var _trampoline_AllocationCallbacks_Reallocation uintptr = _newCallback(func(p0 unsafe.Pointer, p1 unsafe.Pointer, p2 uintptr, p3 uintptr, p4 uint32) unsafe.Pointer {
 	v, ok := allocationCallbacksCallbackRegistry.Load(p4)
 	if !ok {
 		return nil
@@ -46,7 +44,7 @@ var _trampoline_AllocationCallbacks_Reallocation uintptr = ffi.NewCallback(func(
 	return result
 })
 
-var _trampoline_AllocationCallbacks_Free uintptr = ffi.NewCallback(func(p0 unsafe.Pointer, p1 unsafe.Pointer) {
+var _trampoline_AllocationCallbacks_Free uintptr = _newCallback(func(p0 unsafe.Pointer, p1 unsafe.Pointer) {
 	v, ok := allocationCallbacksCallbackRegistry.Load(p1)
 	if !ok {
 		return
@@ -58,7 +56,7 @@ var _trampoline_AllocationCallbacks_Free uintptr = ffi.NewCallback(func(p0 unsaf
 	holder.Free(p0, p1)
 })
 
-var _trampoline_AllocationCallbacks_InternalAllocation uintptr = ffi.NewCallback(func(p0 unsafe.Pointer, p1 uintptr, p2 uint32, p3 uint32) {
+var _trampoline_AllocationCallbacks_InternalAllocation uintptr = _newCallback(func(p0 unsafe.Pointer, p1 uintptr, p2 uint32, p3 uint32) {
 	v, ok := allocationCallbacksCallbackRegistry.Load(p3)
 	if !ok {
 		return
@@ -70,7 +68,7 @@ var _trampoline_AllocationCallbacks_InternalAllocation uintptr = ffi.NewCallback
 	holder.InternalAllocation(p0, uintptr(p1), InternalAllocationType(p2), SystemAllocationScope(p3))
 })
 
-var _trampoline_AllocationCallbacks_InternalFree uintptr = ffi.NewCallback(func(p0 unsafe.Pointer, p1 uintptr, p2 uint32, p3 uint32) {
+var _trampoline_AllocationCallbacks_InternalFree uintptr = _newCallback(func(p0 unsafe.Pointer, p1 uintptr, p2 uint32, p3 uint32) {
 	v, ok := allocationCallbacksCallbackRegistry.Load(p3)
 	if !ok {
 		return
@@ -89,7 +87,7 @@ type debugUtilsMessengerCreateInfoEXTCallbacks struct {
 
 var debugUtilsMessengerCreateInfoEXTCallbackRegistry sync.Map
 
-var _trampoline_DebugUtilsMessengerCreateInfoEXT_UserCallback uintptr = ffi.NewCallback(func(p0 uint32, p1 uint32, p2 unsafe.Pointer, p3 unsafe.Pointer) uint32 {
+var _trampoline_DebugUtilsMessengerCreateInfoEXT_UserCallback uintptr = _newCallback(func(p0 uint32, p1 uint32, p2 unsafe.Pointer, p3 unsafe.Pointer) uint32 {
 	v, ok := debugUtilsMessengerCreateInfoEXTCallbackRegistry.Load(p3)
 	if !ok {
 		return uint32(0)

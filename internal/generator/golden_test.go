@@ -120,7 +120,7 @@ func renderPackageBody(t *testing.T, r *ReducedRegistry) string {
 
 	full := mustFormat(t, "generated package", r.GeneratePackage("vk"))
 	preamble := mustFormat(t, "fixed preamble",
-		generatedHeader+"package vk\n\n"+abiHeader+runtimeHelpers)
+		generatedHeader+"package vk\n\n"+goffiHeader+runtimeHelpers)
 
 	body, ok := strings.CutPrefix(full, preamble)
 	if !ok {

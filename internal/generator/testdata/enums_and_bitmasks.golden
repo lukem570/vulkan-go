@@ -92,13 +92,13 @@ func Initialize() error {
 	}
 	_vkLib = lib
 
-	gipaFn, err := ffi.Symbol(lib, "vkGetInstanceProcAddr")
+	gipaFn, err := ffi.GetSymbol(lib, "vkGetInstanceProcAddr")
 	if err != nil {
 		return fmt.Errorf("vulkan: %w", err)
 	}
 	_vkGetInstanceProcAddr = gipaFn
-	ffi.Prepare(&_cif_vkGetInstanceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer}) //nolint
-	ffi.Prepare(&_cif_vkGetDeviceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer})   //nolint
+	ffi.PrepareCallInterface(&_cif_vkGetInstanceProcAddr, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor}) //nolint
+	ffi.PrepareCallInterface(&_cif_vkGetDeviceProcAddr, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})   //nolint
 
 	// Load global commands
 

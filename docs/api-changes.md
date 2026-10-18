@@ -185,7 +185,7 @@ vk.GoString(props.DeviceName[:])   // null-padded char array → string
 
 ## Windowing
 
-**GLFW is not usable on the default build.** [go-gl/glfw](https://github.com/go-gl/glfw) requires CGo, which the goffi backend forbids. Building with `CGO_ENABLED=1` selects the [cgo backend](./backends.md), which lifts that restriction, though the windowed examples have not been revived. A pure-Go windowing library integration is still the plan.
+**There are no windowed examples.** [go-gl/glfw](https://github.com/go-gl/glfw) requires CGo, which goffi now tolerates (`CGO_ENABLED=1` works as of goffi v0.6.0), so GLFW is no longer ruled out — but the windowed examples have not been revived, and a pure-Go windowing library is still the plan.
 
 In the meantime, `SurfaceKHRFromHandle` can wrap an opaque surface handle obtained from any source that doesn't require CGo:
 
