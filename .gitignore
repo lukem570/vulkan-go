@@ -1,28 +1,33 @@
-# If you prefer the allow list template instead of the deny list, see community template:
+# Based on GitHub's Go template. For the allow-list variant, see:
 # https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
-#
-# Binaries for programs and plugins
+
+# Compiled binaries, plugins, and shared libraries
+*.dll
+*.dylib
 *.exe
 *.exe~
-*.dll
 *.so
-*.dylib
 
-# Test binary, built with `go test -c`
+# Test binaries, built with `go test -c`
 *.test
 
-# Output of the go coverage tool, specifically when used with LiteIDE
+# Coverage and profile output
 *.out
-
-# Dependency directories (remove the comment below to include it)
-# vendor/
 
 # Go workspace file
 go.work
 
-.idea
-.vscode
+# Vendored dependencies (uncomment to exclude)
+# vendor/
+
+# Generator output kept on gofmt failure (internal/generator/util.go)
 *.unformatted
-.claude
-todo.txt
+
+# Compiled SPIR-V shaders (`task` builds these from the .comp sources)
 *.spv
+
+# Local tooling state
+.claude
+
+# OS cruft
+.DS_Store

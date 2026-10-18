@@ -1,0 +1,19 @@
+{
+  "file_scan_exclusions": [
+    // Zed defaults — this key replaces rather than merges, so keep them.
+    "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/.jj",
+    "**/CVS",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/.classpath",
+    "**/.settings",
+    // Noise in the project panel
+    "**/.gitattributes",
+    "**/.gitmodules",
+    "**/go.sum",
+    "**/AGENTS.md"
+  ]
+}
