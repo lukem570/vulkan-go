@@ -205,6 +205,26 @@ release. **A failing suite therefore halts automated header updates** — that i
 the intended trade, but it means a red `task test` needs fixing promptly rather
 than at leisure.
 
+Three defects found by `TestABIConformance` had to be fixed before that gate
+could hold, and each is now pinned by a golden fixture as well:
+
+- Enumerants aliased in a top-level `<enums>` block generated as
+  `0 // TODO: unknown value`, because `XMLEnum` had no `alias,attr` field while
+  `XMLRequireEnum` did. Six constants were wrong, among them
+  `StencilFrontAndBack` and `PipelineStage2TransferBit`.
+- `VkBaseInStructure`/`VkBaseOutStructure` generated empty, 0 bytes against
+  C's 16: `parseStruct` dropped `sType`/`pNext` unconditionally, but
+  `detectSType` only recognises them when a `values=` attribute is present,
+  which these two lack.
+- 117 enumerants were declared that no Vulkan header defines.
+  `applyEnumExtensions` walked every feature and extension in vk.xml, ignoring
+  the feature's `api=`, the extension's `supported=`, and the `<require>`
+  block's `api=`. Those three now intersect into
+  `EnumElement.APIConstraints` and are pruned against `config.yml`'s `api:` in
+  `Filter`. **`api:` is load-bearing now rather than decorative** — vk.xml is a
+  combined registry carrying the Vulkan SC feature and every
+  reserved-but-disabled extension alongside the real ones.
+
 Both workflows take the toolchain from `go-version-file: go.mod` rather than a
 pinned version.
 
@@ -227,29 +247,15 @@ those diffs and omits them from language stats.
 - No windowed example. GLFW needs CGo and so cannot be used; a pure-Go
   windowing path is the intended replacement. `SurfaceKHRFromHandle` exists for
   wrapping a surface obtained elsewhere.
-- `update.yml` gates on `task test`, which currently fails on the three defects
-  below, so automated header updates are blocked until they are fixed.
 - Nothing runs the compute example in CI. A software Vulkan device (lavapipe)
   on the ubuntu runner would make `task test:compute` reachable there.
-- `config.yml`'s `api:` key is parsed but never applied, so enumerants belonging
-  to the `vulkansc` variant are emitted into `package vk` even though the
-  headers for the `vulkan` API do not define them. Together with `_RESERVED_`
-  bit placeholders and values for platforms `config.yml` does not enable, that
-  is 117 constants with no C counterpart —
-  `TestABIConformance/core/enums_declared_but_absent_from_headers` lists them.
-- `VkBaseInStructure` and `VkBaseOutStructure` generate as empty structs
-  (`size 0`, against C's 16). `detectSType` needs a `values=` attribute to
-  recognise an sType member and these two have none, so both members are
-  dropped. They are the generic pNext-chain heads, so nothing dispatches
-  through them today.
-- Enumerants aliased in a top-level `<enums>` block generate as
-  `0 // TODO: unknown value`: `XMLEnum` in `xml.go` has no `alias,attr` field,
-  only `XMLRequireEnum` does. Six constants are affected, among them
-  `StencilFrontAndBack` (should be 3) and `PipelineStage2TransferBit`
-  (should be 0x1000). Aliases declared inside an extension's `<require>` block
-  resolve correctly, which is why this went unnoticed.
 - The ABI probe only reports the host architecture. A 32-bit target, where
   non-dispatchable handles are `uint64` rather than pointer-sized, is unchecked.
+- The `api` filter is applied to enumerants only. Structs, commands and types
+  carry `api=`/`supported=` attributes too, and nothing prunes against them; it
+  has not bitten because the generator reaches those through the enabled
+  feature and extension lists rather than by walking the whole registry, which
+  is precisely what `applyEnumExtensions` used to do.
 - Count fields collapsed against a fixed-size array are lost:
   `PhysicalDeviceMemoryProperties` exposes `MemoryTypes [32]MemoryType` but not
   `memoryTypeCount`, so callers cannot tell which entries are valid.
