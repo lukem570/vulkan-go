@@ -23,15 +23,18 @@ Commands that take a handle as their first parameter become methods on that hand
 
 ```c
 // C
-vkDestroyInstance(instance, pAllocator);
 vkCreateDevice(physicalDevice, pCreateInfo, pAllocator, pDevice);
+vkGetDeviceQueue(device, queueFamilyIndex, queueIndex, pQueue);
 ```
 
 ```go
 // Go
-instance.Destroy(pAllocator)
 device, err := physDevice.CreateDevice(createInfo, nil)
+queue := device.GetDeviceQueue(queueFamilyIndex, queueIndex)
 ```
+
+The destroy half of the API is gone entirely — see
+[Object lifetimes](#object-lifetimes).
 
 ## Return values
 
@@ -108,6 +111,68 @@ messenger, err := instance.CreateDebugUtilsMessengerEXT(&vk.DebugUtilsMessengerC
     },
 }, nil)
 ```
+
+## Object lifetimes
+
+**There are no `Destroy` or `Free` methods.** Handles are destroyed by the
+garbage collector: every create and allocate call registers a
+`runtime.AddCleanup`, and the matching `vkDestroy*`/`vkFree*` runs once the
+handle becomes unreachable.
+
+```go
+buf, err := device.CreateBuffer(&vk.BufferCreateInfo{...}, nil)
+// no defer; no buf.Destroy(nil). Dropping the last reference to buf
+// eventually calls vkDestroyBuffer.
+```
+
+### What the bindings guarantee
+
+- **Parents outlive children.** A child's cleanup argument holds its parent, and
+  every handle stores its parent in an unexported field, so the chain
+  `Buffer → Device → PhysicalDevice → Instance` tears down bottom-up. A
+  `vkDestroyDevice` cannot run while any of its objects are still alive.
+- **Create-time dependencies are retained.** The create-info value is held for
+  the lifetime of the object it created, which keeps every handle it references
+  alive too — a `RenderPass` outlives a `Framebuffer` built from it, an `Image`
+  outlives its `ImageView`. `BindBufferMemory` and `BindImageMemory` likewise
+  retain the memory on the bound object.
+- **Destruction is serialized.** Cleanups run concurrently in Go, so they take a
+  package-wide lock before calling into Vulkan; `vkDestroyDevice` requires the
+  device to be externally synchronized, and two cleanups racing on one device is
+  a driver data race.
+- **Pool-scoped frees work.** `CommandBuffer` and `DescriptorSet` cleanups keep
+  their pool alive and free through it.
+
+### What you are still responsible for
+
+**Reachability in Go says nothing about the GPU timeline.** The collector cannot
+see that submitted work still reads a resource, so a handle whose last Go
+reference disappears mid-flight can be destroyed while the device is using it —
+undefined behaviour, not a leak:
+
+```go
+cmdBuf.BindVertexBuffers(0, []*vk.Buffer{buf}, offsets)
+queue.Submit(submits, fence)
+// buf is unreachable here; the GPU is not finished with it.
+```
+
+Keep the handle reachable until the work that uses it has completed — hold it in
+the struct that owns the frame, or keep it live until you have waited on the
+fence. Note that recording a handle into a command buffer does **not** retain
+it; only create-info dependencies and bound memory are retained.
+
+Two more consequences of GC-driven destruction:
+
+- Cleanups are not guaranteed to run before the process exits. That is normally
+  harmless, since the driver reclaims everything at exit, but it means teardown
+  is not a reliable place for external side effects.
+- Full teardown takes several GC cycles, because each level of the ownership
+  chain only becomes unreachable after the level below it has been cleaned up.
+
+Handles obtained rather than created — `GetDeviceQueue`, the images from
+`GetSwapchainImagesKHR`, a surface from `SurfaceKHRFromHandle` — are not owned
+by the bindings and get no cleanup, which is correct: swapchain images must
+never be passed to `vkDestroyImage`.
 
 ## Helpers
 

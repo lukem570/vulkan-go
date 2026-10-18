@@ -47,7 +47,8 @@ Generator pipeline, in order (`cmd/vkgen/main.go`):
 3. `Filter(registry, config)` → `ReducedRegistry`, trimmed to the configured
    version/extensions/platforms (`filter.go`)
 4. `GeneratePackage` / `GenerateCallbacksFile` / `GeneratePlatformFiles`
-   (`output.go`, `structs.go`, `commands.go`, `enums.go`, `types.go`, `handles.go`)
+   (`output.go`, `structs.go`, `commands.go`, `enums.go`, `types.go`,
+   `handles.go`, `lifetime.go`)
 5. `WriteFile` → gofmt, then write
 
 `WriteFile` runs `go/format` on the output. **If gofmt fails, the raw text is
@@ -94,6 +95,13 @@ in `docs/api-changes.md` — keep that file in sync with any change here.
 - Dispatch tables are populated inside `CreateInstance` / `CreateDevice`, so
   there is no `LoadInstance` / `LoadDevice` step. Handles derived from a device
   share its table.
+- `vkDestroy*`/`vkFree*` wrappers are generated **unexported**. Creation sites
+  register a `runtime.AddCleanup` instead, so the GC destroys handles
+  (`internal/generator/lifetime.go`). The invariants there are load-bearing:
+  a cleanup argument must hold the parent (so parents outlive children) and
+  must never hold the handle being destroyed (or it is pinned forever and the
+  cleanup never runs). Cleanups take `_cleanupMu` because Go runs them
+  concurrently while Vulkan requires external synchronization.
 
 Adding an extension or platform is a `config.yml` edit, not a code change.
 
@@ -135,3 +143,9 @@ those diffs and omits them from language stats.
 - The update workflow installs Go 1.22 while `go.mod` declares `go 1.25`; it
   currently survives only on toolchain auto-download.
 - No `go test` suite exists — `examples/compute` is a `main` package run by hand.
+- Count fields collapsed against a fixed-size array are lost:
+  `PhysicalDeviceMemoryProperties` exposes `MemoryTypes [32]MemoryType` but not
+  `memoryTypeCount`, so callers cannot tell which entries are valid.
+- GC-driven destruction cannot observe GPU timelines. A handle dropped while
+  submitted work still uses it is destroyed early — documented in
+  `docs/api-changes.md`, not solvable inside the bindings.

@@ -61,7 +61,6 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create instance: %w", err)
 	}
-	defer instance.Destroy(nil)
 
 	fmt.Println("instance created with validation layers")
 
@@ -109,7 +108,6 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create device: %w", err)
 	}
-	defer device.Destroy(nil)
 
 	fmt.Println("device created")
 
@@ -124,7 +122,6 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create buffer: %w", err)
 	}
-	defer device.DestroyBuffer(buffer, nil)
 
 	memReqs := device.GetBufferMemoryRequirements(buffer)
 
@@ -152,7 +149,6 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("allocate memory: %w", err)
 	}
-	defer device.FreeMemory(memory, nil)
 
 	if err := device.BindBufferMemory(buffer, memory, 0); err != nil {
 		return fmt.Errorf("bind buffer memory: %w", err)
@@ -185,7 +181,6 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create descriptor set layout: %w", err)
 	}
-	defer device.DestroyDescriptorSetLayout(descSetLayout, nil)
 
 	// Create pipeline layout
 	pipelineLayout, err := device.CreatePipelineLayout(&vk.PipelineLayoutCreateInfo{
@@ -194,7 +189,6 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create pipeline layout: %w", err)
 	}
-	defer device.DestroyPipelineLayout(pipelineLayout, nil)
 
 	// Create shader module
 	shaderModule, err := device.CreateShaderModule(&vk.ShaderModuleCreateInfo{
@@ -203,7 +197,6 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create shader module: %w", err)
 	}
-	defer device.DestroyShaderModule(shaderModule, nil)
 
 	// Create compute pipeline
 	pipelines, err := device.CreateComputePipelines(nil, []vk.ComputePipelineCreateInfo{
@@ -220,7 +213,6 @@ func run() error {
 		return fmt.Errorf("create compute pipeline: %w", err)
 	}
 	pipeline := pipelines[0]
-	defer device.DestroyPipeline(pipeline, nil)
 	fmt.Println("compute pipeline created")
 
 	// Create descriptor pool and allocate descriptor set
@@ -233,7 +225,6 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create descriptor pool: %w", err)
 	}
-	defer device.DestroyDescriptorPool(descPool, nil)
 
 	descSets, err := device.AllocateDescriptorSets(&vk.DescriptorSetAllocateInfo{
 		DescriptorPool: descPool,
@@ -264,7 +255,6 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create command pool: %w", err)
 	}
-	defer device.DestroyCommandPool(cmdPool, nil)
 
 	cmdBufs, err := device.AllocateCommandBuffers(&vk.CommandBufferAllocateInfo{
 		CommandPool:        cmdPool,
@@ -302,7 +292,6 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("create fence: %w", err)
 	}
-	defer device.DestroyFence(fence, nil)
 
 	if err := queue.Submit([]vk.SubmitInfo{
 		{

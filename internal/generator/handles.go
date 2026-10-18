@@ -22,7 +22,7 @@ func (h *GoHandle) Generate() string {
 		tableField = "\ttable   *deviceTable\n"
 	}
 	return fmt.Sprintf(
-		"type %s struct {\n\thandle  unsafe.Pointer\n%s\tcleanup func()\n}\n\n"+
+		"type %s struct {\n\thandle  unsafe.Pointer\n%s\tcleanup func()\n\tparent  any\n\tretain  *[]any\n}\n\n"+
 			"func (h *%s) Handle() unsafe.Pointer { return h.handle }\n\n",
 		h.GoName, tableField, h.GoName,
 	)
