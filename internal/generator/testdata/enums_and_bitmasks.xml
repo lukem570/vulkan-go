@@ -75,6 +75,23 @@
                 <enum bitpos="5" extends="VkGoldenFlagBits" name="VK_GOLDEN_EXTENDED_BIT_EXT"/>
                 <enum extends="VkGoldenKind" name="VK_GOLDEN_KIND_PLAIN_EXT" alias="VK_GOLDEN_KIND_PLAIN"/>
             </require>
+            <!-- A supported extension may still carry a block for another API
+                 variant. The block's api= narrows the extension's supported=,
+                 so this enumerant must be excluded even though the extension
+                 itself is enabled. -->
+            <require api="vulkansc">
+                <enum offset="9" extends="VkGoldenKind" name="VK_GOLDEN_KIND_EXCLUDED_BY_REQUIRE"/>
+            </require>
+        </extension>
+
+        <!-- Reserved placeholder extension. Khronos marks these disabled and
+             omits them from the headers entirely, so nothing here may be
+             declared even though it extends an enabled enum. -->
+        <extension name="VK_VENDOR_golden_extension_401" number="401" author="VENDOR" supported="disabled">
+            <require>
+                <enum bitpos="20" extends="VkGoldenFlagBits" name="VK_GOLDEN_RESERVED_20_BIT_EXCLUDED_VENDOR"/>
+                <enum offset="1" extends="VkGoldenKind" name="VK_GOLDEN_KIND_EXCLUDED_BY_DISABLED"/>
+            </require>
         </extension>
     </extensions>
 </registry>

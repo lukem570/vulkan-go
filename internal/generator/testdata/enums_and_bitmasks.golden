@@ -19,6 +19,7 @@ type GoldenKind uint32
 const (
 	GoldenKindPlain       GoldenKind = 0
 	GoldenKindFancy       GoldenKind = 1
+	GoldenKindOrnate      GoldenKind = GoldenKindFancy
 	GoldenKindExtendedEXT GoldenKind = 1000399003
 	GoldenKindPlainEXT    GoldenKind = GoldenKindPlain
 )

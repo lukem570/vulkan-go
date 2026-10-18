@@ -26,6 +26,42 @@ const (
 	StructureTypeGoldenCreateInfo StructureType = 1
 )
 
+type cVkGoldenBaseStructure struct {
+	sType uint32
+	pNext unsafe.Pointer
+}
+
+type GoldenBaseStructure struct {
+	SType StructureType
+	Next  *GoldenBaseStructure
+}
+
+func (s *GoldenBaseStructure) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := new(cVkGoldenBaseStructure)
+	val0 := uint32(s.SType)
+	p.sType = val0
+	var ptr1 unsafe.Pointer
+	if s.Next != nil {
+		val2, cancel3 := s.Next.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = val2
+	}
+	p.pNext = ptr1
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+	}
+}
+
+func (s *GoldenBaseStructure) fromC(p *cVkGoldenBaseStructure) {
+	s.SType = StructureType(p.sType)
+	if p.pNext != nil {
+		s.Next.fromC((*cVkGoldenBaseStructure)(p.pNext))
+	}
+}
+
 type cVkGoldenBinding struct {
 	binding uint32
 	enabled uint32

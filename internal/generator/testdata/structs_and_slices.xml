@@ -12,6 +12,12 @@
     VkBool32                      - bool
     const VkGoldenLimits* pLimits - *GoldenLimits, a pointer to a struct that
                                     carries no sType of its own
+    VkGoldenBaseStructure         - sType and pNext but no values= attribute, so
+                                    it is not an sType-bearing struct and both
+                                    members are ordinary fields. Dropping them
+                                    produced an empty struct, 0 bytes against
+                                    C's 16, for VkBaseInStructure and
+                                    VkBaseOutStructure.
 -->
 <registry>
     <types>
@@ -23,6 +29,11 @@
         <type category="struct" name="VkGoldenBinding">
             <member><type>uint32_t</type> <name>binding</name></member>
             <member><type>VkBool32</type> <name>enabled</name></member>
+        </type>
+
+        <type category="struct" name="VkGoldenBaseStructure">
+            <member><type>VkStructureType</type> <name>sType</name></member>
+            <member optional="true">const struct <type>VkGoldenBaseStructure</type>* <name>pNext</name></member>
         </type>
 
         <type category="struct" name="VkGoldenCreateInfo">
@@ -52,6 +63,7 @@
             <type name="VkStructureType"/>
             <type name="VkGoldenLimits"/>
             <type name="VkGoldenBinding"/>
+            <type name="VkGoldenBaseStructure"/>
             <type name="VkGoldenCreateInfo"/>
         </require>
     </feature>
