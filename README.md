@@ -3,9 +3,9 @@
 Unofficial Go bindings for Vulkan, automatically generated from `vk.xml`.
 For changes made to the API, see [api-changes.md](docs/api-changes.md).
 
-CGo-free by default. Building with `CGO_ENABLED=1` switches to a libffi backend
-instead, so the bindings also work inside a program that needs cgo — see
-[backends.md](docs/backends.md).
+Calls go through [goffi](https://github.com/go-webgpu/goffi), which needs no C
+compiler and works with CGo either enabled or disabled, so these bindings drop
+into a program that links other CGo libraries as well as one that does not.
 
 ## Installing
 

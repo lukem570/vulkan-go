@@ -5,8 +5,6 @@ package vk
 import (
 	"sync"
 	"unsafe"
-
-	"github.com/lukem570/vulkan-go/internal/ffi"
 )
 
 type goldenAllocationCallbacksCallbacks struct {
@@ -18,7 +16,7 @@ type goldenAllocationCallbacksCallbacks struct {
 
 var goldenAllocationCallbacksCallbackRegistry sync.Map
 
-var _trampoline_GoldenAllocationCallbacks_Allocation uintptr = ffi.NewCallback(func(p0 unsafe.Pointer, p1 uintptr, p2 uint32) unsafe.Pointer {
+var _trampoline_GoldenAllocationCallbacks_Allocation uintptr = _newCallback(func(p0 unsafe.Pointer, p1 uintptr, p2 uint32) unsafe.Pointer {
 	v, ok := goldenAllocationCallbacksCallbackRegistry.Load(p2)
 	if !ok {
 		return nil
@@ -31,7 +29,7 @@ var _trampoline_GoldenAllocationCallbacks_Allocation uintptr = ffi.NewCallback(f
 	return result
 })
 
-var _trampoline_GoldenAllocationCallbacks_Free uintptr = ffi.NewCallback(func(p0 unsafe.Pointer, p1 unsafe.Pointer) {
+var _trampoline_GoldenAllocationCallbacks_Free uintptr = _newCallback(func(p0 unsafe.Pointer, p1 unsafe.Pointer) {
 	v, ok := goldenAllocationCallbacksCallbackRegistry.Load(p1)
 	if !ok {
 		return
@@ -43,7 +41,7 @@ var _trampoline_GoldenAllocationCallbacks_Free uintptr = ffi.NewCallback(func(p0
 	holder.Free(p0, p1)
 })
 
-var _trampoline_GoldenAllocationCallbacks_Predicate uintptr = ffi.NewCallback(func(p0 unsafe.Pointer, p1 uint32) uint32 {
+var _trampoline_GoldenAllocationCallbacks_Predicate uintptr = _newCallback(func(p0 unsafe.Pointer, p1 uint32) uint32 {
 	v, ok := goldenAllocationCallbacksCallbackRegistry.Load(p1)
 	if !ok {
 		return uint32(0)

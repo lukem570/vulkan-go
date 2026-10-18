@@ -112,7 +112,7 @@ func CreateInstance(
 	instanceOut := *_instanceOutBox
 	_instanceOutSlot := unsafe.Pointer(_instanceOutBox)
 	var _ret int32
-	ffi.Call(&_cif_vkCreateInstance, _fn_vkCreateInstance, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkCreateInstance, _fn_vkCreateInstance, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&_instanceOutSlot),
 	})
@@ -141,7 +141,7 @@ func (h *Instance) destroy() {
 	}()
 
 	_recv := h.handle
-	ffi.Call(&_cif_vkDestroyInstance, h.table.vkDestroyInstance, nil, []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkDestroyInstance, h.table.vkDestroyInstance, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 	})
 }
@@ -162,7 +162,7 @@ func (h *Instance) EnumeratePhysicalDevices() ([]*PhysicalDevice, error) {
 	_countSlot := unsafe.Pointer(_countBox)
 	var _nilSlot unsafe.Pointer
 	var _ret int32
-	ffi.Call(&_cif_vkEnumeratePhysicalDevices, h.table.vkEnumeratePhysicalDevices, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkEnumeratePhysicalDevices, h.table.vkEnumeratePhysicalDevices, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_nilSlot),
@@ -181,7 +181,7 @@ func (h *Instance) EnumeratePhysicalDevices() ([]*PhysicalDevice, error) {
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.Call(&_cif_vkEnumeratePhysicalDevices, h.table.vkEnumeratePhysicalDevices, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkEnumeratePhysicalDevices, h.table.vkEnumeratePhysicalDevices, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_arrSlot),
@@ -219,7 +219,7 @@ func (h *Instance) GetVersion() uint32 {
 	defer _versionOutPin.Unpin()
 	versionOut := *_versionOutBox
 	_versionOutSlot := unsafe.Pointer(_versionOutBox)
-	ffi.Call(&_cif_vkGetInstanceVersion, h.table.vkGetInstanceVersion, nil, []unsafe.Pointer{
+	ffi.CallFunction(&_cif_vkGetInstanceVersion, h.table.vkGetInstanceVersion, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&_versionOutSlot),
 	})
@@ -254,11 +254,11 @@ func _cleanupInstance(a _cleanupArgsInstance) {
 	_self.destroy()
 }
 
-var _cif_vkCreateInstance ffi.CIF
+var _cif_vkCreateInstance types.CallInterface
 var _fn_vkCreateInstance unsafe.Pointer
-var _cif_vkDestroyInstance ffi.CIF
-var _cif_vkEnumeratePhysicalDevices ffi.CIF
-var _cif_vkGetInstanceVersion ffi.CIF
+var _cif_vkDestroyInstance types.CallInterface
+var _cif_vkEnumeratePhysicalDevices types.CallInterface
+var _cif_vkGetInstanceVersion types.CallInterface
 
 func _initInstanceTable(handle unsafe.Pointer) *instanceTable {
 	_vkGetDeviceProcAddr = _loadProc(handle, "vkGetDeviceProcAddr")
@@ -285,22 +285,22 @@ func Initialize() error {
 	}
 	_vkLib = lib
 
-	gipaFn, err := ffi.Symbol(lib, "vkGetInstanceProcAddr")
+	gipaFn, err := ffi.GetSymbol(lib, "vkGetInstanceProcAddr")
 	if err != nil {
 		return fmt.Errorf("vulkan: %w", err)
 	}
 	_vkGetInstanceProcAddr = gipaFn
-	ffi.Prepare(&_cif_vkGetInstanceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer}) //nolint
-	ffi.Prepare(&_cif_vkGetDeviceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer})   //nolint
+	ffi.PrepareCallInterface(&_cif_vkGetInstanceProcAddr, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor}) //nolint
+	ffi.PrepareCallInterface(&_cif_vkGetDeviceProcAddr, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})   //nolint
 
 	// Load global commands
 	_fn_vkCreateInstance = _loadProc(nil, "vkCreateInstance")
 
 	// Prepare all call interfaces
-	ffi.Prepare(&_cif_vkCreateInstance, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                        //nolint
-	ffi.Prepare(&_cif_vkDestroyInstance, ffi.Void, []ffi.Type{ffi.Pointer})                                      //nolint
-	ffi.Prepare(&_cif_vkEnumeratePhysicalDevices, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer}) //nolint
-	ffi.Prepare(&_cif_vkGetInstanceVersion, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                      //nolint
+	ffi.PrepareCallInterface(&_cif_vkCreateInstance, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                        //nolint
+	ffi.PrepareCallInterface(&_cif_vkDestroyInstance, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor})                                                                      //nolint
+	ffi.PrepareCallInterface(&_cif_vkEnumeratePhysicalDevices, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor}) //nolint
+	ffi.PrepareCallInterface(&_cif_vkGetInstanceVersion, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                      //nolint
 
 	return nil
 }

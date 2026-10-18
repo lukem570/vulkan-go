@@ -606,15 +606,15 @@ func (s *Structured) GenerateCallbacksSupport() string {
 	// ffi.NewCallback trampolines (package-level vars)
 	for _, f := range pfnFields {
 		fp := f.Type.(*GoFuncPointer)
-		b.WriteString(s.generateABITrampoline(f, fp, holderType, registryName))
+		b.WriteString(s.generateGoffiTrampoline(f, fp, holderType, registryName))
 	}
 
 	return b.String()
 }
 
-// generateABITrampoline emits a package-level var holding a ffi.NewCallback
+// generateGoffiTrampoline emits a package-level var holding a ffi.NewCallback
 // trampoline for a single PFN field.
-func (s *Structured) generateABITrampoline(field StructField, fp *GoFuncPointer, holderType, registryName string) string {
+func (s *Structured) generateGoffiTrampoline(field StructField, fp *GoFuncPointer, holderType, registryName string) string {
 	trampolineName := "_trampoline_" + s.GoName + "_" + field.GoName
 
 	// Build Go func params using CName() (Go primitive types matching C ABI).
@@ -635,7 +635,7 @@ func (s *Structured) generateABITrampoline(field StructField, fp *GoFuncPointer,
 	if retCType != "" {
 		funcSig += " " + retCType
 	}
-	b.WriteString(fmt.Sprintf("var %s uintptr = ffi.NewCallback(%s {\n", trampolineName, funcSig))
+	b.WriteString(fmt.Sprintf("var %s uintptr = _newCallback(%s {\n", trampolineName, funcSig))
 
 	// Look up holder via pUserData param.
 	udIdx := pUserDataParamIndex(fp)

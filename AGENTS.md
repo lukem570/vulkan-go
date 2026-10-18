@@ -6,7 +6,7 @@ Notes for agents working in this repository.
 
 `github.com/lukem570/vulkan-go` — unofficial Go bindings for Vulkan, generated
 from `vk.xml` and dispatched through [goffi](https://github.com/go-webgpu/goffi)
-(libffi), so **no CGo**. `README.md` is the overview and
+(libffi), with or without CGo. `README.md` is the overview and
 `docs/api-changes.md` is the full public API tour; this file covers how the repo
 is built and what not to break.
 
@@ -26,7 +26,7 @@ you need a new hand-written helper in `package vk`, emit it from the generator
 non-generated package.
 
 Hand-written code lives only in `internal/generator/`, `internal/abi/`,
-`internal/ffi/`, `cmd/vkgen/`, and `examples/`.
+`cmd/vkgen/`, and `examples/`.
 
 The generator also emits `v1/abi_data_test.go` (plus one per platform build
 tag). Those are generated like everything else in `v1/` — do not hand-edit
@@ -41,11 +41,10 @@ them; they are the input data for the ABI conformance test described under
 | `cmd/vkgen/main.go` | Generator entry point; wires the pipeline and writes files |
 | `internal/generator/` | The generator: parse → registry → filter → codegen |
 | `internal/abi/` | Hand-written. Compares the generated layout against the C headers |
-| `internal/ffi/` | Hand-written. The FFI seam: goffi and cgo backends behind five primitives |
 | `config.yml` | API version, extension allow-list, platform list |
 | `mod/Vulkan-Headers` | Submodule; source of `registry/vk.xml` |
 | `examples/compute/` | Runnable headless compute example (doubles as the test) |
-| `docs/` | Prose docs: `api-changes.md` (public API), `backends.md` (FFI seam) |
+| `docs/` | Prose docs: `api-changes.md` is the C-vs-Go API reference |
 
 Generator pipeline, in order (`cmd/vkgen/main.go`):
 
@@ -80,9 +79,10 @@ task golden:update  # rewrite the generator golden files after an intended chang
 
 Environment:
 
-- `CGO_ENABLED` selects the FFI backend and both must keep working: `0` is goffi
-  (pure Go), `1` is libffi through cgo. After touching the generator or
-  `internal/ffi`, run `task test:both`. Details in `docs/backends.md`.
+- `CGO_ENABLED` must keep working both ways. goffi supports `0` (its own
+  fakecgo) and `1` (the real cgo runtime) as of v0.6.0, and the bindings are
+  expected to build and run under either, so run `task test:both` after
+  touching the generator.
 - `GOWORK=off` — set by every taskfile target; keep it when invoking `go`
   directly so a stray `go.work` does not shadow the module.
 
@@ -130,10 +130,11 @@ These are load-bearing; a change in `internal/generator/` that breaks one of
 them is an API break for every consumer of `v1`. They are documented for users
 in `docs/api-changes.md` — keep that file in sync with any change here.
 
-- Generated code must never name `ffi` or `types` directly. Every foreign call
-  goes through `internal/ffi` (`Prepare`, `Call`, `LoadLibrary`, `Symbol`,
-  `NewCallback`), and `ffi.Type` is a plain code rather than a backend
-  descriptor. This is what keeps both backends compilable.
+- Callbacks go through the generated `_newCallback`, never `ffi.NewCallback`
+  directly. On Windows goffi delegates to `syscall.NewCallback`, which takes
+  only pointer-sized arguments and demands exactly one result, and the Vulkan
+  PFNs have neither; `_newCallback` adapts them. Since the trampolines are
+  package-level variables, skipping it panics on import, not at call time.
 - Storage the driver writes through — out params, enumerate counts, byte-data
   sizes — is `new`-allocated and pinned, never a goroutine stack local. A Go
   callback firing mid-call (a debug messenger under a validation layer) runs Go

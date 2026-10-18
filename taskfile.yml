@@ -38,26 +38,16 @@ tasks:
       - go run ./examples/compute
 
   test:cgo:
-    desc: Run the Go test suite against the cgo/libffi backend (needs libffi and a C compiler)
+    desc: Run the Go test suite with CGo enabled (goffi supports both modes)
     deps: [ 'generate' ]
     env:
       CGO_ENABLED: "1"
       GOWORK: "off"
     cmds:
-      - go test -tags vkcgo ./internal/... ./v1/...
-
-  test:compute:cgo:
-    desc: Run the compute example on the cgo/libffi backend
-    deps: [ 'generate' ]
-    env:
-      CGO_ENABLED: "1"
-      GOWORK: "off"
-    cmds:
-      - glslc -o ./examples/compute/test.spv ./examples/compute/test.comp
-      - go run -tags vkcgo ./examples/compute
+      - go test ./internal/... ./v1/...
 
   test:both:
-    desc: Run the test suite against both FFI backends
+    desc: Run the test suite in both CGo modes
     cmds:
       - task: test
       - task: test:cgo

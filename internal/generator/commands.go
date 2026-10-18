@@ -68,23 +68,23 @@ type CommandParam struct {
 
 // GenerateCIFDecl emits the CIF var and function pointer var (global commands only).
 func (c *GoCommand) GenerateCIFDecl() string {
-	return fmt.Sprintf("var _cif_%s ffi.CIF\nvar _fn_%s unsafe.Pointer\n", c.CName, c.CName)
+	return fmt.Sprintf("var _cif_%s types.CallInterface\nvar _fn_%s unsafe.Pointer\n", c.CName, c.CName)
 }
 
 // GenerateCIFOnly emits just the CIF var (for instance/device commands whose fn ptr lives in a dispatch table).
 func (c *GoCommand) GenerateCIFOnly() string {
-	return fmt.Sprintf("var _cif_%s ffi.CIF\n", c.CName)
+	return fmt.Sprintf("var _cif_%s types.CallInterface\n", c.CName)
 }
 
 // GenerateCIFPrepare emits only the ffi.PrepareCallInterface line for a command.
 func (c *GoCommand) GenerateCIFPrepare() string {
-	retDesc := abiReturnDesc(c.CReturnType)
+	retDesc := goffiReturnDesc(c.CReturnType)
 	var argDescs []string
 	for _, p := range c.CParams {
-		argDescs = append(argDescs, cParamABIDesc(p.Type))
+		argDescs = append(argDescs, cParamGoffiDesc(p.Type))
 	}
 	argDescStr := strings.Join(argDescs, ", ")
-	return fmt.Sprintf("\tffi.Prepare(&_cif_%s, %s, []ffi.Type{%s}) //nolint\n",
+	return fmt.Sprintf("\tffi.PrepareCallInterface(&_cif_%s, types.DefaultCall, %s, []*types.TypeDescriptor{%s}) //nolint\n",
 		c.CName, retDesc, argDescStr)
 }
 
@@ -259,9 +259,9 @@ func (c *GoCommand) GenerateWrapper(sTypes map[string]string) string {
 			retCType = c.ReturnType.CName()
 		}
 		b.WriteString(fmt.Sprintf("\tvar _ret %s\n", retCType))
-		b.WriteString(fmt.Sprintf("\tffi.Call(&_cif_%s, %s, unsafe.Pointer(&_ret), []unsafe.Pointer{\n", c.CName, fnExpr)) //nolint
+		b.WriteString(fmt.Sprintf("\tffi.CallFunction(&_cif_%s, %s, unsafe.Pointer(&_ret), []unsafe.Pointer{\n", c.CName, fnExpr)) //nolint
 	} else {
-		b.WriteString(fmt.Sprintf("\tffi.Call(&_cif_%s, %s, nil, []unsafe.Pointer{\n", c.CName, fnExpr)) //nolint
+		b.WriteString(fmt.Sprintf("\tffi.CallFunction(&_cif_%s, %s, nil, []unsafe.Pointer{\n", c.CName, fnExpr)) //nolint
 	}
 	for _, ae := range ffiArgExprs {
 		b.WriteString("\t\t" + ae + ",\n")
@@ -482,7 +482,7 @@ func (c *GoCommand) generateEnumerateWrapper() string {
 
 	// First call: count only
 	firstArgs := append(append([]string{}, inputArgExprs...), "unsafe.Pointer(&_countSlot)", "unsafe.Pointer(&_nilSlot)")
-	b.WriteString(fmt.Sprintf("\tffi.Call(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
+	b.WriteString(fmt.Sprintf("\tffi.CallFunction(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
 	for _, ae := range firstArgs {
 		b.WriteString("\t\t" + ae + ",\n")
 	}
@@ -510,7 +510,7 @@ func (c *GoCommand) generateEnumerateWrapper() string {
 
 	// Second call: fill array
 	secondArgs := append(append([]string{}, inputArgExprs...), "unsafe.Pointer(&_countSlot)", "unsafe.Pointer(&_arrSlot)")
-	b.WriteString(fmt.Sprintf("\tffi.Call(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
+	b.WriteString(fmt.Sprintf("\tffi.CallFunction(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
 	for _, ae := range secondArgs {
 		b.WriteString("\t\t" + ae + ",\n")
 	}
@@ -623,7 +623,7 @@ func (c *GoCommand) generateByteDataWrapper() string {
 	}
 
 	firstArgs := append(append([]string{}, inputArgExprs...), "unsafe.Pointer(&_dataSizeSlot)", "unsafe.Pointer(&_nilSlot)")
-	b.WriteString(fmt.Sprintf("\tffi.Call(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
+	b.WriteString(fmt.Sprintf("\tffi.CallFunction(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
 	for _, ae := range firstArgs {
 		b.WriteString("\t\t" + ae + ",\n")
 	}
@@ -652,7 +652,7 @@ func (c *GoCommand) generateByteDataWrapper() string {
 
 	// Second call: fill buffer
 	secondArgs := append(append([]string{}, inputArgExprs...), "unsafe.Pointer(&_dataSizeSlot)", "unsafe.Pointer(&_bufSlot)")
-	b.WriteString(fmt.Sprintf("\tffi.Call(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
+	b.WriteString(fmt.Sprintf("\tffi.CallFunction(&_cif_%s, %s, %s, []unsafe.Pointer{\n", c.CName, fnExpr, retPtr)) //nolint
 	for _, ae := range secondArgs {
 		b.WriteString("\t\t" + ae + ",\n")
 	}
