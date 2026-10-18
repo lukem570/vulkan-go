@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Fixture: PFN struct members.
+
+  A struct carrying function-pointer members plus a pUserData member must expose
+  Go closures. The generator emits a holder type, a sync.Map registry, and an
+  ffi.NewCallback trampoline per member; toC then overwrites pUserData with the
+  holder's address so the trampoline can find the closure again.
+
+  Rendered through GenerateCallbacksFile, which is where that support code goes.
+  Note the funcpointer shape: this registry spells them with <proto>/<param>
+  children, not as an inline C typedef.
+-->
+<registry>
+    <types>
+        <type category="funcpointer">
+            <proto><type>void</type>* <name>PFN_vkGoldenAllocation</name></proto>
+            <param><type>void</type>*                       <name>pUserData</name></param>
+            <param><type>size_t</type>                      <name>size</name></param>
+            <param><type>VkGoldenKind</type>                <name>kind</name></param>
+        </type>
+
+        <type category="funcpointer">
+            <proto><type>void</type> <name>PFN_vkGoldenFree</name></proto>
+            <param><type>void</type>*                       <name>pUserData</name></param>
+            <param><type>void</type>*                       <name>pMemory</name></param>
+        </type>
+
+        <type category="funcpointer">
+            <proto><type>VkBool32</type> <name>PFN_vkGoldenPredicate</name></proto>
+            <param><type>void</type>*                       <name>pUserData</name></param>
+            <param><type>uint32_t</type>                    <name>value</name></param>
+        </type>
+
+        <type category="struct" name="VkGoldenAllocationCallbacks">
+            <member optional="true"><type>void</type>* <name>pUserData</name></member>
+            <member><type>PFN_vkGoldenAllocation</type> <name>pfnAllocation</name></member>
+            <member><type>PFN_vkGoldenFree</type> <name>pfnFree</name></member>
+            <member><type>PFN_vkGoldenPredicate</type> <name>pfnPredicate</name></member>
+        </type>
+    </types>
+
+    <enums name="VkResult" type="enum">
+        <enum value="0" name="VK_SUCCESS"/>
+    </enums>
+
+    <enums name="VkGoldenKind" type="enum">
+        <enum value="0" name="VK_GOLDEN_KIND_PLAIN"/>
+    </enums>
+
+    <feature api="vulkan" name="VK_VERSION_1_0" number="1.0" comment="golden fixture">
+        <require>
+            <type name="VkResult"/>
+            <type name="VkGoldenKind"/>
+            <type name="VkGoldenAllocationCallbacks"/>
+        </require>
+    </feature>
+</registry>

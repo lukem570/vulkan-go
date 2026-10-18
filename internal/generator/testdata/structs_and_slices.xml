@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Fixture: struct member translation.
+
+  Shapes under test:
+    sType / pNext                 - become GetType() and Next Structure; sType is
+                                    written by toC, never by the caller
+    bindingCount + pBindings      - a count+pointer member pair collapsing into
+                                    one []GoldenBinding field
+    const char* pName             - string
+    const char* const* ppNames    - []string
+    VkBool32                      - bool
+    const VkGoldenLimits* pLimits - *GoldenLimits, a pointer to a struct that
+                                    carries no sType of its own
+-->
+<registry>
+    <types>
+        <type category="struct" name="VkGoldenLimits">
+            <member><type>uint32_t</type> <name>maxBindings</name></member>
+            <member><type>VkDeviceSize</type> <name>maxSize</name></member>
+        </type>
+
+        <type category="struct" name="VkGoldenBinding">
+            <member><type>uint32_t</type> <name>binding</name></member>
+            <member><type>VkBool32</type> <name>enabled</name></member>
+        </type>
+
+        <type category="struct" name="VkGoldenCreateInfo">
+            <member values="VK_STRUCTURE_TYPE_GOLDEN_CREATE_INFO"><type>VkStructureType</type> <name>sType</name></member>
+            <member optional="true">const <type>void</type>* <name>pNext</name></member>
+            <member><type>uint32_t</type> <name>bindingCount</name></member>
+            <member len="bindingCount">const <type>VkGoldenBinding</type>* <name>pBindings</name></member>
+            <member len="null-terminated">const <type>char</type>* <name>pName</name></member>
+            <member><type>uint32_t</type> <name>nameCount</name></member>
+            <member len="nameCount,null-terminated">const <type>char</type>* const* <name>ppNames</name></member>
+            <member><type>VkBool32</type> <name>strict</name></member>
+            <member optional="true">const <type>VkGoldenLimits</type>* <name>pLimits</name></member>
+        </type>
+    </types>
+
+    <enums name="VkResult" type="enum">
+        <enum value="0" name="VK_SUCCESS"/>
+    </enums>
+
+    <enums name="VkStructureType" type="enum">
+        <enum value="1" name="VK_STRUCTURE_TYPE_GOLDEN_CREATE_INFO"/>
+    </enums>
+
+    <feature api="vulkan" name="VK_VERSION_1_0" number="1.0" comment="golden fixture">
+        <require>
+            <type name="VkResult"/>
+            <type name="VkStructureType"/>
+            <type name="VkGoldenLimits"/>
+            <type name="VkGoldenBinding"/>
+            <type name="VkGoldenCreateInfo"/>
+        </require>
+    </feature>
+</registry>

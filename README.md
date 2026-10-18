@@ -1,35 +1,39 @@
 # vulkan-go
 
-Unofficial Go bindings for Vulkan, auto-generated from `vk.xml`. Built on [goffi](https://github.com/go-webgpu/goffi) — no CGo required.
-
-## Requirements
-
-- `CGO_ENABLED=0` (goffi is incompatible with CGo)
-- Vulkan runtime installed on your system
+Unofficial Go bindings for Vulkan, generated from `vk.xml`. Idiomatic rather
+than literal: handle methods, slices, `error` returns, garbage-collected
+handles. No CGo required.
 
 ```sh
-go env -w CGO_ENABLED=0
+go get github.com/lukem570/vulkan-go
 ```
 
-## Installation
+You need a Vulkan runtime. The foreign-call backend is chosen by the `cgo` build
+constraint, with nothing to configure:
 
-```sh
-CGO_ENABLED=0 go get github.com/lukem570/vulkan-go
-```
+| Build | Backend | Needs |
+| --- | --- | --- |
+| `CGO_ENABLED=0` (default) | [goffi](https://github.com/go-webgpu/goffi), pure Go | nothing |
+| `CGO_ENABLED=1` | libffi through cgo | libffi and a C compiler |
 
-## Quick Start
+Pure Go is the recommended default; the cgo backend exists so this library works
+inside a program that needs cgo for something else — see
+[docs/backends.md](./docs/backends.md).
+
+## Quick start
 
 ```go
 import (
+    "log"
+
     vk "github.com/lukem570/vulkan-go/v1"
 )
 
-// Initialize Vulkan (loads the shared library and global function pointers)
+// Loads the Vulkan shared library and the global function pointers.
 if err := vk.Initialize(); err != nil {
     log.Fatal(err)
 }
 
-// Instance and device function pointers are loaded automatically on creation
 instance, err := vk.CreateInstance(&vk.InstanceCreateInfo{
     ApplicationInfo: &vk.ApplicationInfo{
         ApplicationName: "my-app",
@@ -40,66 +44,71 @@ if err != nil {
     log.Fatal(err)
 }
 
-// No LoadInstance/LoadDevice calls needed — dispatch tables are populated
-// automatically when CreateInstance and CreateDevice return.
-device, err := physicalDevice.CreateDevice(&vk.DeviceCreateInfo{...}, nil)
+physicalDevices, err := instance.EnumeratePhysicalDevices()
+if err != nil {
+    log.Fatal(err)
+}
+physDev := physicalDevices[0]
+props := physDev.GetProperties()
+log.Println(vk.GoString(props.DeviceName[:]))
 
-// No Destroy calls either: the GC destroys handles once unreachable, children
-// before parents. Keep a handle reachable while the GPU still uses it.
+device, err := physDev.CreateDevice(&vk.DeviceCreateInfo{
+    QueueCreateInfos: []vk.DeviceQueueCreateInfo{{
+        QueueFamilyIndex: 0,
+        QueuePriorities:  []float32{1.0},
+    }},
+}, nil)
+if err != nil {
+    log.Fatal(err)
+}
+queue := device.GetQueue(0, 0)
 ```
 
-## Examples
+Two things are doing work there that the C API makes you write by hand:
+instance- and device-level function pointers load themselves (no
+`LoadInstance`/`LoadDevice`), and there is no teardown code — handles are
+destroyed by the garbage collector, children before parents.
 
-See the [examples/](./examples) directory:
-
-- [compute](./examples/compute/) — headless compute pipeline with buffer readback
-
-There are no windowed examples; GLFW requires CGo and is incompatible with this
-library. See [Windowing](./docs/api-changes.md#windowing).
+A full runnable program is in [examples/compute](./examples/compute/): a
+headless compute pipeline with buffer readback. There are no windowed examples,
+as GLFW needs CGo; see [Windowing](./docs/api-changes.md#windowing).
 
 ## Differences from the C API
 
-The bindings are idiomatic Go, not a literal translation:
-
 - Commands taking a handle first become methods — `physDev.CreateDevice(ci, nil)`
-- Output parameters become return values, `VkResult` becomes `error`
+- Output parameters become return values; `VkResult` becomes `error`
 - `count` + `pFoo` pairs collapse into slices
-- `pNext` becomes a typed `Next` field; `sType` is set for you
+- `pNext` becomes a typed `Next` field, and `sType` is set for you
 - PFN fields take Go closures
-- Dispatch tables load themselves; there is no `LoadInstance`/`LoadDevice`
-- **No `Destroy`/`Free` methods** — the GC destroys handles once they are
-  unreachable, parents after children. You must still keep a handle reachable
-  while submitted GPU work uses it; see
-  [object lifetimes](./docs/api-changes.md#object-lifetimes)
+- Dispatch tables load themselves
+- **No `Destroy`/`Free` methods.** The GC destroys handles once unreachable,
+  parents after children. You must still keep a handle reachable while
+  submitted GPU work uses it.
 
-Full details, with C-vs-Go examples: **[docs/api-changes.md](./docs/api-changes.md)**
-
-## Code Generation
-
-Bindings are generated from `mod/Vulkan-Headers/registry/vk.xml` using the generator in [cmd/vkgen/](./cmd/vkgen/). Configuration (API version, extensions, platforms) is in [config.yml](./config.yml).
-
-```sh
-task generate
-```
-
-Or manually:
-
-```sh
-git submodule update --init mod/Vulkan-Headers
-go run ./cmd/vkgen
-```
-
-Generated output: `v1/vulkan.go`, `v1/callbacks.go`, `v1/vulkan_linux.go`, `v1/vulkan_windows.go`, `v1/vulkan_darwin.go`
+Each of these, with C-vs-Go examples and the full lifetime rules:
+**[docs/api-changes.md](./docs/api-changes.md)**.
 
 ## Versioning
 
-The import path carries the API generation: `v1` is a commitment to the binding
-conventions in [docs/api-changes.md](./docs/api-changes.md), independent of
-which Vulkan headers the code was generated from. If those conventions ever have
-to change, a `v2` package will appear beside it rather than silently breaking
-`v1` callers.
+Two independent axes:
 
-Release tags are derived from the Vulkan header version — `v1.4.365` means
-*Vulkan headers 1.4.365*, not Go-library semver. Pin an exact tag if you need
-reproducibility; do not read a tag bump as a compatibility signal in either
-direction.
+- **The import path** carries the Go API generation. `v1` commits to the
+  conventions above, whichever Vulkan headers the code was generated from. If
+  those conventions ever have to change, a `v2` package appears beside it rather
+  than breaking `v1` callers.
+- **Release tags** carry the Vulkan header version. `v1.4.365` means *Vulkan
+  headers 1.4.365*, not Go-library semver, so a tag bump is not a compatibility
+  signal in either direction. Pin an exact tag if you need reproducibility.
+
+## Working on the bindings
+
+`v1/` is generated — never edit it by hand. Change the generator in
+[internal/generator/](./internal/generator/) or the API surface in
+[config.yml](./config.yml) (version, extensions, platforms), then:
+
+```sh
+task generate     # regenerate v1/ from mod/Vulkan-Headers/registry/vk.xml
+task test         # driver-free test suite
+task test:compute # run the compute example (needs glslc and a driver)
+task test:both    # test suite against both FFI backends
+```

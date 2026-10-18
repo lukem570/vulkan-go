@@ -1,0 +1,107 @@
+
+type instanceTable struct {
+}
+
+type deviceTable struct {
+}
+
+type GoldenFlagBits uint32
+
+const (
+	GoldenFirstBit       GoldenFlagBits = 1 << 0
+	GoldenSecondBit      GoldenFlagBits = 1 << 1
+	GoldenLast32Bit      GoldenFlagBits = 1 << 31
+	GoldenExtendedBitEXT GoldenFlagBits = 1 << 5
+)
+
+type GoldenKind uint32
+
+const (
+	GoldenKindPlain       GoldenKind = 0
+	GoldenKindFancy       GoldenKind = 1
+	GoldenKindExtendedEXT GoldenKind = 1000399003
+	GoldenKindPlainEXT    GoldenKind = GoldenKindPlain
+)
+
+type GoldenWideFlagBits uint64
+
+const (
+	GoldenWideFirstBit GoldenWideFlagBits = 1 << 0
+	GoldenWideHighBit  GoldenWideFlagBits = 1 << 40
+)
+
+type Result int32
+
+const (
+	Success                Result = 0
+	NotReady               Result = 1
+	ErrorOutOfHostMemory   Result = -1
+	ErrorOutOfDeviceMemory Result = -2
+	ErrorGoldenFailedEXT   Result = -1000399004
+)
+
+func (v Result) Error() string {
+	switch v {
+	case Success:
+		return "Success"
+	case NotReady:
+		return "NotReady"
+	case ErrorOutOfHostMemory:
+		return "ErrorOutOfHostMemory"
+	case ErrorOutOfDeviceMemory:
+		return "ErrorOutOfDeviceMemory"
+	case ErrorGoldenFailedEXT:
+		return "ErrorGoldenFailedEXT"
+	default:
+		return fmt.Sprintf("Result(%d)", int(v))
+	}
+}
+
+type GoldenFlags uint32
+
+type GoldenWideFlags uint64
+
+// ---------------------------------------------------------------------------
+// Handle cleanups
+//
+// Each handle is destroyed by the garbage collector through a runtime.AddCleanup
+// registered at creation. Cleanup arguments hold the parent handle so parents
+// outlive their children, and never the handle being destroyed.
+// ---------------------------------------------------------------------------
+
+func _initInstanceTable(handle unsafe.Pointer) *instanceTable {
+	_vkGetDeviceProcAddr = _loadProc(handle, "vkGetDeviceProcAddr")
+	t := &instanceTable{}
+	return t
+}
+
+func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
+	t := &deviceTable{}
+	return t
+}
+
+// Initialize loads the Vulkan library and global function pointers.
+// Must be called before any other Vulkan function.
+// Instance and device function pointers are loaded automatically
+// by CreateInstance and CreateDevice respectively.
+func Initialize() error {
+	lib, err := ffi.LoadLibrary(_vulkanLibName())
+	if err != nil {
+		return fmt.Errorf("vulkan: %w", err)
+	}
+	_vkLib = lib
+
+	gipaFn, err := ffi.Symbol(lib, "vkGetInstanceProcAddr")
+	if err != nil {
+		return fmt.Errorf("vulkan: %w", err)
+	}
+	_vkGetInstanceProcAddr = gipaFn
+	ffi.Prepare(&_cif_vkGetInstanceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer}) //nolint
+	ffi.Prepare(&_cif_vkGetDeviceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer})   //nolint
+
+	// Load global commands
+
+	// Prepare all call interfaces
+
+	return nil
+}

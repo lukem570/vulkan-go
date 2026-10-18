@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Fixture: the memory-layout corners.
+
+  Shapes under test:
+    float matrix[3][4]        - a two-dimensional fixed array
+    uint8_t uuid[VK_UUID_SIZE] - a fixed array sized by a named constant
+    VkGoldenUnion             - a union, emitted as [N]byte with one constructor
+                                and one accessor per variant
+    VkGoldenHolder            - a struct embedding that union. Go infers
+                                alignment 1 for a byte array, so the generator
+                                must emit explicit _pad bytes to put the union
+                                where C puts it
+    instanceCustomIndex:24 / mask:8 - C bitfield members folded into one packed
+                                uint32 word, with shift-and-mask accessors
+-->
+<registry>
+    <types>
+        <type category="struct" name="VkGoldenTransform">
+            <member><type>float</type> <name>matrix</name>[3][4]</member>
+        </type>
+
+        <type category="struct" name="VkGoldenIdentity">
+            <member><type>uint8_t</type> <name>uuid</name>[<enum>VK_UUID_SIZE</enum>]</member>
+            <member><type>uint32_t</type> <name>generation</name></member>
+        </type>
+
+        <type category="union" name="VkGoldenUnion">
+            <member><type>float</type> <name>float32</name>[4]</member>
+            <member><type>int32_t</type> <name>int32</name>[4]</member>
+            <member><type>uint32_t</type> <name>uint32</name>[4]</member>
+        </type>
+
+        <type category="struct" name="VkGoldenHolder">
+            <member><type>uint8_t</type> <name>tag</name></member>
+            <member><type>VkGoldenUnion</type> <name>payload</name></member>
+            <member><type>uint32_t</type> <name>trailer</name></member>
+        </type>
+
+        <type category="struct" name="VkGoldenInstance">
+            <member><type>VkGoldenTransform</type> <name>transform</name></member>
+            <member><type>uint32_t</type> <name>instanceCustomIndex</name>:24</member>
+            <member><type>uint32_t</type> <name>mask</name>:8</member>
+            <member><type>uint64_t</type> <name>reference</name></member>
+        </type>
+    </types>
+
+    <enums name="VkResult" type="enum">
+        <enum value="0" name="VK_SUCCESS"/>
+    </enums>
+
+    <feature api="vulkan" name="VK_VERSION_1_0" number="1.0" comment="golden fixture">
+        <require>
+            <type name="VkResult"/>
+            <type name="VkGoldenTransform"/>
+            <type name="VkGoldenIdentity"/>
+            <type name="VkGoldenUnion"/>
+            <type name="VkGoldenHolder"/>
+            <type name="VkGoldenInstance"/>
+        </require>
+    </feature>
+</registry>

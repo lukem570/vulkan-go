@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/go-webgpu/goffi/ffi"
+	"github.com/lukem570/vulkan-go/internal/ffi"
 )
 
 type cVkWin32SurfaceCreateInfoKHR struct {
@@ -82,15 +82,20 @@ func (h *Instance) CreateWin32SurfaceKHR(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var surfaceOut unsafe.Pointer
-	_surfaceOutSlot := unsafe.Pointer(&surfaceOut)
+	_surfaceOutBox := new(unsafe.Pointer)
+	var _surfaceOutPin runtime.Pinner
+	_surfaceOutPin.Pin(_surfaceOutBox)
+	defer _surfaceOutPin.Unpin()
+	surfaceOut := *_surfaceOutBox
+	_surfaceOutSlot := unsafe.Pointer(_surfaceOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateWin32SurfaceKHR, h.table.vkCreateWin32SurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateWin32SurfaceKHR, h.table.vkCreateWin32SurfaceKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_surfaceOutSlot),
 	})
+	surfaceOut = *_surfaceOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -119,7 +124,7 @@ func (h *PhysicalDevice) GetWin32PresentationSupportKHR(
 	_recv := h.handle
 	val0 := uint32(queueFamilyIndex)
 	var _ret uint32
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceWin32PresentationSupportKHR, h.table.vkGetPhysicalDeviceWin32PresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceWin32PresentationSupportKHR, h.table.vkGetPhysicalDeviceWin32PresentationSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})

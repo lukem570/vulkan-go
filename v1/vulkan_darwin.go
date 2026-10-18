@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/go-webgpu/goffi/ffi"
+	"github.com/lukem570/vulkan-go/internal/ffi"
 )
 
 type cVkMacOSSurfaceCreateInfoMVK struct {
@@ -118,15 +118,20 @@ func (h *Instance) CreateMacOSSurfaceMVK(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var surfaceOut unsafe.Pointer
-	_surfaceOutSlot := unsafe.Pointer(&surfaceOut)
+	_surfaceOutBox := new(unsafe.Pointer)
+	var _surfaceOutPin runtime.Pinner
+	_surfaceOutPin.Pin(_surfaceOutBox)
+	defer _surfaceOutPin.Unpin()
+	surfaceOut := *_surfaceOutBox
+	_surfaceOutSlot := unsafe.Pointer(_surfaceOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateMacOSSurfaceMVK, h.table.vkCreateMacOSSurfaceMVK, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateMacOSSurfaceMVK, h.table.vkCreateMacOSSurfaceMVK, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_surfaceOutSlot),
 	})
+	surfaceOut = *_surfaceOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -166,15 +171,20 @@ func (h *Instance) CreateMetalSurfaceEXT(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var surfaceOut unsafe.Pointer
-	_surfaceOutSlot := unsafe.Pointer(&surfaceOut)
+	_surfaceOutBox := new(unsafe.Pointer)
+	var _surfaceOutPin runtime.Pinner
+	_surfaceOutPin.Pin(_surfaceOutBox)
+	defer _surfaceOutPin.Unpin()
+	surfaceOut := *_surfaceOutBox
+	_surfaceOutSlot := unsafe.Pointer(_surfaceOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateMetalSurfaceEXT, h.table.vkCreateMetalSurfaceEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateMetalSurfaceEXT, h.table.vkCreateMetalSurfaceEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_surfaceOutSlot),
 	})
+	surfaceOut = *_surfaceOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}

@@ -1,0 +1,246 @@
+
+type instanceTable struct {
+}
+
+type deviceTable struct {
+}
+
+type Result uint32
+
+const (
+	Success Result = 0
+)
+
+func (v Result) Error() string {
+	switch v {
+	case Success:
+		return "Success"
+	default:
+		return fmt.Sprintf("Result(%d)", int(v))
+	}
+}
+
+type StructureType uint32
+
+const (
+	StructureTypeGoldenCreateInfo StructureType = 1
+)
+
+type cVkGoldenBinding struct {
+	binding uint32
+	enabled uint32
+}
+
+type GoldenBinding struct {
+	Binding uint32
+	Enabled bool
+}
+
+func (s *GoldenBinding) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := new(cVkGoldenBinding)
+	val0 := uint32(s.Binding)
+	p.binding = val0
+	val1 := uint32(0)
+	if s.Enabled {
+		val1 = 1
+	}
+	p.enabled = val1
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+	}
+}
+
+func (s *GoldenBinding) fromC(p *cVkGoldenBinding) {
+	s.Binding = uint32(p.binding)
+	s.Enabled = p.enabled != 0
+}
+
+type cVkGoldenCreateInfo struct {
+	sType        int32
+	pNext        unsafe.Pointer
+	bindingCount uint32
+	pBindings    unsafe.Pointer
+	pName        unsafe.Pointer
+	nameCount    uint32
+	ppNames      unsafe.Pointer
+	strict       uint32
+	pLimits      unsafe.Pointer
+}
+
+type GoldenCreateInfo struct {
+	Next     Structure
+	Bindings []GoldenBinding
+	Name     string
+	Names    []string
+	Strict   bool
+	Limits   *GoldenLimits
+}
+
+func (s *GoldenCreateInfo) GetType() StructureType {
+	return StructureTypeGoldenCreateInfo
+}
+
+func (s *GoldenCreateInfo) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := new(cVkGoldenCreateInfo)
+	p.sType = int32(s.GetType())
+	if s.Next != nil {
+		nextPtr, nextCancel := s.Next.toC()
+		cancels = append(cancels, nextCancel)
+		p.pNext = nextPtr
+	}
+	len0 := len(s.Bindings)
+	var arr1 unsafe.Pointer
+	if len0 > 0 {
+		buf2 := make([]cVkGoldenBinding, len0)
+		var pin3 runtime.Pinner
+		pin3.Pin(&buf2[0])
+		cancels = append(cancels, func() { pin3.Unpin(); runtime.KeepAlive(buf2) })
+		arr1 = unsafe.Pointer(&buf2[0])
+		for i4, elem5 := range s.Bindings {
+			val6, cancel7 := elem5.toC()
+			cancels = append(cancels, cancel7)
+			cast8 := (*cVkGoldenBinding)(val6)
+			buf2[i4] = *cast8
+		}
+	}
+	p.pBindings = arr1
+	p.bindingCount = uint32(len(s.Bindings))
+	cstr9 := append([]byte(s.Name), 0)
+	var pin10 runtime.Pinner
+	pin10.Pin(&cstr9[0])
+	cancels = append(cancels, func() { pin10.Unpin(); runtime.KeepAlive(cstr9) })
+	ptr11 := unsafe.Pointer(&cstr9[0])
+	p.pName = ptr11
+	len12 := len(s.Names)
+	var arr13 unsafe.Pointer
+	if len12 > 0 {
+		buf14 := make([]unsafe.Pointer, len12)
+		var pin15 runtime.Pinner
+		pin15.Pin(&buf14[0])
+		cancels = append(cancels, func() { pin15.Unpin(); runtime.KeepAlive(buf14) })
+		arr13 = unsafe.Pointer(&buf14[0])
+		for i16, elem17 := range s.Names {
+			cstr18 := append([]byte(elem17), 0)
+			var pin19 runtime.Pinner
+			pin19.Pin(&cstr18[0])
+			cancels = append(cancels, func() { pin19.Unpin(); runtime.KeepAlive(cstr18) })
+			ptr20 := unsafe.Pointer(&cstr18[0])
+			buf14[i16] = ptr20
+		}
+	}
+	p.ppNames = arr13
+	p.nameCount = uint32(len(s.Names))
+	val21 := uint32(0)
+	if s.Strict {
+		val21 = 1
+	}
+	p.strict = val21
+	var ptr22 unsafe.Pointer
+	if s.Limits != nil {
+		val23, cancel24 := s.Limits.toC()
+		cancels = append(cancels, cancel24)
+		ptr22 = val23
+	}
+	p.pLimits = ptr22
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+	}
+}
+
+func (s *GoldenCreateInfo) fromC(p *cVkGoldenCreateInfo) {
+	if p.bindingCount > 0 && p.pBindings != nil {
+		s.Bindings = make([]GoldenBinding, p.bindingCount)
+		for i0 := range s.Bindings {
+			elem1 := (*[1 << 30]cVkGoldenBinding)(unsafe.Pointer(p.pBindings))[i0]
+			s.Bindings[i0].fromC(&elem1)
+		}
+	}
+	if p.pName != nil {
+		s.Name = _cGoString(p.pName)
+	}
+	// TODO: fromC for Names (Slice of *generator.String)
+	s.Strict = p.strict != 0
+	if p.pLimits != nil {
+		s.Limits.fromC((*cVkGoldenLimits)(p.pLimits))
+	}
+}
+
+type cVkGoldenLimits struct {
+	maxBindings uint32
+	maxSize     uint64
+}
+
+type GoldenLimits struct {
+	MaxBindings uint32
+	MaxSize     uint64
+}
+
+func (s *GoldenLimits) toC() (unsafe.Pointer, func()) {
+	cancels := make([]func(), 0)
+	p := new(cVkGoldenLimits)
+	val0 := uint32(s.MaxBindings)
+	p.maxBindings = val0
+	val1 := uint64(s.MaxSize)
+	p.maxSize = val1
+	return unsafe.Pointer(p), func() {
+		for _, cancel := range cancels {
+			cancel()
+		}
+	}
+}
+
+func (s *GoldenLimits) fromC(p *cVkGoldenLimits) {
+	s.MaxBindings = uint32(p.maxBindings)
+	s.MaxSize = uint64(p.maxSize)
+}
+
+// ---------------------------------------------------------------------------
+// Handle cleanups
+//
+// Each handle is destroyed by the garbage collector through a runtime.AddCleanup
+// registered at creation. Cleanup arguments hold the parent handle so parents
+// outlive their children, and never the handle being destroyed.
+// ---------------------------------------------------------------------------
+
+func _initInstanceTable(handle unsafe.Pointer) *instanceTable {
+	_vkGetDeviceProcAddr = _loadProc(handle, "vkGetDeviceProcAddr")
+	t := &instanceTable{}
+	return t
+}
+
+func _initDeviceTable(handle unsafe.Pointer) *deviceTable {
+	t := &deviceTable{}
+	return t
+}
+
+// Initialize loads the Vulkan library and global function pointers.
+// Must be called before any other Vulkan function.
+// Instance and device function pointers are loaded automatically
+// by CreateInstance and CreateDevice respectively.
+func Initialize() error {
+	lib, err := ffi.LoadLibrary(_vulkanLibName())
+	if err != nil {
+		return fmt.Errorf("vulkan: %w", err)
+	}
+	_vkLib = lib
+
+	gipaFn, err := ffi.Symbol(lib, "vkGetInstanceProcAddr")
+	if err != nil {
+		return fmt.Errorf("vulkan: %w", err)
+	}
+	_vkGetInstanceProcAddr = gipaFn
+	ffi.Prepare(&_cif_vkGetInstanceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer}) //nolint
+	ffi.Prepare(&_cif_vkGetDeviceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer})   //nolint
+
+	// Load global commands
+
+	// Prepare all call interfaces
+
+	return nil
+}

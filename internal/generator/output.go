@@ -14,7 +14,7 @@ func (r *ReducedRegistry) GeneratePackage(pkg string) string {
 
 	b.WriteString(generatedHeader)
 	b.WriteString("package " + pkg + "\n\n")
-	b.WriteString(goffiHeader)
+	b.WriteString(abiHeader)
 	b.WriteString(runtimeHelpers)
 
 	// API constants — grouped by type to avoid "mixed untyped constant" errors
@@ -192,7 +192,7 @@ func (r *ReducedRegistry) GeneratePlatformFiles(pkg string) []PlatformFile {
 		b.WriteString(generatedHeader)
 		b.WriteString(fmt.Sprintf("//go:build %s\n\n", tag))
 		b.WriteString("package " + pkg + "\n\n")
-		b.WriteString(goffiPlatformHeader)
+		b.WriteString(abiPlatformHeader)
 
 		// Handles
 		for _, h := range pc.handles {
@@ -384,11 +384,11 @@ func (r *ReducedRegistry) generateInitFunctions() string {
 	b.WriteString("\tlib, err := ffi.LoadLibrary(_vulkanLibName())\n")
 	b.WriteString("\tif err != nil {\n\t\treturn fmt.Errorf(\"vulkan: %w\", err)\n\t}\n")
 	b.WriteString("\t_vkLib = lib\n\n")
-	b.WriteString("\tgipaFn, err := ffi.GetSymbol(lib, \"vkGetInstanceProcAddr\")\n")
+	b.WriteString("\tgipaFn, err := ffi.Symbol(lib, \"vkGetInstanceProcAddr\")\n")
 	b.WriteString("\tif err != nil {\n\t\treturn fmt.Errorf(\"vulkan: %w\", err)\n\t}\n")
 	b.WriteString("\t_vkGetInstanceProcAddr = gipaFn\n")
-	b.WriteString("\tffi.PrepareCallInterface(&_cif_vkGetInstanceProcAddr, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor}) //nolint\n")
-	b.WriteString("\tffi.PrepareCallInterface(&_cif_vkGetDeviceProcAddr, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor}) //nolint\n\n")
+	b.WriteString("\tffi.Prepare(&_cif_vkGetInstanceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer}) //nolint\n")
+	b.WriteString("\tffi.Prepare(&_cif_vkGetDeviceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer}) //nolint\n\n")
 
 	b.WriteString("\t// Load global commands\n")
 	for _, cmd := range globalCmds {

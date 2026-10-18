@@ -7,14 +7,14 @@ import (
 
 // FieldType generates conversion code and describes a type's layout.
 // CName() now returns the C-layout Go type name (no "C." prefix).
-// GoffiDesc() returns the goffi types.TypeDescriptor expression for the type
+// ABIDesc() returns the goffi types.TypeDescriptor expression for the type
 // when used as a command parameter.
 type FieldType interface {
 	GenerateToC(g *CodeGen, input string) string
 	GenerateFromC(g *CodeGen, input string) string
 	CName() string      // C-layout Go type (e.g. "uint32", "unsafe.Pointer", "cVkExtent2D")
 	GoName() string     // Go user-facing type name
-	GoffiDesc() string  // goffi TypeDescriptor expression for use in CIF
+	ABIDesc() string  // goffi TypeDescriptor expression for use in CIF
 }
 
 // ---------------------------------------------------------------------------
@@ -44,30 +44,30 @@ func (t *Primitive) GenerateFromC(g *CodeGen, input string) string {
 
 func (t *Primitive) CName() string  { return t.goName }
 func (t *Primitive) GoName() string { return t.goName }
-func (t *Primitive) GoffiDesc() string {
+func (t *Primitive) ABIDesc() string {
 	switch t.goName {
 	case "uint8":
-		return "types.UInt8TypeDescriptor"
+		return "ffi.UInt8"
 	case "int8":
-		return "types.SInt8TypeDescriptor"
+		return "ffi.SInt8"
 	case "uint16":
-		return "types.UInt16TypeDescriptor"
+		return "ffi.UInt16"
 	case "int16":
-		return "types.SInt16TypeDescriptor"
+		return "ffi.SInt16"
 	case "uint32":
-		return "types.UInt32TypeDescriptor"
+		return "ffi.UInt32"
 	case "int32":
-		return "types.SInt32TypeDescriptor"
+		return "ffi.SInt32"
 	case "uint64":
-		return "types.UInt64TypeDescriptor"
+		return "ffi.UInt64"
 	case "int64":
-		return "types.SInt64TypeDescriptor"
+		return "ffi.SInt64"
 	case "float32":
-		return "types.FloatTypeDescriptor"
+		return "ffi.Float"
 	case "float64":
-		return "types.DoubleTypeDescriptor"
+		return "ffi.Double"
 	default:
-		return "types.PointerTypeDescriptor" // size_t / uintptr
+		return "ffi.Pointer" // size_t / uintptr
 	}
 }
 
@@ -92,7 +92,7 @@ func (t *Bool) GenerateFromC(g *CodeGen, input string) string {
 
 func (t *Bool) CName() string     { return "uint32" }
 func (t *Bool) GoName() string    { return "bool" }
-func (t *Bool) GoffiDesc() string { return "types.UInt32TypeDescriptor" }
+func (t *Bool) ABIDesc() string { return "ffi.UInt32" }
 
 // ---------------------------------------------------------------------------
 // NamedType  (enums, bitmasks referenced by name — simple cast)
@@ -127,11 +127,11 @@ func (t *NamedType) CName() string {
 	return "uint32"
 }
 func (t *NamedType) GoName() string { return t.Name }
-func (t *NamedType) GoffiDesc() string {
+func (t *NamedType) ABIDesc() string {
 	if t.Is64Bit {
-		return "types.UInt64TypeDescriptor"
+		return "ffi.UInt64"
 	}
-	return "types.UInt32TypeDescriptor"
+	return "ffi.UInt32"
 }
 
 // ---------------------------------------------------------------------------
@@ -162,7 +162,7 @@ func (t *StructType) GenerateFromC(g *CodeGen, input string) string {
 
 func (t *StructType) CName() string     { return "c" + t.CTypeName }
 func (t *StructType) GoName() string    { return t.Name }
-func (t *StructType) GoffiDesc() string { return "types.PointerTypeDescriptor" }
+func (t *StructType) ABIDesc() string { return "ffi.Pointer" }
 
 // ---------------------------------------------------------------------------
 // Handle  (opaque Vulkan handles — represented as unsafe.Pointer in Go)
@@ -188,7 +188,7 @@ func (t *Handle) GenerateFromC(g *CodeGen, input string) string {
 
 func (t *Handle) CName() string     { return "unsafe.Pointer" }
 func (t *Handle) GoName() string    { return "*" + t.Name }
-func (t *Handle) GoffiDesc() string { return "types.PointerTypeDescriptor" }
+func (t *Handle) ABIDesc() string { return "ffi.Pointer" }
 
 // ---------------------------------------------------------------------------
 // Pointer
@@ -231,7 +231,7 @@ func (t *Pointer) GenerateFromC(g *CodeGen, input string) string {
 
 func (t *Pointer) CName() string     { return "unsafe.Pointer" }
 func (t *Pointer) GoName() string    { return "*" + t.Child.GoName() }
-func (t *Pointer) GoffiDesc() string { return "types.PointerTypeDescriptor" }
+func (t *Pointer) ABIDesc() string { return "ffi.Pointer" }
 
 // ---------------------------------------------------------------------------
 // Slice  (replaces separate count+pointer pair)
@@ -272,7 +272,7 @@ func (t *Slice) GenerateToC(g *CodeGen, input string) string {
 func (t *Slice) GenerateFromC(_ *CodeGen, _ string) string { return "nil" }
 func (t *Slice) CName() string                             { return "unsafe.Pointer" }
 func (t *Slice) GoName() string                            { return "[]" + t.Child.GoName() }
-func (t *Slice) GoffiDesc() string                         { return "types.PointerTypeDescriptor" }
+func (t *Slice) ABIDesc() string                         { return "ffi.Pointer" }
 
 // ---------------------------------------------------------------------------
 // FixedArray  (fixed-size C arrays like float[2])
@@ -313,7 +313,7 @@ func (t *FixedArray) CName() string {
 func (t *FixedArray) GoName() string {
 	return fmt.Sprintf("[%d]%s", t.Size, t.Child.GoName())
 }
-func (t *FixedArray) GoffiDesc() string { return "types.PointerTypeDescriptor" }
+func (t *FixedArray) ABIDesc() string { return "ffi.Pointer" }
 
 // ---------------------------------------------------------------------------
 // PtrSlice  (double-pointer array: **T in C, []*T in Go)
@@ -358,7 +358,7 @@ func (t *PtrSlice) GenerateToC(g *CodeGen, input string) string {
 func (t *PtrSlice) GenerateFromC(_ *CodeGen, _ string) string { return "nil" }
 func (t *PtrSlice) CName() string                             { return "unsafe.Pointer" }
 func (t *PtrSlice) GoName() string                            { return "[]*" + t.Child.GoName() }
-func (t *PtrSlice) GoffiDesc() string                         { return "types.PointerTypeDescriptor" }
+func (t *PtrSlice) ABIDesc() string                         { return "ffi.Pointer" }
 
 // ---------------------------------------------------------------------------
 // String  (null-terminated const char* ↔ Go string)
@@ -386,7 +386,7 @@ func (t *String) GenerateFromC(g *CodeGen, input string) string {
 
 func (t *String) CName() string     { return "unsafe.Pointer" }
 func (t *String) GoName() string    { return "string" }
-func (t *String) GoffiDesc() string { return "types.PointerTypeDescriptor" }
+func (t *String) ABIDesc() string { return "ffi.Pointer" }
 
 // ---------------------------------------------------------------------------
 // TypedStructure  (pNext / Next field — implements Structure interface)
@@ -405,7 +405,7 @@ func (t *TypedStructure) GenerateToC(g *CodeGen, input string) string {
 func (t *TypedStructure) GenerateFromC(_ *CodeGen, _ string) string { return "nil" }
 func (t *TypedStructure) CName() string                             { return "unsafe.Pointer" }
 func (t *TypedStructure) GoName() string                            { return "Structure" }
-func (t *TypedStructure) GoffiDesc() string                         { return "types.PointerTypeDescriptor" }
+func (t *TypedStructure) ABIDesc() string                         { return "ffi.Pointer" }
 
 // ---------------------------------------------------------------------------
 // VoidPtr
@@ -419,7 +419,7 @@ func (t *VoidPtr) GenerateFromC(_ *CodeGen, input string) string {
 }
 func (t *VoidPtr) CName() string     { return "unsafe.Pointer" }
 func (t *VoidPtr) GoName() string    { return "unsafe.Pointer" }
-func (t *VoidPtr) GoffiDesc() string { return "types.PointerTypeDescriptor" }
+func (t *VoidPtr) ABIDesc() string { return "ffi.Pointer" }
 
 // ---------------------------------------------------------------------------
 // ByteSlice  (void* + paired size — represented as []byte)
@@ -437,7 +437,7 @@ func (t *ByteSlice) GenerateToC(g *CodeGen, input string) string {
 func (t *ByteSlice) GenerateFromC(_ *CodeGen, _ string) string { return "nil" }
 func (t *ByteSlice) CName() string                             { return "unsafe.Pointer" }
 func (t *ByteSlice) GoName() string                            { return "[]byte" }
-func (t *ByteSlice) GoffiDesc() string                         { return "types.PointerTypeDescriptor" }
+func (t *ByteSlice) ABIDesc() string                         { return "ffi.Pointer" }
 
 // ---------------------------------------------------------------------------
 // ExternalType (platform-specific C types not part of the Vulkan type system)
@@ -466,7 +466,7 @@ func (t *ExternalType) CName() string {
 }
 
 func (t *ExternalType) GoName() string    { return t.GoTypeName }
-func (t *ExternalType) GoffiDesc() string { return "types.PointerTypeDescriptor" }
+func (t *ExternalType) ABIDesc() string { return "ffi.Pointer" }
 
 // ---------------------------------------------------------------------------
 // GoFuncPointer (Vulkan PFN_vk* function pointer types)
@@ -519,7 +519,7 @@ func (fp *GoFuncPointer) GenerateFromC(g *CodeGen, input string) string {
 
 func (fp *GoFuncPointer) CName() string     { return "uintptr" }
 func (fp *GoFuncPointer) GoName() string    { return fp.GoTypeName }
-func (fp *GoFuncPointer) GoffiDesc() string { return "types.PointerTypeDescriptor" }
+func (fp *GoFuncPointer) ABIDesc() string { return "ffi.Pointer" }
 
 // ---------------------------------------------------------------------------
 // Helpers used by output generation (no longer depend on C. type names)
@@ -662,52 +662,52 @@ func computeUnionLayoutSize(s *Structured, structs map[string]*Structured) int {
 	return max
 }
 
-// goffiReturnDesc returns the goffi TypeDescriptor for a command's C return type.
-func goffiReturnDesc(cReturnType string) string {
+// abiReturnDesc returns the goffi TypeDescriptor for a command's C return type.
+func abiReturnDesc(cReturnType string) string {
 	switch cReturnType {
 	case "void", "":
-		return "types.VoidTypeDescriptor"
+		return "ffi.Void"
 	case "VkResult":
-		return "types.SInt32TypeDescriptor"
+		return "ffi.SInt32"
 	default:
-		return "types.PointerTypeDescriptor"
+		return "ffi.Pointer"
 	}
 }
 
-// cParamGoffiDesc maps a C param type string to a goffi TypeDescriptor expression.
-func cParamGoffiDesc(cType string) string {
+// cParamABIDesc maps a C param type string to a goffi TypeDescriptor expression.
+func cParamABIDesc(cType string) string {
 	s := strings.TrimSpace(cType)
 	// Any pointer type → pointer descriptor
 	if strings.Contains(s, "*") {
-		return "types.PointerTypeDescriptor"
+		return "ffi.Pointer"
 	}
 	s = strings.TrimPrefix(s, "const ")
 	s = strings.TrimSpace(s)
 	switch s {
 	case "uint8_t":
-		return "types.UInt8TypeDescriptor"
+		return "ffi.UInt8"
 	case "uint16_t":
-		return "types.UInt16TypeDescriptor"
+		return "ffi.UInt16"
 	case "uint32_t", "VkFlags", "VkBool32", "VkSampleMask":
-		return "types.UInt32TypeDescriptor"
+		return "ffi.UInt32"
 	case "uint64_t", "VkDeviceSize", "VkDeviceAddress", "VkFlags64":
-		return "types.UInt64TypeDescriptor"
+		return "ffi.UInt64"
 	case "int8_t":
-		return "types.SInt8TypeDescriptor"
+		return "ffi.SInt8"
 	case "int16_t":
-		return "types.SInt16TypeDescriptor"
+		return "ffi.SInt16"
 	case "int32_t", "int", "VkResult":
-		return "types.SInt32TypeDescriptor"
+		return "ffi.SInt32"
 	case "int64_t":
-		return "types.SInt64TypeDescriptor"
+		return "ffi.SInt64"
 	case "float":
-		return "types.FloatTypeDescriptor"
+		return "ffi.Float"
 	case "double":
-		return "types.DoubleTypeDescriptor"
+		return "ffi.Double"
 	case "size_t":
-		return "types.PointerTypeDescriptor"
+		return "ffi.Pointer"
 	default:
 		// Handles (VkInstance, VkDevice, ...) and any remaining types → pointer-sized
-		return "types.PointerTypeDescriptor"
+		return "ffi.Pointer"
 	}
 }

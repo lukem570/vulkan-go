@@ -41,7 +41,9 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
+          # go.mod is the single source of truth. A hardcoded version here only
+          # worked by way of the toolchain auto-download.
+          go-version-file: go.mod
 
       - name: Install Task
         if: steps.changes.outputs.changed == 'true'
@@ -55,6 +57,45 @@ jobs:
       - name: Run generator
         if: steps.changes.outputs.changed == 'true'
         run: task generate
+
+      # The ABI probe compiles against the real platform headers. Without these
+      # the xlib, xcb and wayland groups skip themselves, which would leave the
+      # platform surface structs unverified against the new headers.
+      - name: Install platform development headers
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libx11-dev libxcb1-dev libwayland-dev
+
+      # Gate the update on the test suite. `task test` regenerates and then runs
+      # the ABI conformance and generator golden suites, so a header change that
+      # shifts a struct offset, changes an enumerant value, or breaks a
+      # generator convention stops the workflow here rather than being committed
+      # and tagged as a release.
+      - name: Test regenerated bindings
+        if: steps.changes.outputs.changed == 'true'
+        run: task test
+
+      # task test builds for the host only, and the per-platform files are
+      # build-tagged, so a new or changed platform struct can break the windows
+      # or darwin file without the suite noticing.
+      - name: Verify every target compiles
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          CGO_ENABLED: "0"
+          GOWORK: "off"
+        run: |
+          go vet ./internal/... ./cmd/... ./v1/...
+          for target in \
+            linux/amd64 linux/arm64 \
+            windows/amd64 windows/arm64 \
+            darwin/amd64 darwin/arm64
+          do
+            echo "::group::$target"
+            GOOS="${target%/*}" GOARCH="${target#*/}" go build ./v1
+            echo "::endgroup::"
+          done
 
       - name: Extract Vulkan version
         if: steps.changes.outputs.changed == 'true'

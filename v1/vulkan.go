@@ -9,8 +9,7 @@ import (
 	"sync"
 	"unsafe"
 
-	"github.com/go-webgpu/goffi/ffi"
-	"github.com/go-webgpu/goffi/types"
+	"github.com/lukem570/vulkan-go/internal/ffi"
 )
 
 // MakeAPIVersion packs a Vulkan API version number, equivalent to the
@@ -82,7 +81,7 @@ func _loadProc(instance unsafe.Pointer, name string) unsafe.Pointer {
 	defer pin.Unpin()
 	namePtr := unsafe.Pointer(&nameBytes[0])
 	var result unsafe.Pointer
-	ffi.CallFunction(&_cif_vkGetInstanceProcAddr, _vkGetInstanceProcAddr, //nolint
+	ffi.Call(&_cif_vkGetInstanceProcAddr, _vkGetInstanceProcAddr, //nolint
 		unsafe.Pointer(&result),
 		[]unsafe.Pointer{unsafe.Pointer(&instance), unsafe.Pointer(&namePtr)},
 	)
@@ -101,7 +100,7 @@ func _loadDeviceProcVia(getDeviceProcAddrFn unsafe.Pointer, device unsafe.Pointe
 	defer pin.Unpin()
 	namePtr := unsafe.Pointer(&nameBytes[0])
 	var result unsafe.Pointer
-	ffi.CallFunction(&_cif_vkGetDeviceProcAddr, getDeviceProcAddrFn, //nolint
+	ffi.Call(&_cif_vkGetDeviceProcAddr, getDeviceProcAddrFn, //nolint
 		unsafe.Pointer(&result),
 		[]unsafe.Pointer{unsafe.Pointer(&device), unsafe.Pointer(&namePtr)},
 	)
@@ -949,11 +948,8 @@ const (
 	Access2VideoDecodeWriteBitKHR                  AccessFlagBits2 = 1 << 36
 	Access2SamplerHeapReadBitEXT                   AccessFlagBits2 = 1 << 57
 	Access2ResourceHeapReadBitEXT                  AccessFlagBits2 = 1 << 58
-	Access2Reserved46BitINTEL                      AccessFlagBits2 = 1 << 46
 	Access2VideoEncodeReadBitKHR                   AccessFlagBits2 = 1 << 37
 	Access2VideoEncodeWriteBitKHR                  AccessFlagBits2 = 1 << 38
-	Access2Reserved53BitKHR                        AccessFlagBits2 = 1 << 53
-	Access2Reserved54BitKHR                        AccessFlagBits2 = 1 << 54
 	Access2ShaderTileAttachmentReadBitQCOM         AccessFlagBits2 = 1 << 51
 	Access2ShaderTileAttachmentWriteBitQCOM        AccessFlagBits2 = 1 << 52
 	Access2NoneKHR                                 AccessFlagBits2 = Access2None
@@ -1004,14 +1000,6 @@ const (
 	Access2DataGraphWriteBitARM                    AccessFlagBits2 = 1 << 48
 	Access2MemoryDecompressionReadBitEXT           AccessFlagBits2 = 1 << 55
 	Access2MemoryDecompressionWriteBitEXT          AccessFlagBits2 = 1 << 56
-	Access2Reserved62BitEXT                        AccessFlagBits2 = 1 << 62
-	Access2Reserved63BitEXT                        AccessFlagBits2 = 1 << 63
-	Access2Reserved60BitKHR                        AccessFlagBits2 = 1 << 60
-	Access2Reserved61BitKHR                        AccessFlagBits2 = 1 << 61
-	Access2Reserved28BitAMD                        AccessFlagBits2 = 1 << 28
-	Access2Reserved29BitAMD                        AccessFlagBits2 = 1 << 29
-	Access2Reserved49BitARM                        AccessFlagBits2 = 1 << 49
-	Access2Reserved50BitARM                        AccessFlagBits2 = 1 << 50
 )
 
 type AttachmentDescriptionFlagBits uint32
@@ -1153,7 +1141,6 @@ const (
 	BufferCreateSparseAliasedBit                    BufferCreateFlagBits = 1 << 2
 	BufferCreateProtectedBit                        BufferCreateFlagBits = 1 << 3
 	BufferCreateDeviceAddressCaptureReplayBit       BufferCreateFlagBits = 1 << 4
-	BufferCreateReserved7BitIMG                     BufferCreateFlagBits = 1 << 7
 	BufferCreateDeviceAddressCaptureReplayBitEXT    BufferCreateFlagBits = BufferCreateDeviceAddressCaptureReplayBit
 	BufferCreateDeviceAddressCaptureReplayBitKHR    BufferCreateFlagBits = BufferCreateDeviceAddressCaptureReplayBit
 	BufferCreateDescriptorBufferCaptureReplayBitEXT BufferCreateFlagBits = 1 << 5
@@ -1239,15 +1226,9 @@ const (
 	BufferUsage2PushDescriptorsDescriptorBufferBitEXT         BufferUsageFlagBits2 = 1 << 26
 	BufferUsage2CompressedDataDgf1BitAmdx                     BufferUsageFlagBits2 = 1 << 33
 	BufferUsage2DataGraphForeignDescriptorBitARM              BufferUsageFlagBits2 = 1 << 29
-	BufferUsage2Reserved34BitEXT                              BufferUsageFlagBits2 = 1 << 34
 	BufferUsage2TileMemoryBitQCOM                             BufferUsageFlagBits2 = 1 << 27
 	BufferUsage2MemoryDecompressionBitEXT                     BufferUsageFlagBits2 = 1 << 32
 	BufferUsage2PreprocessBufferBitEXT                        BufferUsageFlagBits2 = 1 << 31
-	BufferUsage2Reserved18BitEXT                              BufferUsageFlagBits2 = 1 << 18
-	BufferUsage2Reserved30BitEXT                              BufferUsageFlagBits2 = 1 << 30
-	BufferUsage2Reserved35BitKHR                              BufferUsageFlagBits2 = 1 << 35
-	BufferUsage2Reserved36BitKHR                              BufferUsageFlagBits2 = 1 << 36
-	BufferUsage2Reserved37BitHUAWEI                           BufferUsageFlagBits2 = 1 << 37
 )
 
 type BuildAccelerationStructureFlagBitsKHR uint32
@@ -1278,9 +1259,6 @@ const (
 	BuildAccelerationStructureAllowOpacityMicromapUpdateBitKHR     BuildAccelerationStructureFlagBitsKHR = 1 << 6
 	BuildAccelerationStructureAllowDisableOpacityMicromapsBitKHR   BuildAccelerationStructureFlagBitsKHR = 1 << 7
 	BuildAccelerationStructureMicromapLossyBitKHR                  BuildAccelerationStructureFlagBitsKHR = 1 << 10
-	BuildAccelerationStructureReserved15BitEXT                     BuildAccelerationStructureFlagBitsKHR = 1 << 15
-	BuildAccelerationStructureReserved14BitEXT                     BuildAccelerationStructureFlagBitsKHR = 1 << 14
-	BuildAccelerationStructureReserved13BitAMD                     BuildAccelerationStructureFlagBitsKHR = 1 << 13
 )
 
 type BuildAccelerationStructureModeKHR uint32
@@ -1303,7 +1281,7 @@ type ColorSpaceKHR uint32
 
 const (
 	ColorSpaceSrgbNonlinearKHR         ColorSpaceKHR = 0
-	ColorspaceSrgbNonlinearKHR         ColorSpaceKHR = 0 // TODO: unknown value
+	ColorspaceSrgbNonlinearKHR         ColorSpaceKHR = ColorSpaceSrgbNonlinearKHR
 	ColorSpaceDisplayP3NonlinearEXT    ColorSpaceKHR = 1000104001
 	ColorSpaceExtendedSrgbLinearEXT    ColorSpaceKHR = 1000104002
 	ColorSpaceDisplayP3LinearEXT       ColorSpaceKHR = 1000104003
@@ -1341,8 +1319,6 @@ const (
 	CommandBufferUsageOneTimeSubmitBit      CommandBufferUsageFlagBits = 1 << 0
 	CommandBufferUsageRenderPassContinueBit CommandBufferUsageFlagBits = 1 << 1
 	CommandBufferUsageSimultaneousUseBit    CommandBufferUsageFlagBits = 1 << 2
-	CommandBufferUsageReserved3BitHUAWEI    CommandBufferUsageFlagBits = 1 << 3
-	CommandBufferUsageReserved4BitHUAWEI    CommandBufferUsageFlagBits = 1 << 4
 )
 
 type CommandPoolCreateFlagBits uint32
@@ -1357,7 +1333,6 @@ type CommandPoolResetFlagBits uint32
 
 const (
 	CommandPoolResetReleaseResourcesBit CommandPoolResetFlagBits = 1 << 0
-	CommandPoolResetReserved1BitCoreavi CommandPoolResetFlagBits = 1 << 1
 )
 
 type CompareOp uint32
@@ -1470,11 +1445,11 @@ const (
 	DebugReportObjectTypeSurfaceKHREXT                  DebugReportObjectTypeEXT = 26
 	DebugReportObjectTypeSwapchainKHREXT                DebugReportObjectTypeEXT = 27
 	DebugReportObjectTypeDebugReportCallbackEXTEXT      DebugReportObjectTypeEXT = 28
-	DebugReportObjectTypeDebugReportEXT                 DebugReportObjectTypeEXT = 0 // TODO: unknown value
+	DebugReportObjectTypeDebugReportEXT                 DebugReportObjectTypeEXT = DebugReportObjectTypeDebugReportCallbackEXTEXT
 	DebugReportObjectTypeDisplayKHREXT                  DebugReportObjectTypeEXT = 29
 	DebugReportObjectTypeDisplayModeKHREXT              DebugReportObjectTypeEXT = 30
 	DebugReportObjectTypeValidationCacheEXTEXT          DebugReportObjectTypeEXT = 33
-	DebugReportObjectTypeValidationCacheEXT             DebugReportObjectTypeEXT = 0 // TODO: unknown value
+	DebugReportObjectTypeValidationCacheEXT             DebugReportObjectTypeEXT = DebugReportObjectTypeValidationCacheEXTEXT
 	DebugReportObjectTypeSamplerYcbcrConversionEXT      DebugReportObjectTypeEXT = 1000156000
 	DebugReportObjectTypeDescriptorUpdateTemplateEXT    DebugReportObjectTypeEXT = 1000085000
 	DebugReportObjectTypeCuModuleNVXEXT                 DebugReportObjectTypeEXT = 1000029000
@@ -1517,7 +1492,6 @@ const (
 	DependencyFeedbackLoopBitEXT                             DependencyFlagBits = 1 << 3
 	DependencyQueueFamilyOwnershipTransferUseAllStagesBitKHR DependencyFlagBits = 1 << 5
 	DependencyAsymmetricEventBitKHR                          DependencyFlagBits = 1 << 6
-	DependencyExtension586BitIMG                             DependencyFlagBits = 1 << 4
 )
 
 type DepthClampModeEXT uint32
@@ -2192,7 +2166,6 @@ const (
 	FormatFeature2OpticalFlowVectorBitNV                                                 FormatFeatureFlagBits2 = 1 << 41
 	FormatFeature2OpticalFlowCostBitNV                                                   FormatFeatureFlagBits2 = 1 << 42
 	FormatFeature2TensorDataGraphBitARM                                                  FormatFeatureFlagBits2 = 1 << 48
-	FormatFeature2Reserved60BitEXT                                                       FormatFeatureFlagBits2 = 1 << 60
 	FormatFeature2CopyImageIndirectDstBitKHR                                             FormatFeatureFlagBits2 = 1 << 59
 	FormatFeature2VideoEncodeQuantizationDeltaMapBitKHR                                  FormatFeatureFlagBits2 = 1 << 49
 	FormatFeature2VideoEncodeEmphasisMapBitKHR                                           FormatFeatureFlagBits2 = 1 << 50
@@ -2204,8 +2177,6 @@ const (
 	FormatFeature2DataGraphOpticalFlowImageBitARM                                        FormatFeatureFlagBits2 = 1 << 56
 	FormatFeature2DataGraphOpticalFlowVectorBitARM                                       FormatFeatureFlagBits2 = 1 << 57
 	FormatFeature2DataGraphOpticalFlowCostBitARM                                         FormatFeatureFlagBits2 = 1 << 58
-	FormatFeature2Reserved47BitARM                                                       FormatFeatureFlagBits2 = 1 << 47
-	FormatFeature2Reserved61BitHUAWEI                                                    FormatFeatureFlagBits2 = 1 << 61
 )
 
 type FramebufferCreateFlagBits uint32
@@ -2238,7 +2209,7 @@ const (
 	GeometryInstanceTriangleFlipFacingBitKHR            GeometryInstanceFlagBitsKHR = 1 << 1
 	GeometryInstanceForceOpaqueBitKHR                   GeometryInstanceFlagBitsKHR = 1 << 2
 	GeometryInstanceForceNoOpaqueBitKHR                 GeometryInstanceFlagBitsKHR = 1 << 3
-	GeometryInstanceTriangleFrontCounterclockwiseBitKHR GeometryInstanceFlagBitsKHR = 0 // TODO: unknown value
+	GeometryInstanceTriangleFrontCounterclockwiseBitKHR GeometryInstanceFlagBitsKHR = GeometryInstanceTriangleFlipFacingBitKHR
 	GeometryInstanceTriangleCullDisableBitNV            GeometryInstanceFlagBitsKHR = GeometryInstanceTriangleFacingCullDisableBitKHR
 	GeometryInstanceTriangleFrontCounterclockwiseBitNV  GeometryInstanceFlagBitsKHR = GeometryInstanceTriangleFrontCounterclockwiseBitKHR
 	GeometryInstanceForceOpaqueBitNV                    GeometryInstanceFlagBitsKHR = GeometryInstanceForceOpaqueBitKHR
@@ -2277,23 +2248,22 @@ const (
 type ImageAspectFlagBits uint32
 
 const (
-	ImageAspectColorBit            ImageAspectFlagBits = 1 << 0
-	ImageAspectDepthBit            ImageAspectFlagBits = 1 << 1
-	ImageAspectStencilBit          ImageAspectFlagBits = 1 << 2
-	ImageAspectMetadataBit         ImageAspectFlagBits = 1 << 3
-	ImageAspectPlane0Bit           ImageAspectFlagBits = 1 << 4
-	ImageAspectPlane1Bit           ImageAspectFlagBits = 1 << 5
-	ImageAspectPlane2Bit           ImageAspectFlagBits = 1 << 6
-	ImageAspectNone                ImageAspectFlagBits = 0
-	ImageAspectPlane0BitKHR        ImageAspectFlagBits = ImageAspectPlane0Bit
-	ImageAspectPlane1BitKHR        ImageAspectFlagBits = ImageAspectPlane1Bit
-	ImageAspectPlane2BitKHR        ImageAspectFlagBits = ImageAspectPlane2Bit
-	ImageAspectMemoryPlane0BitEXT  ImageAspectFlagBits = 1 << 7
-	ImageAspectMemoryPlane1BitEXT  ImageAspectFlagBits = 1 << 8
-	ImageAspectMemoryPlane2BitEXT  ImageAspectFlagBits = 1 << 9
-	ImageAspectMemoryPlane3BitEXT  ImageAspectFlagBits = 1 << 10
-	ImageAspectNoneKHR             ImageAspectFlagBits = ImageAspectNone
-	ImageAspectReserved11BitHUAWEI ImageAspectFlagBits = 1 << 11
+	ImageAspectColorBit           ImageAspectFlagBits = 1 << 0
+	ImageAspectDepthBit           ImageAspectFlagBits = 1 << 1
+	ImageAspectStencilBit         ImageAspectFlagBits = 1 << 2
+	ImageAspectMetadataBit        ImageAspectFlagBits = 1 << 3
+	ImageAspectPlane0Bit          ImageAspectFlagBits = 1 << 4
+	ImageAspectPlane1Bit          ImageAspectFlagBits = 1 << 5
+	ImageAspectPlane2Bit          ImageAspectFlagBits = 1 << 6
+	ImageAspectNone               ImageAspectFlagBits = 0
+	ImageAspectPlane0BitKHR       ImageAspectFlagBits = ImageAspectPlane0Bit
+	ImageAspectPlane1BitKHR       ImageAspectFlagBits = ImageAspectPlane1Bit
+	ImageAspectPlane2BitKHR       ImageAspectFlagBits = ImageAspectPlane2Bit
+	ImageAspectMemoryPlane0BitEXT ImageAspectFlagBits = 1 << 7
+	ImageAspectMemoryPlane1BitEXT ImageAspectFlagBits = 1 << 8
+	ImageAspectMemoryPlane2BitEXT ImageAspectFlagBits = 1 << 9
+	ImageAspectMemoryPlane3BitEXT ImageAspectFlagBits = 1 << 10
+	ImageAspectNoneKHR            ImageAspectFlagBits = ImageAspectNone
 )
 
 type ImageCreateFlagBits uint32
@@ -2314,7 +2284,6 @@ const (
 	ImageCreateCornerSampledBitNV                      ImageCreateFlagBits = 1 << 13
 	ImageCreateSplitInstanceBindRegionsBitKHR          ImageCreateFlagBits = ImageCreateSplitInstanceBindRegionsBit
 	ImageCreate2dArrayCompatibleBitKHR                 ImageCreateFlagBits = ImageCreate2dArrayCompatibleBit
-	ImageCreateReserved21BitIMG                        ImageCreateFlagBits = 1 << 21
 	ImageCreateBlockTexelViewCompatibleBitKHR          ImageCreateFlagBits = ImageCreateBlockTexelViewCompatibleBit
 	ImageCreateExtendedUsageBitKHR                     ImageCreateFlagBits = ImageCreateExtendedUsageBit
 	ImageCreateDescriptorHeapCaptureReplayBitEXT       ImageCreateFlagBits = 1 << 16
@@ -2329,7 +2298,6 @@ const (
 	ImageCreateVideoProfileIndependentBitKHR           ImageCreateFlagBits = 1 << 20
 	ImageCreateFragmentDensityMapOffsetBitEXT          ImageCreateFlagBits = 1 << 15
 	ImageCreateAliasSingleLayerDescriptorBitKHR        ImageCreateFlagBits = 1 << 22
-	ImageCreateReserved19BitNV                         ImageCreateFlagBits = 1 << 19
 )
 
 type ImageLayout uint32
@@ -2421,16 +2389,10 @@ const (
 	ImageUsageInvocationMaskBitHUAWEI               ImageUsageFlagBits = 1 << 18
 	ImageUsageSampleWeightBitQCOM                   ImageUsageFlagBits = 1 << 20
 	ImageUsageSampleBlockMatchBitQCOM               ImageUsageFlagBits = 1 << 21
-	ImageUsageReserved24BitCoreavi                  ImageUsageFlagBits = 1 << 24
 	ImageUsageTensorAliasingBitARM                  ImageUsageFlagBits = 1 << 23
-	ImageUsageReserved28BitEXT                      ImageUsageFlagBits = 1 << 28
 	ImageUsageTileMemoryBitQCOM                     ImageUsageFlagBits = 1 << 27
 	ImageUsageVideoEncodeQuantizationDeltaMapBitKHR ImageUsageFlagBits = 1 << 25
 	ImageUsageVideoEncodeEmphasisMapBitKHR          ImageUsageFlagBits = 1 << 26
-	ImageUsageReserved29BitKHR                      ImageUsageFlagBits = 1 << 29
-	ImageUsageReserved30BitKHR                      ImageUsageFlagBits = 1 << 30
-	ImageUsageReserved16BitHUAWEI                   ImageUsageFlagBits = 1 << 16
-	ImageUsageReserved17BitHUAWEI                   ImageUsageFlagBits = 1 << 17
 )
 
 type ImageViewCreateFlagBits uint32
@@ -2529,7 +2491,6 @@ type InstanceCreateFlagBits uint32
 
 const (
 	InstanceCreateEnumeratePortabilityBitKHR InstanceCreateFlagBits = 1 << 0
-	InstanceCreateReserved616BitEXT          InstanceCreateFlagBits = 1 << 1
 )
 
 type InternalAllocationType uint32
@@ -2581,7 +2542,6 @@ type MemoryHeapFlagBits uint32
 const (
 	MemoryHeapDeviceLocalBit      MemoryHeapFlagBits = 1 << 0
 	MemoryHeapMultiInstanceBit    MemoryHeapFlagBits = 1 << 1
-	MemoryHeapSeuSafeBit          MemoryHeapFlagBits = 1 << 2
 	MemoryHeapMultiInstanceBitKHR MemoryHeapFlagBits = MemoryHeapMultiInstanceBit
 	MemoryHeapTileMemoryBitQCOM   MemoryHeapFlagBits = 1 << 3
 )
@@ -2667,7 +2627,6 @@ const (
 	ObjectTypeOpticalFlowSessionNV          ObjectType = 1000464000
 	ObjectTypeShaderEXT                     ObjectType = 1000482000
 	ObjectTypePipelineBinaryKHR             ObjectType = 1000483000
-	ObjectTypeSemaphoreSciSyncPoolNV        ObjectType = 1000489000
 	ObjectTypeDataGraphPipelineSessionARM   ObjectType = 1000507000
 	ObjectTypeExternalComputeQueueNV        ObjectType = 1000556000
 	ObjectTypeIndirectCommandsLayoutEXT     ObjectType = 1000572000
@@ -2701,8 +2660,6 @@ type PipelineCacheCreateFlagBits uint32
 
 const (
 	PipelineCacheCreateExternallySynchronizedBit         PipelineCacheCreateFlagBits = 1 << 0
-	PipelineCacheCreateReadOnlyBit                       PipelineCacheCreateFlagBits = 1 << 1
-	PipelineCacheCreateUseApplicationStorageBit          PipelineCacheCreateFlagBits = 1 << 2
 	PipelineCacheCreateExternallySynchronizedBitEXT      PipelineCacheCreateFlagBits = PipelineCacheCreateExternallySynchronizedBit
 	PipelineCacheCreateInternallySynchronizedMergeBitKHR PipelineCacheCreateFlagBits = 1 << 3
 )
@@ -2710,8 +2667,7 @@ const (
 type PipelineCacheHeaderVersion uint32
 
 const (
-	PipelineCacheHeaderVersionSafetyCriticalOne PipelineCacheHeaderVersion = 1000298001
-	PipelineCacheHeaderVersionDataGraphQCOM     PipelineCacheHeaderVersion = 1000629000
+	PipelineCacheHeaderVersionDataGraphQCOM PipelineCacheHeaderVersion = 1000629000
 )
 
 type PipelineColorBlendStateCreateFlagBits uint32
@@ -2780,11 +2736,9 @@ const (
 	PipelineCreate2EarlyReturnOnFailureBit                          PipelineCreateFlagBits2 = 1 << 9
 	PipelineCreate2NoProtectedAccessBit                             PipelineCreateFlagBits2 = 1 << 27
 	PipelineCreate2ProtectedAccessOnlyBit                           PipelineCreateFlagBits2 = 1 << 30
-	PipelineCreate2Reserved46BitIMG                                 PipelineCreateFlagBits2 = 1 << 46
 	PipelineCreate2ExecutionGraphBitAmdx                            PipelineCreateFlagBits2 = 1 << 32
 	PipelineCreate2DescriptorHeapBitEXT                             PipelineCreateFlagBits2 = 1 << 36
 	PipelineCreate2RayTracingSkipBuiltInPrimitivesBitKHR            PipelineCreateFlagBits2 = PipelineCreate2RayTracingSkipTrianglesBitKHR
-	PipelineCreateReserved44BitKHR                                  PipelineCreateFlagBits2 = 1 << 44
 	PipelineCreate2RayTracingOpacityMicromapBitEXT                  PipelineCreateFlagBits2 = PipelineCreate2RayTracingOpacityMicromapBitKHR
 	PipelineCreate2RayTracingAllowSpheresAndLinearSweptSpheresBitNV PipelineCreateFlagBits2 = 1 << 33
 	PipelineCreate2EnableLegacyDitheringBitEXT                      PipelineCreateFlagBits2 = 1 << 34
@@ -2822,15 +2776,10 @@ const (
 	PipelineCreate2InstrumentShadersBitARM                          PipelineCreateFlagBits2 = 1 << 39
 	PipelineCreate2CaptureDataBitKHR                                PipelineCreateFlagBits2 = 1 << 31
 	PipelineCreate2IndirectBindableBitEXT                           PipelineCreateFlagBits2 = 1 << 38
-	PipelineCreate2Reserved35BitKHR                                 PipelineCreateFlagBits2 = 1 << 35
 	PipelineCreate2PerLayerFragmentDensityBitVALVE                  PipelineCreateFlagBits2 = 1 << 40
 	PipelineCreate2RayTracingOpacityMicromapBitKHR                  PipelineCreateFlagBits2 = 1 << 24
 	PipelineCreate2OpacityMicromapDisallowMixedSpecialIndexBitKHR   PipelineCreateFlagBits2 = 1 << 41
 	PipelineCreate264BitIndexingBitEXT                              PipelineCreateFlagBits2 = 1 << 43
-	PipelineCreate2Reserved45BitEXT                                 PipelineCreateFlagBits2 = 1 << 45
-	PipelineCreate2Reserved47BitAMD                                 PipelineCreateFlagBits2 = 1 << 47
-	PipelineCreate2Reserved48BitHUAWEI                              PipelineCreateFlagBits2 = 1 << 48
-	PipelineCreate2Reserved42BitKHR                                 PipelineCreateFlagBits2 = 1 << 42
 )
 
 type PipelineDepthStencilStateCreateFlagBits uint32
@@ -2856,7 +2805,6 @@ const (
 	PipelineShaderStageCreateRequireFullSubgroupsBit        PipelineShaderStageCreateFlagBits = 1 << 1
 	PipelineShaderStageCreateAllowVaryingSubgroupSizeBitEXT PipelineShaderStageCreateFlagBits = PipelineShaderStageCreateAllowVaryingSubgroupSizeBit
 	PipelineShaderStageCreateRequireFullSubgroupsBitEXT     PipelineShaderStageCreateFlagBits = PipelineShaderStageCreateRequireFullSubgroupsBit
-	PipelineShaderStageCreateReserved3BitKHR                PipelineShaderStageCreateFlagBits = 1 << 3
 )
 
 type PipelineStageFlagBits uint32
@@ -2915,7 +2863,7 @@ const (
 	PipelineStage2ColorAttachmentOutputBit            PipelineStageFlagBits2 = 1 << 10
 	PipelineStage2ComputeShaderBit                    PipelineStageFlagBits2 = 1 << 11
 	PipelineStage2AllTransferBit                      PipelineStageFlagBits2 = 1 << 12
-	PipelineStage2TransferBit                         PipelineStageFlagBits2 = 0 // TODO: unknown value
+	PipelineStage2TransferBit                         PipelineStageFlagBits2 = PipelineStage2AllTransferBit
 	PipelineStage2BottomOfPipeBit                     PipelineStageFlagBits2 = 1 << 13
 	PipelineStage2HostBit                             PipelineStageFlagBits2 = 1 << 14
 	PipelineStage2AllGraphicsBit                      PipelineStageFlagBits2 = 1 << 15
@@ -2929,7 +2877,6 @@ const (
 	PipelineStage2PreRasterizationShadersBit          PipelineStageFlagBits2 = 1 << 38
 	PipelineStage2VideoDecodeBitKHR                   PipelineStageFlagBits2 = 1 << 26
 	PipelineStage2VideoEncodeBitKHR                   PipelineStageFlagBits2 = 1 << 27
-	PipelineStage2Reserved50BitKHR                    PipelineStageFlagBits2 = 1 << 50
 	PipelineStage2NoneKHR                             PipelineStageFlagBits2 = PipelineStage2None
 	PipelineStage2TopOfPipeBitKHR                     PipelineStageFlagBits2 = PipelineStage2TopOfPipeBit
 	PipelineStage2DrawIndirectBitKHR                  PipelineStageFlagBits2 = PipelineStage2DrawIndirectBit
@@ -2982,11 +2929,6 @@ const (
 	PipelineStage2DataGraphBitARM                     PipelineStageFlagBits2 = 1 << 42
 	PipelineStage2CopyIndirectBitKHR                  PipelineStageFlagBits2 = 1 << 46
 	PipelineStage2MemoryDecompressionBitEXT           PipelineStageFlagBits2 = 1 << 45
-	PipelineStage2Reserved49BitEXT                    PipelineStageFlagBits2 = 1 << 49
-	PipelineStage2Reserved47BitKHR                    PipelineStageFlagBits2 = 1 << 47
-	PipelineStage2Reserved31BitAMD                    PipelineStageFlagBits2 = 1 << 31
-	PipelineStage2Reserved43BitARM                    PipelineStageFlagBits2 = 1 << 43
-	PipelineStage2Reserved48BitHUAWEI                 PipelineStageFlagBits2 = 1 << 48
 )
 
 type PointClippingBehavior uint32
@@ -3117,14 +3059,8 @@ const (
 	QueueProtectedBit      QueueFlagBits = 1 << 4
 	QueueVideoDecodeBitKHR QueueFlagBits = 1 << 5
 	QueueVideoEncodeBitKHR QueueFlagBits = 1 << 6
-	QueueReserved7BitQCOM  QueueFlagBits = 1 << 7
 	QueueOpticalFlowBitNV  QueueFlagBits = 1 << 8
 	QueueDataGraphBitARM   QueueFlagBits = 1 << 10
-	QueueReserved12BitEXT  QueueFlagBits = 1 << 12
-	QueueReserved9BitEXT   QueueFlagBits = 1 << 9
-	QueueReserved13BitEXT  QueueFlagBits = 1 << 13
-	QueueReserved11BitARM  QueueFlagBits = 1 << 11
-	QueueReserved14BitEXT  QueueFlagBits = 1 << 14
 )
 
 type RayTracingShaderGroupTypeKHR uint32
@@ -3141,8 +3077,6 @@ const (
 type RenderPassCreateFlagBits uint32
 
 const (
-	RenderPassCreateReserved3BitIMG                 RenderPassCreateFlagBits = 1 << 3
-	RenderPassCreateReserved0BitKHR                 RenderPassCreateFlagBits = 1 << 0
 	RenderPassCreateTransformBitQCOM                RenderPassCreateFlagBits = 1 << 1
 	RenderPassCreatePerLayerFragmentDensityBitVALVE RenderPassCreateFlagBits = 1 << 2
 )
@@ -3156,7 +3090,6 @@ const (
 	RenderingContentsSecondaryCommandBuffersBitKHR  RenderingFlagBits = RenderingContentsSecondaryCommandBuffersBit
 	RenderingSuspendingBitKHR                       RenderingFlagBits = RenderingSuspendingBit
 	RenderingResumingBitKHR                         RenderingFlagBits = RenderingResumingBit
-	RenderingReserved9BitIMG                        RenderingFlagBits = 1 << 9
 	RenderingContentsInlineBitEXT                   RenderingFlagBits = RenderingContentsInlineBitKHR
 	RenderingEnableLegacyDitheringBitEXT            RenderingFlagBits = 1 << 3
 	RenderingContentsInlineBitKHR                   RenderingFlagBits = 1 << 4
@@ -3164,9 +3097,6 @@ const (
 	RenderingFragmentRegionBitEXT                   RenderingFlagBits = 1 << 6
 	RenderingCustomResolveBitEXT                    RenderingFlagBits = 1 << 7
 	RenderingLocalReadConcurrentAccessControlBitKHR RenderingFlagBits = 1 << 8
-	RenderingReserved10BitVALVE                     RenderingFlagBits = 1 << 10
-	RenderingReserved11BitVALVE                     RenderingFlagBits = 1 << 11
-	RenderingReserved12BitVALVE                     RenderingFlagBits = 1 << 12
 )
 
 type ResolveModeFlagBits uint32
@@ -3216,8 +3146,6 @@ const (
 	ErrorFragmentation                          Result = -1000161000
 	PipelineCompileRequired                     Result = 1000297000
 	ErrorNotPermitted                           Result = -1000174001
-	ErrorInvalidPipelineCacheData               Result = -1000298000
-	ErrorNoPipelineMatch                        Result = -1000298001
 	ErrorSurfaceLostKHR                         Result = -1000000000
 	ErrorNativeWindowInUseKHR                   Result = -1000000001
 	SuboptimalKHR                               Result = 1000001003
@@ -3309,10 +3237,6 @@ func (v Result) Error() string {
 		return "PipelineCompileRequired"
 	case ErrorNotPermitted:
 		return "ErrorNotPermitted"
-	case ErrorInvalidPipelineCacheData:
-		return "ErrorInvalidPipelineCacheData"
-	case ErrorNoPipelineMatch:
-		return "ErrorNoPipelineMatch"
 	case ErrorSurfaceLostKHR:
 		return "ErrorSurfaceLostKHR"
 	case ErrorNativeWindowInUseKHR:
@@ -3417,9 +3341,7 @@ type ShaderCreateFlagBitsEXT uint32
 
 const (
 	ShaderCreateLinkStageBitEXT                                ShaderCreateFlagBitsEXT = 1 << 0
-	ShaderCreateReserved17BitIMG                               ShaderCreateFlagBitsEXT = 1 << 17
 	ShaderCreateDescriptorHeapBitEXT                           ShaderCreateFlagBitsEXT = 1 << 10
-	ShaderCreateReserved16BitKHR                               ShaderCreateFlagBitsEXT = 1 << 16
 	ShaderCreateInstrumentShaderBitARM                         ShaderCreateFlagBitsEXT = 1 << 11
 	ShaderCreateAllowVaryingSubgroupSizeBitEXT                 ShaderCreateFlagBitsEXT = 1 << 1
 	ShaderCreateRequireFullSubgroupsBitEXT                     ShaderCreateFlagBitsEXT = 1 << 2
@@ -3428,8 +3350,6 @@ const (
 	ShaderCreateFragmentShadingRateAttachmentBitEXT            ShaderCreateFlagBitsEXT = 1 << 5
 	ShaderCreateFragmentDensityMapAttachmentBitEXT             ShaderCreateFlagBitsEXT = 1 << 6
 	ShaderCreateIndirectBindableBitEXT                         ShaderCreateFlagBitsEXT = 1 << 7
-	ShaderCreateReserved8BitEXT                                ShaderCreateFlagBitsEXT = 1 << 8
-	ShaderCreateReserved9BitEXT                                ShaderCreateFlagBitsEXT = 1 << 9
 	ShaderCreateOpacityMicromapDisallowMixedSpecialIndexBitEXT ShaderCreateFlagBitsEXT = 1 << 12
 	ShaderCreate64BitIndexingBitEXT                            ShaderCreateFlagBitsEXT = 1 << 15
 	ShaderCreateIndependentSetsBitKHR                          ShaderCreateFlagBitsEXT = 1 << 18
@@ -3473,8 +3393,6 @@ const (
 	ShaderStageMeshBitEXT                ShaderStageFlagBits = 1 << 7
 	ShaderStageSubpassShadingBitHUAWEI   ShaderStageFlagBits = 1 << 14
 	ShaderStageClusterCullingBitHUAWEI   ShaderStageFlagBits = 1 << 19
-	ShaderStageReserved15BitNV           ShaderStageFlagBits = 1 << 15
-	ShaderStageReserved16BitHUAWEI       ShaderStageFlagBits = 1 << 16
 )
 
 type SharingMode uint32
@@ -3504,7 +3422,7 @@ const (
 	StencilFaceFrontBit     StencilFaceFlagBits = 1 << 0
 	StencilFaceBackBit      StencilFaceFlagBits = 1 << 1
 	StencilFaceFrontAndBack StencilFaceFlagBits = 0x00000003
-	StencilFrontAndBack     StencilFaceFlagBits = 0 // TODO: unknown value
+	StencilFrontAndBack     StencilFaceFlagBits = StencilFaceFrontAndBack
 )
 
 type StencilOp uint32
@@ -3791,15 +3709,6 @@ const (
 	StructureTypePhysicalDeviceDynamicRenderingLocalReadFeatures                     StructureType = 1000232000
 	StructureTypeRenderingAttachmentLocationInfo                                     StructureType = 1000232001
 	StructureTypeRenderingInputAttachmentIndexInfo                                   StructureType = 1000232002
-	StructureTypePhysicalDeviceVulkanSc10Features                                    StructureType = 1000298000
-	StructureTypePhysicalDeviceVulkanSc10Properties                                  StructureType = 1000298001
-	StructureTypeDeviceObjectReservationCreateInfo                                   StructureType = 1000298002
-	StructureTypeCommandPoolMemoryReservationCreateInfo                              StructureType = 1000298003
-	StructureTypeCommandPoolMemoryConsumption                                        StructureType = 1000298004
-	StructureTypePipelinePoolSize                                                    StructureType = 1000298005
-	StructureTypeFaultData                                                           StructureType = 1000298007
-	StructureTypeFaultCallbackInfo                                                   StructureType = 1000298008
-	StructureTypePipelineOfflineCreateInfo                                           StructureType = 1000298010
 	StructureTypeSwapchainCreateInfoKHR                                              StructureType = 1000001000
 	StructureTypePresentInfoKHR                                                      StructureType = 1000001001
 	StructureTypeDeviceGroupPresentCapabilitiesKHR                                   StructureType = 1000060007
@@ -3816,9 +3725,6 @@ const (
 	StructureTypeWaylandSurfaceCreateInfoKHR                                         StructureType = 1000006000
 	StructureTypeAndroidSurfaceCreateInfoKHR                                         StructureType = 1000008000
 	StructureTypeWin32SurfaceCreateInfoKHR                                           StructureType = 1000009000
-	StructureTypeNativeBufferAndroid                                                 StructureType = 1000010000
-	StructureTypeSwapchainImageCreateInfoAndroid                                     StructureType = 1000010001
-	StructureTypePhysicalDevicePresentationPropertiesAndroid                         StructureType = 1000010002
 	StructureTypeDebugReportCallbackCreateInfoEXT                                    StructureType = 1000011000
 	StructureTypeDebugReportCreateInfoEXT                                            StructureType = StructureTypeDebugReportCallbackCreateInfoEXT
 	StructureTypePipelineRasterizationStateRasterizationOrderAMD                     StructureType = 1000018000
@@ -3899,7 +3805,6 @@ const (
 	StructureTypeCommandBufferInheritanceRenderingInfoKHR                            StructureType = StructureTypeCommandBufferInheritanceRenderingInfo
 	StructureTypeStreamDescriptorSurfaceCreateInfoGgp                                StructureType = 1000049000
 	StructureTypePhysicalDeviceCornerSampledImageFeaturesNV                          StructureType = 1000050000
-	StructureTypePrivateVendorInfoPlaceholderOffset0NV                               StructureType = 1000051000
 	StructureTypeRenderPassMultiviewCreateInfoKHR                                    StructureType = StructureTypeRenderPassMultiviewCreateInfo
 	StructureTypePhysicalDeviceMultiviewFeaturesKHR                                  StructureType = StructureTypePhysicalDeviceMultiviewFeatures
 	StructureTypePhysicalDeviceMultiviewPropertiesKHR                                StructureType = StructureTypePhysicalDeviceMultiviewProperties
@@ -4013,7 +3918,6 @@ const (
 	StructureTypeAcquireProfilingLockInfoKHR                                         StructureType = 1000116004
 	StructureTypePerformanceCounterKHR                                               StructureType = 1000116005
 	StructureTypePerformanceCounterDescriptionKHR                                    StructureType = 1000116006
-	StructureTypePerformanceQueryReservationInfoKHR                                  StructureType = 1000116007
 	StructureTypePhysicalDevicePointClippingPropertiesKHR                            StructureType = StructureTypePhysicalDevicePointClippingProperties
 	StructureTypeRenderPassInputAttachmentAspectCreateInfoKHR                        StructureType = StructureTypeRenderPassInputAttachmentAspectCreateInfo
 	StructureTypeImageViewUsageCreateInfoKHR                                         StructureType = StructureTypeImageViewUsageCreateInfo
@@ -4402,7 +4306,6 @@ const (
 	StructureTypeCudaLaunchInfoNV                                                    StructureType = 1000307002
 	StructureTypePhysicalDeviceCudaKernelLaunchFeaturesNV                            StructureType = 1000307003
 	StructureTypePhysicalDeviceCudaKernelLaunchPropertiesNV                          StructureType = 1000307004
-	StructureTypeRefreshObjectListKHR                                                StructureType = 1000308000
 	StructureTypePhysicalDeviceTileShadingFeaturesQCOM                               StructureType = 1000309000
 	StructureTypePhysicalDeviceTileShadingPropertiesQCOM                             StructureType = 1000309001
 	StructureTypeRenderPassTileShadingCreateInfoQCOM                                 StructureType = 1000309002
@@ -4542,20 +4445,6 @@ const (
 	StructureTypePipelinePropertiesIdentifierEXT                                     StructureType = 1000372000
 	StructureTypePhysicalDevicePipelinePropertiesFeaturesEXT                         StructureType = 1000372001
 	StructureTypePipelineInfoEXT                                                     StructureType = StructureTypePipelineInfoKHR
-	StructureTypeImportFenceSciSyncInfoNV                                            StructureType = 1000373000
-	StructureTypeExportFenceSciSyncInfoNV                                            StructureType = 1000373001
-	StructureTypeFenceGetSciSyncInfoNV                                               StructureType = 1000373002
-	StructureTypeSciSyncAttributesInfoNV                                             StructureType = 1000373003
-	StructureTypeImportSemaphoreSciSyncInfoNV                                        StructureType = 1000373004
-	StructureTypeExportSemaphoreSciSyncInfoNV                                        StructureType = 1000373005
-	StructureTypeSemaphoreGetSciSyncInfoNV                                           StructureType = 1000373006
-	StructureTypePhysicalDeviceExternalSciSyncFeaturesNV                             StructureType = 1000373007
-	StructureTypeImportMemorySciBufInfoNV                                            StructureType = 1000374000
-	StructureTypeExportMemorySciBufInfoNV                                            StructureType = 1000374001
-	StructureTypeMemoryGetSciBufInfoNV                                               StructureType = 1000374002
-	StructureTypeMemorySciBufPropertiesNV                                            StructureType = 1000374003
-	StructureTypePhysicalDeviceExternalMemorySciBufFeaturesNV                        StructureType = 1000374004
-	StructureTypePhysicalDeviceExternalSciBufFeaturesNV                              StructureType = StructureTypePhysicalDeviceExternalMemorySciBufFeaturesNV
 	StructureTypePhysicalDeviceFrameBoundaryFeaturesEXT                              StructureType = 1000375000
 	StructureTypeFrameBoundaryEXT                                                    StructureType = 1000375001
 	StructureTypePhysicalDeviceMultisampledRenderToSingleSampledFeaturesEXT          StructureType = 1000376000
@@ -4638,7 +4527,6 @@ const (
 	StructureTypeAccelerationStructureGeometrySpheresDataNV                          StructureType = 1000429010
 	StructureTypePhysicalDeviceLinearColorAttachmentFeaturesNV                       StructureType = 1000430000
 	StructureTypePhysicalDeviceShaderMaximalReconvergenceFeaturesKHR                 StructureType = 1000434000
-	StructureTypeApplicationParametersEXT                                            StructureType = 1000435000
 	StructureTypePhysicalDeviceImageCompressionControlSwapchainFeaturesEXT           StructureType = 1000437000
 	StructureTypePhysicalDeviceImageProcessingFeaturesQCOM                           StructureType = 1000440000
 	StructureTypePhysicalDeviceImageProcessingPropertiesQCOM                         StructureType = 1000440001
@@ -4749,10 +4637,6 @@ const (
 	StructureTypeSwapchainPresentScalingCreateInfoKHR                                StructureType = 1000275004
 	StructureTypeReleaseSwapchainImagesInfoKHR                                       StructureType = 1000275005
 	StructureTypePhysicalDeviceMultiviewPerViewViewportsFeaturesQCOM                 StructureType = 1000488000
-	StructureTypeSemaphoreSciSyncPoolCreateInfoNV                                    StructureType = 1000489000
-	StructureTypeSemaphoreSciSyncCreateInfoNV                                        StructureType = 1000489001
-	StructureTypePhysicalDeviceExternalSciSync2FeaturesNV                            StructureType = 1000489002
-	StructureTypeDeviceSemaphoreSciSyncPoolReservationCreateInfoNV                   StructureType = 1000489003
 	StructureTypePhysicalDeviceRayTracingInvocationReorderFeaturesNV                 StructureType = 1000490000
 	StructureTypePhysicalDeviceRayTracingInvocationReorderPropertiesNV               StructureType = 1000490001
 	StructureTypePhysicalDeviceCooperativeVectorFeaturesNV                           StructureType = 1000491000
@@ -4969,9 +4853,6 @@ const (
 	StructureTypeVideoDecodeH265InlineSessionParametersInfoKHR                       StructureType = 1000586002
 	StructureTypeVideoDecodeAv1InlineSessionParametersInfoKHR                        StructureType = 1000586003
 	StructureTypeSurfaceCreateInfoOhos                                               StructureType = 1000685000
-	StructureTypeNativeBufferOhos                                                    StructureType = 1000453001
-	StructureTypeSwapchainImageCreateInfoOhos                                        StructureType = 1000453002
-	StructureTypePhysicalDevicePresentationPropertiesOhos                            StructureType = 1000453003
 	StructureTypePhysicalDeviceHdrVividFeaturesHUAWEI                                StructureType = 1000590000
 	StructureTypeHdrVividDynamicMetadataHUAWEI                                       StructureType = 1000590001
 	StructureTypePhysicalDeviceCooperativeMatrix2FeaturesNV                          StructureType = 1000593000
@@ -5125,13 +5006,10 @@ const (
 	SwapchainCreateMutableFormatBitKHR                     SwapchainCreateFlagBitsKHR = 1 << 2
 	SwapchainCreatePresentTimingBitEXT                     SwapchainCreateFlagBitsKHR = 1 << 9
 	SwapchainCreateDeferredMemoryAllocationBitEXT          SwapchainCreateFlagBitsKHR = SwapchainCreateDeferredMemoryAllocationBitKHR
-	SwapchainCreateReserved5BitEXT                         SwapchainCreateFlagBitsKHR = 1 << 5
-	SwapchainCreateReserved4BitEXT                         SwapchainCreateFlagBitsKHR = 1 << 4
 	SwapchainCreatePresentId2BitKHR                        SwapchainCreateFlagBitsKHR = 1 << 6
 	SwapchainCreatePresentWait2BitKHR                      SwapchainCreateFlagBitsKHR = 1 << 7
 	SwapchainCreateDeferredMemoryAllocationBitKHR          SwapchainCreateFlagBitsKHR = 1 << 3
 	SwapchainCreateMultisampledRenderToSingleSampledBitEXT SwapchainCreateFlagBitsKHR = 1 << 8
-	SwapchainCreateReserved10BitHUAWEI                     SwapchainCreateFlagBitsKHR = 1 << 10
 )
 
 type SystemAllocationScope uint32
@@ -6649,14 +6527,27 @@ func (s *AttachmentReferenceStencilLayout) fromC(p *cVkAttachmentReferenceStenci
 }
 
 type cVkBaseInStructure struct {
+	sType uint32
+	pNext unsafe.Pointer
 }
 
 type BaseInStructure struct {
+	SType StructureType
+	Next  *BaseInStructure
 }
 
 func (s *BaseInStructure) toC() (unsafe.Pointer, func()) {
 	cancels := make([]func(), 0)
 	p := new(cVkBaseInStructure)
+	val0 := uint32(s.SType)
+	p.sType = val0
+	var ptr1 unsafe.Pointer
+	if s.Next != nil {
+		val2, cancel3 := s.Next.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = val2
+	}
+	p.pNext = ptr1
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
@@ -6665,17 +6556,34 @@ func (s *BaseInStructure) toC() (unsafe.Pointer, func()) {
 }
 
 func (s *BaseInStructure) fromC(p *cVkBaseInStructure) {
+	s.SType = StructureType(p.sType)
+	if p.pNext != nil {
+		s.Next.fromC((*cVkBaseInStructure)(p.pNext))
+	}
 }
 
 type cVkBaseOutStructure struct {
+	sType uint32
+	pNext unsafe.Pointer
 }
 
 type BaseOutStructure struct {
+	SType StructureType
+	Next  *BaseOutStructure
 }
 
 func (s *BaseOutStructure) toC() (unsafe.Pointer, func()) {
 	cancels := make([]func(), 0)
 	p := new(cVkBaseOutStructure)
+	val0 := uint32(s.SType)
+	p.sType = val0
+	var ptr1 unsafe.Pointer
+	if s.Next != nil {
+		val2, cancel3 := s.Next.toC()
+		cancels = append(cancels, cancel3)
+		ptr1 = val2
+	}
+	p.pNext = ptr1
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
@@ -6684,6 +6592,10 @@ func (s *BaseOutStructure) toC() (unsafe.Pointer, func()) {
 }
 
 func (s *BaseOutStructure) fromC(p *cVkBaseOutStructure) {
+	s.SType = StructureType(p.sType)
+	if p.pNext != nil {
+		s.Next.fromC((*cVkBaseOutStructure)(p.pNext))
+	}
 }
 
 type cVkBindImageMemorySwapchainInfoKHR struct {
@@ -23141,14 +23053,19 @@ func (h *Device) AcquireNextImage2KHR(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	var imageIndexOut uint32
-	_imageIndexOutSlot := unsafe.Pointer(&imageIndexOut)
+	_imageIndexOutBox := new(uint32)
+	var _imageIndexOutPin runtime.Pinner
+	_imageIndexOutPin.Pin(_imageIndexOutBox)
+	defer _imageIndexOutPin.Unpin()
+	imageIndexOut := *_imageIndexOutBox
+	_imageIndexOutSlot := unsafe.Pointer(_imageIndexOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkAcquireNextImage2KHR, h.table.vkAcquireNextImage2KHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkAcquireNextImage2KHR, h.table.vkAcquireNextImage2KHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&_imageIndexOutSlot),
 	})
+	imageIndexOut = *_imageIndexOutBox
 	if _ret != int32(Success) {
 		return 0, Result(_ret)
 	}
@@ -23183,10 +23100,14 @@ func (h *Device) AcquireNextImageKHR(
 	if fence != nil {
 		h3 = fence.handle
 	}
-	var imageIndexOut uint32
-	_imageIndexOutSlot := unsafe.Pointer(&imageIndexOut)
+	_imageIndexOutBox := new(uint32)
+	var _imageIndexOutPin runtime.Pinner
+	_imageIndexOutPin.Pin(_imageIndexOutBox)
+	defer _imageIndexOutPin.Unpin()
+	imageIndexOut := *_imageIndexOutBox
+	_imageIndexOutSlot := unsafe.Pointer(_imageIndexOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkAcquireNextImageKHR, h.table.vkAcquireNextImageKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkAcquireNextImageKHR, h.table.vkAcquireNextImageKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -23194,6 +23115,7 @@ func (h *Device) AcquireNextImageKHR(
 		unsafe.Pointer(&h3),
 		unsafe.Pointer(&_imageIndexOutSlot),
 	})
+	imageIndexOut = *_imageIndexOutBox
 	if _ret != int32(Success) {
 		return 0, Result(_ret)
 	}
@@ -23227,7 +23149,7 @@ func (h *Device) AllocateCommandBuffers(
 	}
 	defer _commandBuffersOutPin.Unpin()
 	var _ret int32
-	ffi.CallFunction(&_cif_vkAllocateCommandBuffers, h.table.vkAllocateCommandBuffers, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkAllocateCommandBuffers, h.table.vkAllocateCommandBuffers, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&_commandBuffersOutPtr),
@@ -23278,7 +23200,7 @@ func (h *Device) AllocateDescriptorSets(
 	}
 	defer _descriptorSetsOutPin.Unpin()
 	var _ret int32
-	ffi.CallFunction(&_cif_vkAllocateDescriptorSets, h.table.vkAllocateDescriptorSets, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkAllocateDescriptorSets, h.table.vkAllocateDescriptorSets, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&_descriptorSetsOutPtr),
@@ -23327,15 +23249,20 @@ func (h *Device) AllocateMemory(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var memoryOut unsafe.Pointer
-	_memoryOutSlot := unsafe.Pointer(&memoryOut)
+	_memoryOutBox := new(unsafe.Pointer)
+	var _memoryOutPin runtime.Pinner
+	_memoryOutPin.Pin(_memoryOutBox)
+	defer _memoryOutPin.Unpin()
+	memoryOut := *_memoryOutBox
+	_memoryOutSlot := unsafe.Pointer(_memoryOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkAllocateMemory, h.table.vkAllocateMemory, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkAllocateMemory, h.table.vkAllocateMemory, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_memoryOutSlot),
 	})
+	memoryOut = *_memoryOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -23369,7 +23296,7 @@ func (h *CommandBuffer) Begin(
 		ptr0 = val1
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkBeginCommandBuffer, h.table.vkBeginCommandBuffer, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkBeginCommandBuffer, h.table.vkBeginCommandBuffer, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -23402,7 +23329,7 @@ func (h *Device) BindBufferMemory(
 	}
 	val2 := uint64(memoryOffset)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkBindBufferMemory, h.table.vkBindBufferMemory, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkBindBufferMemory, h.table.vkBindBufferMemory, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&h1),
@@ -23440,7 +23367,7 @@ func (h *Device) BindImageMemory(
 	}
 	val2 := uint64(memoryOffset)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkBindImageMemory, h.table.vkBindImageMemory, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkBindImageMemory, h.table.vkBindImageMemory, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&h1),
@@ -23503,7 +23430,7 @@ func (h *Device) BuildAccelerationStructuresKHR(
 		}
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkBuildAccelerationStructuresKHR, h.table.vkBuildAccelerationStructuresKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkBuildAccelerationStructuresKHR, h.table.vkBuildAccelerationStructuresKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&infoCount),
@@ -23533,7 +23460,7 @@ func (h *CommandBuffer) BeginDebugUtilsLabelEXT(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkCmdBeginDebugUtilsLabelEXT, h.table.vkCmdBeginDebugUtilsLabelEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBeginDebugUtilsLabelEXT, h.table.vkCmdBeginDebugUtilsLabelEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -23558,7 +23485,7 @@ func (h *CommandBuffer) BeginQuery(
 	}
 	val1 := uint32(query)
 	val2 := uint32(flags)
-	ffi.CallFunction(&_cif_vkCmdBeginQuery, h.table.vkCmdBeginQuery, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBeginQuery, h.table.vkCmdBeginQuery, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -23585,7 +23512,7 @@ func (h *CommandBuffer) BeginRenderPass(
 		ptr0 = val1
 	}
 	val3 := uint32(contents)
-	ffi.CallFunction(&_cif_vkCmdBeginRenderPass, h.table.vkCmdBeginRenderPass, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBeginRenderPass, h.table.vkCmdBeginRenderPass, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&val3),
@@ -23616,7 +23543,7 @@ func (h *CommandBuffer) BeginRenderPass2(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	ffi.CallFunction(&_cif_vkCmdBeginRenderPass2, h.table.vkCmdBeginRenderPass2, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBeginRenderPass2, h.table.vkCmdBeginRenderPass2, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
@@ -23640,7 +23567,7 @@ func (h *CommandBuffer) BeginRendering(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkCmdBeginRendering, h.table.vkCmdBeginRendering, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBeginRendering, h.table.vkCmdBeginRendering, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -23665,7 +23592,7 @@ func (h *CommandBuffer) BindDescriptorBufferEmbeddedSamplersEXT(
 		h1 = layout.handle
 	}
 	val2 := uint32(set)
-	ffi.CallFunction(&_cif_vkCmdBindDescriptorBufferEmbeddedSamplersEXT, h.table.vkCmdBindDescriptorBufferEmbeddedSamplersEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBindDescriptorBufferEmbeddedSamplersEXT, h.table.vkCmdBindDescriptorBufferEmbeddedSamplersEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&h1),
@@ -23700,7 +23627,7 @@ func (h *CommandBuffer) BindDescriptorBuffersEXT(
 			buf2[i4] = *cast8
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdBindDescriptorBuffersEXT, h.table.vkCmdBindDescriptorBuffersEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBindDescriptorBuffersEXT, h.table.vkCmdBindDescriptorBuffersEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&bufferCount),
 		unsafe.Pointer(&arr1),
@@ -23759,7 +23686,7 @@ func (h *CommandBuffer) BindDescriptorSets(
 			buf12[i14] = val16
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdBindDescriptorSets, h.table.vkCmdBindDescriptorSets, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBindDescriptorSets, h.table.vkCmdBindDescriptorSets, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&h1),
@@ -23790,7 +23717,7 @@ func (h *CommandBuffer) BindIndexBuffer(
 	}
 	val1 := uint64(offset)
 	val2 := uint32(indexType)
-	ffi.CallFunction(&_cif_vkCmdBindIndexBuffer, h.table.vkCmdBindIndexBuffer, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBindIndexBuffer, h.table.vkCmdBindIndexBuffer, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -23819,7 +23746,7 @@ func (h *CommandBuffer) BindIndexBuffer2(
 	val1 := uint64(offset)
 	val2 := uint64(size)
 	val3 := uint32(indexType)
-	ffi.CallFunction(&_cif_vkCmdBindIndexBuffer2, h.table.vkCmdBindIndexBuffer2, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBindIndexBuffer2, h.table.vkCmdBindIndexBuffer2, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -23845,7 +23772,7 @@ func (h *CommandBuffer) BindPipeline(
 	if pipeline != nil {
 		h1 = pipeline.handle
 	}
-	ffi.CallFunction(&_cif_vkCmdBindPipeline, h.table.vkCmdBindPipeline, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBindPipeline, h.table.vkCmdBindPipeline, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&h1),
@@ -23894,7 +23821,7 @@ func (h *CommandBuffer) BindShadersEXT(
 			buf9[i11] = h13
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdBindShadersEXT, h.table.vkCmdBindShadersEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBindShadersEXT, h.table.vkCmdBindShadersEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&stageCount),
 		unsafe.Pointer(&arr1),
@@ -23946,7 +23873,7 @@ func (h *CommandBuffer) BindVertexBuffers(
 			buf10[i12] = val14
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdBindVertexBuffers, h.table.vkCmdBindVertexBuffers, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBindVertexBuffers, h.table.vkCmdBindVertexBuffers, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&bindingCount),
@@ -24027,7 +23954,7 @@ func (h *CommandBuffer) BindVertexBuffers2(
 			buf24[i26] = val28
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdBindVertexBuffers2, h.table.vkCmdBindVertexBuffers2, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBindVertexBuffers2, h.table.vkCmdBindVertexBuffers2, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&bindingCount),
@@ -24081,7 +24008,7 @@ func (h *CommandBuffer) BlitImage(
 		}
 	}
 	val13 := uint32(filter)
-	ffi.CallFunction(&_cif_vkCmdBlitImage, h.table.vkCmdBlitImage, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBlitImage, h.table.vkCmdBlitImage, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -24110,7 +24037,7 @@ func (h *CommandBuffer) BlitImage2(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkCmdBlitImage2, h.table.vkCmdBlitImage2, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBlitImage2, h.table.vkCmdBlitImage2, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -24172,7 +24099,7 @@ func (h *CommandBuffer) BuildAccelerationStructuresIndirectKHR(
 			buf18[i20] = val22
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdBuildAccelerationStructuresIndirectKHR, h.table.vkCmdBuildAccelerationStructuresIndirectKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBuildAccelerationStructuresIndirectKHR, h.table.vkCmdBuildAccelerationStructuresIndirectKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&infoCount),
 		unsafe.Pointer(&arr1),
@@ -24224,7 +24151,7 @@ func (h *CommandBuffer) BuildAccelerationStructuresKHR(
 			buf11[i13] = val15
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdBuildAccelerationStructuresKHR, h.table.vkCmdBuildAccelerationStructuresKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdBuildAccelerationStructuresKHR, h.table.vkCmdBuildAccelerationStructuresKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&infoCount),
 		unsafe.Pointer(&arr1),
@@ -24276,7 +24203,7 @@ func (h *CommandBuffer) ClearAttachments(
 			buf11[i13] = *cast17
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdClearAttachments, h.table.vkCmdClearAttachments, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdClearAttachments, h.table.vkCmdClearAttachments, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&attachmentCount),
 		unsafe.Pointer(&arr1),
@@ -24326,7 +24253,7 @@ func (h *CommandBuffer) ClearColorImage(
 			buf7[i9] = *cast13
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdClearColorImage, h.table.vkCmdClearColorImage, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdClearColorImage, h.table.vkCmdClearColorImage, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -24377,7 +24304,7 @@ func (h *CommandBuffer) ClearDepthStencilImage(
 			buf7[i9] = *cast13
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdClearDepthStencilImage, h.table.vkCmdClearDepthStencilImage, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdClearDepthStencilImage, h.table.vkCmdClearDepthStencilImage, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -24404,7 +24331,7 @@ func (h *CommandBuffer) CopyAccelerationStructureKHR(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkCmdCopyAccelerationStructureKHR, h.table.vkCmdCopyAccelerationStructureKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdCopyAccelerationStructureKHR, h.table.vkCmdCopyAccelerationStructureKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -24427,7 +24354,7 @@ func (h *CommandBuffer) CopyAccelerationStructureToMemoryKHR(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkCmdCopyAccelerationStructureToMemoryKHR, h.table.vkCmdCopyAccelerationStructureToMemoryKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdCopyAccelerationStructureToMemoryKHR, h.table.vkCmdCopyAccelerationStructureToMemoryKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -24470,7 +24397,7 @@ func (h *CommandBuffer) CopyBuffer(
 			buf4[i6] = *cast10
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdCopyBuffer, h.table.vkCmdCopyBuffer, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdCopyBuffer, h.table.vkCmdCopyBuffer, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&h1),
@@ -24518,7 +24445,7 @@ func (h *CommandBuffer) CopyBufferToImage(
 			buf5[i7] = *cast11
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdCopyBufferToImage, h.table.vkCmdCopyBufferToImage, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdCopyBufferToImage, h.table.vkCmdCopyBufferToImage, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&h1),
@@ -24569,7 +24496,7 @@ func (h *CommandBuffer) CopyImage(
 			buf6[i8] = *cast12
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdCopyImage, h.table.vkCmdCopyImage, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdCopyImage, h.table.vkCmdCopyImage, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -24619,7 +24546,7 @@ func (h *CommandBuffer) CopyImageToBuffer(
 			buf5[i7] = *cast11
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdCopyImageToBuffer, h.table.vkCmdCopyImageToBuffer, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdCopyImageToBuffer, h.table.vkCmdCopyImageToBuffer, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -24646,7 +24573,7 @@ func (h *CommandBuffer) CopyMemoryToAccelerationStructureKHR(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkCmdCopyMemoryToAccelerationStructureKHR, h.table.vkCmdCopyMemoryToAccelerationStructureKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdCopyMemoryToAccelerationStructureKHR, h.table.vkCmdCopyMemoryToAccelerationStructureKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -24682,7 +24609,7 @@ func (h *CommandBuffer) CopyQueryPoolResults(
 	val4 := uint64(dstOffset)
 	val5 := uint64(stride)
 	val6 := uint32(flags)
-	ffi.CallFunction(&_cif_vkCmdCopyQueryPoolResults, h.table.vkCmdCopyQueryPoolResults, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdCopyQueryPoolResults, h.table.vkCmdCopyQueryPoolResults, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -24710,7 +24637,7 @@ func (h *CommandBuffer) Dispatch(
 	val0 := uint32(groupCountX)
 	val1 := uint32(groupCountY)
 	val2 := uint32(groupCountZ)
-	ffi.CallFunction(&_cif_vkCmdDispatch, h.table.vkCmdDispatch, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdDispatch, h.table.vkCmdDispatch, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -24735,7 +24662,7 @@ func (h *CommandBuffer) DispatchIndirect(
 		h0 = buffer.handle
 	}
 	val1 := uint64(offset)
-	ffi.CallFunction(&_cif_vkCmdDispatchIndirect, h.table.vkCmdDispatchIndirect, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdDispatchIndirect, h.table.vkCmdDispatchIndirect, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -24760,7 +24687,7 @@ func (h *CommandBuffer) Draw(
 	val1 := uint32(instanceCount)
 	val2 := uint32(firstVertex)
 	val3 := uint32(firstInstance)
-	ffi.CallFunction(&_cif_vkCmdDraw, h.table.vkCmdDraw, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdDraw, h.table.vkCmdDraw, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -24789,7 +24716,7 @@ func (h *CommandBuffer) DrawIndexed(
 	val2 := uint32(firstIndex)
 	val3 := int32(vertexOffset)
 	val4 := uint32(firstInstance)
-	ffi.CallFunction(&_cif_vkCmdDrawIndexed, h.table.vkCmdDrawIndexed, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdDrawIndexed, h.table.vkCmdDrawIndexed, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -24820,7 +24747,7 @@ func (h *CommandBuffer) DrawIndexedIndirect(
 	val1 := uint64(offset)
 	val2 := uint32(drawCount)
 	val3 := uint32(stride)
-	ffi.CallFunction(&_cif_vkCmdDrawIndexedIndirect, h.table.vkCmdDrawIndexedIndirect, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdDrawIndexedIndirect, h.table.vkCmdDrawIndexedIndirect, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -24857,7 +24784,7 @@ func (h *CommandBuffer) DrawIndexedIndirectCount(
 	val3 := uint64(countBufferOffset)
 	val4 := uint32(maxDrawCount)
 	val5 := uint32(stride)
-	ffi.CallFunction(&_cif_vkCmdDrawIndexedIndirectCount, h.table.vkCmdDrawIndexedIndirectCount, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdDrawIndexedIndirectCount, h.table.vkCmdDrawIndexedIndirectCount, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -24889,7 +24816,7 @@ func (h *CommandBuffer) DrawIndirect(
 	val1 := uint64(offset)
 	val2 := uint32(drawCount)
 	val3 := uint32(stride)
-	ffi.CallFunction(&_cif_vkCmdDrawIndirect, h.table.vkCmdDrawIndirect, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdDrawIndirect, h.table.vkCmdDrawIndirect, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -24926,7 +24853,7 @@ func (h *CommandBuffer) DrawIndirectCount(
 	val3 := uint64(countBufferOffset)
 	val4 := uint32(maxDrawCount)
 	val5 := uint32(stride)
-	ffi.CallFunction(&_cif_vkCmdDrawIndirectCount, h.table.vkCmdDrawIndirectCount, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdDrawIndirectCount, h.table.vkCmdDrawIndirectCount, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -24953,7 +24880,7 @@ func (h *CommandBuffer) DrawMeshTasksEXT(
 	val0 := uint32(groupCountX)
 	val1 := uint32(groupCountY)
 	val2 := uint32(groupCountZ)
-	ffi.CallFunction(&_cif_vkCmdDrawMeshTasksEXT, h.table.vkCmdDrawMeshTasksEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdDrawMeshTasksEXT, h.table.vkCmdDrawMeshTasksEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -24989,7 +24916,7 @@ func (h *CommandBuffer) DrawMeshTasksIndirectCountEXT(
 	val3 := uint64(countBufferOffset)
 	val4 := uint32(maxDrawCount)
 	val5 := uint32(stride)
-	ffi.CallFunction(&_cif_vkCmdDrawMeshTasksIndirectCountEXT, h.table.vkCmdDrawMeshTasksIndirectCountEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdDrawMeshTasksIndirectCountEXT, h.table.vkCmdDrawMeshTasksIndirectCountEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -25021,7 +24948,7 @@ func (h *CommandBuffer) DrawMeshTasksIndirectEXT(
 	val1 := uint64(offset)
 	val2 := uint32(drawCount)
 	val3 := uint32(stride)
-	ffi.CallFunction(&_cif_vkCmdDrawMeshTasksIndirectEXT, h.table.vkCmdDrawMeshTasksIndirectEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdDrawMeshTasksIndirectEXT, h.table.vkCmdDrawMeshTasksIndirectEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -25063,7 +24990,7 @@ func (h *CommandBuffer) DrawMultiEXT(
 	val9 := uint32(instanceCount)
 	val10 := uint32(firstInstance)
 	val11 := uint32(stride)
-	ffi.CallFunction(&_cif_vkCmdDrawMultiEXT, h.table.vkCmdDrawMultiEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdDrawMultiEXT, h.table.vkCmdDrawMultiEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&drawCount),
 		unsafe.Pointer(&arr1),
@@ -25113,7 +25040,7 @@ func (h *CommandBuffer) DrawMultiIndexedEXT(
 		inner14 := val13
 		ptr12 = unsafe.Pointer(&inner14)
 	}
-	ffi.CallFunction(&_cif_vkCmdDrawMultiIndexedEXT, h.table.vkCmdDrawMultiIndexedEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdDrawMultiIndexedEXT, h.table.vkCmdDrawMultiIndexedEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&drawCount),
 		unsafe.Pointer(&arr1),
@@ -25133,7 +25060,7 @@ func (h *CommandBuffer) EndDebugUtilsLabelEXT() {
 	}()
 
 	_recv := h.handle
-	ffi.CallFunction(&_cif_vkCmdEndDebugUtilsLabelEXT, h.table.vkCmdEndDebugUtilsLabelEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdEndDebugUtilsLabelEXT, h.table.vkCmdEndDebugUtilsLabelEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 	})
 }
@@ -25155,7 +25082,7 @@ func (h *CommandBuffer) EndQuery(
 		h0 = queryPool.handle
 	}
 	val1 := uint32(query)
-	ffi.CallFunction(&_cif_vkCmdEndQuery, h.table.vkCmdEndQuery, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdEndQuery, h.table.vkCmdEndQuery, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -25171,7 +25098,7 @@ func (h *CommandBuffer) EndRenderPass() {
 	}()
 
 	_recv := h.handle
-	ffi.CallFunction(&_cif_vkCmdEndRenderPass, h.table.vkCmdEndRenderPass, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdEndRenderPass, h.table.vkCmdEndRenderPass, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 	})
 }
@@ -25193,7 +25120,7 @@ func (h *CommandBuffer) EndRenderPass2(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkCmdEndRenderPass2, h.table.vkCmdEndRenderPass2, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdEndRenderPass2, h.table.vkCmdEndRenderPass2, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -25208,7 +25135,7 @@ func (h *CommandBuffer) EndRendering() {
 	}()
 
 	_recv := h.handle
-	ffi.CallFunction(&_cif_vkCmdEndRendering, h.table.vkCmdEndRendering, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdEndRendering, h.table.vkCmdEndRendering, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 	})
 }
@@ -25241,7 +25168,7 @@ func (h *CommandBuffer) ExecuteCommands(
 			buf2[i4] = h6
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdExecuteCommands, h.table.vkCmdExecuteCommands, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdExecuteCommands, h.table.vkCmdExecuteCommands, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&commandBufferCount),
 		unsafe.Pointer(&arr1),
@@ -25270,7 +25197,7 @@ func (h *CommandBuffer) ExecuteGeneratedCommandsEXT(
 		cancels = append(cancels, cancel3)
 		ptr1 = val2
 	}
-	ffi.CallFunction(&_cif_vkCmdExecuteGeneratedCommandsEXT, h.table.vkCmdExecuteGeneratedCommandsEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdExecuteGeneratedCommandsEXT, h.table.vkCmdExecuteGeneratedCommandsEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&ptr1),
@@ -25298,7 +25225,7 @@ func (h *CommandBuffer) FillBuffer(
 	val1 := uint64(dstOffset)
 	val2 := uint64(size)
 	val3 := uint32(data)
-	ffi.CallFunction(&_cif_vkCmdFillBuffer, h.table.vkCmdFillBuffer, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdFillBuffer, h.table.vkCmdFillBuffer, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -25324,7 +25251,7 @@ func (h *CommandBuffer) InsertDebugUtilsLabelEXT(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkCmdInsertDebugUtilsLabelEXT, h.table.vkCmdInsertDebugUtilsLabelEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdInsertDebugUtilsLabelEXT, h.table.vkCmdInsertDebugUtilsLabelEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -25342,7 +25269,7 @@ func (h *CommandBuffer) NextSubpass(
 
 	_recv := h.handle
 	val0 := uint32(contents)
-	ffi.CallFunction(&_cif_vkCmdNextSubpass, h.table.vkCmdNextSubpass, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdNextSubpass, h.table.vkCmdNextSubpass, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -25372,7 +25299,7 @@ func (h *CommandBuffer) NextSubpass2(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	ffi.CallFunction(&_cif_vkCmdNextSubpass2, h.table.vkCmdNextSubpass2, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdNextSubpass2, h.table.vkCmdNextSubpass2, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
@@ -25446,7 +25373,7 @@ func (h *CommandBuffer) PipelineBarrier(
 			buf23[i25] = *cast29
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdPipelineBarrier, h.table.vkCmdPipelineBarrier, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdPipelineBarrier, h.table.vkCmdPipelineBarrier, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -25482,7 +25409,7 @@ func (h *CommandBuffer) PreprocessGeneratedCommandsEXT(
 	if stateCommandBuffer != nil {
 		h3 = stateCommandBuffer.handle
 	}
-	ffi.CallFunction(&_cif_vkCmdPreprocessGeneratedCommandsEXT, h.table.vkCmdPreprocessGeneratedCommandsEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdPreprocessGeneratedCommandsEXT, h.table.vkCmdPreprocessGeneratedCommandsEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&h3),
@@ -25515,7 +25442,7 @@ func (h *CommandBuffer) PushConstants(
 	if len(Values) > 0 {
 		ptr4 = unsafe.Pointer(&Values[0])
 	}
-	ffi.CallFunction(&_cif_vkCmdPushConstants, h.table.vkCmdPushConstants, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdPushConstants, h.table.vkCmdPushConstants, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -25542,7 +25469,7 @@ func (h *CommandBuffer) ResetEvent(
 		h0 = event.handle
 	}
 	val1 := uint32(stageMask)
-	ffi.CallFunction(&_cif_vkCmdResetEvent, h.table.vkCmdResetEvent, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdResetEvent, h.table.vkCmdResetEvent, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -25568,7 +25495,7 @@ func (h *CommandBuffer) ResetQueryPool(
 	}
 	val1 := uint32(firstQuery)
 	val2 := uint32(queryCount)
-	ffi.CallFunction(&_cif_vkCmdResetQueryPool, h.table.vkCmdResetQueryPool, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdResetQueryPool, h.table.vkCmdResetQueryPool, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -25617,7 +25544,7 @@ func (h *CommandBuffer) ResolveImage(
 			buf6[i8] = *cast12
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdResolveImage, h.table.vkCmdResolveImage, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdResolveImage, h.table.vkCmdResolveImage, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -25645,7 +25572,7 @@ func (h *CommandBuffer) ResolveImage2(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkCmdResolveImage2, h.table.vkCmdResolveImage2, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdResolveImage2, h.table.vkCmdResolveImage2, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -25666,7 +25593,7 @@ func (h *CommandBuffer) SetAlphaToCoverageEnableEXT(
 	if alphaToCoverageEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetAlphaToCoverageEnableEXT, h.table.vkCmdSetAlphaToCoverageEnableEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetAlphaToCoverageEnableEXT, h.table.vkCmdSetAlphaToCoverageEnableEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -25687,7 +25614,7 @@ func (h *CommandBuffer) SetAlphaToOneEnableEXT(
 	if alphaToOneEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetAlphaToOneEnableEXT, h.table.vkCmdSetAlphaToOneEnableEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetAlphaToOneEnableEXT, h.table.vkCmdSetAlphaToOneEnableEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -25709,7 +25636,7 @@ func (h *CommandBuffer) SetBlendConstants(
 		val3 := float32(elem2)
 		arr0[i1] = val3
 	}
-	ffi.CallFunction(&_cif_vkCmdSetBlendConstants, h.table.vkCmdSetBlendConstants, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetBlendConstants, h.table.vkCmdSetBlendConstants, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&arr0[0]),
 	})
@@ -25744,7 +25671,7 @@ func (h *CommandBuffer) SetColorBlendAdvancedEXT(
 			buf3[i5] = *cast9
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdSetColorBlendAdvancedEXT, h.table.vkCmdSetColorBlendAdvancedEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetColorBlendAdvancedEXT, h.table.vkCmdSetColorBlendAdvancedEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&attachmentCount),
@@ -25782,7 +25709,7 @@ func (h *CommandBuffer) SetColorBlendEnableEXT(
 			buf3[i5] = val7
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdSetColorBlendEnableEXT, h.table.vkCmdSetColorBlendEnableEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetColorBlendEnableEXT, h.table.vkCmdSetColorBlendEnableEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&attachmentCount),
@@ -25819,7 +25746,7 @@ func (h *CommandBuffer) SetColorBlendEquationEXT(
 			buf3[i5] = *cast9
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdSetColorBlendEquationEXT, h.table.vkCmdSetColorBlendEquationEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetColorBlendEquationEXT, h.table.vkCmdSetColorBlendEquationEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&attachmentCount),
@@ -25854,7 +25781,7 @@ func (h *CommandBuffer) SetColorWriteMaskEXT(
 			buf3[i5] = val7
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdSetColorWriteMaskEXT, h.table.vkCmdSetColorWriteMaskEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetColorWriteMaskEXT, h.table.vkCmdSetColorWriteMaskEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&attachmentCount),
@@ -25874,7 +25801,7 @@ func (h *CommandBuffer) SetConservativeRasterizationModeEXT(
 
 	_recv := h.handle
 	val0 := uint32(conservativeRasterizationMode)
-	ffi.CallFunction(&_cif_vkCmdSetConservativeRasterizationModeEXT, h.table.vkCmdSetConservativeRasterizationModeEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetConservativeRasterizationModeEXT, h.table.vkCmdSetConservativeRasterizationModeEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -25892,7 +25819,7 @@ func (h *CommandBuffer) SetCoverageModulationModeNV(
 
 	_recv := h.handle
 	val0 := uint32(coverageModulationMode)
-	ffi.CallFunction(&_cif_vkCmdSetCoverageModulationModeNV, h.table.vkCmdSetCoverageModulationModeNV, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetCoverageModulationModeNV, h.table.vkCmdSetCoverageModulationModeNV, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -25913,7 +25840,7 @@ func (h *CommandBuffer) SetCoverageModulationTableEnableNV(
 	if coverageModulationTableEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetCoverageModulationTableEnableNV, h.table.vkCmdSetCoverageModulationTableEnableNV, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetCoverageModulationTableEnableNV, h.table.vkCmdSetCoverageModulationTableEnableNV, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -25944,7 +25871,7 @@ func (h *CommandBuffer) SetCoverageModulationTableNV(
 			buf2[i4] = val6
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdSetCoverageModulationTableNV, h.table.vkCmdSetCoverageModulationTableNV, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetCoverageModulationTableNV, h.table.vkCmdSetCoverageModulationTableNV, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&coverageModulationTableCount),
 		unsafe.Pointer(&arr1),
@@ -25963,7 +25890,7 @@ func (h *CommandBuffer) SetCoverageReductionModeNV(
 
 	_recv := h.handle
 	val0 := uint32(coverageReductionMode)
-	ffi.CallFunction(&_cif_vkCmdSetCoverageReductionModeNV, h.table.vkCmdSetCoverageReductionModeNV, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetCoverageReductionModeNV, h.table.vkCmdSetCoverageReductionModeNV, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -25984,7 +25911,7 @@ func (h *CommandBuffer) SetCoverageToColorEnableNV(
 	if coverageToColorEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetCoverageToColorEnableNV, h.table.vkCmdSetCoverageToColorEnableNV, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetCoverageToColorEnableNV, h.table.vkCmdSetCoverageToColorEnableNV, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26002,7 +25929,7 @@ func (h *CommandBuffer) SetCoverageToColorLocationNV(
 
 	_recv := h.handle
 	val0 := uint32(coverageToColorLocation)
-	ffi.CallFunction(&_cif_vkCmdSetCoverageToColorLocationNV, h.table.vkCmdSetCoverageToColorLocationNV, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetCoverageToColorLocationNV, h.table.vkCmdSetCoverageToColorLocationNV, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26020,7 +25947,7 @@ func (h *CommandBuffer) SetCullMode(
 
 	_recv := h.handle
 	val0 := uint32(cullMode)
-	ffi.CallFunction(&_cif_vkCmdSetCullMode, h.table.vkCmdSetCullMode, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetCullMode, h.table.vkCmdSetCullMode, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26042,7 +25969,7 @@ func (h *CommandBuffer) SetDepthBias(
 	val0 := float32(depthBiasConstantFactor)
 	val1 := float32(depthBiasClamp)
 	val2 := float32(depthBiasSlopeFactor)
-	ffi.CallFunction(&_cif_vkCmdSetDepthBias, h.table.vkCmdSetDepthBias, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetDepthBias, h.table.vkCmdSetDepthBias, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -26065,7 +25992,7 @@ func (h *CommandBuffer) SetDepthBiasEnable(
 	if depthBiasEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetDepthBiasEnable, h.table.vkCmdSetDepthBiasEnable, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetDepthBiasEnable, h.table.vkCmdSetDepthBiasEnable, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26085,7 +26012,7 @@ func (h *CommandBuffer) SetDepthBounds(
 	_recv := h.handle
 	val0 := float32(minDepthBounds)
 	val1 := float32(maxDepthBounds)
-	ffi.CallFunction(&_cif_vkCmdSetDepthBounds, h.table.vkCmdSetDepthBounds, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetDepthBounds, h.table.vkCmdSetDepthBounds, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -26107,7 +26034,7 @@ func (h *CommandBuffer) SetDepthBoundsTestEnable(
 	if depthBoundsTestEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetDepthBoundsTestEnable, h.table.vkCmdSetDepthBoundsTestEnable, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetDepthBoundsTestEnable, h.table.vkCmdSetDepthBoundsTestEnable, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26128,7 +26055,7 @@ func (h *CommandBuffer) SetDepthClampEnableEXT(
 	if depthClampEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetDepthClampEnableEXT, h.table.vkCmdSetDepthClampEnableEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetDepthClampEnableEXT, h.table.vkCmdSetDepthClampEnableEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26153,7 +26080,7 @@ func (h *CommandBuffer) SetDepthClampRangeEXT(
 		cancels = append(cancels, cancel3)
 		ptr1 = val2
 	}
-	ffi.CallFunction(&_cif_vkCmdSetDepthClampRangeEXT, h.table.vkCmdSetDepthClampRangeEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetDepthClampRangeEXT, h.table.vkCmdSetDepthClampRangeEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&ptr1),
@@ -26175,7 +26102,7 @@ func (h *CommandBuffer) SetDepthClipEnableEXT(
 	if depthClipEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetDepthClipEnableEXT, h.table.vkCmdSetDepthClipEnableEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetDepthClipEnableEXT, h.table.vkCmdSetDepthClipEnableEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26196,7 +26123,7 @@ func (h *CommandBuffer) SetDepthClipNegativeOneToOneEXT(
 	if negativeOneToOne {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetDepthClipNegativeOneToOneEXT, h.table.vkCmdSetDepthClipNegativeOneToOneEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetDepthClipNegativeOneToOneEXT, h.table.vkCmdSetDepthClipNegativeOneToOneEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26214,7 +26141,7 @@ func (h *CommandBuffer) SetDepthCompareOp(
 
 	_recv := h.handle
 	val0 := uint32(depthCompareOp)
-	ffi.CallFunction(&_cif_vkCmdSetDepthCompareOp, h.table.vkCmdSetDepthCompareOp, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetDepthCompareOp, h.table.vkCmdSetDepthCompareOp, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26235,7 +26162,7 @@ func (h *CommandBuffer) SetDepthTestEnable(
 	if depthTestEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetDepthTestEnable, h.table.vkCmdSetDepthTestEnable, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetDepthTestEnable, h.table.vkCmdSetDepthTestEnable, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26256,7 +26183,7 @@ func (h *CommandBuffer) SetDepthWriteEnable(
 	if depthWriteEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetDepthWriteEnable, h.table.vkCmdSetDepthWriteEnable, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetDepthWriteEnable, h.table.vkCmdSetDepthWriteEnable, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26310,7 +26237,7 @@ func (h *CommandBuffer) SetDescriptorBufferOffsetsEXT(
 			buf12[i14] = val16
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdSetDescriptorBufferOffsetsEXT, h.table.vkCmdSetDescriptorBufferOffsetsEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetDescriptorBufferOffsetsEXT, h.table.vkCmdSetDescriptorBufferOffsetsEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&h1),
@@ -26338,7 +26265,7 @@ func (h *CommandBuffer) SetEvent(
 		h0 = event.handle
 	}
 	val1 := uint32(stageMask)
-	ffi.CallFunction(&_cif_vkCmdSetEvent, h.table.vkCmdSetEvent, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetEvent, h.table.vkCmdSetEvent, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -26357,7 +26284,7 @@ func (h *CommandBuffer) SetExtraPrimitiveOverestimationSizeEXT(
 
 	_recv := h.handle
 	val0 := float32(extraPrimitiveOverestimationSize)
-	ffi.CallFunction(&_cif_vkCmdSetExtraPrimitiveOverestimationSizeEXT, h.table.vkCmdSetExtraPrimitiveOverestimationSizeEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetExtraPrimitiveOverestimationSizeEXT, h.table.vkCmdSetExtraPrimitiveOverestimationSizeEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26375,7 +26302,7 @@ func (h *CommandBuffer) SetFrontFace(
 
 	_recv := h.handle
 	val0 := uint32(frontFace)
-	ffi.CallFunction(&_cif_vkCmdSetFrontFace, h.table.vkCmdSetFrontFace, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetFrontFace, h.table.vkCmdSetFrontFace, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26393,7 +26320,7 @@ func (h *CommandBuffer) SetLineRasterizationModeEXT(
 
 	_recv := h.handle
 	val0 := uint32(lineRasterizationMode)
-	ffi.CallFunction(&_cif_vkCmdSetLineRasterizationModeEXT, h.table.vkCmdSetLineRasterizationModeEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetLineRasterizationModeEXT, h.table.vkCmdSetLineRasterizationModeEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26413,7 +26340,7 @@ func (h *CommandBuffer) SetLineStipple(
 	_recv := h.handle
 	val0 := uint32(lineStippleFactor)
 	val1 := uint16(lineStipplePattern)
-	ffi.CallFunction(&_cif_vkCmdSetLineStipple, h.table.vkCmdSetLineStipple, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetLineStipple, h.table.vkCmdSetLineStipple, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -26435,7 +26362,7 @@ func (h *CommandBuffer) SetLineStippleEnableEXT(
 	if stippledLineEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetLineStippleEnableEXT, h.table.vkCmdSetLineStippleEnableEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetLineStippleEnableEXT, h.table.vkCmdSetLineStippleEnableEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26453,7 +26380,7 @@ func (h *CommandBuffer) SetLineWidth(
 
 	_recv := h.handle
 	val0 := float32(lineWidth)
-	ffi.CallFunction(&_cif_vkCmdSetLineWidth, h.table.vkCmdSetLineWidth, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetLineWidth, h.table.vkCmdSetLineWidth, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26471,7 +26398,7 @@ func (h *CommandBuffer) SetLogicOpEXT(
 
 	_recv := h.handle
 	val0 := uint32(logicOp)
-	ffi.CallFunction(&_cif_vkCmdSetLogicOpEXT, h.table.vkCmdSetLogicOpEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetLogicOpEXT, h.table.vkCmdSetLogicOpEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26492,7 +26419,7 @@ func (h *CommandBuffer) SetLogicOpEnableEXT(
 	if logicOpEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetLogicOpEnableEXT, h.table.vkCmdSetLogicOpEnableEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetLogicOpEnableEXT, h.table.vkCmdSetLogicOpEnableEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26510,7 +26437,7 @@ func (h *CommandBuffer) SetPatchControlPointsEXT(
 
 	_recv := h.handle
 	val0 := uint32(patchControlPoints)
-	ffi.CallFunction(&_cif_vkCmdSetPatchControlPointsEXT, h.table.vkCmdSetPatchControlPointsEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetPatchControlPointsEXT, h.table.vkCmdSetPatchControlPointsEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26528,7 +26455,7 @@ func (h *CommandBuffer) SetPolygonModeEXT(
 
 	_recv := h.handle
 	val0 := uint32(polygonMode)
-	ffi.CallFunction(&_cif_vkCmdSetPolygonModeEXT, h.table.vkCmdSetPolygonModeEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetPolygonModeEXT, h.table.vkCmdSetPolygonModeEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26549,7 +26476,7 @@ func (h *CommandBuffer) SetPrimitiveRestartEnable(
 	if primitiveRestartEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetPrimitiveRestartEnable, h.table.vkCmdSetPrimitiveRestartEnable, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetPrimitiveRestartEnable, h.table.vkCmdSetPrimitiveRestartEnable, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26567,7 +26494,7 @@ func (h *CommandBuffer) SetPrimitiveTopology(
 
 	_recv := h.handle
 	val0 := uint32(primitiveTopology)
-	ffi.CallFunction(&_cif_vkCmdSetPrimitiveTopology, h.table.vkCmdSetPrimitiveTopology, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetPrimitiveTopology, h.table.vkCmdSetPrimitiveTopology, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26585,7 +26512,7 @@ func (h *CommandBuffer) SetProvokingVertexModeEXT(
 
 	_recv := h.handle
 	val0 := uint32(provokingVertexMode)
-	ffi.CallFunction(&_cif_vkCmdSetProvokingVertexModeEXT, h.table.vkCmdSetProvokingVertexModeEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetProvokingVertexModeEXT, h.table.vkCmdSetProvokingVertexModeEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26603,7 +26530,7 @@ func (h *CommandBuffer) SetRasterizationSamplesEXT(
 
 	_recv := h.handle
 	val0 := uint32(rasterizationSamples)
-	ffi.CallFunction(&_cif_vkCmdSetRasterizationSamplesEXT, h.table.vkCmdSetRasterizationSamplesEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetRasterizationSamplesEXT, h.table.vkCmdSetRasterizationSamplesEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26621,7 +26548,7 @@ func (h *CommandBuffer) SetRasterizationStreamEXT(
 
 	_recv := h.handle
 	val0 := uint32(rasterizationStream)
-	ffi.CallFunction(&_cif_vkCmdSetRasterizationStreamEXT, h.table.vkCmdSetRasterizationStreamEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetRasterizationStreamEXT, h.table.vkCmdSetRasterizationStreamEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26642,7 +26569,7 @@ func (h *CommandBuffer) SetRasterizerDiscardEnable(
 	if rasterizerDiscardEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetRasterizerDiscardEnable, h.table.vkCmdSetRasterizerDiscardEnable, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetRasterizerDiscardEnable, h.table.vkCmdSetRasterizerDiscardEnable, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26660,7 +26587,7 @@ func (h *CommandBuffer) SetRayTracingPipelineStackSizeKHR(
 
 	_recv := h.handle
 	val0 := uint32(pipelineStackSize)
-	ffi.CallFunction(&_cif_vkCmdSetRayTracingPipelineStackSizeKHR, h.table.vkCmdSetRayTracingPipelineStackSizeKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetRayTracingPipelineStackSizeKHR, h.table.vkCmdSetRayTracingPipelineStackSizeKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26683,7 +26610,7 @@ func (h *CommandBuffer) SetRenderingAttachmentLocations(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetRenderingAttachmentLocations, h.table.vkCmdSetRenderingAttachmentLocations, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetRenderingAttachmentLocations, h.table.vkCmdSetRenderingAttachmentLocations, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -26706,7 +26633,7 @@ func (h *CommandBuffer) SetRenderingInputAttachmentIndices(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetRenderingInputAttachmentIndices, h.table.vkCmdSetRenderingInputAttachmentIndices, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetRenderingInputAttachmentIndices, h.table.vkCmdSetRenderingInputAttachmentIndices, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -26727,7 +26654,7 @@ func (h *CommandBuffer) SetRepresentativeFragmentTestEnableNV(
 	if representativeFragmentTestEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetRepresentativeFragmentTestEnableNV, h.table.vkCmdSetRepresentativeFragmentTestEnableNV, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetRepresentativeFragmentTestEnableNV, h.table.vkCmdSetRepresentativeFragmentTestEnableNV, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26748,7 +26675,7 @@ func (h *CommandBuffer) SetSampleLocationsEnableEXT(
 	if sampleLocationsEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetSampleLocationsEnableEXT, h.table.vkCmdSetSampleLocationsEnableEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetSampleLocationsEnableEXT, h.table.vkCmdSetSampleLocationsEnableEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26780,7 +26707,7 @@ func (h *CommandBuffer) SetSampleMaskEXT(
 			buf3[i5] = val7
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdSetSampleMaskEXT, h.table.vkCmdSetSampleMaskEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetSampleMaskEXT, h.table.vkCmdSetSampleMaskEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&arr2),
@@ -26816,7 +26743,7 @@ func (h *CommandBuffer) SetScissor(
 			buf3[i5] = *cast9
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdSetScissor, h.table.vkCmdSetScissor, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetScissor, h.table.vkCmdSetScissor, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&scissorCount),
@@ -26851,7 +26778,7 @@ func (h *CommandBuffer) SetScissorWithCount(
 			buf2[i4] = *cast8
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdSetScissorWithCount, h.table.vkCmdSetScissorWithCount, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetScissorWithCount, h.table.vkCmdSetScissorWithCount, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&scissorCount),
 		unsafe.Pointer(&arr1),
@@ -26873,7 +26800,7 @@ func (h *CommandBuffer) SetShadingRateImageEnableNV(
 	if shadingRateImageEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetShadingRateImageEnableNV, h.table.vkCmdSetShadingRateImageEnableNV, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetShadingRateImageEnableNV, h.table.vkCmdSetShadingRateImageEnableNV, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26893,7 +26820,7 @@ func (h *CommandBuffer) SetStencilCompareMask(
 	_recv := h.handle
 	val0 := uint32(faceMask)
 	val1 := uint32(compareMask)
-	ffi.CallFunction(&_cif_vkCmdSetStencilCompareMask, h.table.vkCmdSetStencilCompareMask, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetStencilCompareMask, h.table.vkCmdSetStencilCompareMask, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -26920,7 +26847,7 @@ func (h *CommandBuffer) SetStencilOp(
 	val2 := uint32(passOp)
 	val3 := uint32(depthFailOp)
 	val4 := uint32(compareOp)
-	ffi.CallFunction(&_cif_vkCmdSetStencilOp, h.table.vkCmdSetStencilOp, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetStencilOp, h.table.vkCmdSetStencilOp, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -26944,7 +26871,7 @@ func (h *CommandBuffer) SetStencilReference(
 	_recv := h.handle
 	val0 := uint32(faceMask)
 	val1 := uint32(reference)
-	ffi.CallFunction(&_cif_vkCmdSetStencilReference, h.table.vkCmdSetStencilReference, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetStencilReference, h.table.vkCmdSetStencilReference, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -26966,7 +26893,7 @@ func (h *CommandBuffer) SetStencilTestEnable(
 	if stencilTestEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetStencilTestEnable, h.table.vkCmdSetStencilTestEnable, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetStencilTestEnable, h.table.vkCmdSetStencilTestEnable, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -26986,7 +26913,7 @@ func (h *CommandBuffer) SetStencilWriteMask(
 	_recv := h.handle
 	val0 := uint32(faceMask)
 	val1 := uint32(writeMask)
-	ffi.CallFunction(&_cif_vkCmdSetStencilWriteMask, h.table.vkCmdSetStencilWriteMask, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetStencilWriteMask, h.table.vkCmdSetStencilWriteMask, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -27005,7 +26932,7 @@ func (h *CommandBuffer) SetTessellationDomainOriginEXT(
 
 	_recv := h.handle
 	val0 := uint32(domainOrigin)
-	ffi.CallFunction(&_cif_vkCmdSetTessellationDomainOriginEXT, h.table.vkCmdSetTessellationDomainOriginEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetTessellationDomainOriginEXT, h.table.vkCmdSetTessellationDomainOriginEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -27055,7 +26982,7 @@ func (h *CommandBuffer) SetVertexInputEXT(
 			buf11[i13] = *cast17
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdSetVertexInputEXT, h.table.vkCmdSetVertexInputEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetVertexInputEXT, h.table.vkCmdSetVertexInputEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&vertexBindingDescriptionCount),
 		unsafe.Pointer(&arr1),
@@ -27093,7 +27020,7 @@ func (h *CommandBuffer) SetViewport(
 			buf3[i5] = *cast9
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdSetViewport, h.table.vkCmdSetViewport, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetViewport, h.table.vkCmdSetViewport, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&viewportCount),
@@ -27130,7 +27057,7 @@ func (h *CommandBuffer) SetViewportSwizzleNV(
 			buf3[i5] = *cast9
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdSetViewportSwizzleNV, h.table.vkCmdSetViewportSwizzleNV, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetViewportSwizzleNV, h.table.vkCmdSetViewportSwizzleNV, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&viewportCount),
@@ -27153,7 +27080,7 @@ func (h *CommandBuffer) SetViewportWScalingEnableNV(
 	if viewportWScalingEnable {
 		val0 = 1
 	}
-	ffi.CallFunction(&_cif_vkCmdSetViewportWScalingEnableNV, h.table.vkCmdSetViewportWScalingEnableNV, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetViewportWScalingEnableNV, h.table.vkCmdSetViewportWScalingEnableNV, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -27186,7 +27113,7 @@ func (h *CommandBuffer) SetViewportWithCount(
 			buf2[i4] = *cast8
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdSetViewportWithCount, h.table.vkCmdSetViewportWithCount, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdSetViewportWithCount, h.table.vkCmdSetViewportWithCount, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&viewportCount),
 		unsafe.Pointer(&arr1),
@@ -27205,7 +27132,7 @@ func (h *CommandBuffer) TraceRaysIndirect2KHR(
 
 	_recv := h.handle
 	val0 := uint64(indirectDeviceAddress)
-	ffi.CallFunction(&_cif_vkCmdTraceRaysIndirect2KHR, h.table.vkCmdTraceRaysIndirect2KHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdTraceRaysIndirect2KHR, h.table.vkCmdTraceRaysIndirect2KHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -27251,7 +27178,7 @@ func (h *CommandBuffer) TraceRaysIndirectKHR(
 		ptr9 = val10
 	}
 	val12 := uint64(indirectDeviceAddress)
-	ffi.CallFunction(&_cif_vkCmdTraceRaysIndirectKHR, h.table.vkCmdTraceRaysIndirectKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdTraceRaysIndirectKHR, h.table.vkCmdTraceRaysIndirectKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
@@ -27305,7 +27232,7 @@ func (h *CommandBuffer) TraceRaysKHR(
 	val12 := uint32(width)
 	val13 := uint32(height)
 	val14 := uint32(depth)
-	ffi.CallFunction(&_cif_vkCmdTraceRaysKHR, h.table.vkCmdTraceRaysKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdTraceRaysKHR, h.table.vkCmdTraceRaysKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
@@ -27341,7 +27268,7 @@ func (h *CommandBuffer) UpdateBuffer(
 	if len(Data) > 0 {
 		ptr3 = unsafe.Pointer(&Data[0])
 	}
-	ffi.CallFunction(&_cif_vkCmdUpdateBuffer, h.table.vkCmdUpdateBuffer, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdUpdateBuffer, h.table.vkCmdUpdateBuffer, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -27433,7 +27360,7 @@ func (h *CommandBuffer) WaitEvents(
 			buf29[i31] = *cast35
 		}
 	}
-	ffi.CallFunction(&_cif_vkCmdWaitEvents, h.table.vkCmdWaitEvents, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdWaitEvents, h.table.vkCmdWaitEvents, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&eventCount),
 		unsafe.Pointer(&arr1),
@@ -27485,7 +27412,7 @@ func (h *CommandBuffer) WriteAccelerationStructuresPropertiesKHR(
 		h8 = queryPool.handle
 	}
 	val9 := uint32(firstQuery)
-	ffi.CallFunction(&_cif_vkCmdWriteAccelerationStructuresPropertiesKHR, h.table.vkCmdWriteAccelerationStructuresPropertiesKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdWriteAccelerationStructuresPropertiesKHR, h.table.vkCmdWriteAccelerationStructuresPropertiesKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&accelerationStructureCount),
 		unsafe.Pointer(&arr1),
@@ -27514,7 +27441,7 @@ func (h *CommandBuffer) WriteTimestamp(
 		h1 = queryPool.handle
 	}
 	val2 := uint32(query)
-	ffi.CallFunction(&_cif_vkCmdWriteTimestamp, h.table.vkCmdWriteTimestamp, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkCmdWriteTimestamp, h.table.vkCmdWriteTimestamp, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&h1),
@@ -27545,7 +27472,7 @@ func (h *Device) CopyAccelerationStructureKHR(
 		ptr1 = val2
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCopyAccelerationStructureKHR, h.table.vkCopyAccelerationStructureKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCopyAccelerationStructureKHR, h.table.vkCopyAccelerationStructureKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -27579,7 +27506,7 @@ func (h *Device) CopyAccelerationStructureToMemoryKHR(
 		ptr1 = val2
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCopyAccelerationStructureToMemoryKHR, h.table.vkCopyAccelerationStructureToMemoryKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCopyAccelerationStructureToMemoryKHR, h.table.vkCopyAccelerationStructureToMemoryKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -27613,7 +27540,7 @@ func (h *Device) CopyMemoryToAccelerationStructureKHR(
 		ptr1 = val2
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCopyMemoryToAccelerationStructureKHR, h.table.vkCopyMemoryToAccelerationStructureKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCopyMemoryToAccelerationStructureKHR, h.table.vkCopyMemoryToAccelerationStructureKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -27648,15 +27575,20 @@ func (h *Device) CreateAccelerationStructureKHR(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var accelerationStructureOut unsafe.Pointer
-	_accelerationStructureOutSlot := unsafe.Pointer(&accelerationStructureOut)
+	_accelerationStructureOutBox := new(unsafe.Pointer)
+	var _accelerationStructureOutPin runtime.Pinner
+	_accelerationStructureOutPin.Pin(_accelerationStructureOutBox)
+	defer _accelerationStructureOutPin.Unpin()
+	accelerationStructureOut := *_accelerationStructureOutBox
+	_accelerationStructureOutSlot := unsafe.Pointer(_accelerationStructureOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateAccelerationStructureKHR, h.table.vkCreateAccelerationStructureKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateAccelerationStructureKHR, h.table.vkCreateAccelerationStructureKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_accelerationStructureOutSlot),
 	})
+	accelerationStructureOut = *_accelerationStructureOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -27697,15 +27629,20 @@ func (h *Device) CreateBuffer(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var bufferOut unsafe.Pointer
-	_bufferOutSlot := unsafe.Pointer(&bufferOut)
+	_bufferOutBox := new(unsafe.Pointer)
+	var _bufferOutPin runtime.Pinner
+	_bufferOutPin.Pin(_bufferOutBox)
+	defer _bufferOutPin.Unpin()
+	bufferOut := *_bufferOutBox
+	_bufferOutSlot := unsafe.Pointer(_bufferOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateBuffer, h.table.vkCreateBuffer, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateBuffer, h.table.vkCreateBuffer, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_bufferOutSlot),
 	})
+	bufferOut = *_bufferOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -27746,15 +27683,20 @@ func (h *Device) CreateBufferView(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var viewOut unsafe.Pointer
-	_viewOutSlot := unsafe.Pointer(&viewOut)
+	_viewOutBox := new(unsafe.Pointer)
+	var _viewOutPin runtime.Pinner
+	_viewOutPin.Pin(_viewOutBox)
+	defer _viewOutPin.Unpin()
+	viewOut := *_viewOutBox
+	_viewOutSlot := unsafe.Pointer(_viewOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateBufferView, h.table.vkCreateBufferView, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateBufferView, h.table.vkCreateBufferView, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_viewOutSlot),
 	})
+	viewOut = *_viewOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -27795,15 +27737,20 @@ func (h *Device) CreateCommandPool(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var commandPoolOut unsafe.Pointer
-	_commandPoolOutSlot := unsafe.Pointer(&commandPoolOut)
+	_commandPoolOutBox := new(unsafe.Pointer)
+	var _commandPoolOutPin runtime.Pinner
+	_commandPoolOutPin.Pin(_commandPoolOutBox)
+	defer _commandPoolOutPin.Unpin()
+	commandPoolOut := *_commandPoolOutBox
+	_commandPoolOutSlot := unsafe.Pointer(_commandPoolOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateCommandPool, h.table.vkCreateCommandPool, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateCommandPool, h.table.vkCreateCommandPool, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_commandPoolOutSlot),
 	})
+	commandPoolOut = *_commandPoolOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -27868,7 +27815,7 @@ func (h *Device) CreateComputePipelines(
 	}
 	defer _pipelinesOutPin.Unpin()
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateComputePipelines, h.table.vkCreateComputePipelines, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateComputePipelines, h.table.vkCreateComputePipelines, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&createInfoCount),
@@ -27923,15 +27870,20 @@ func (h *Instance) CreateDebugUtilsMessengerEXT(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var messengerOut unsafe.Pointer
-	_messengerOutSlot := unsafe.Pointer(&messengerOut)
+	_messengerOutBox := new(unsafe.Pointer)
+	var _messengerOutPin runtime.Pinner
+	_messengerOutPin.Pin(_messengerOutBox)
+	defer _messengerOutPin.Unpin()
+	messengerOut := *_messengerOutBox
+	_messengerOutSlot := unsafe.Pointer(_messengerOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateDebugUtilsMessengerEXT, h.table.vkCreateDebugUtilsMessengerEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateDebugUtilsMessengerEXT, h.table.vkCreateDebugUtilsMessengerEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_messengerOutSlot),
 	})
+	messengerOut = *_messengerOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -27967,14 +27919,19 @@ func (h *Device) CreateDeferredOperationKHR(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	var deferredOperationOut unsafe.Pointer
-	_deferredOperationOutSlot := unsafe.Pointer(&deferredOperationOut)
+	_deferredOperationOutBox := new(unsafe.Pointer)
+	var _deferredOperationOutPin runtime.Pinner
+	_deferredOperationOutPin.Pin(_deferredOperationOutBox)
+	defer _deferredOperationOutPin.Unpin()
+	deferredOperationOut := *_deferredOperationOutBox
+	_deferredOperationOutSlot := unsafe.Pointer(_deferredOperationOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateDeferredOperationKHR, h.table.vkCreateDeferredOperationKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateDeferredOperationKHR, h.table.vkCreateDeferredOperationKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&_deferredOperationOutSlot),
 	})
+	deferredOperationOut = *_deferredOperationOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28012,15 +27969,20 @@ func (h *Device) CreateDescriptorPool(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var descriptorPoolOut unsafe.Pointer
-	_descriptorPoolOutSlot := unsafe.Pointer(&descriptorPoolOut)
+	_descriptorPoolOutBox := new(unsafe.Pointer)
+	var _descriptorPoolOutPin runtime.Pinner
+	_descriptorPoolOutPin.Pin(_descriptorPoolOutBox)
+	defer _descriptorPoolOutPin.Unpin()
+	descriptorPoolOut := *_descriptorPoolOutBox
+	_descriptorPoolOutSlot := unsafe.Pointer(_descriptorPoolOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateDescriptorPool, h.table.vkCreateDescriptorPool, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateDescriptorPool, h.table.vkCreateDescriptorPool, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_descriptorPoolOutSlot),
 	})
+	descriptorPoolOut = *_descriptorPoolOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28061,15 +28023,20 @@ func (h *Device) CreateDescriptorSetLayout(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var setLayoutOut unsafe.Pointer
-	_setLayoutOutSlot := unsafe.Pointer(&setLayoutOut)
+	_setLayoutOutBox := new(unsafe.Pointer)
+	var _setLayoutOutPin runtime.Pinner
+	_setLayoutOutPin.Pin(_setLayoutOutBox)
+	defer _setLayoutOutPin.Unpin()
+	setLayoutOut := *_setLayoutOutBox
+	_setLayoutOutSlot := unsafe.Pointer(_setLayoutOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateDescriptorSetLayout, h.table.vkCreateDescriptorSetLayout, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateDescriptorSetLayout, h.table.vkCreateDescriptorSetLayout, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_setLayoutOutSlot),
 	})
+	setLayoutOut = *_setLayoutOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28110,15 +28077,20 @@ func (h *PhysicalDevice) CreateDevice(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var deviceOut unsafe.Pointer
-	_deviceOutSlot := unsafe.Pointer(&deviceOut)
+	_deviceOutBox := new(unsafe.Pointer)
+	var _deviceOutPin runtime.Pinner
+	_deviceOutPin.Pin(_deviceOutBox)
+	defer _deviceOutPin.Unpin()
+	deviceOut := *_deviceOutBox
+	_deviceOutSlot := unsafe.Pointer(_deviceOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateDevice, h.table.vkCreateDevice, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateDevice, h.table.vkCreateDevice, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_deviceOutSlot),
 	})
+	deviceOut = *_deviceOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28159,15 +28131,20 @@ func (h *Device) CreateEvent(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var eventOut unsafe.Pointer
-	_eventOutSlot := unsafe.Pointer(&eventOut)
+	_eventOutBox := new(unsafe.Pointer)
+	var _eventOutPin runtime.Pinner
+	_eventOutPin.Pin(_eventOutBox)
+	defer _eventOutPin.Unpin()
+	eventOut := *_eventOutBox
+	_eventOutSlot := unsafe.Pointer(_eventOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateEvent, h.table.vkCreateEvent, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateEvent, h.table.vkCreateEvent, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_eventOutSlot),
 	})
+	eventOut = *_eventOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28208,15 +28185,20 @@ func (h *Device) CreateFence(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var fenceOut unsafe.Pointer
-	_fenceOutSlot := unsafe.Pointer(&fenceOut)
+	_fenceOutBox := new(unsafe.Pointer)
+	var _fenceOutPin runtime.Pinner
+	_fenceOutPin.Pin(_fenceOutBox)
+	defer _fenceOutPin.Unpin()
+	fenceOut := *_fenceOutBox
+	_fenceOutSlot := unsafe.Pointer(_fenceOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateFence, h.table.vkCreateFence, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateFence, h.table.vkCreateFence, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_fenceOutSlot),
 	})
+	fenceOut = *_fenceOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28257,15 +28239,20 @@ func (h *Device) CreateFramebuffer(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var framebufferOut unsafe.Pointer
-	_framebufferOutSlot := unsafe.Pointer(&framebufferOut)
+	_framebufferOutBox := new(unsafe.Pointer)
+	var _framebufferOutPin runtime.Pinner
+	_framebufferOutPin.Pin(_framebufferOutBox)
+	defer _framebufferOutPin.Unpin()
+	framebufferOut := *_framebufferOutBox
+	_framebufferOutSlot := unsafe.Pointer(_framebufferOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateFramebuffer, h.table.vkCreateFramebuffer, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateFramebuffer, h.table.vkCreateFramebuffer, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_framebufferOutSlot),
 	})
+	framebufferOut = *_framebufferOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28330,7 +28317,7 @@ func (h *Device) CreateGraphicsPipelines(
 	}
 	defer _pipelinesOutPin.Unpin()
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateGraphicsPipelines, h.table.vkCreateGraphicsPipelines, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateGraphicsPipelines, h.table.vkCreateGraphicsPipelines, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&createInfoCount),
@@ -28385,15 +28372,20 @@ func (h *Device) CreateImage(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var imageOut unsafe.Pointer
-	_imageOutSlot := unsafe.Pointer(&imageOut)
+	_imageOutBox := new(unsafe.Pointer)
+	var _imageOutPin runtime.Pinner
+	_imageOutPin.Pin(_imageOutBox)
+	defer _imageOutPin.Unpin()
+	imageOut := *_imageOutBox
+	_imageOutSlot := unsafe.Pointer(_imageOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateImage, h.table.vkCreateImage, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateImage, h.table.vkCreateImage, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_imageOutSlot),
 	})
+	imageOut = *_imageOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28434,15 +28426,20 @@ func (h *Device) CreateImageView(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var viewOut unsafe.Pointer
-	_viewOutSlot := unsafe.Pointer(&viewOut)
+	_viewOutBox := new(unsafe.Pointer)
+	var _viewOutPin runtime.Pinner
+	_viewOutPin.Pin(_viewOutBox)
+	defer _viewOutPin.Unpin()
+	viewOut := *_viewOutBox
+	_viewOutSlot := unsafe.Pointer(_viewOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateImageView, h.table.vkCreateImageView, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateImageView, h.table.vkCreateImageView, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_viewOutSlot),
 	})
+	viewOut = *_viewOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28483,15 +28480,20 @@ func (h *Device) CreateIndirectCommandsLayoutEXT(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var indirectCommandsLayoutOut unsafe.Pointer
-	_indirectCommandsLayoutOutSlot := unsafe.Pointer(&indirectCommandsLayoutOut)
+	_indirectCommandsLayoutOutBox := new(unsafe.Pointer)
+	var _indirectCommandsLayoutOutPin runtime.Pinner
+	_indirectCommandsLayoutOutPin.Pin(_indirectCommandsLayoutOutBox)
+	defer _indirectCommandsLayoutOutPin.Unpin()
+	indirectCommandsLayoutOut := *_indirectCommandsLayoutOutBox
+	_indirectCommandsLayoutOutSlot := unsafe.Pointer(_indirectCommandsLayoutOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateIndirectCommandsLayoutEXT, h.table.vkCreateIndirectCommandsLayoutEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateIndirectCommandsLayoutEXT, h.table.vkCreateIndirectCommandsLayoutEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_indirectCommandsLayoutOutSlot),
 	})
+	indirectCommandsLayoutOut = *_indirectCommandsLayoutOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28532,15 +28534,20 @@ func (h *Device) CreateIndirectExecutionSetEXT(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var indirectExecutionSetOut unsafe.Pointer
-	_indirectExecutionSetOutSlot := unsafe.Pointer(&indirectExecutionSetOut)
+	_indirectExecutionSetOutBox := new(unsafe.Pointer)
+	var _indirectExecutionSetOutPin runtime.Pinner
+	_indirectExecutionSetOutPin.Pin(_indirectExecutionSetOutBox)
+	defer _indirectExecutionSetOutPin.Unpin()
+	indirectExecutionSetOut := *_indirectExecutionSetOutBox
+	_indirectExecutionSetOutSlot := unsafe.Pointer(_indirectExecutionSetOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateIndirectExecutionSetEXT, h.table.vkCreateIndirectExecutionSetEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateIndirectExecutionSetEXT, h.table.vkCreateIndirectExecutionSetEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_indirectExecutionSetOutSlot),
 	})
+	indirectExecutionSetOut = *_indirectExecutionSetOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28580,14 +28587,19 @@ func CreateInstance(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var instanceOut unsafe.Pointer
-	_instanceOutSlot := unsafe.Pointer(&instanceOut)
+	_instanceOutBox := new(unsafe.Pointer)
+	var _instanceOutPin runtime.Pinner
+	_instanceOutPin.Pin(_instanceOutBox)
+	defer _instanceOutPin.Unpin()
+	instanceOut := *_instanceOutBox
+	_instanceOutSlot := unsafe.Pointer(_instanceOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateInstance, _fn_vkCreateInstance, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateInstance, _fn_vkCreateInstance, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_instanceOutSlot),
 	})
+	instanceOut = *_instanceOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28627,15 +28639,20 @@ func (h *Device) CreatePipelineCache(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var pipelineCacheOut unsafe.Pointer
-	_pipelineCacheOutSlot := unsafe.Pointer(&pipelineCacheOut)
+	_pipelineCacheOutBox := new(unsafe.Pointer)
+	var _pipelineCacheOutPin runtime.Pinner
+	_pipelineCacheOutPin.Pin(_pipelineCacheOutBox)
+	defer _pipelineCacheOutPin.Unpin()
+	pipelineCacheOut := *_pipelineCacheOutBox
+	_pipelineCacheOutSlot := unsafe.Pointer(_pipelineCacheOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreatePipelineCache, h.table.vkCreatePipelineCache, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreatePipelineCache, h.table.vkCreatePipelineCache, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_pipelineCacheOutSlot),
 	})
+	pipelineCacheOut = *_pipelineCacheOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28676,15 +28693,20 @@ func (h *Device) CreatePipelineLayout(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var pipelineLayoutOut unsafe.Pointer
-	_pipelineLayoutOutSlot := unsafe.Pointer(&pipelineLayoutOut)
+	_pipelineLayoutOutBox := new(unsafe.Pointer)
+	var _pipelineLayoutOutPin runtime.Pinner
+	_pipelineLayoutOutPin.Pin(_pipelineLayoutOutBox)
+	defer _pipelineLayoutOutPin.Unpin()
+	pipelineLayoutOut := *_pipelineLayoutOutBox
+	_pipelineLayoutOutSlot := unsafe.Pointer(_pipelineLayoutOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreatePipelineLayout, h.table.vkCreatePipelineLayout, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreatePipelineLayout, h.table.vkCreatePipelineLayout, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_pipelineLayoutOutSlot),
 	})
+	pipelineLayoutOut = *_pipelineLayoutOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28725,15 +28747,20 @@ func (h *Device) CreateQueryPool(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var queryPoolOut unsafe.Pointer
-	_queryPoolOutSlot := unsafe.Pointer(&queryPoolOut)
+	_queryPoolOutBox := new(unsafe.Pointer)
+	var _queryPoolOutPin runtime.Pinner
+	_queryPoolOutPin.Pin(_queryPoolOutBox)
+	defer _queryPoolOutPin.Unpin()
+	queryPoolOut := *_queryPoolOutBox
+	_queryPoolOutSlot := unsafe.Pointer(_queryPoolOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateQueryPool, h.table.vkCreateQueryPool, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateQueryPool, h.table.vkCreateQueryPool, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_queryPoolOutSlot),
 	})
+	queryPoolOut = *_queryPoolOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28803,7 +28830,7 @@ func (h *Device) CreateRayTracingPipelinesKHR(
 	}
 	defer _pipelinesOutPin.Unpin()
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateRayTracingPipelinesKHR, h.table.vkCreateRayTracingPipelinesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateRayTracingPipelinesKHR, h.table.vkCreateRayTracingPipelinesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&h1),
@@ -28862,15 +28889,20 @@ func (h *Device) CreateRenderPass(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var renderPassOut unsafe.Pointer
-	_renderPassOutSlot := unsafe.Pointer(&renderPassOut)
+	_renderPassOutBox := new(unsafe.Pointer)
+	var _renderPassOutPin runtime.Pinner
+	_renderPassOutPin.Pin(_renderPassOutBox)
+	defer _renderPassOutPin.Unpin()
+	renderPassOut := *_renderPassOutBox
+	_renderPassOutSlot := unsafe.Pointer(_renderPassOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateRenderPass, h.table.vkCreateRenderPass, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateRenderPass, h.table.vkCreateRenderPass, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_renderPassOutSlot),
 	})
+	renderPassOut = *_renderPassOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28911,15 +28943,20 @@ func (h *Device) CreateRenderPass2(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var renderPassOut unsafe.Pointer
-	_renderPassOutSlot := unsafe.Pointer(&renderPassOut)
+	_renderPassOutBox := new(unsafe.Pointer)
+	var _renderPassOutPin runtime.Pinner
+	_renderPassOutPin.Pin(_renderPassOutBox)
+	defer _renderPassOutPin.Unpin()
+	renderPassOut := *_renderPassOutBox
+	_renderPassOutSlot := unsafe.Pointer(_renderPassOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateRenderPass2, h.table.vkCreateRenderPass2, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateRenderPass2, h.table.vkCreateRenderPass2, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_renderPassOutSlot),
 	})
+	renderPassOut = *_renderPassOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -28960,15 +28997,20 @@ func (h *Device) CreateSampler(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var samplerOut unsafe.Pointer
-	_samplerOutSlot := unsafe.Pointer(&samplerOut)
+	_samplerOutBox := new(unsafe.Pointer)
+	var _samplerOutPin runtime.Pinner
+	_samplerOutPin.Pin(_samplerOutBox)
+	defer _samplerOutPin.Unpin()
+	samplerOut := *_samplerOutBox
+	_samplerOutSlot := unsafe.Pointer(_samplerOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateSampler, h.table.vkCreateSampler, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateSampler, h.table.vkCreateSampler, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_samplerOutSlot),
 	})
+	samplerOut = *_samplerOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -29009,15 +29051,20 @@ func (h *Device) CreateSemaphore(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var semaphoreOut unsafe.Pointer
-	_semaphoreOutSlot := unsafe.Pointer(&semaphoreOut)
+	_semaphoreOutBox := new(unsafe.Pointer)
+	var _semaphoreOutPin runtime.Pinner
+	_semaphoreOutPin.Pin(_semaphoreOutBox)
+	defer _semaphoreOutPin.Unpin()
+	semaphoreOut := *_semaphoreOutBox
+	_semaphoreOutSlot := unsafe.Pointer(_semaphoreOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateSemaphore, h.table.vkCreateSemaphore, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateSemaphore, h.table.vkCreateSemaphore, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_semaphoreOutSlot),
 	})
+	semaphoreOut = *_semaphoreOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -29058,15 +29105,20 @@ func (h *Device) CreateShaderModule(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var shaderModuleOut unsafe.Pointer
-	_shaderModuleOutSlot := unsafe.Pointer(&shaderModuleOut)
+	_shaderModuleOutBox := new(unsafe.Pointer)
+	var _shaderModuleOutPin runtime.Pinner
+	_shaderModuleOutPin.Pin(_shaderModuleOutBox)
+	defer _shaderModuleOutPin.Unpin()
+	shaderModuleOut := *_shaderModuleOutBox
+	_shaderModuleOutSlot := unsafe.Pointer(_shaderModuleOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateShaderModule, h.table.vkCreateShaderModule, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateShaderModule, h.table.vkCreateShaderModule, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_shaderModuleOutSlot),
 	})
+	shaderModuleOut = *_shaderModuleOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -29126,7 +29178,7 @@ func (h *Device) CreateShadersEXT(
 	}
 	defer _shadersOutPin.Unpin()
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateShadersEXT, h.table.vkCreateShadersEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateShadersEXT, h.table.vkCreateShadersEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&createInfoCount),
 		unsafe.Pointer(&arr1),
@@ -29177,15 +29229,20 @@ func (h *Device) CreateSwapchainKHR(
 		cancels = append(cancels, cancel5)
 		ptr3 = val4
 	}
-	var swapchainOut unsafe.Pointer
-	_swapchainOutSlot := unsafe.Pointer(&swapchainOut)
+	_swapchainOutBox := new(unsafe.Pointer)
+	var _swapchainOutPin runtime.Pinner
+	_swapchainOutPin.Pin(_swapchainOutBox)
+	defer _swapchainOutPin.Unpin()
+	swapchainOut := *_swapchainOutBox
+	_swapchainOutSlot := unsafe.Pointer(_swapchainOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkCreateSwapchainKHR, h.table.vkCreateSwapchainKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkCreateSwapchainKHR, h.table.vkCreateSwapchainKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
 		unsafe.Pointer(&_swapchainOutSlot),
 	})
+	swapchainOut = *_swapchainOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -29218,7 +29275,7 @@ func (h *Device) DeferredOperationJoinKHR(
 		h0 = operation.handle
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkDeferredOperationJoinKHR, h.table.vkDeferredOperationJoinKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkDeferredOperationJoinKHR, h.table.vkDeferredOperationJoinKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 	})
@@ -29253,7 +29310,7 @@ func (h *Device) destroyAccelerationStructureKHR(
 	if accelerationStructure != nil && accelerationStructure.cleanup != nil {
 		accelerationStructure.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyAccelerationStructureKHR, h.table.vkDestroyAccelerationStructureKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyAccelerationStructureKHR, h.table.vkDestroyAccelerationStructureKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29285,7 +29342,7 @@ func (h *Device) destroyBuffer(
 	if buffer != nil && buffer.cleanup != nil {
 		buffer.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyBuffer, h.table.vkDestroyBuffer, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyBuffer, h.table.vkDestroyBuffer, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29317,7 +29374,7 @@ func (h *Device) destroyBufferView(
 	if bufferView != nil && bufferView.cleanup != nil {
 		bufferView.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyBufferView, h.table.vkDestroyBufferView, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyBufferView, h.table.vkDestroyBufferView, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29349,7 +29406,7 @@ func (h *Device) destroyCommandPool(
 	if commandPool != nil && commandPool.cleanup != nil {
 		commandPool.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyCommandPool, h.table.vkDestroyCommandPool, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyCommandPool, h.table.vkDestroyCommandPool, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29381,7 +29438,7 @@ func (h *Instance) destroyDebugUtilsMessengerEXT(
 	if messenger != nil && messenger.cleanup != nil {
 		messenger.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyDebugUtilsMessengerEXT, h.table.vkDestroyDebugUtilsMessengerEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyDebugUtilsMessengerEXT, h.table.vkDestroyDebugUtilsMessengerEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29413,7 +29470,7 @@ func (h *Device) destroyDeferredOperationKHR(
 	if operation != nil && operation.cleanup != nil {
 		operation.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyDeferredOperationKHR, h.table.vkDestroyDeferredOperationKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyDeferredOperationKHR, h.table.vkDestroyDeferredOperationKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29445,7 +29502,7 @@ func (h *Device) destroyDescriptorPool(
 	if descriptorPool != nil && descriptorPool.cleanup != nil {
 		descriptorPool.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyDescriptorPool, h.table.vkDestroyDescriptorPool, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyDescriptorPool, h.table.vkDestroyDescriptorPool, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29477,7 +29534,7 @@ func (h *Device) destroyDescriptorSetLayout(
 	if descriptorSetLayout != nil && descriptorSetLayout.cleanup != nil {
 		descriptorSetLayout.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyDescriptorSetLayout, h.table.vkDestroyDescriptorSetLayout, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyDescriptorSetLayout, h.table.vkDestroyDescriptorSetLayout, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29501,7 +29558,7 @@ func (h *Device) destroy(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkDestroyDevice, h.table.vkDestroyDevice, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyDevice, h.table.vkDestroyDevice, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -29532,7 +29589,7 @@ func (h *Device) destroyEvent(
 	if event != nil && event.cleanup != nil {
 		event.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyEvent, h.table.vkDestroyEvent, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyEvent, h.table.vkDestroyEvent, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29564,7 +29621,7 @@ func (h *Device) destroyFence(
 	if fence != nil && fence.cleanup != nil {
 		fence.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyFence, h.table.vkDestroyFence, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyFence, h.table.vkDestroyFence, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29596,7 +29653,7 @@ func (h *Device) destroyFramebuffer(
 	if framebuffer != nil && framebuffer.cleanup != nil {
 		framebuffer.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyFramebuffer, h.table.vkDestroyFramebuffer, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyFramebuffer, h.table.vkDestroyFramebuffer, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29628,7 +29685,7 @@ func (h *Device) destroyImage(
 	if image != nil && image.cleanup != nil {
 		image.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyImage, h.table.vkDestroyImage, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyImage, h.table.vkDestroyImage, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29660,7 +29717,7 @@ func (h *Device) destroyImageView(
 	if imageView != nil && imageView.cleanup != nil {
 		imageView.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyImageView, h.table.vkDestroyImageView, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyImageView, h.table.vkDestroyImageView, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29692,7 +29749,7 @@ func (h *Device) destroyIndirectCommandsLayoutEXT(
 	if indirectCommandsLayout != nil && indirectCommandsLayout.cleanup != nil {
 		indirectCommandsLayout.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyIndirectCommandsLayoutEXT, h.table.vkDestroyIndirectCommandsLayoutEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyIndirectCommandsLayoutEXT, h.table.vkDestroyIndirectCommandsLayoutEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29724,7 +29781,7 @@ func (h *Device) destroyIndirectExecutionSetEXT(
 	if indirectExecutionSet != nil && indirectExecutionSet.cleanup != nil {
 		indirectExecutionSet.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyIndirectExecutionSetEXT, h.table.vkDestroyIndirectExecutionSetEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyIndirectExecutionSetEXT, h.table.vkDestroyIndirectExecutionSetEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29748,7 +29805,7 @@ func (h *Instance) destroy(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkDestroyInstance, h.table.vkDestroyInstance, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyInstance, h.table.vkDestroyInstance, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -29779,7 +29836,7 @@ func (h *Device) destroyPipeline(
 	if pipeline != nil && pipeline.cleanup != nil {
 		pipeline.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyPipeline, h.table.vkDestroyPipeline, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyPipeline, h.table.vkDestroyPipeline, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29811,7 +29868,7 @@ func (h *Device) destroyPipelineCache(
 	if pipelineCache != nil && pipelineCache.cleanup != nil {
 		pipelineCache.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyPipelineCache, h.table.vkDestroyPipelineCache, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyPipelineCache, h.table.vkDestroyPipelineCache, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29843,7 +29900,7 @@ func (h *Device) destroyPipelineLayout(
 	if pipelineLayout != nil && pipelineLayout.cleanup != nil {
 		pipelineLayout.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyPipelineLayout, h.table.vkDestroyPipelineLayout, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyPipelineLayout, h.table.vkDestroyPipelineLayout, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29875,7 +29932,7 @@ func (h *Device) destroyQueryPool(
 	if queryPool != nil && queryPool.cleanup != nil {
 		queryPool.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyQueryPool, h.table.vkDestroyQueryPool, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyQueryPool, h.table.vkDestroyQueryPool, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29907,7 +29964,7 @@ func (h *Device) destroyRenderPass(
 	if renderPass != nil && renderPass.cleanup != nil {
 		renderPass.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyRenderPass, h.table.vkDestroyRenderPass, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyRenderPass, h.table.vkDestroyRenderPass, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29939,7 +29996,7 @@ func (h *Device) destroySampler(
 	if sampler != nil && sampler.cleanup != nil {
 		sampler.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroySampler, h.table.vkDestroySampler, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroySampler, h.table.vkDestroySampler, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -29971,7 +30028,7 @@ func (h *Device) destroySemaphore(
 	if semaphore != nil && semaphore.cleanup != nil {
 		semaphore.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroySemaphore, h.table.vkDestroySemaphore, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroySemaphore, h.table.vkDestroySemaphore, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -30003,7 +30060,7 @@ func (h *Device) destroyShaderEXT(
 	if shader != nil && shader.cleanup != nil {
 		shader.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyShaderEXT, h.table.vkDestroyShaderEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyShaderEXT, h.table.vkDestroyShaderEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -30035,7 +30092,7 @@ func (h *Device) destroyShaderModule(
 	if shaderModule != nil && shaderModule.cleanup != nil {
 		shaderModule.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroyShaderModule, h.table.vkDestroyShaderModule, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroyShaderModule, h.table.vkDestroyShaderModule, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -30067,7 +30124,7 @@ func (h *Instance) destroySurfaceKHR(
 	if surface != nil && surface.cleanup != nil {
 		surface.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroySurfaceKHR, h.table.vkDestroySurfaceKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroySurfaceKHR, h.table.vkDestroySurfaceKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -30099,7 +30156,7 @@ func (h *Device) destroySwapchainKHR(
 	if swapchain != nil && swapchain.cleanup != nil {
 		swapchain.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkDestroySwapchainKHR, h.table.vkDestroySwapchainKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkDestroySwapchainKHR, h.table.vkDestroySwapchainKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -30116,7 +30173,7 @@ func (h *Device) WaitIdle() error {
 
 	_recv := h.handle
 	var _ret int32
-	ffi.CallFunction(&_cif_vkDeviceWaitIdle, h.table.vkDeviceWaitIdle, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkDeviceWaitIdle, h.table.vkDeviceWaitIdle, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 	})
 	if _ret != int32(Success) {
@@ -30135,7 +30192,7 @@ func (h *CommandBuffer) End() error {
 
 	_recv := h.handle
 	var _ret int32
-	ffi.CallFunction(&_cif_vkEndCommandBuffer, h.table.vkEndCommandBuffer, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkEndCommandBuffer, h.table.vkEndCommandBuffer, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 	})
 	if _ret != int32(Success) {
@@ -30160,11 +30217,14 @@ func (h *PhysicalDevice) EnumerateDeviceExtensionProperties(
 	pin1.Pin(&cstr0[0])
 	cancels = append(cancels, func() { pin1.Unpin(); runtime.KeepAlive(cstr0) })
 	ptr2 := unsafe.Pointer(&cstr0[0])
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
+	_countBox := new(uint32)
+	var _countPin runtime.Pinner
+	_countPin.Pin(_countBox)
+	defer _countPin.Unpin()
+	_countSlot := unsafe.Pointer(_countBox)
 	var _nilSlot unsafe.Pointer
 	var _ret int32
-	ffi.CallFunction(&_cif_vkEnumerateDeviceExtensionProperties, h.table.vkEnumerateDeviceExtensionProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkEnumerateDeviceExtensionProperties, h.table.vkEnumerateDeviceExtensionProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr2),
 		unsafe.Pointer(&_countSlot),
@@ -30173,6 +30233,7 @@ func (h *PhysicalDevice) EnumerateDeviceExtensionProperties(
 	if _ret != int32(Success) && _ret != int32(Incomplete) {
 		return nil, Result(_ret)
 	}
+	_count := *_countBox
 	if _count == 0 {
 		return nil, nil
 	}
@@ -30183,7 +30244,7 @@ func (h *PhysicalDevice) EnumerateDeviceExtensionProperties(
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkEnumerateDeviceExtensionProperties, h.table.vkEnumerateDeviceExtensionProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkEnumerateDeviceExtensionProperties, h.table.vkEnumerateDeviceExtensionProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr2),
 		unsafe.Pointer(&_countSlot),
@@ -30193,7 +30254,12 @@ func (h *PhysicalDevice) EnumerateDeviceExtensionProperties(
 		return nil, Result(_ret)
 	}
 
+	_count = *_countBox
+	if int(_count) > len(_arr) {
+		_count = uint32(len(_arr))
+	}
 	out := make([]ExtensionProperties, int(_count))
+	_arr = _arr[:_count]
 	for i, v := range _arr {
 		var val3 ExtensionProperties
 		val3.fromC(&v)
@@ -30211,11 +30277,14 @@ func (h *PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, er
 	}()
 
 	_recv := h.handle
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
+	_countBox := new(uint32)
+	var _countPin runtime.Pinner
+	_countPin.Pin(_countBox)
+	defer _countPin.Unpin()
+	_countSlot := unsafe.Pointer(_countBox)
 	var _nilSlot unsafe.Pointer
 	var _ret int32
-	ffi.CallFunction(&_cif_vkEnumerateDeviceLayerProperties, h.table.vkEnumerateDeviceLayerProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkEnumerateDeviceLayerProperties, h.table.vkEnumerateDeviceLayerProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_nilSlot),
@@ -30223,6 +30292,7 @@ func (h *PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, er
 	if _ret != int32(Success) && _ret != int32(Incomplete) {
 		return nil, Result(_ret)
 	}
+	_count := *_countBox
 	if _count == 0 {
 		return nil, nil
 	}
@@ -30233,7 +30303,7 @@ func (h *PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, er
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkEnumerateDeviceLayerProperties, h.table.vkEnumerateDeviceLayerProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkEnumerateDeviceLayerProperties, h.table.vkEnumerateDeviceLayerProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_arrSlot),
@@ -30242,7 +30312,12 @@ func (h *PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, er
 		return nil, Result(_ret)
 	}
 
+	_count = *_countBox
+	if int(_count) > len(_arr) {
+		_count = uint32(len(_arr))
+	}
 	out := make([]LayerProperties, int(_count))
+	_arr = _arr[:_count]
 	for i, v := range _arr {
 		var val0 LayerProperties
 		val0.fromC(&v)
@@ -30266,11 +30341,14 @@ func EnumerateInstanceExtensionProperties(
 	pin1.Pin(&cstr0[0])
 	cancels = append(cancels, func() { pin1.Unpin(); runtime.KeepAlive(cstr0) })
 	ptr2 := unsafe.Pointer(&cstr0[0])
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
+	_countBox := new(uint32)
+	var _countPin runtime.Pinner
+	_countPin.Pin(_countBox)
+	defer _countPin.Unpin()
+	_countSlot := unsafe.Pointer(_countBox)
 	var _nilSlot unsafe.Pointer
 	var _ret int32
-	ffi.CallFunction(&_cif_vkEnumerateInstanceExtensionProperties, _fn_vkEnumerateInstanceExtensionProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkEnumerateInstanceExtensionProperties, _fn_vkEnumerateInstanceExtensionProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&ptr2),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_nilSlot),
@@ -30278,6 +30356,7 @@ func EnumerateInstanceExtensionProperties(
 	if _ret != int32(Success) && _ret != int32(Incomplete) {
 		return nil, Result(_ret)
 	}
+	_count := *_countBox
 	if _count == 0 {
 		return nil, nil
 	}
@@ -30288,7 +30367,7 @@ func EnumerateInstanceExtensionProperties(
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkEnumerateInstanceExtensionProperties, _fn_vkEnumerateInstanceExtensionProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkEnumerateInstanceExtensionProperties, _fn_vkEnumerateInstanceExtensionProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&ptr2),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_arrSlot),
@@ -30297,7 +30376,12 @@ func EnumerateInstanceExtensionProperties(
 		return nil, Result(_ret)
 	}
 
+	_count = *_countBox
+	if int(_count) > len(_arr) {
+		_count = uint32(len(_arr))
+	}
 	out := make([]ExtensionProperties, int(_count))
+	_arr = _arr[:_count]
 	for i, v := range _arr {
 		var val3 ExtensionProperties
 		val3.fromC(&v)
@@ -30314,17 +30398,21 @@ func EnumerateInstanceLayerProperties() ([]LayerProperties, error) {
 		}
 	}()
 
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
+	_countBox := new(uint32)
+	var _countPin runtime.Pinner
+	_countPin.Pin(_countBox)
+	defer _countPin.Unpin()
+	_countSlot := unsafe.Pointer(_countBox)
 	var _nilSlot unsafe.Pointer
 	var _ret int32
-	ffi.CallFunction(&_cif_vkEnumerateInstanceLayerProperties, _fn_vkEnumerateInstanceLayerProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkEnumerateInstanceLayerProperties, _fn_vkEnumerateInstanceLayerProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_nilSlot),
 	})
 	if _ret != int32(Success) && _ret != int32(Incomplete) {
 		return nil, Result(_ret)
 	}
+	_count := *_countBox
 	if _count == 0 {
 		return nil, nil
 	}
@@ -30335,7 +30423,7 @@ func EnumerateInstanceLayerProperties() ([]LayerProperties, error) {
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkEnumerateInstanceLayerProperties, _fn_vkEnumerateInstanceLayerProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkEnumerateInstanceLayerProperties, _fn_vkEnumerateInstanceLayerProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_arrSlot),
 	})
@@ -30343,7 +30431,12 @@ func EnumerateInstanceLayerProperties() ([]LayerProperties, error) {
 		return nil, Result(_ret)
 	}
 
+	_count = *_countBox
+	if int(_count) > len(_arr) {
+		_count = uint32(len(_arr))
+	}
 	out := make([]LayerProperties, int(_count))
+	_arr = _arr[:_count]
 	for i, v := range _arr {
 		var val0 LayerProperties
 		val0.fromC(&v)
@@ -30361,11 +30454,14 @@ func (h *Instance) EnumeratePhysicalDevices() ([]*PhysicalDevice, error) {
 	}()
 
 	_recv := h.handle
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
+	_countBox := new(uint32)
+	var _countPin runtime.Pinner
+	_countPin.Pin(_countBox)
+	defer _countPin.Unpin()
+	_countSlot := unsafe.Pointer(_countBox)
 	var _nilSlot unsafe.Pointer
 	var _ret int32
-	ffi.CallFunction(&_cif_vkEnumeratePhysicalDevices, h.table.vkEnumeratePhysicalDevices, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkEnumeratePhysicalDevices, h.table.vkEnumeratePhysicalDevices, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_nilSlot),
@@ -30373,6 +30469,7 @@ func (h *Instance) EnumeratePhysicalDevices() ([]*PhysicalDevice, error) {
 	if _ret != int32(Success) && _ret != int32(Incomplete) {
 		return nil, Result(_ret)
 	}
+	_count := *_countBox
 	if _count == 0 {
 		return nil, nil
 	}
@@ -30383,7 +30480,7 @@ func (h *Instance) EnumeratePhysicalDevices() ([]*PhysicalDevice, error) {
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkEnumeratePhysicalDevices, h.table.vkEnumeratePhysicalDevices, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkEnumeratePhysicalDevices, h.table.vkEnumeratePhysicalDevices, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_arrSlot),
@@ -30392,7 +30489,12 @@ func (h *Instance) EnumeratePhysicalDevices() ([]*PhysicalDevice, error) {
 		return nil, Result(_ret)
 	}
 
+	_count = *_countBox
+	if int(_count) > len(_arr) {
+		_count = uint32(len(_arr))
+	}
 	out := make([]*PhysicalDevice, int(_count))
+	_arr = _arr[:_count]
 	for i, v := range _arr {
 		h0 := &PhysicalDevice{handle: unsafe.Pointer(v)}
 		out[i] = h0
@@ -30429,7 +30531,7 @@ func (h *Device) FlushMappedMemoryRanges(
 		}
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkFlushMappedMemoryRanges, h.table.vkFlushMappedMemoryRanges, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkFlushMappedMemoryRanges, h.table.vkFlushMappedMemoryRanges, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&memoryRangeCount),
 		unsafe.Pointer(&arr1),
@@ -30476,7 +30578,7 @@ func (h *Device) freeCommandBuffers(
 	if commandPool != nil && commandPool.cleanup != nil {
 		commandPool.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkFreeCommandBuffers, h.table.vkFreeCommandBuffers, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkFreeCommandBuffers, h.table.vkFreeCommandBuffers, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&commandBufferCount),
@@ -30521,7 +30623,7 @@ func (h *Device) freeDescriptorSets(
 		descriptorPool.cleanup()
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkFreeDescriptorSets, h.table.vkFreeDescriptorSets, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkFreeDescriptorSets, h.table.vkFreeDescriptorSets, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&descriptorSetCount),
@@ -30558,7 +30660,7 @@ func (h *Device) freeMemory(
 	if memory != nil && memory.cleanup != nil {
 		memory.cleanup()
 	}
-	ffi.CallFunction(&_cif_vkFreeMemory, h.table.vkFreeMemory, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkFreeMemory, h.table.vkFreeMemory, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -30598,16 +30700,21 @@ func (h *Device) GetAccelerationStructureBuildSizesKHR(
 			buf6[i8] = val10
 		}
 	}
-	var sizeInfoOut cVkAccelerationStructureBuildSizesInfoKHR
-	sizeInfoOut.sType = int32(StructureTypeAccelerationStructureBuildSizesInfoKHR)
-	_sizeInfoOutSlot := unsafe.Pointer(&sizeInfoOut)
-	ffi.CallFunction(&_cif_vkGetAccelerationStructureBuildSizesKHR, h.table.vkGetAccelerationStructureBuildSizesKHR, nil, []unsafe.Pointer{
+	_sizeInfoOutBox := new(cVkAccelerationStructureBuildSizesInfoKHR)
+	var _sizeInfoOutPin runtime.Pinner
+	_sizeInfoOutPin.Pin(_sizeInfoOutBox)
+	defer _sizeInfoOutPin.Unpin()
+	sizeInfoOut := *_sizeInfoOutBox
+	_sizeInfoOutBox.sType = int32(StructureTypeAccelerationStructureBuildSizesInfoKHR)
+	_sizeInfoOutSlot := unsafe.Pointer(_sizeInfoOutBox)
+	ffi.Call(&_cif_vkGetAccelerationStructureBuildSizesKHR, h.table.vkGetAccelerationStructureBuildSizesKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&ptr1),
 		unsafe.Pointer(&arr5),
 		unsafe.Pointer(&_sizeInfoOutSlot),
 	})
+	sizeInfoOut = *_sizeInfoOutBox
 	var val11 AccelerationStructureBuildSizesInfoKHR
 	val11.fromC(&sizeInfoOut)
 	return val11
@@ -30631,7 +30738,7 @@ func (h *Device) GetAccelerationStructureAddressKHR(
 		ptr0 = val1
 	}
 	var _ret uint64
-	ffi.CallFunction(&_cif_vkGetAccelerationStructureDeviceAddressKHR, h.table.vkGetAccelerationStructureDeviceAddressKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetAccelerationStructureDeviceAddressKHR, h.table.vkGetAccelerationStructureDeviceAddressKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -30658,7 +30765,7 @@ func (h *Device) GetAccelerationStructureOpaqueCaptureDescriptorDataEXT(
 		ptr0 = val1
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT, h.table.vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT, h.table.vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&Data),
@@ -30684,13 +30791,18 @@ func (h *Device) GetBufferMemoryRequirements(
 	if buffer != nil {
 		h0 = buffer.handle
 	}
-	var memoryRequirementsOut cVkMemoryRequirements
-	_memoryRequirementsOutSlot := unsafe.Pointer(&memoryRequirementsOut)
-	ffi.CallFunction(&_cif_vkGetBufferMemoryRequirements, h.table.vkGetBufferMemoryRequirements, nil, []unsafe.Pointer{
+	_memoryRequirementsOutBox := new(cVkMemoryRequirements)
+	var _memoryRequirementsOutPin runtime.Pinner
+	_memoryRequirementsOutPin.Pin(_memoryRequirementsOutBox)
+	defer _memoryRequirementsOutPin.Unpin()
+	memoryRequirementsOut := *_memoryRequirementsOutBox
+	_memoryRequirementsOutSlot := unsafe.Pointer(_memoryRequirementsOutBox)
+	ffi.Call(&_cif_vkGetBufferMemoryRequirements, h.table.vkGetBufferMemoryRequirements, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_memoryRequirementsOutSlot),
 	})
+	memoryRequirementsOut = *_memoryRequirementsOutBox
 	var val1 MemoryRequirements
 	val1.fromC(&memoryRequirementsOut)
 	return val1
@@ -30715,7 +30827,7 @@ func (h *Device) GetBufferOpaqueCaptureDescriptorDataEXT(
 		ptr0 = val1
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetBufferOpaqueCaptureDescriptorDataEXT, h.table.vkGetBufferOpaqueCaptureDescriptorDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetBufferOpaqueCaptureDescriptorDataEXT, h.table.vkGetBufferOpaqueCaptureDescriptorDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&Data),
@@ -30742,7 +30854,7 @@ func (h *Device) GetDeferredOperationMaxConcurrencyKHR(
 		h0 = operation.handle
 	}
 	var _ret uint32
-	ffi.CallFunction(&_cif_vkGetDeferredOperationMaxConcurrencyKHR, h.table.vkGetDeferredOperationMaxConcurrencyKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetDeferredOperationMaxConcurrencyKHR, h.table.vkGetDeferredOperationMaxConcurrencyKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 	})
@@ -30766,7 +30878,7 @@ func (h *Device) GetDeferredOperationResultKHR(
 		h0 = operation.handle
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetDeferredOperationResultKHR, h.table.vkGetDeferredOperationResultKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetDeferredOperationResultKHR, h.table.vkGetDeferredOperationResultKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 	})
@@ -30800,7 +30912,7 @@ func (h *Device) GetDescriptorEXT(
 	if len(Descriptor) > 0 {
 		ptr4 = unsafe.Pointer(&Descriptor[0])
 	}
-	ffi.CallFunction(&_cif_vkGetDescriptorEXT, h.table.vkGetDescriptorEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetDescriptorEXT, h.table.vkGetDescriptorEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&val3),
@@ -30825,14 +30937,19 @@ func (h *Device) GetDescriptorSetLayoutBindingOffsetEXT(
 		h0 = layout.handle
 	}
 	val1 := uint32(binding)
-	var offsetOut uint64
-	_offsetOutSlot := unsafe.Pointer(&offsetOut)
-	ffi.CallFunction(&_cif_vkGetDescriptorSetLayoutBindingOffsetEXT, h.table.vkGetDescriptorSetLayoutBindingOffsetEXT, nil, []unsafe.Pointer{
+	_offsetOutBox := new(uint64)
+	var _offsetOutPin runtime.Pinner
+	_offsetOutPin.Pin(_offsetOutBox)
+	defer _offsetOutPin.Unpin()
+	offsetOut := *_offsetOutBox
+	_offsetOutSlot := unsafe.Pointer(_offsetOutBox)
+	ffi.Call(&_cif_vkGetDescriptorSetLayoutBindingOffsetEXT, h.table.vkGetDescriptorSetLayoutBindingOffsetEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
 		unsafe.Pointer(&_offsetOutSlot),
 	})
+	offsetOut = *_offsetOutBox
 	val2 := uint64(offsetOut)
 	return val2
 }
@@ -30852,13 +30969,18 @@ func (h *Device) GetDescriptorSetLayoutSizeEXT(
 	if layout != nil {
 		h0 = layout.handle
 	}
-	var layoutSizeInBytesOut uint64
-	_layoutSizeInBytesOutSlot := unsafe.Pointer(&layoutSizeInBytesOut)
-	ffi.CallFunction(&_cif_vkGetDescriptorSetLayoutSizeEXT, h.table.vkGetDescriptorSetLayoutSizeEXT, nil, []unsafe.Pointer{
+	_layoutSizeInBytesOutBox := new(uint64)
+	var _layoutSizeInBytesOutPin runtime.Pinner
+	_layoutSizeInBytesOutPin.Pin(_layoutSizeInBytesOutBox)
+	defer _layoutSizeInBytesOutPin.Unpin()
+	layoutSizeInBytesOut := *_layoutSizeInBytesOutBox
+	_layoutSizeInBytesOutSlot := unsafe.Pointer(_layoutSizeInBytesOutBox)
+	ffi.Call(&_cif_vkGetDescriptorSetLayoutSizeEXT, h.table.vkGetDescriptorSetLayoutSizeEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_layoutSizeInBytesOutSlot),
 	})
+	layoutSizeInBytesOut = *_layoutSizeInBytesOutBox
 	val1 := uint64(layoutSizeInBytesOut)
 	return val1
 }
@@ -30887,7 +31009,7 @@ func (h *Device) GetAccelerationStructureCompatibilityKHR(
 		inner5 := val4
 		ptr3 = unsafe.Pointer(&inner5)
 	}
-	ffi.CallFunction(&_cif_vkGetDeviceAccelerationStructureCompatibilityKHR, h.table.vkGetDeviceAccelerationStructureCompatibilityKHR, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetDeviceAccelerationStructureCompatibilityKHR, h.table.vkGetDeviceAccelerationStructureCompatibilityKHR, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&ptr3),
@@ -30903,14 +31025,19 @@ func (h *Device) GetGroupPresentCapabilitiesKHR() (DeviceGroupPresentCapabilitie
 	}()
 
 	_recv := h.handle
-	var deviceGroupPresentCapabilitiesOut cVkDeviceGroupPresentCapabilitiesKHR
-	deviceGroupPresentCapabilitiesOut.sType = int32(StructureTypeDeviceGroupPresentCapabilitiesKHR)
-	_deviceGroupPresentCapabilitiesOutSlot := unsafe.Pointer(&deviceGroupPresentCapabilitiesOut)
+	_deviceGroupPresentCapabilitiesOutBox := new(cVkDeviceGroupPresentCapabilitiesKHR)
+	var _deviceGroupPresentCapabilitiesOutPin runtime.Pinner
+	_deviceGroupPresentCapabilitiesOutPin.Pin(_deviceGroupPresentCapabilitiesOutBox)
+	defer _deviceGroupPresentCapabilitiesOutPin.Unpin()
+	deviceGroupPresentCapabilitiesOut := *_deviceGroupPresentCapabilitiesOutBox
+	_deviceGroupPresentCapabilitiesOutBox.sType = int32(StructureTypeDeviceGroupPresentCapabilitiesKHR)
+	_deviceGroupPresentCapabilitiesOutSlot := unsafe.Pointer(_deviceGroupPresentCapabilitiesOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetDeviceGroupPresentCapabilitiesKHR, h.table.vkGetDeviceGroupPresentCapabilitiesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetDeviceGroupPresentCapabilitiesKHR, h.table.vkGetDeviceGroupPresentCapabilitiesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&_deviceGroupPresentCapabilitiesOutSlot),
 	})
+	deviceGroupPresentCapabilitiesOut = *_deviceGroupPresentCapabilitiesOutBox
 	if _ret != int32(Success) {
 		return DeviceGroupPresentCapabilitiesKHR{}, Result(_ret)
 	}
@@ -30942,7 +31069,7 @@ func (h *Device) GetGroupSurfacePresentModesKHR(
 		ptr1 = unsafe.Pointer(&inner3)
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetDeviceGroupSurfacePresentModesKHR, h.table.vkGetDeviceGroupSurfacePresentModesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetDeviceGroupSurfacePresentModesKHR, h.table.vkGetDeviceGroupSurfacePresentModesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
@@ -30968,13 +31095,18 @@ func (h *Device) GetMemoryCommitment(
 	if memory != nil {
 		h0 = memory.handle
 	}
-	var committedMemoryInBytesOut uint64
-	_committedMemoryInBytesOutSlot := unsafe.Pointer(&committedMemoryInBytesOut)
-	ffi.CallFunction(&_cif_vkGetDeviceMemoryCommitment, h.table.vkGetDeviceMemoryCommitment, nil, []unsafe.Pointer{
+	_committedMemoryInBytesOutBox := new(uint64)
+	var _committedMemoryInBytesOutPin runtime.Pinner
+	_committedMemoryInBytesOutPin.Pin(_committedMemoryInBytesOutBox)
+	defer _committedMemoryInBytesOutPin.Unpin()
+	committedMemoryInBytesOut := *_committedMemoryInBytesOutBox
+	_committedMemoryInBytesOutSlot := unsafe.Pointer(_committedMemoryInBytesOutBox)
+	ffi.Call(&_cif_vkGetDeviceMemoryCommitment, h.table.vkGetDeviceMemoryCommitment, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_committedMemoryInBytesOutSlot),
 	})
+	committedMemoryInBytesOut = *_committedMemoryInBytesOutBox
 	val1 := uint64(committedMemoryInBytesOut)
 	return val1
 }
@@ -30996,7 +31128,7 @@ func (h *Device) GetProcAddr(
 	cancels = append(cancels, func() { pin1.Unpin(); runtime.KeepAlive(cstr0) })
 	ptr2 := unsafe.Pointer(&cstr0[0])
 	var _ret uintptr
-	ffi.CallFunction(&_cif_vkGetDeviceProcAddr, h.table.vkGetDeviceProcAddr, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetDeviceProcAddr, h.table.vkGetDeviceProcAddr, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr2),
 	})
@@ -31019,14 +31151,19 @@ func (h *Device) GetQueue(
 	_recv := h.handle
 	val0 := uint32(queueFamilyIndex)
 	val1 := uint32(queueIndex)
-	var queueOut unsafe.Pointer
-	_queueOutSlot := unsafe.Pointer(&queueOut)
-	ffi.CallFunction(&_cif_vkGetDeviceQueue, h.table.vkGetDeviceQueue, nil, []unsafe.Pointer{
+	_queueOutBox := new(unsafe.Pointer)
+	var _queueOutPin runtime.Pinner
+	_queueOutPin.Pin(_queueOutBox)
+	defer _queueOutPin.Unpin()
+	queueOut := *_queueOutBox
+	_queueOutSlot := unsafe.Pointer(_queueOutBox)
+	ffi.Call(&_cif_vkGetDeviceQueue, h.table.vkGetDeviceQueue, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
 		unsafe.Pointer(&_queueOutSlot),
 	})
+	queueOut = *_queueOutBox
 	h2 := &Queue{handle: unsafe.Pointer(queueOut)}
 	h2.table = h.table
 	h2.parent = h
@@ -31049,7 +31186,7 @@ func (h *Device) GetEventStatus(
 		h0 = event.handle
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetEventStatus, h.table.vkGetEventStatus, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetEventStatus, h.table.vkGetEventStatus, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 	})
@@ -31075,7 +31212,7 @@ func (h *Device) GetFenceStatus(
 		h0 = fence.handle
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetFenceStatus, h.table.vkGetFenceStatus, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetFenceStatus, h.table.vkGetFenceStatus, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 	})
@@ -31102,14 +31239,19 @@ func (h *Device) GetGeneratedCommandsMemoryRequirementsEXT(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	var memoryRequirementsOut cVkMemoryRequirements2
-	memoryRequirementsOut.sType = int32(StructureTypeMemoryRequirements2)
-	_memoryRequirementsOutSlot := unsafe.Pointer(&memoryRequirementsOut)
-	ffi.CallFunction(&_cif_vkGetGeneratedCommandsMemoryRequirementsEXT, h.table.vkGetGeneratedCommandsMemoryRequirementsEXT, nil, []unsafe.Pointer{
+	_memoryRequirementsOutBox := new(cVkMemoryRequirements2)
+	var _memoryRequirementsOutPin runtime.Pinner
+	_memoryRequirementsOutPin.Pin(_memoryRequirementsOutBox)
+	defer _memoryRequirementsOutPin.Unpin()
+	memoryRequirementsOut := *_memoryRequirementsOutBox
+	_memoryRequirementsOutBox.sType = int32(StructureTypeMemoryRequirements2)
+	_memoryRequirementsOutSlot := unsafe.Pointer(_memoryRequirementsOutBox)
+	ffi.Call(&_cif_vkGetGeneratedCommandsMemoryRequirementsEXT, h.table.vkGetGeneratedCommandsMemoryRequirementsEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&_memoryRequirementsOutSlot),
 	})
+	memoryRequirementsOut = *_memoryRequirementsOutBox
 	var val3 MemoryRequirements2
 	val3.fromC(&memoryRequirementsOut)
 	return val3
@@ -31130,13 +31272,18 @@ func (h *Device) GetImageMemoryRequirements(
 	if image != nil {
 		h0 = image.handle
 	}
-	var memoryRequirementsOut cVkMemoryRequirements
-	_memoryRequirementsOutSlot := unsafe.Pointer(&memoryRequirementsOut)
-	ffi.CallFunction(&_cif_vkGetImageMemoryRequirements, h.table.vkGetImageMemoryRequirements, nil, []unsafe.Pointer{
+	_memoryRequirementsOutBox := new(cVkMemoryRequirements)
+	var _memoryRequirementsOutPin runtime.Pinner
+	_memoryRequirementsOutPin.Pin(_memoryRequirementsOutBox)
+	defer _memoryRequirementsOutPin.Unpin()
+	memoryRequirementsOut := *_memoryRequirementsOutBox
+	_memoryRequirementsOutSlot := unsafe.Pointer(_memoryRequirementsOutBox)
+	ffi.Call(&_cif_vkGetImageMemoryRequirements, h.table.vkGetImageMemoryRequirements, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_memoryRequirementsOutSlot),
 	})
+	memoryRequirementsOut = *_memoryRequirementsOutBox
 	var val1 MemoryRequirements
 	val1.fromC(&memoryRequirementsOut)
 	return val1
@@ -31161,7 +31308,7 @@ func (h *Device) GetImageOpaqueCaptureDescriptorDataEXT(
 		ptr0 = val1
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetImageOpaqueCaptureDescriptorDataEXT, h.table.vkGetImageOpaqueCaptureDescriptorDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetImageOpaqueCaptureDescriptorDataEXT, h.table.vkGetImageOpaqueCaptureDescriptorDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&Data),
@@ -31187,15 +31334,19 @@ func (h *Device) GetImageSparseMemoryRequirements(
 	if image != nil {
 		h0 = image.handle
 	}
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
+	_countBox := new(uint32)
+	var _countPin runtime.Pinner
+	_countPin.Pin(_countBox)
+	defer _countPin.Unpin()
+	_countSlot := unsafe.Pointer(_countBox)
 	var _nilSlot unsafe.Pointer
-	ffi.CallFunction(&_cif_vkGetImageSparseMemoryRequirements, h.table.vkGetImageSparseMemoryRequirements, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetImageSparseMemoryRequirements, h.table.vkGetImageSparseMemoryRequirements, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_nilSlot),
 	})
+	_count := *_countBox
 	if _count == 0 {
 		return nil
 	}
@@ -31206,13 +31357,18 @@ func (h *Device) GetImageSparseMemoryRequirements(
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkGetImageSparseMemoryRequirements, h.table.vkGetImageSparseMemoryRequirements, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetImageSparseMemoryRequirements, h.table.vkGetImageSparseMemoryRequirements, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_arrSlot),
 	})
+	_count = *_countBox
+	if int(_count) > len(_arr) {
+		_count = uint32(len(_arr))
+	}
 	out := make([]SparseImageMemoryRequirements, int(_count))
+	_arr = _arr[:_count]
 	for i, v := range _arr {
 		var val1 SparseImageMemoryRequirements
 		val1.fromC(&v)
@@ -31243,14 +31399,19 @@ func (h *Device) GetImageSubresourceLayout(
 		cancels = append(cancels, cancel3)
 		ptr1 = val2
 	}
-	var layoutOut cVkSubresourceLayout
-	_layoutOutSlot := unsafe.Pointer(&layoutOut)
-	ffi.CallFunction(&_cif_vkGetImageSubresourceLayout, h.table.vkGetImageSubresourceLayout, nil, []unsafe.Pointer{
+	_layoutOutBox := new(cVkSubresourceLayout)
+	var _layoutOutPin runtime.Pinner
+	_layoutOutPin.Pin(_layoutOutBox)
+	defer _layoutOutPin.Unpin()
+	layoutOut := *_layoutOutBox
+	_layoutOutSlot := unsafe.Pointer(_layoutOutBox)
+	ffi.Call(&_cif_vkGetImageSubresourceLayout, h.table.vkGetImageSubresourceLayout, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&ptr1),
 		unsafe.Pointer(&_layoutOutSlot),
 	})
+	layoutOut = *_layoutOutBox
 	var val4 SubresourceLayout
 	val4.fromC(&layoutOut)
 	return val4
@@ -31275,7 +31436,7 @@ func (h *Device) GetImageViewOpaqueCaptureDescriptorDataEXT(
 		ptr0 = val1
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetImageViewOpaqueCaptureDescriptorDataEXT, h.table.vkGetImageViewOpaqueCaptureDescriptorDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetImageViewOpaqueCaptureDescriptorDataEXT, h.table.vkGetImageViewOpaqueCaptureDescriptorDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&Data),
@@ -31303,7 +31464,7 @@ func (h *Instance) GetProcAddr(
 	cancels = append(cancels, func() { pin1.Unpin(); runtime.KeepAlive(cstr0) })
 	ptr2 := unsafe.Pointer(&cstr0[0])
 	var _ret uintptr
-	ffi.CallFunction(&_cif_vkGetInstanceProcAddr, h.table.vkGetInstanceProcAddr, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetInstanceProcAddr, h.table.vkGetInstanceProcAddr, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr2),
 	})
@@ -31321,12 +31482,17 @@ func (h *PhysicalDevice) GetFeatures() PhysicalDeviceFeatures {
 	}()
 
 	_recv := h.handle
-	var featuresOut cVkPhysicalDeviceFeatures
-	_featuresOutSlot := unsafe.Pointer(&featuresOut)
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceFeatures, h.table.vkGetPhysicalDeviceFeatures, nil, []unsafe.Pointer{
+	_featuresOutBox := new(cVkPhysicalDeviceFeatures)
+	var _featuresOutPin runtime.Pinner
+	_featuresOutPin.Pin(_featuresOutBox)
+	defer _featuresOutPin.Unpin()
+	featuresOut := *_featuresOutBox
+	_featuresOutSlot := unsafe.Pointer(_featuresOutBox)
+	ffi.Call(&_cif_vkGetPhysicalDeviceFeatures, h.table.vkGetPhysicalDeviceFeatures, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&_featuresOutSlot),
 	})
+	featuresOut = *_featuresOutBox
 	var val0 PhysicalDeviceFeatures
 	val0.fromC(&featuresOut)
 	return val0
@@ -31344,13 +31510,18 @@ func (h *PhysicalDevice) GetFormatProperties(
 
 	_recv := h.handle
 	val0 := uint32(format)
-	var formatPropertiesOut cVkFormatProperties
-	_formatPropertiesOutSlot := unsafe.Pointer(&formatPropertiesOut)
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceFormatProperties, h.table.vkGetPhysicalDeviceFormatProperties, nil, []unsafe.Pointer{
+	_formatPropertiesOutBox := new(cVkFormatProperties)
+	var _formatPropertiesOutPin runtime.Pinner
+	_formatPropertiesOutPin.Pin(_formatPropertiesOutBox)
+	defer _formatPropertiesOutPin.Unpin()
+	formatPropertiesOut := *_formatPropertiesOutBox
+	_formatPropertiesOutSlot := unsafe.Pointer(_formatPropertiesOutBox)
+	ffi.Call(&_cif_vkGetPhysicalDeviceFormatProperties, h.table.vkGetPhysicalDeviceFormatProperties, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&_formatPropertiesOutSlot),
 	})
+	formatPropertiesOut = *_formatPropertiesOutBox
 	var val1 FormatProperties
 	val1.fromC(&formatPropertiesOut)
 	return val1
@@ -31376,10 +31547,14 @@ func (h *PhysicalDevice) GetImageFormatProperties(
 	val2 := uint32(tiling)
 	val3 := uint32(usage)
 	val4 := uint32(flags)
-	var imageFormatPropertiesOut cVkImageFormatProperties
-	_imageFormatPropertiesOutSlot := unsafe.Pointer(&imageFormatPropertiesOut)
+	_imageFormatPropertiesOutBox := new(cVkImageFormatProperties)
+	var _imageFormatPropertiesOutPin runtime.Pinner
+	_imageFormatPropertiesOutPin.Pin(_imageFormatPropertiesOutBox)
+	defer _imageFormatPropertiesOutPin.Unpin()
+	imageFormatPropertiesOut := *_imageFormatPropertiesOutBox
+	_imageFormatPropertiesOutSlot := unsafe.Pointer(_imageFormatPropertiesOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceImageFormatProperties, h.table.vkGetPhysicalDeviceImageFormatProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceImageFormatProperties, h.table.vkGetPhysicalDeviceImageFormatProperties, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -31388,6 +31563,7 @@ func (h *PhysicalDevice) GetImageFormatProperties(
 		unsafe.Pointer(&val4),
 		unsafe.Pointer(&_imageFormatPropertiesOutSlot),
 	})
+	imageFormatPropertiesOut = *_imageFormatPropertiesOutBox
 	if _ret != int32(Success) {
 		return ImageFormatProperties{}, Result(_ret)
 	}
@@ -31405,12 +31581,17 @@ func (h *PhysicalDevice) GetMemoryProperties() PhysicalDeviceMemoryProperties {
 	}()
 
 	_recv := h.handle
-	var memoryPropertiesOut cVkPhysicalDeviceMemoryProperties
-	_memoryPropertiesOutSlot := unsafe.Pointer(&memoryPropertiesOut)
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceMemoryProperties, h.table.vkGetPhysicalDeviceMemoryProperties, nil, []unsafe.Pointer{
+	_memoryPropertiesOutBox := new(cVkPhysicalDeviceMemoryProperties)
+	var _memoryPropertiesOutPin runtime.Pinner
+	_memoryPropertiesOutPin.Pin(_memoryPropertiesOutBox)
+	defer _memoryPropertiesOutPin.Unpin()
+	memoryPropertiesOut := *_memoryPropertiesOutBox
+	_memoryPropertiesOutSlot := unsafe.Pointer(_memoryPropertiesOutBox)
+	ffi.Call(&_cif_vkGetPhysicalDeviceMemoryProperties, h.table.vkGetPhysicalDeviceMemoryProperties, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&_memoryPropertiesOutSlot),
 	})
+	memoryPropertiesOut = *_memoryPropertiesOutBox
 	var val0 PhysicalDeviceMemoryProperties
 	val0.fromC(&memoryPropertiesOut)
 	return val0
@@ -31431,11 +31612,14 @@ func (h *PhysicalDevice) GetPresentRectanglesKHR(
 	if surface != nil {
 		h0 = surface.handle
 	}
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
+	_countBox := new(uint32)
+	var _countPin runtime.Pinner
+	_countPin.Pin(_countBox)
+	defer _countPin.Unpin()
+	_countSlot := unsafe.Pointer(_countBox)
 	var _nilSlot unsafe.Pointer
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetPhysicalDevicePresentRectanglesKHR, h.table.vkGetPhysicalDevicePresentRectanglesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDevicePresentRectanglesKHR, h.table.vkGetPhysicalDevicePresentRectanglesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_countSlot),
@@ -31444,6 +31628,7 @@ func (h *PhysicalDevice) GetPresentRectanglesKHR(
 	if _ret != int32(Success) && _ret != int32(Incomplete) {
 		return nil, Result(_ret)
 	}
+	_count := *_countBox
 	if _count == 0 {
 		return nil, nil
 	}
@@ -31454,7 +31639,7 @@ func (h *PhysicalDevice) GetPresentRectanglesKHR(
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkGetPhysicalDevicePresentRectanglesKHR, h.table.vkGetPhysicalDevicePresentRectanglesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDevicePresentRectanglesKHR, h.table.vkGetPhysicalDevicePresentRectanglesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_countSlot),
@@ -31464,7 +31649,12 @@ func (h *PhysicalDevice) GetPresentRectanglesKHR(
 		return nil, Result(_ret)
 	}
 
+	_count = *_countBox
+	if int(_count) > len(_arr) {
+		_count = uint32(len(_arr))
+	}
 	out := make([]Rect2D, int(_count))
+	_arr = _arr[:_count]
 	for i, v := range _arr {
 		var val1 Rect2D
 		val1.fromC(&v)
@@ -31482,12 +31672,17 @@ func (h *PhysicalDevice) GetProperties() PhysicalDeviceProperties {
 	}()
 
 	_recv := h.handle
-	var propertiesOut cVkPhysicalDeviceProperties
-	_propertiesOutSlot := unsafe.Pointer(&propertiesOut)
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceProperties, h.table.vkGetPhysicalDeviceProperties, nil, []unsafe.Pointer{
+	_propertiesOutBox := new(cVkPhysicalDeviceProperties)
+	var _propertiesOutPin runtime.Pinner
+	_propertiesOutPin.Pin(_propertiesOutBox)
+	defer _propertiesOutPin.Unpin()
+	propertiesOut := *_propertiesOutBox
+	_propertiesOutSlot := unsafe.Pointer(_propertiesOutBox)
+	ffi.Call(&_cif_vkGetPhysicalDeviceProperties, h.table.vkGetPhysicalDeviceProperties, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&_propertiesOutSlot),
 	})
+	propertiesOut = *_propertiesOutBox
 	var val0 PhysicalDeviceProperties
 	val0.fromC(&propertiesOut)
 	return val0
@@ -31502,14 +31697,18 @@ func (h *PhysicalDevice) GetQueueFamilyProperties() []QueueFamilyProperties {
 	}()
 
 	_recv := h.handle
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
+	_countBox := new(uint32)
+	var _countPin runtime.Pinner
+	_countPin.Pin(_countBox)
+	defer _countPin.Unpin()
+	_countSlot := unsafe.Pointer(_countBox)
 	var _nilSlot unsafe.Pointer
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceQueueFamilyProperties, h.table.vkGetPhysicalDeviceQueueFamilyProperties, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceQueueFamilyProperties, h.table.vkGetPhysicalDeviceQueueFamilyProperties, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_nilSlot),
 	})
+	_count := *_countBox
 	if _count == 0 {
 		return nil
 	}
@@ -31520,12 +31719,17 @@ func (h *PhysicalDevice) GetQueueFamilyProperties() []QueueFamilyProperties {
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceQueueFamilyProperties, h.table.vkGetPhysicalDeviceQueueFamilyProperties, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceQueueFamilyProperties, h.table.vkGetPhysicalDeviceQueueFamilyProperties, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_arrSlot),
 	})
+	_count = *_countBox
+	if int(_count) > len(_arr) {
+		_count = uint32(len(_arr))
+	}
 	out := make([]QueueFamilyProperties, int(_count))
+	_arr = _arr[:_count]
 	for i, v := range _arr {
 		var val0 QueueFamilyProperties
 		val0.fromC(&v)
@@ -31554,10 +31758,13 @@ func (h *PhysicalDevice) GetSparseImageFormatProperties(
 	val2 := uint32(samples)
 	val3 := uint32(usage)
 	val4 := uint32(tiling)
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
+	_countBox := new(uint32)
+	var _countPin runtime.Pinner
+	_countPin.Pin(_countBox)
+	defer _countPin.Unpin()
+	_countSlot := unsafe.Pointer(_countBox)
 	var _nilSlot unsafe.Pointer
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceSparseImageFormatProperties, h.table.vkGetPhysicalDeviceSparseImageFormatProperties, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceSparseImageFormatProperties, h.table.vkGetPhysicalDeviceSparseImageFormatProperties, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -31567,6 +31774,7 @@ func (h *PhysicalDevice) GetSparseImageFormatProperties(
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_nilSlot),
 	})
+	_count := *_countBox
 	if _count == 0 {
 		return nil
 	}
@@ -31577,7 +31785,7 @@ func (h *PhysicalDevice) GetSparseImageFormatProperties(
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceSparseImageFormatProperties, h.table.vkGetPhysicalDeviceSparseImageFormatProperties, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceSparseImageFormatProperties, h.table.vkGetPhysicalDeviceSparseImageFormatProperties, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -31587,7 +31795,12 @@ func (h *PhysicalDevice) GetSparseImageFormatProperties(
 		unsafe.Pointer(&_countSlot),
 		unsafe.Pointer(&_arrSlot),
 	})
+	_count = *_countBox
+	if int(_count) > len(_arr) {
+		_count = uint32(len(_arr))
+	}
 	out := make([]SparseImageFormatProperties, int(_count))
+	_arr = _arr[:_count]
 	for i, v := range _arr {
 		var val5 SparseImageFormatProperties
 		val5.fromC(&v)
@@ -31611,14 +31824,19 @@ func (h *PhysicalDevice) GetSurfaceCapabilitiesKHR(
 	if surface != nil {
 		h0 = surface.handle
 	}
-	var surfaceCapabilitiesOut cVkSurfaceCapabilitiesKHR
-	_surfaceCapabilitiesOutSlot := unsafe.Pointer(&surfaceCapabilitiesOut)
+	_surfaceCapabilitiesOutBox := new(cVkSurfaceCapabilitiesKHR)
+	var _surfaceCapabilitiesOutPin runtime.Pinner
+	_surfaceCapabilitiesOutPin.Pin(_surfaceCapabilitiesOutBox)
+	defer _surfaceCapabilitiesOutPin.Unpin()
+	surfaceCapabilitiesOut := *_surfaceCapabilitiesOutBox
+	_surfaceCapabilitiesOutSlot := unsafe.Pointer(_surfaceCapabilitiesOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceSurfaceCapabilitiesKHR, h.table.vkGetPhysicalDeviceSurfaceCapabilitiesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceSurfaceCapabilitiesKHR, h.table.vkGetPhysicalDeviceSurfaceCapabilitiesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_surfaceCapabilitiesOutSlot),
 	})
+	surfaceCapabilitiesOut = *_surfaceCapabilitiesOutBox
 	if _ret != int32(Success) {
 		return SurfaceCapabilitiesKHR{}, Result(_ret)
 	}
@@ -31642,11 +31860,14 @@ func (h *PhysicalDevice) GetSurfaceFormatsKHR(
 	if surface != nil {
 		h0 = surface.handle
 	}
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
+	_countBox := new(uint32)
+	var _countPin runtime.Pinner
+	_countPin.Pin(_countBox)
+	defer _countPin.Unpin()
+	_countSlot := unsafe.Pointer(_countBox)
 	var _nilSlot unsafe.Pointer
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceSurfaceFormatsKHR, h.table.vkGetPhysicalDeviceSurfaceFormatsKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceSurfaceFormatsKHR, h.table.vkGetPhysicalDeviceSurfaceFormatsKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_countSlot),
@@ -31655,6 +31876,7 @@ func (h *PhysicalDevice) GetSurfaceFormatsKHR(
 	if _ret != int32(Success) && _ret != int32(Incomplete) {
 		return nil, Result(_ret)
 	}
+	_count := *_countBox
 	if _count == 0 {
 		return nil, nil
 	}
@@ -31665,7 +31887,7 @@ func (h *PhysicalDevice) GetSurfaceFormatsKHR(
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceSurfaceFormatsKHR, h.table.vkGetPhysicalDeviceSurfaceFormatsKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceSurfaceFormatsKHR, h.table.vkGetPhysicalDeviceSurfaceFormatsKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_countSlot),
@@ -31675,7 +31897,12 @@ func (h *PhysicalDevice) GetSurfaceFormatsKHR(
 		return nil, Result(_ret)
 	}
 
+	_count = *_countBox
+	if int(_count) > len(_arr) {
+		_count = uint32(len(_arr))
+	}
 	out := make([]SurfaceFormatKHR, int(_count))
+	_arr = _arr[:_count]
 	for i, v := range _arr {
 		var val1 SurfaceFormatKHR
 		val1.fromC(&v)
@@ -31699,11 +31926,14 @@ func (h *PhysicalDevice) GetSurfacePresentModesKHR(
 	if surface != nil {
 		h0 = surface.handle
 	}
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
+	_countBox := new(uint32)
+	var _countPin runtime.Pinner
+	_countPin.Pin(_countBox)
+	defer _countPin.Unpin()
+	_countSlot := unsafe.Pointer(_countBox)
 	var _nilSlot unsafe.Pointer
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceSurfacePresentModesKHR, h.table.vkGetPhysicalDeviceSurfacePresentModesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceSurfacePresentModesKHR, h.table.vkGetPhysicalDeviceSurfacePresentModesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_countSlot),
@@ -31712,6 +31942,7 @@ func (h *PhysicalDevice) GetSurfacePresentModesKHR(
 	if _ret != int32(Success) && _ret != int32(Incomplete) {
 		return nil, Result(_ret)
 	}
+	_count := *_countBox
 	if _count == 0 {
 		return nil, nil
 	}
@@ -31722,7 +31953,7 @@ func (h *PhysicalDevice) GetSurfacePresentModesKHR(
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceSurfacePresentModesKHR, h.table.vkGetPhysicalDeviceSurfacePresentModesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceSurfacePresentModesKHR, h.table.vkGetPhysicalDeviceSurfacePresentModesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_countSlot),
@@ -31732,7 +31963,12 @@ func (h *PhysicalDevice) GetSurfacePresentModesKHR(
 		return nil, Result(_ret)
 	}
 
+	_count = *_countBox
+	if int(_count) > len(_arr) {
+		_count = uint32(len(_arr))
+	}
 	out := make([]PresentModeKHR, int(_count))
+	_arr = _arr[:_count]
 	for i, v := range _arr {
 		val1 := PresentModeKHR(v)
 		out[i] = val1
@@ -31757,15 +31993,20 @@ func (h *PhysicalDevice) GetSurfaceSupportKHR(
 	if surface != nil {
 		h1 = surface.handle
 	}
-	var supportedOut uint32
-	_supportedOutSlot := unsafe.Pointer(&supportedOut)
+	_supportedOutBox := new(uint32)
+	var _supportedOutPin runtime.Pinner
+	_supportedOutPin.Pin(_supportedOutBox)
+	defer _supportedOutPin.Unpin()
+	supportedOut := *_supportedOutBox
+	_supportedOutSlot := unsafe.Pointer(_supportedOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetPhysicalDeviceSurfaceSupportKHR, h.table.vkGetPhysicalDeviceSurfaceSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPhysicalDeviceSurfaceSupportKHR, h.table.vkGetPhysicalDeviceSurfaceSupportKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&h1),
 		unsafe.Pointer(&_supportedOutSlot),
 	})
+	supportedOut = *_supportedOutBox
 	if _ret != int32(Success) {
 		return false, Result(_ret)
 	}
@@ -31788,11 +32029,14 @@ func (h *Device) GetPipelineCacheData(
 	if pipelineCache != nil {
 		h0 = pipelineCache.handle
 	}
-	var _dataSize uintptr
-	_dataSizeSlot := unsafe.Pointer(&_dataSize)
+	_dataSizeBox := new(uintptr)
+	var _dataSizePin runtime.Pinner
+	_dataSizePin.Pin(_dataSizeBox)
+	defer _dataSizePin.Unpin()
+	_dataSizeSlot := unsafe.Pointer(_dataSizeBox)
 	var _nilSlot unsafe.Pointer
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetPipelineCacheData, h.table.vkGetPipelineCacheData, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPipelineCacheData, h.table.vkGetPipelineCacheData, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_dataSizeSlot),
@@ -31801,6 +32045,7 @@ func (h *Device) GetPipelineCacheData(
 	if _ret != int32(Success) && _ret != int32(Incomplete) {
 		return nil, Result(_ret)
 	}
+	_dataSize := *_dataSizeBox
 	if _dataSize == 0 {
 		return nil, nil
 	}
@@ -31811,7 +32056,7 @@ func (h *Device) GetPipelineCacheData(
 	_bufPin.Pin(&_buf[0])
 	defer _bufPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkGetPipelineCacheData, h.table.vkGetPipelineCacheData, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetPipelineCacheData, h.table.vkGetPipelineCacheData, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_dataSizeSlot),
@@ -31855,7 +32100,7 @@ func (h *Device) GetQueryPoolResults(
 	val5 := uint64(stride)
 	val6 := uint32(flags)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetQueryPoolResults, h.table.vkGetQueryPoolResults, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetQueryPoolResults, h.table.vkGetQueryPoolResults, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -31898,7 +32143,7 @@ func (h *Device) GetRayTracingCaptureReplayShaderGroupHandlesKHR(
 		ptr4 = unsafe.Pointer(&Data[0])
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR, h.table.vkGetRayTracingCaptureReplayShaderGroupHandlesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR, h.table.vkGetRayTracingCaptureReplayShaderGroupHandlesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -31939,7 +32184,7 @@ func (h *Device) GetRayTracingShaderGroupHandlesKHR(
 		ptr4 = unsafe.Pointer(&Data[0])
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetRayTracingShaderGroupHandlesKHR, h.table.vkGetRayTracingShaderGroupHandlesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetRayTracingShaderGroupHandlesKHR, h.table.vkGetRayTracingShaderGroupHandlesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -31973,7 +32218,7 @@ func (h *Device) GetRayTracingShaderGroupStackSizeKHR(
 	val1 := uint32(group)
 	val2 := uint32(groupShader)
 	var _ret uint64
-	ffi.CallFunction(&_cif_vkGetRayTracingShaderGroupStackSizeKHR, h.table.vkGetRayTracingShaderGroupStackSizeKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetRayTracingShaderGroupStackSizeKHR, h.table.vkGetRayTracingShaderGroupStackSizeKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -31998,13 +32243,18 @@ func (h *Device) GetRenderAreaGranularity(
 	if renderPass != nil {
 		h0 = renderPass.handle
 	}
-	var granularityOut cVkExtent2D
-	_granularityOutSlot := unsafe.Pointer(&granularityOut)
-	ffi.CallFunction(&_cif_vkGetRenderAreaGranularity, h.table.vkGetRenderAreaGranularity, nil, []unsafe.Pointer{
+	_granularityOutBox := new(cVkExtent2D)
+	var _granularityOutPin runtime.Pinner
+	_granularityOutPin.Pin(_granularityOutBox)
+	defer _granularityOutPin.Unpin()
+	granularityOut := *_granularityOutBox
+	_granularityOutSlot := unsafe.Pointer(_granularityOutBox)
+	ffi.Call(&_cif_vkGetRenderAreaGranularity, h.table.vkGetRenderAreaGranularity, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_granularityOutSlot),
 	})
+	granularityOut = *_granularityOutBox
 	var val1 Extent2D
 	val1.fromC(&granularityOut)
 	return val1
@@ -32027,13 +32277,18 @@ func (h *Device) GetRenderingAreaGranularity(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	var granularityOut cVkExtent2D
-	_granularityOutSlot := unsafe.Pointer(&granularityOut)
-	ffi.CallFunction(&_cif_vkGetRenderingAreaGranularity, h.table.vkGetRenderingAreaGranularity, nil, []unsafe.Pointer{
+	_granularityOutBox := new(cVkExtent2D)
+	var _granularityOutPin runtime.Pinner
+	_granularityOutPin.Pin(_granularityOutBox)
+	defer _granularityOutPin.Unpin()
+	granularityOut := *_granularityOutBox
+	_granularityOutSlot := unsafe.Pointer(_granularityOutBox)
+	ffi.Call(&_cif_vkGetRenderingAreaGranularity, h.table.vkGetRenderingAreaGranularity, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&_granularityOutSlot),
 	})
+	granularityOut = *_granularityOutBox
 	var val3 Extent2D
 	val3.fromC(&granularityOut)
 	return val3
@@ -32058,7 +32313,7 @@ func (h *Device) GetSamplerOpaqueCaptureDescriptorDataEXT(
 		ptr0 = val1
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetSamplerOpaqueCaptureDescriptorDataEXT, h.table.vkGetSamplerOpaqueCaptureDescriptorDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetSamplerOpaqueCaptureDescriptorDataEXT, h.table.vkGetSamplerOpaqueCaptureDescriptorDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 		unsafe.Pointer(&Data),
@@ -32084,11 +32339,14 @@ func (h *Device) GetShaderBinaryDataEXT(
 	if shader != nil {
 		h0 = shader.handle
 	}
-	var _dataSize uintptr
-	_dataSizeSlot := unsafe.Pointer(&_dataSize)
+	_dataSizeBox := new(uintptr)
+	var _dataSizePin runtime.Pinner
+	_dataSizePin.Pin(_dataSizeBox)
+	defer _dataSizePin.Unpin()
+	_dataSizeSlot := unsafe.Pointer(_dataSizeBox)
 	var _nilSlot unsafe.Pointer
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetShaderBinaryDataEXT, h.table.vkGetShaderBinaryDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetShaderBinaryDataEXT, h.table.vkGetShaderBinaryDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_dataSizeSlot),
@@ -32097,6 +32355,7 @@ func (h *Device) GetShaderBinaryDataEXT(
 	if _ret != int32(Success) && _ret != int32(Incomplete) {
 		return nil, Result(_ret)
 	}
+	_dataSize := *_dataSizeBox
 	if _dataSize == 0 {
 		return nil, nil
 	}
@@ -32107,7 +32366,7 @@ func (h *Device) GetShaderBinaryDataEXT(
 	_bufPin.Pin(&_buf[0])
 	defer _bufPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkGetShaderBinaryDataEXT, h.table.vkGetShaderBinaryDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetShaderBinaryDataEXT, h.table.vkGetShaderBinaryDataEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_dataSizeSlot),
@@ -32135,11 +32394,14 @@ func (h *Device) GetSwapchainImagesKHR(
 	if swapchain != nil {
 		h0 = swapchain.handle
 	}
-	var _count uint32
-	_countSlot := unsafe.Pointer(&_count)
+	_countBox := new(uint32)
+	var _countPin runtime.Pinner
+	_countPin.Pin(_countBox)
+	defer _countPin.Unpin()
+	_countSlot := unsafe.Pointer(_countBox)
 	var _nilSlot unsafe.Pointer
 	var _ret int32
-	ffi.CallFunction(&_cif_vkGetSwapchainImagesKHR, h.table.vkGetSwapchainImagesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetSwapchainImagesKHR, h.table.vkGetSwapchainImagesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_countSlot),
@@ -32148,6 +32410,7 @@ func (h *Device) GetSwapchainImagesKHR(
 	if _ret != int32(Success) && _ret != int32(Incomplete) {
 		return nil, Result(_ret)
 	}
+	_count := *_countBox
 	if _count == 0 {
 		return nil, nil
 	}
@@ -32158,7 +32421,7 @@ func (h *Device) GetSwapchainImagesKHR(
 	_arrPin.Pin(&_arr[0])
 	defer _arrPin.Unpin()
 
-	ffi.CallFunction(&_cif_vkGetSwapchainImagesKHR, h.table.vkGetSwapchainImagesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkGetSwapchainImagesKHR, h.table.vkGetSwapchainImagesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&_countSlot),
@@ -32168,7 +32431,12 @@ func (h *Device) GetSwapchainImagesKHR(
 		return nil, Result(_ret)
 	}
 
+	_count = *_countBox
+	if int(_count) > len(_arr) {
+		_count = uint32(len(_arr))
+	}
 	out := make([]*Image, int(_count))
+	_arr = _arr[:_count]
 	for i, v := range _arr {
 		h1 := &Image{handle: unsafe.Pointer(v)}
 		out[i] = h1
@@ -32205,7 +32473,7 @@ func (h *Device) InvalidateMappedMemoryRanges(
 		}
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkInvalidateMappedMemoryRanges, h.table.vkInvalidateMappedMemoryRanges, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkInvalidateMappedMemoryRanges, h.table.vkInvalidateMappedMemoryRanges, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&memoryRangeCount),
 		unsafe.Pointer(&arr1),
@@ -32237,10 +32505,14 @@ func (h *Device) MapMemory(
 	val1 := uint64(offset)
 	val2 := uint64(size)
 	val3 := uint32(flags)
-	var pDataOut unsafe.Pointer
-	_pDataOutSlot := unsafe.Pointer(&pDataOut)
+	_pDataOutBox := new(unsafe.Pointer)
+	var _pDataOutPin runtime.Pinner
+	_pDataOutPin.Pin(_pDataOutBox)
+	defer _pDataOutPin.Unpin()
+	pDataOut := *_pDataOutBox
+	_pDataOutSlot := unsafe.Pointer(_pDataOutBox)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkMapMemory, h.table.vkMapMemory, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkMapMemory, h.table.vkMapMemory, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -32248,6 +32520,7 @@ func (h *Device) MapMemory(
 		unsafe.Pointer(&val3),
 		unsafe.Pointer(&_pDataOutSlot),
 	})
+	pDataOut = *_pDataOutBox
 	if _ret != int32(Success) {
 		return nil, Result(_ret)
 	}
@@ -32288,7 +32561,7 @@ func (h *Device) MergePipelineCaches(
 		}
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkMergePipelineCaches, h.table.vkMergePipelineCaches, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkMergePipelineCaches, h.table.vkMergePipelineCaches, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&srcCacheCount),
@@ -32317,7 +32590,7 @@ func (h *Queue) BeginDebugUtilsLabelEXT(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkQueueBeginDebugUtilsLabelEXT, h.table.vkQueueBeginDebugUtilsLabelEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkQueueBeginDebugUtilsLabelEXT, h.table.vkQueueBeginDebugUtilsLabelEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -32356,7 +32629,7 @@ func (h *Queue) BindSparse(
 		h9 = fence.handle
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkQueueBindSparse, h.table.vkQueueBindSparse, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkQueueBindSparse, h.table.vkQueueBindSparse, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&bindInfoCount),
 		unsafe.Pointer(&arr1),
@@ -32377,7 +32650,7 @@ func (h *Queue) EndDebugUtilsLabelEXT() {
 	}()
 
 	_recv := h.handle
-	ffi.CallFunction(&_cif_vkQueueEndDebugUtilsLabelEXT, h.table.vkQueueEndDebugUtilsLabelEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkQueueEndDebugUtilsLabelEXT, h.table.vkQueueEndDebugUtilsLabelEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 	})
 }
@@ -32399,7 +32672,7 @@ func (h *Queue) InsertDebugUtilsLabelEXT(
 		cancels = append(cancels, cancel2)
 		ptr0 = val1
 	}
-	ffi.CallFunction(&_cif_vkQueueInsertDebugUtilsLabelEXT, h.table.vkQueueInsertDebugUtilsLabelEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkQueueInsertDebugUtilsLabelEXT, h.table.vkQueueInsertDebugUtilsLabelEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -32423,7 +32696,7 @@ func (h *Queue) PresentKHR(
 		ptr0 = val1
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkQueuePresentKHR, h.table.vkQueuePresentKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkQueuePresentKHR, h.table.vkQueuePresentKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -32466,7 +32739,7 @@ func (h *Queue) Submit(
 		h9 = fence.handle
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkQueueSubmit, h.table.vkQueueSubmit, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkQueueSubmit, h.table.vkQueueSubmit, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&submitCount),
 		unsafe.Pointer(&arr1),
@@ -32488,7 +32761,7 @@ func (h *Queue) WaitIdle() error {
 
 	_recv := h.handle
 	var _ret int32
-	ffi.CallFunction(&_cif_vkQueueWaitIdle, h.table.vkQueueWaitIdle, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkQueueWaitIdle, h.table.vkQueueWaitIdle, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 	})
 	if _ret != int32(Success) {
@@ -32510,7 +32783,7 @@ func (h *CommandBuffer) Reset(
 	_recv := h.handle
 	val0 := uint32(flags)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkResetCommandBuffer, h.table.vkResetCommandBuffer, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkResetCommandBuffer, h.table.vkResetCommandBuffer, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 	})
@@ -32538,7 +32811,7 @@ func (h *Device) ResetCommandPool(
 	}
 	val1 := uint32(flags)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkResetCommandPool, h.table.vkResetCommandPool, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkResetCommandPool, h.table.vkResetCommandPool, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -32567,7 +32840,7 @@ func (h *Device) ResetDescriptorPool(
 	}
 	val1 := uint32(flags)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkResetDescriptorPool, h.table.vkResetDescriptorPool, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkResetDescriptorPool, h.table.vkResetDescriptorPool, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -32594,7 +32867,7 @@ func (h *Device) ResetEvent(
 		h0 = event.handle
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkResetEvent, h.table.vkResetEvent, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkResetEvent, h.table.vkResetEvent, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 	})
@@ -32633,7 +32906,7 @@ func (h *Device) ResetFences(
 		}
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkResetFences, h.table.vkResetFences, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkResetFences, h.table.vkResetFences, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&fenceCount),
 		unsafe.Pointer(&arr1),
@@ -32662,7 +32935,7 @@ func (h *Device) SetDebugUtilsObjectNameEXT(
 		ptr0 = val1
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkSetDebugUtilsObjectNameEXT, h.table.vkSetDebugUtilsObjectNameEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkSetDebugUtilsObjectNameEXT, h.table.vkSetDebugUtilsObjectNameEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -32690,7 +32963,7 @@ func (h *Device) SetDebugUtilsObjectTagEXT(
 		ptr0 = val1
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkSetDebugUtilsObjectTagEXT, h.table.vkSetDebugUtilsObjectTagEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkSetDebugUtilsObjectTagEXT, h.table.vkSetDebugUtilsObjectTagEXT, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&ptr0),
 	})
@@ -32717,7 +32990,7 @@ func (h *Device) SetMemoryPriorityEXT(
 		h0 = memory.handle
 	}
 	val1 := float32(priority)
-	ffi.CallFunction(&_cif_vkSetDeviceMemoryPriorityEXT, h.table.vkSetDeviceMemoryPriorityEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkSetDeviceMemoryPriorityEXT, h.table.vkSetDeviceMemoryPriorityEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&val1),
@@ -32740,7 +33013,7 @@ func (h *Device) SetEvent(
 		h0 = event.handle
 	}
 	var _ret int32
-	ffi.CallFunction(&_cif_vkSetEvent, h.table.vkSetEvent, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkSetEvent, h.table.vkSetEvent, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 	})
@@ -32771,7 +33044,7 @@ func (h *Instance) SubmitDebugUtilsMessageEXT(
 		cancels = append(cancels, cancel4)
 		ptr2 = val3
 	}
-	ffi.CallFunction(&_cif_vkSubmitDebugUtilsMessageEXT, h.table.vkSubmitDebugUtilsMessageEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkSubmitDebugUtilsMessageEXT, h.table.vkSubmitDebugUtilsMessageEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&val0),
 		unsafe.Pointer(&val1),
@@ -32794,7 +33067,7 @@ func (h *Device) UnmapMemory(
 	if memory != nil {
 		h0 = memory.handle
 	}
-	ffi.CallFunction(&_cif_vkUnmapMemory, h.table.vkUnmapMemory, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkUnmapMemory, h.table.vkUnmapMemory, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 	})
@@ -32844,7 +33117,7 @@ func (h *Device) UpdateDescriptorSets(
 			buf11[i13] = *cast17
 		}
 	}
-	ffi.CallFunction(&_cif_vkUpdateDescriptorSets, h.table.vkUpdateDescriptorSets, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkUpdateDescriptorSets, h.table.vkUpdateDescriptorSets, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&descriptorWriteCount),
 		unsafe.Pointer(&arr1),
@@ -32885,7 +33158,7 @@ func (h *Device) UpdateIndirectExecutionSetPipelineEXT(
 			buf3[i5] = *cast9
 		}
 	}
-	ffi.CallFunction(&_cif_vkUpdateIndirectExecutionSetPipelineEXT, h.table.vkUpdateIndirectExecutionSetPipelineEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkUpdateIndirectExecutionSetPipelineEXT, h.table.vkUpdateIndirectExecutionSetPipelineEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&executionSetWriteCount),
@@ -32925,7 +33198,7 @@ func (h *Device) UpdateIndirectExecutionSetShaderEXT(
 			buf3[i5] = *cast9
 		}
 	}
-	ffi.CallFunction(&_cif_vkUpdateIndirectExecutionSetShaderEXT, h.table.vkUpdateIndirectExecutionSetShaderEXT, nil, []unsafe.Pointer{
+	ffi.Call(&_cif_vkUpdateIndirectExecutionSetShaderEXT, h.table.vkUpdateIndirectExecutionSetShaderEXT, nil, []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&h0),
 		unsafe.Pointer(&executionSetWriteCount),
@@ -32969,7 +33242,7 @@ func (h *Device) WaitForFences(
 	}
 	val8 := uint64(timeout)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkWaitForFences, h.table.vkWaitForFences, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkWaitForFences, h.table.vkWaitForFences, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&fenceCount),
 		unsafe.Pointer(&arr1),
@@ -33022,7 +33295,7 @@ func (h *Device) WriteAccelerationStructuresPropertiesKHR(
 	}
 	val10 := uintptr(stride)
 	var _ret int32
-	ffi.CallFunction(&_cif_vkWriteAccelerationStructuresPropertiesKHR, h.table.vkWriteAccelerationStructuresPropertiesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
+	ffi.Call(&_cif_vkWriteAccelerationStructuresPropertiesKHR, h.table.vkWriteAccelerationStructuresPropertiesKHR, unsafe.Pointer(&_ret), []unsafe.Pointer{
 		unsafe.Pointer(&_recv),
 		unsafe.Pointer(&accelerationStructureCount),
 		unsafe.Pointer(&arr1),
@@ -33698,305 +33971,305 @@ func _cleanupSwapchainKHR(a _cleanupArgsSwapchainKHR) {
 	a.parent.destroySwapchainKHR(&SwapchainKHR{handle: a.handle, cleanup: a.trampoline}, a.allocator)
 }
 
-var _cif_vkAcquireNextImage2KHR types.CallInterface
-var _cif_vkAcquireNextImageKHR types.CallInterface
-var _cif_vkAllocateCommandBuffers types.CallInterface
-var _cif_vkAllocateDescriptorSets types.CallInterface
-var _cif_vkAllocateMemory types.CallInterface
-var _cif_vkBeginCommandBuffer types.CallInterface
-var _cif_vkBindBufferMemory types.CallInterface
-var _cif_vkBindImageMemory types.CallInterface
-var _cif_vkBuildAccelerationStructuresKHR types.CallInterface
-var _cif_vkCmdBeginDebugUtilsLabelEXT types.CallInterface
-var _cif_vkCmdBeginQuery types.CallInterface
-var _cif_vkCmdBeginRenderPass types.CallInterface
-var _cif_vkCmdBeginRenderPass2 types.CallInterface
-var _cif_vkCmdBeginRendering types.CallInterface
-var _cif_vkCmdBindDescriptorBufferEmbeddedSamplersEXT types.CallInterface
-var _cif_vkCmdBindDescriptorBuffersEXT types.CallInterface
-var _cif_vkCmdBindDescriptorSets types.CallInterface
-var _cif_vkCmdBindIndexBuffer types.CallInterface
-var _cif_vkCmdBindIndexBuffer2 types.CallInterface
-var _cif_vkCmdBindPipeline types.CallInterface
-var _cif_vkCmdBindShadersEXT types.CallInterface
-var _cif_vkCmdBindVertexBuffers types.CallInterface
-var _cif_vkCmdBindVertexBuffers2 types.CallInterface
-var _cif_vkCmdBlitImage types.CallInterface
-var _cif_vkCmdBlitImage2 types.CallInterface
-var _cif_vkCmdBuildAccelerationStructuresIndirectKHR types.CallInterface
-var _cif_vkCmdBuildAccelerationStructuresKHR types.CallInterface
-var _cif_vkCmdClearAttachments types.CallInterface
-var _cif_vkCmdClearColorImage types.CallInterface
-var _cif_vkCmdClearDepthStencilImage types.CallInterface
-var _cif_vkCmdCopyAccelerationStructureKHR types.CallInterface
-var _cif_vkCmdCopyAccelerationStructureToMemoryKHR types.CallInterface
-var _cif_vkCmdCopyBuffer types.CallInterface
-var _cif_vkCmdCopyBufferToImage types.CallInterface
-var _cif_vkCmdCopyImage types.CallInterface
-var _cif_vkCmdCopyImageToBuffer types.CallInterface
-var _cif_vkCmdCopyMemoryToAccelerationStructureKHR types.CallInterface
-var _cif_vkCmdCopyQueryPoolResults types.CallInterface
-var _cif_vkCmdDispatch types.CallInterface
-var _cif_vkCmdDispatchIndirect types.CallInterface
-var _cif_vkCmdDraw types.CallInterface
-var _cif_vkCmdDrawIndexed types.CallInterface
-var _cif_vkCmdDrawIndexedIndirect types.CallInterface
-var _cif_vkCmdDrawIndexedIndirectCount types.CallInterface
-var _cif_vkCmdDrawIndirect types.CallInterface
-var _cif_vkCmdDrawIndirectCount types.CallInterface
-var _cif_vkCmdDrawMeshTasksEXT types.CallInterface
-var _cif_vkCmdDrawMeshTasksIndirectCountEXT types.CallInterface
-var _cif_vkCmdDrawMeshTasksIndirectEXT types.CallInterface
-var _cif_vkCmdDrawMultiEXT types.CallInterface
-var _cif_vkCmdDrawMultiIndexedEXT types.CallInterface
-var _cif_vkCmdEndDebugUtilsLabelEXT types.CallInterface
-var _cif_vkCmdEndQuery types.CallInterface
-var _cif_vkCmdEndRenderPass types.CallInterface
-var _cif_vkCmdEndRenderPass2 types.CallInterface
-var _cif_vkCmdEndRendering types.CallInterface
-var _cif_vkCmdExecuteCommands types.CallInterface
-var _cif_vkCmdExecuteGeneratedCommandsEXT types.CallInterface
-var _cif_vkCmdFillBuffer types.CallInterface
-var _cif_vkCmdInsertDebugUtilsLabelEXT types.CallInterface
-var _cif_vkCmdNextSubpass types.CallInterface
-var _cif_vkCmdNextSubpass2 types.CallInterface
-var _cif_vkCmdPipelineBarrier types.CallInterface
-var _cif_vkCmdPreprocessGeneratedCommandsEXT types.CallInterface
-var _cif_vkCmdPushConstants types.CallInterface
-var _cif_vkCmdResetEvent types.CallInterface
-var _cif_vkCmdResetQueryPool types.CallInterface
-var _cif_vkCmdResolveImage types.CallInterface
-var _cif_vkCmdResolveImage2 types.CallInterface
-var _cif_vkCmdSetAlphaToCoverageEnableEXT types.CallInterface
-var _cif_vkCmdSetAlphaToOneEnableEXT types.CallInterface
-var _cif_vkCmdSetBlendConstants types.CallInterface
-var _cif_vkCmdSetColorBlendAdvancedEXT types.CallInterface
-var _cif_vkCmdSetColorBlendEnableEXT types.CallInterface
-var _cif_vkCmdSetColorBlendEquationEXT types.CallInterface
-var _cif_vkCmdSetColorWriteMaskEXT types.CallInterface
-var _cif_vkCmdSetConservativeRasterizationModeEXT types.CallInterface
-var _cif_vkCmdSetCoverageModulationModeNV types.CallInterface
-var _cif_vkCmdSetCoverageModulationTableEnableNV types.CallInterface
-var _cif_vkCmdSetCoverageModulationTableNV types.CallInterface
-var _cif_vkCmdSetCoverageReductionModeNV types.CallInterface
-var _cif_vkCmdSetCoverageToColorEnableNV types.CallInterface
-var _cif_vkCmdSetCoverageToColorLocationNV types.CallInterface
-var _cif_vkCmdSetCullMode types.CallInterface
-var _cif_vkCmdSetDepthBias types.CallInterface
-var _cif_vkCmdSetDepthBiasEnable types.CallInterface
-var _cif_vkCmdSetDepthBounds types.CallInterface
-var _cif_vkCmdSetDepthBoundsTestEnable types.CallInterface
-var _cif_vkCmdSetDepthClampEnableEXT types.CallInterface
-var _cif_vkCmdSetDepthClampRangeEXT types.CallInterface
-var _cif_vkCmdSetDepthClipEnableEXT types.CallInterface
-var _cif_vkCmdSetDepthClipNegativeOneToOneEXT types.CallInterface
-var _cif_vkCmdSetDepthCompareOp types.CallInterface
-var _cif_vkCmdSetDepthTestEnable types.CallInterface
-var _cif_vkCmdSetDepthWriteEnable types.CallInterface
-var _cif_vkCmdSetDescriptorBufferOffsetsEXT types.CallInterface
-var _cif_vkCmdSetEvent types.CallInterface
-var _cif_vkCmdSetExtraPrimitiveOverestimationSizeEXT types.CallInterface
-var _cif_vkCmdSetFrontFace types.CallInterface
-var _cif_vkCmdSetLineRasterizationModeEXT types.CallInterface
-var _cif_vkCmdSetLineStipple types.CallInterface
-var _cif_vkCmdSetLineStippleEnableEXT types.CallInterface
-var _cif_vkCmdSetLineWidth types.CallInterface
-var _cif_vkCmdSetLogicOpEXT types.CallInterface
-var _cif_vkCmdSetLogicOpEnableEXT types.CallInterface
-var _cif_vkCmdSetPatchControlPointsEXT types.CallInterface
-var _cif_vkCmdSetPolygonModeEXT types.CallInterface
-var _cif_vkCmdSetPrimitiveRestartEnable types.CallInterface
-var _cif_vkCmdSetPrimitiveTopology types.CallInterface
-var _cif_vkCmdSetProvokingVertexModeEXT types.CallInterface
-var _cif_vkCmdSetRasterizationSamplesEXT types.CallInterface
-var _cif_vkCmdSetRasterizationStreamEXT types.CallInterface
-var _cif_vkCmdSetRasterizerDiscardEnable types.CallInterface
-var _cif_vkCmdSetRayTracingPipelineStackSizeKHR types.CallInterface
-var _cif_vkCmdSetRenderingAttachmentLocations types.CallInterface
-var _cif_vkCmdSetRenderingInputAttachmentIndices types.CallInterface
-var _cif_vkCmdSetRepresentativeFragmentTestEnableNV types.CallInterface
-var _cif_vkCmdSetSampleLocationsEnableEXT types.CallInterface
-var _cif_vkCmdSetSampleMaskEXT types.CallInterface
-var _cif_vkCmdSetScissor types.CallInterface
-var _cif_vkCmdSetScissorWithCount types.CallInterface
-var _cif_vkCmdSetShadingRateImageEnableNV types.CallInterface
-var _cif_vkCmdSetStencilCompareMask types.CallInterface
-var _cif_vkCmdSetStencilOp types.CallInterface
-var _cif_vkCmdSetStencilReference types.CallInterface
-var _cif_vkCmdSetStencilTestEnable types.CallInterface
-var _cif_vkCmdSetStencilWriteMask types.CallInterface
-var _cif_vkCmdSetTessellationDomainOriginEXT types.CallInterface
-var _cif_vkCmdSetVertexInputEXT types.CallInterface
-var _cif_vkCmdSetViewport types.CallInterface
-var _cif_vkCmdSetViewportSwizzleNV types.CallInterface
-var _cif_vkCmdSetViewportWScalingEnableNV types.CallInterface
-var _cif_vkCmdSetViewportWithCount types.CallInterface
-var _cif_vkCmdTraceRaysIndirect2KHR types.CallInterface
-var _cif_vkCmdTraceRaysIndirectKHR types.CallInterface
-var _cif_vkCmdTraceRaysKHR types.CallInterface
-var _cif_vkCmdUpdateBuffer types.CallInterface
-var _cif_vkCmdWaitEvents types.CallInterface
-var _cif_vkCmdWriteAccelerationStructuresPropertiesKHR types.CallInterface
-var _cif_vkCmdWriteTimestamp types.CallInterface
-var _cif_vkCopyAccelerationStructureKHR types.CallInterface
-var _cif_vkCopyAccelerationStructureToMemoryKHR types.CallInterface
-var _cif_vkCopyMemoryToAccelerationStructureKHR types.CallInterface
-var _cif_vkCreateAccelerationStructureKHR types.CallInterface
-var _cif_vkCreateBuffer types.CallInterface
-var _cif_vkCreateBufferView types.CallInterface
-var _cif_vkCreateCommandPool types.CallInterface
-var _cif_vkCreateComputePipelines types.CallInterface
-var _cif_vkCreateDebugUtilsMessengerEXT types.CallInterface
-var _cif_vkCreateDeferredOperationKHR types.CallInterface
-var _cif_vkCreateDescriptorPool types.CallInterface
-var _cif_vkCreateDescriptorSetLayout types.CallInterface
-var _cif_vkCreateDevice types.CallInterface
-var _cif_vkCreateEvent types.CallInterface
-var _cif_vkCreateFence types.CallInterface
-var _cif_vkCreateFramebuffer types.CallInterface
-var _cif_vkCreateGraphicsPipelines types.CallInterface
-var _cif_vkCreateImage types.CallInterface
-var _cif_vkCreateImageView types.CallInterface
-var _cif_vkCreateIndirectCommandsLayoutEXT types.CallInterface
-var _cif_vkCreateIndirectExecutionSetEXT types.CallInterface
-var _cif_vkCreateInstance types.CallInterface
+var _cif_vkAcquireNextImage2KHR ffi.CIF
+var _cif_vkAcquireNextImageKHR ffi.CIF
+var _cif_vkAllocateCommandBuffers ffi.CIF
+var _cif_vkAllocateDescriptorSets ffi.CIF
+var _cif_vkAllocateMemory ffi.CIF
+var _cif_vkBeginCommandBuffer ffi.CIF
+var _cif_vkBindBufferMemory ffi.CIF
+var _cif_vkBindImageMemory ffi.CIF
+var _cif_vkBuildAccelerationStructuresKHR ffi.CIF
+var _cif_vkCmdBeginDebugUtilsLabelEXT ffi.CIF
+var _cif_vkCmdBeginQuery ffi.CIF
+var _cif_vkCmdBeginRenderPass ffi.CIF
+var _cif_vkCmdBeginRenderPass2 ffi.CIF
+var _cif_vkCmdBeginRendering ffi.CIF
+var _cif_vkCmdBindDescriptorBufferEmbeddedSamplersEXT ffi.CIF
+var _cif_vkCmdBindDescriptorBuffersEXT ffi.CIF
+var _cif_vkCmdBindDescriptorSets ffi.CIF
+var _cif_vkCmdBindIndexBuffer ffi.CIF
+var _cif_vkCmdBindIndexBuffer2 ffi.CIF
+var _cif_vkCmdBindPipeline ffi.CIF
+var _cif_vkCmdBindShadersEXT ffi.CIF
+var _cif_vkCmdBindVertexBuffers ffi.CIF
+var _cif_vkCmdBindVertexBuffers2 ffi.CIF
+var _cif_vkCmdBlitImage ffi.CIF
+var _cif_vkCmdBlitImage2 ffi.CIF
+var _cif_vkCmdBuildAccelerationStructuresIndirectKHR ffi.CIF
+var _cif_vkCmdBuildAccelerationStructuresKHR ffi.CIF
+var _cif_vkCmdClearAttachments ffi.CIF
+var _cif_vkCmdClearColorImage ffi.CIF
+var _cif_vkCmdClearDepthStencilImage ffi.CIF
+var _cif_vkCmdCopyAccelerationStructureKHR ffi.CIF
+var _cif_vkCmdCopyAccelerationStructureToMemoryKHR ffi.CIF
+var _cif_vkCmdCopyBuffer ffi.CIF
+var _cif_vkCmdCopyBufferToImage ffi.CIF
+var _cif_vkCmdCopyImage ffi.CIF
+var _cif_vkCmdCopyImageToBuffer ffi.CIF
+var _cif_vkCmdCopyMemoryToAccelerationStructureKHR ffi.CIF
+var _cif_vkCmdCopyQueryPoolResults ffi.CIF
+var _cif_vkCmdDispatch ffi.CIF
+var _cif_vkCmdDispatchIndirect ffi.CIF
+var _cif_vkCmdDraw ffi.CIF
+var _cif_vkCmdDrawIndexed ffi.CIF
+var _cif_vkCmdDrawIndexedIndirect ffi.CIF
+var _cif_vkCmdDrawIndexedIndirectCount ffi.CIF
+var _cif_vkCmdDrawIndirect ffi.CIF
+var _cif_vkCmdDrawIndirectCount ffi.CIF
+var _cif_vkCmdDrawMeshTasksEXT ffi.CIF
+var _cif_vkCmdDrawMeshTasksIndirectCountEXT ffi.CIF
+var _cif_vkCmdDrawMeshTasksIndirectEXT ffi.CIF
+var _cif_vkCmdDrawMultiEXT ffi.CIF
+var _cif_vkCmdDrawMultiIndexedEXT ffi.CIF
+var _cif_vkCmdEndDebugUtilsLabelEXT ffi.CIF
+var _cif_vkCmdEndQuery ffi.CIF
+var _cif_vkCmdEndRenderPass ffi.CIF
+var _cif_vkCmdEndRenderPass2 ffi.CIF
+var _cif_vkCmdEndRendering ffi.CIF
+var _cif_vkCmdExecuteCommands ffi.CIF
+var _cif_vkCmdExecuteGeneratedCommandsEXT ffi.CIF
+var _cif_vkCmdFillBuffer ffi.CIF
+var _cif_vkCmdInsertDebugUtilsLabelEXT ffi.CIF
+var _cif_vkCmdNextSubpass ffi.CIF
+var _cif_vkCmdNextSubpass2 ffi.CIF
+var _cif_vkCmdPipelineBarrier ffi.CIF
+var _cif_vkCmdPreprocessGeneratedCommandsEXT ffi.CIF
+var _cif_vkCmdPushConstants ffi.CIF
+var _cif_vkCmdResetEvent ffi.CIF
+var _cif_vkCmdResetQueryPool ffi.CIF
+var _cif_vkCmdResolveImage ffi.CIF
+var _cif_vkCmdResolveImage2 ffi.CIF
+var _cif_vkCmdSetAlphaToCoverageEnableEXT ffi.CIF
+var _cif_vkCmdSetAlphaToOneEnableEXT ffi.CIF
+var _cif_vkCmdSetBlendConstants ffi.CIF
+var _cif_vkCmdSetColorBlendAdvancedEXT ffi.CIF
+var _cif_vkCmdSetColorBlendEnableEXT ffi.CIF
+var _cif_vkCmdSetColorBlendEquationEXT ffi.CIF
+var _cif_vkCmdSetColorWriteMaskEXT ffi.CIF
+var _cif_vkCmdSetConservativeRasterizationModeEXT ffi.CIF
+var _cif_vkCmdSetCoverageModulationModeNV ffi.CIF
+var _cif_vkCmdSetCoverageModulationTableEnableNV ffi.CIF
+var _cif_vkCmdSetCoverageModulationTableNV ffi.CIF
+var _cif_vkCmdSetCoverageReductionModeNV ffi.CIF
+var _cif_vkCmdSetCoverageToColorEnableNV ffi.CIF
+var _cif_vkCmdSetCoverageToColorLocationNV ffi.CIF
+var _cif_vkCmdSetCullMode ffi.CIF
+var _cif_vkCmdSetDepthBias ffi.CIF
+var _cif_vkCmdSetDepthBiasEnable ffi.CIF
+var _cif_vkCmdSetDepthBounds ffi.CIF
+var _cif_vkCmdSetDepthBoundsTestEnable ffi.CIF
+var _cif_vkCmdSetDepthClampEnableEXT ffi.CIF
+var _cif_vkCmdSetDepthClampRangeEXT ffi.CIF
+var _cif_vkCmdSetDepthClipEnableEXT ffi.CIF
+var _cif_vkCmdSetDepthClipNegativeOneToOneEXT ffi.CIF
+var _cif_vkCmdSetDepthCompareOp ffi.CIF
+var _cif_vkCmdSetDepthTestEnable ffi.CIF
+var _cif_vkCmdSetDepthWriteEnable ffi.CIF
+var _cif_vkCmdSetDescriptorBufferOffsetsEXT ffi.CIF
+var _cif_vkCmdSetEvent ffi.CIF
+var _cif_vkCmdSetExtraPrimitiveOverestimationSizeEXT ffi.CIF
+var _cif_vkCmdSetFrontFace ffi.CIF
+var _cif_vkCmdSetLineRasterizationModeEXT ffi.CIF
+var _cif_vkCmdSetLineStipple ffi.CIF
+var _cif_vkCmdSetLineStippleEnableEXT ffi.CIF
+var _cif_vkCmdSetLineWidth ffi.CIF
+var _cif_vkCmdSetLogicOpEXT ffi.CIF
+var _cif_vkCmdSetLogicOpEnableEXT ffi.CIF
+var _cif_vkCmdSetPatchControlPointsEXT ffi.CIF
+var _cif_vkCmdSetPolygonModeEXT ffi.CIF
+var _cif_vkCmdSetPrimitiveRestartEnable ffi.CIF
+var _cif_vkCmdSetPrimitiveTopology ffi.CIF
+var _cif_vkCmdSetProvokingVertexModeEXT ffi.CIF
+var _cif_vkCmdSetRasterizationSamplesEXT ffi.CIF
+var _cif_vkCmdSetRasterizationStreamEXT ffi.CIF
+var _cif_vkCmdSetRasterizerDiscardEnable ffi.CIF
+var _cif_vkCmdSetRayTracingPipelineStackSizeKHR ffi.CIF
+var _cif_vkCmdSetRenderingAttachmentLocations ffi.CIF
+var _cif_vkCmdSetRenderingInputAttachmentIndices ffi.CIF
+var _cif_vkCmdSetRepresentativeFragmentTestEnableNV ffi.CIF
+var _cif_vkCmdSetSampleLocationsEnableEXT ffi.CIF
+var _cif_vkCmdSetSampleMaskEXT ffi.CIF
+var _cif_vkCmdSetScissor ffi.CIF
+var _cif_vkCmdSetScissorWithCount ffi.CIF
+var _cif_vkCmdSetShadingRateImageEnableNV ffi.CIF
+var _cif_vkCmdSetStencilCompareMask ffi.CIF
+var _cif_vkCmdSetStencilOp ffi.CIF
+var _cif_vkCmdSetStencilReference ffi.CIF
+var _cif_vkCmdSetStencilTestEnable ffi.CIF
+var _cif_vkCmdSetStencilWriteMask ffi.CIF
+var _cif_vkCmdSetTessellationDomainOriginEXT ffi.CIF
+var _cif_vkCmdSetVertexInputEXT ffi.CIF
+var _cif_vkCmdSetViewport ffi.CIF
+var _cif_vkCmdSetViewportSwizzleNV ffi.CIF
+var _cif_vkCmdSetViewportWScalingEnableNV ffi.CIF
+var _cif_vkCmdSetViewportWithCount ffi.CIF
+var _cif_vkCmdTraceRaysIndirect2KHR ffi.CIF
+var _cif_vkCmdTraceRaysIndirectKHR ffi.CIF
+var _cif_vkCmdTraceRaysKHR ffi.CIF
+var _cif_vkCmdUpdateBuffer ffi.CIF
+var _cif_vkCmdWaitEvents ffi.CIF
+var _cif_vkCmdWriteAccelerationStructuresPropertiesKHR ffi.CIF
+var _cif_vkCmdWriteTimestamp ffi.CIF
+var _cif_vkCopyAccelerationStructureKHR ffi.CIF
+var _cif_vkCopyAccelerationStructureToMemoryKHR ffi.CIF
+var _cif_vkCopyMemoryToAccelerationStructureKHR ffi.CIF
+var _cif_vkCreateAccelerationStructureKHR ffi.CIF
+var _cif_vkCreateBuffer ffi.CIF
+var _cif_vkCreateBufferView ffi.CIF
+var _cif_vkCreateCommandPool ffi.CIF
+var _cif_vkCreateComputePipelines ffi.CIF
+var _cif_vkCreateDebugUtilsMessengerEXT ffi.CIF
+var _cif_vkCreateDeferredOperationKHR ffi.CIF
+var _cif_vkCreateDescriptorPool ffi.CIF
+var _cif_vkCreateDescriptorSetLayout ffi.CIF
+var _cif_vkCreateDevice ffi.CIF
+var _cif_vkCreateEvent ffi.CIF
+var _cif_vkCreateFence ffi.CIF
+var _cif_vkCreateFramebuffer ffi.CIF
+var _cif_vkCreateGraphicsPipelines ffi.CIF
+var _cif_vkCreateImage ffi.CIF
+var _cif_vkCreateImageView ffi.CIF
+var _cif_vkCreateIndirectCommandsLayoutEXT ffi.CIF
+var _cif_vkCreateIndirectExecutionSetEXT ffi.CIF
+var _cif_vkCreateInstance ffi.CIF
 var _fn_vkCreateInstance unsafe.Pointer
-var _cif_vkCreateMacOSSurfaceMVK types.CallInterface
-var _cif_vkCreateMetalSurfaceEXT types.CallInterface
-var _cif_vkCreatePipelineCache types.CallInterface
-var _cif_vkCreatePipelineLayout types.CallInterface
-var _cif_vkCreateQueryPool types.CallInterface
-var _cif_vkCreateRayTracingPipelinesKHR types.CallInterface
-var _cif_vkCreateRenderPass types.CallInterface
-var _cif_vkCreateRenderPass2 types.CallInterface
-var _cif_vkCreateSampler types.CallInterface
-var _cif_vkCreateSemaphore types.CallInterface
-var _cif_vkCreateShaderModule types.CallInterface
-var _cif_vkCreateShadersEXT types.CallInterface
-var _cif_vkCreateSwapchainKHR types.CallInterface
-var _cif_vkCreateWaylandSurfaceKHR types.CallInterface
-var _cif_vkCreateWin32SurfaceKHR types.CallInterface
-var _cif_vkCreateXcbSurfaceKHR types.CallInterface
-var _cif_vkCreateXlibSurfaceKHR types.CallInterface
-var _cif_vkDeferredOperationJoinKHR types.CallInterface
-var _cif_vkDestroyAccelerationStructureKHR types.CallInterface
-var _cif_vkDestroyBuffer types.CallInterface
-var _cif_vkDestroyBufferView types.CallInterface
-var _cif_vkDestroyCommandPool types.CallInterface
-var _cif_vkDestroyDebugUtilsMessengerEXT types.CallInterface
-var _cif_vkDestroyDeferredOperationKHR types.CallInterface
-var _cif_vkDestroyDescriptorPool types.CallInterface
-var _cif_vkDestroyDescriptorSetLayout types.CallInterface
-var _cif_vkDestroyDevice types.CallInterface
-var _cif_vkDestroyEvent types.CallInterface
-var _cif_vkDestroyFence types.CallInterface
-var _cif_vkDestroyFramebuffer types.CallInterface
-var _cif_vkDestroyImage types.CallInterface
-var _cif_vkDestroyImageView types.CallInterface
-var _cif_vkDestroyIndirectCommandsLayoutEXT types.CallInterface
-var _cif_vkDestroyIndirectExecutionSetEXT types.CallInterface
-var _cif_vkDestroyInstance types.CallInterface
-var _cif_vkDestroyPipeline types.CallInterface
-var _cif_vkDestroyPipelineCache types.CallInterface
-var _cif_vkDestroyPipelineLayout types.CallInterface
-var _cif_vkDestroyQueryPool types.CallInterface
-var _cif_vkDestroyRenderPass types.CallInterface
-var _cif_vkDestroySampler types.CallInterface
-var _cif_vkDestroySemaphore types.CallInterface
-var _cif_vkDestroyShaderEXT types.CallInterface
-var _cif_vkDestroyShaderModule types.CallInterface
-var _cif_vkDestroySurfaceKHR types.CallInterface
-var _cif_vkDestroySwapchainKHR types.CallInterface
-var _cif_vkDeviceWaitIdle types.CallInterface
-var _cif_vkEndCommandBuffer types.CallInterface
-var _cif_vkEnumerateDeviceExtensionProperties types.CallInterface
-var _cif_vkEnumerateDeviceLayerProperties types.CallInterface
-var _cif_vkEnumerateInstanceExtensionProperties types.CallInterface
+var _cif_vkCreateMacOSSurfaceMVK ffi.CIF
+var _cif_vkCreateMetalSurfaceEXT ffi.CIF
+var _cif_vkCreatePipelineCache ffi.CIF
+var _cif_vkCreatePipelineLayout ffi.CIF
+var _cif_vkCreateQueryPool ffi.CIF
+var _cif_vkCreateRayTracingPipelinesKHR ffi.CIF
+var _cif_vkCreateRenderPass ffi.CIF
+var _cif_vkCreateRenderPass2 ffi.CIF
+var _cif_vkCreateSampler ffi.CIF
+var _cif_vkCreateSemaphore ffi.CIF
+var _cif_vkCreateShaderModule ffi.CIF
+var _cif_vkCreateShadersEXT ffi.CIF
+var _cif_vkCreateSwapchainKHR ffi.CIF
+var _cif_vkCreateWaylandSurfaceKHR ffi.CIF
+var _cif_vkCreateWin32SurfaceKHR ffi.CIF
+var _cif_vkCreateXcbSurfaceKHR ffi.CIF
+var _cif_vkCreateXlibSurfaceKHR ffi.CIF
+var _cif_vkDeferredOperationJoinKHR ffi.CIF
+var _cif_vkDestroyAccelerationStructureKHR ffi.CIF
+var _cif_vkDestroyBuffer ffi.CIF
+var _cif_vkDestroyBufferView ffi.CIF
+var _cif_vkDestroyCommandPool ffi.CIF
+var _cif_vkDestroyDebugUtilsMessengerEXT ffi.CIF
+var _cif_vkDestroyDeferredOperationKHR ffi.CIF
+var _cif_vkDestroyDescriptorPool ffi.CIF
+var _cif_vkDestroyDescriptorSetLayout ffi.CIF
+var _cif_vkDestroyDevice ffi.CIF
+var _cif_vkDestroyEvent ffi.CIF
+var _cif_vkDestroyFence ffi.CIF
+var _cif_vkDestroyFramebuffer ffi.CIF
+var _cif_vkDestroyImage ffi.CIF
+var _cif_vkDestroyImageView ffi.CIF
+var _cif_vkDestroyIndirectCommandsLayoutEXT ffi.CIF
+var _cif_vkDestroyIndirectExecutionSetEXT ffi.CIF
+var _cif_vkDestroyInstance ffi.CIF
+var _cif_vkDestroyPipeline ffi.CIF
+var _cif_vkDestroyPipelineCache ffi.CIF
+var _cif_vkDestroyPipelineLayout ffi.CIF
+var _cif_vkDestroyQueryPool ffi.CIF
+var _cif_vkDestroyRenderPass ffi.CIF
+var _cif_vkDestroySampler ffi.CIF
+var _cif_vkDestroySemaphore ffi.CIF
+var _cif_vkDestroyShaderEXT ffi.CIF
+var _cif_vkDestroyShaderModule ffi.CIF
+var _cif_vkDestroySurfaceKHR ffi.CIF
+var _cif_vkDestroySwapchainKHR ffi.CIF
+var _cif_vkDeviceWaitIdle ffi.CIF
+var _cif_vkEndCommandBuffer ffi.CIF
+var _cif_vkEnumerateDeviceExtensionProperties ffi.CIF
+var _cif_vkEnumerateDeviceLayerProperties ffi.CIF
+var _cif_vkEnumerateInstanceExtensionProperties ffi.CIF
 var _fn_vkEnumerateInstanceExtensionProperties unsafe.Pointer
-var _cif_vkEnumerateInstanceLayerProperties types.CallInterface
+var _cif_vkEnumerateInstanceLayerProperties ffi.CIF
 var _fn_vkEnumerateInstanceLayerProperties unsafe.Pointer
-var _cif_vkEnumeratePhysicalDevices types.CallInterface
-var _cif_vkFlushMappedMemoryRanges types.CallInterface
-var _cif_vkFreeCommandBuffers types.CallInterface
-var _cif_vkFreeDescriptorSets types.CallInterface
-var _cif_vkFreeMemory types.CallInterface
-var _cif_vkGetAccelerationStructureBuildSizesKHR types.CallInterface
-var _cif_vkGetAccelerationStructureDeviceAddressKHR types.CallInterface
-var _cif_vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT types.CallInterface
-var _cif_vkGetBufferMemoryRequirements types.CallInterface
-var _cif_vkGetBufferOpaqueCaptureDescriptorDataEXT types.CallInterface
-var _cif_vkGetDeferredOperationMaxConcurrencyKHR types.CallInterface
-var _cif_vkGetDeferredOperationResultKHR types.CallInterface
-var _cif_vkGetDescriptorEXT types.CallInterface
-var _cif_vkGetDescriptorSetLayoutBindingOffsetEXT types.CallInterface
-var _cif_vkGetDescriptorSetLayoutSizeEXT types.CallInterface
-var _cif_vkGetDeviceAccelerationStructureCompatibilityKHR types.CallInterface
-var _cif_vkGetDeviceGroupPresentCapabilitiesKHR types.CallInterface
-var _cif_vkGetDeviceGroupSurfacePresentModesKHR types.CallInterface
-var _cif_vkGetDeviceMemoryCommitment types.CallInterface
-var _cif_vkGetDeviceProcAddr types.CallInterface
-var _cif_vkGetDeviceQueue types.CallInterface
-var _cif_vkGetEventStatus types.CallInterface
-var _cif_vkGetFenceStatus types.CallInterface
-var _cif_vkGetGeneratedCommandsMemoryRequirementsEXT types.CallInterface
-var _cif_vkGetImageMemoryRequirements types.CallInterface
-var _cif_vkGetImageOpaqueCaptureDescriptorDataEXT types.CallInterface
-var _cif_vkGetImageSparseMemoryRequirements types.CallInterface
-var _cif_vkGetImageSubresourceLayout types.CallInterface
-var _cif_vkGetImageViewOpaqueCaptureDescriptorDataEXT types.CallInterface
-var _cif_vkGetInstanceProcAddr types.CallInterface
-var _cif_vkGetPhysicalDeviceFeatures types.CallInterface
-var _cif_vkGetPhysicalDeviceFormatProperties types.CallInterface
-var _cif_vkGetPhysicalDeviceImageFormatProperties types.CallInterface
-var _cif_vkGetPhysicalDeviceMemoryProperties types.CallInterface
-var _cif_vkGetPhysicalDevicePresentRectanglesKHR types.CallInterface
-var _cif_vkGetPhysicalDeviceProperties types.CallInterface
-var _cif_vkGetPhysicalDeviceQueueFamilyProperties types.CallInterface
-var _cif_vkGetPhysicalDeviceSparseImageFormatProperties types.CallInterface
-var _cif_vkGetPhysicalDeviceSurfaceCapabilitiesKHR types.CallInterface
-var _cif_vkGetPhysicalDeviceSurfaceFormatsKHR types.CallInterface
-var _cif_vkGetPhysicalDeviceSurfacePresentModesKHR types.CallInterface
-var _cif_vkGetPhysicalDeviceSurfaceSupportKHR types.CallInterface
-var _cif_vkGetPhysicalDeviceWaylandPresentationSupportKHR types.CallInterface
-var _cif_vkGetPhysicalDeviceWin32PresentationSupportKHR types.CallInterface
-var _cif_vkGetPhysicalDeviceXcbPresentationSupportKHR types.CallInterface
-var _cif_vkGetPhysicalDeviceXlibPresentationSupportKHR types.CallInterface
-var _cif_vkGetPipelineCacheData types.CallInterface
-var _cif_vkGetQueryPoolResults types.CallInterface
-var _cif_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR types.CallInterface
-var _cif_vkGetRayTracingShaderGroupHandlesKHR types.CallInterface
-var _cif_vkGetRayTracingShaderGroupStackSizeKHR types.CallInterface
-var _cif_vkGetRenderAreaGranularity types.CallInterface
-var _cif_vkGetRenderingAreaGranularity types.CallInterface
-var _cif_vkGetSamplerOpaqueCaptureDescriptorDataEXT types.CallInterface
-var _cif_vkGetShaderBinaryDataEXT types.CallInterface
-var _cif_vkGetSwapchainImagesKHR types.CallInterface
-var _cif_vkInvalidateMappedMemoryRanges types.CallInterface
-var _cif_vkMapMemory types.CallInterface
-var _cif_vkMergePipelineCaches types.CallInterface
-var _cif_vkQueueBeginDebugUtilsLabelEXT types.CallInterface
-var _cif_vkQueueBindSparse types.CallInterface
-var _cif_vkQueueEndDebugUtilsLabelEXT types.CallInterface
-var _cif_vkQueueInsertDebugUtilsLabelEXT types.CallInterface
-var _cif_vkQueuePresentKHR types.CallInterface
-var _cif_vkQueueSubmit types.CallInterface
-var _cif_vkQueueWaitIdle types.CallInterface
-var _cif_vkResetCommandBuffer types.CallInterface
-var _cif_vkResetCommandPool types.CallInterface
-var _cif_vkResetDescriptorPool types.CallInterface
-var _cif_vkResetEvent types.CallInterface
-var _cif_vkResetFences types.CallInterface
-var _cif_vkSetDebugUtilsObjectNameEXT types.CallInterface
-var _cif_vkSetDebugUtilsObjectTagEXT types.CallInterface
-var _cif_vkSetDeviceMemoryPriorityEXT types.CallInterface
-var _cif_vkSetEvent types.CallInterface
-var _cif_vkSubmitDebugUtilsMessageEXT types.CallInterface
-var _cif_vkUnmapMemory types.CallInterface
-var _cif_vkUpdateDescriptorSets types.CallInterface
-var _cif_vkUpdateIndirectExecutionSetPipelineEXT types.CallInterface
-var _cif_vkUpdateIndirectExecutionSetShaderEXT types.CallInterface
-var _cif_vkWaitForFences types.CallInterface
-var _cif_vkWriteAccelerationStructuresPropertiesKHR types.CallInterface
+var _cif_vkEnumeratePhysicalDevices ffi.CIF
+var _cif_vkFlushMappedMemoryRanges ffi.CIF
+var _cif_vkFreeCommandBuffers ffi.CIF
+var _cif_vkFreeDescriptorSets ffi.CIF
+var _cif_vkFreeMemory ffi.CIF
+var _cif_vkGetAccelerationStructureBuildSizesKHR ffi.CIF
+var _cif_vkGetAccelerationStructureDeviceAddressKHR ffi.CIF
+var _cif_vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT ffi.CIF
+var _cif_vkGetBufferMemoryRequirements ffi.CIF
+var _cif_vkGetBufferOpaqueCaptureDescriptorDataEXT ffi.CIF
+var _cif_vkGetDeferredOperationMaxConcurrencyKHR ffi.CIF
+var _cif_vkGetDeferredOperationResultKHR ffi.CIF
+var _cif_vkGetDescriptorEXT ffi.CIF
+var _cif_vkGetDescriptorSetLayoutBindingOffsetEXT ffi.CIF
+var _cif_vkGetDescriptorSetLayoutSizeEXT ffi.CIF
+var _cif_vkGetDeviceAccelerationStructureCompatibilityKHR ffi.CIF
+var _cif_vkGetDeviceGroupPresentCapabilitiesKHR ffi.CIF
+var _cif_vkGetDeviceGroupSurfacePresentModesKHR ffi.CIF
+var _cif_vkGetDeviceMemoryCommitment ffi.CIF
+var _cif_vkGetDeviceProcAddr ffi.CIF
+var _cif_vkGetDeviceQueue ffi.CIF
+var _cif_vkGetEventStatus ffi.CIF
+var _cif_vkGetFenceStatus ffi.CIF
+var _cif_vkGetGeneratedCommandsMemoryRequirementsEXT ffi.CIF
+var _cif_vkGetImageMemoryRequirements ffi.CIF
+var _cif_vkGetImageOpaqueCaptureDescriptorDataEXT ffi.CIF
+var _cif_vkGetImageSparseMemoryRequirements ffi.CIF
+var _cif_vkGetImageSubresourceLayout ffi.CIF
+var _cif_vkGetImageViewOpaqueCaptureDescriptorDataEXT ffi.CIF
+var _cif_vkGetInstanceProcAddr ffi.CIF
+var _cif_vkGetPhysicalDeviceFeatures ffi.CIF
+var _cif_vkGetPhysicalDeviceFormatProperties ffi.CIF
+var _cif_vkGetPhysicalDeviceImageFormatProperties ffi.CIF
+var _cif_vkGetPhysicalDeviceMemoryProperties ffi.CIF
+var _cif_vkGetPhysicalDevicePresentRectanglesKHR ffi.CIF
+var _cif_vkGetPhysicalDeviceProperties ffi.CIF
+var _cif_vkGetPhysicalDeviceQueueFamilyProperties ffi.CIF
+var _cif_vkGetPhysicalDeviceSparseImageFormatProperties ffi.CIF
+var _cif_vkGetPhysicalDeviceSurfaceCapabilitiesKHR ffi.CIF
+var _cif_vkGetPhysicalDeviceSurfaceFormatsKHR ffi.CIF
+var _cif_vkGetPhysicalDeviceSurfacePresentModesKHR ffi.CIF
+var _cif_vkGetPhysicalDeviceSurfaceSupportKHR ffi.CIF
+var _cif_vkGetPhysicalDeviceWaylandPresentationSupportKHR ffi.CIF
+var _cif_vkGetPhysicalDeviceWin32PresentationSupportKHR ffi.CIF
+var _cif_vkGetPhysicalDeviceXcbPresentationSupportKHR ffi.CIF
+var _cif_vkGetPhysicalDeviceXlibPresentationSupportKHR ffi.CIF
+var _cif_vkGetPipelineCacheData ffi.CIF
+var _cif_vkGetQueryPoolResults ffi.CIF
+var _cif_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR ffi.CIF
+var _cif_vkGetRayTracingShaderGroupHandlesKHR ffi.CIF
+var _cif_vkGetRayTracingShaderGroupStackSizeKHR ffi.CIF
+var _cif_vkGetRenderAreaGranularity ffi.CIF
+var _cif_vkGetRenderingAreaGranularity ffi.CIF
+var _cif_vkGetSamplerOpaqueCaptureDescriptorDataEXT ffi.CIF
+var _cif_vkGetShaderBinaryDataEXT ffi.CIF
+var _cif_vkGetSwapchainImagesKHR ffi.CIF
+var _cif_vkInvalidateMappedMemoryRanges ffi.CIF
+var _cif_vkMapMemory ffi.CIF
+var _cif_vkMergePipelineCaches ffi.CIF
+var _cif_vkQueueBeginDebugUtilsLabelEXT ffi.CIF
+var _cif_vkQueueBindSparse ffi.CIF
+var _cif_vkQueueEndDebugUtilsLabelEXT ffi.CIF
+var _cif_vkQueueInsertDebugUtilsLabelEXT ffi.CIF
+var _cif_vkQueuePresentKHR ffi.CIF
+var _cif_vkQueueSubmit ffi.CIF
+var _cif_vkQueueWaitIdle ffi.CIF
+var _cif_vkResetCommandBuffer ffi.CIF
+var _cif_vkResetCommandPool ffi.CIF
+var _cif_vkResetDescriptorPool ffi.CIF
+var _cif_vkResetEvent ffi.CIF
+var _cif_vkResetFences ffi.CIF
+var _cif_vkSetDebugUtilsObjectNameEXT ffi.CIF
+var _cif_vkSetDebugUtilsObjectTagEXT ffi.CIF
+var _cif_vkSetDeviceMemoryPriorityEXT ffi.CIF
+var _cif_vkSetEvent ffi.CIF
+var _cif_vkSubmitDebugUtilsMessageEXT ffi.CIF
+var _cif_vkUnmapMemory ffi.CIF
+var _cif_vkUpdateDescriptorSets ffi.CIF
+var _cif_vkUpdateIndirectExecutionSetPipelineEXT ffi.CIF
+var _cif_vkUpdateIndirectExecutionSetShaderEXT ffi.CIF
+var _cif_vkWaitForFences ffi.CIF
+var _cif_vkWriteAccelerationStructuresPropertiesKHR ffi.CIF
 
 func _initInstanceTable(handle unsafe.Pointer) *instanceTable {
 	_vkGetDeviceProcAddr = _loadProc(handle, "vkGetDeviceProcAddr")
@@ -34313,13 +34586,13 @@ func Initialize() error {
 	}
 	_vkLib = lib
 
-	gipaFn, err := ffi.GetSymbol(lib, "vkGetInstanceProcAddr")
+	gipaFn, err := ffi.Symbol(lib, "vkGetInstanceProcAddr")
 	if err != nil {
 		return fmt.Errorf("vulkan: %w", err)
 	}
 	_vkGetInstanceProcAddr = gipaFn
-	ffi.PrepareCallInterface(&_cif_vkGetInstanceProcAddr, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor}) //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceProcAddr, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})   //nolint
+	ffi.Prepare(&_cif_vkGetInstanceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer}) //nolint
+	ffi.Prepare(&_cif_vkGetDeviceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer})   //nolint
 
 	// Load global commands
 	_fn_vkCreateInstance = _loadProc(nil, "vkCreateInstance")
@@ -34327,302 +34600,302 @@ func Initialize() error {
 	_fn_vkEnumerateInstanceLayerProperties = _loadProc(nil, "vkEnumerateInstanceLayerProperties")
 
 	// Prepare all call interfaces
-	ffi.PrepareCallInterface(&_cif_vkAcquireNextImage2KHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkAcquireNextImageKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkAllocateCommandBuffers, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkAllocateDescriptorSets, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkAllocateMemory, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkBeginCommandBuffer, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkBindBufferMemory, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor})                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkBindImageMemory, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor})                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkBuildAccelerationStructuresKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBeginDebugUtilsLabelEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBeginQuery, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBeginRenderPass, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBeginRenderPass2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBeginRendering, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBindDescriptorBufferEmbeddedSamplersEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBindDescriptorBuffersEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBindDescriptorSets, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBindIndexBuffer, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBindIndexBuffer2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBindPipeline, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBindShadersEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBindVertexBuffers, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBindVertexBuffers2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBlitImage, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBlitImage2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBuildAccelerationStructuresIndirectKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdBuildAccelerationStructuresKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdClearAttachments, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdClearColorImage, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdClearDepthStencilImage, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdCopyAccelerationStructureKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdCopyAccelerationStructureToMemoryKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdCopyBuffer, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdCopyBufferToImage, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdCopyImage, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdCopyImageToBuffer, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdCopyMemoryToAccelerationStructureKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdCopyQueryPoolResults, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor})                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDispatch, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDispatchIndirect, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor})                                                                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDraw, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDrawIndexed, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.SInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDrawIndexedIndirect, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDrawIndexedIndirectCount, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDrawIndirect, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDrawIndirectCount, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDrawMeshTasksEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDrawMeshTasksIndirectCountEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDrawMeshTasksIndirectEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDrawMultiEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdDrawMultiIndexedEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdEndDebugUtilsLabelEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdEndQuery, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdEndRenderPass, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdEndRenderPass2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdEndRendering, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdExecuteCommands, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdExecuteGeneratedCommandsEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdFillBuffer, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt64TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdInsertDebugUtilsLabelEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdNextSubpass, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdNextSubpass2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdPipelineBarrier, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdPreprocessGeneratedCommandsEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdPushConstants, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdResetEvent, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdResetQueryPool, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdResolveImage, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdResolveImage2, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetAlphaToCoverageEnableEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetAlphaToOneEnableEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetBlendConstants, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetColorBlendAdvancedEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetColorBlendEnableEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetColorBlendEquationEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetColorWriteMaskEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetConservativeRasterizationModeEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetCoverageModulationModeNV, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetCoverageModulationTableEnableNV, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetCoverageModulationTableNV, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetCoverageReductionModeNV, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetCoverageToColorEnableNV, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetCoverageToColorLocationNV, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetCullMode, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetDepthBias, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.FloatTypeDescriptor, types.FloatTypeDescriptor, types.FloatTypeDescriptor})                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetDepthBiasEnable, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetDepthBounds, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.FloatTypeDescriptor, types.FloatTypeDescriptor})                                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetDepthBoundsTestEnable, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetDepthClampEnableEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetDepthClampRangeEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetDepthClipEnableEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetDepthClipNegativeOneToOneEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetDepthCompareOp, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetDepthTestEnable, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetDepthWriteEnable, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetDescriptorBufferOffsetsEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetEvent, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetExtraPrimitiveOverestimationSizeEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.FloatTypeDescriptor})                                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetFrontFace, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetLineRasterizationModeEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetLineStipple, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt16TypeDescriptor})                                                                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetLineStippleEnableEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetLineWidth, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.FloatTypeDescriptor})                                                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetLogicOpEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetLogicOpEnableEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetPatchControlPointsEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetPolygonModeEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetPrimitiveRestartEnable, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetPrimitiveTopology, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetProvokingVertexModeEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetRasterizationSamplesEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetRasterizationStreamEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetRasterizerDiscardEnable, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetRayTracingPipelineStackSizeKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetRenderingAttachmentLocations, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetRenderingInputAttachmentIndices, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetRepresentativeFragmentTestEnableNV, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetSampleLocationsEnableEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetSampleMaskEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetScissor, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetScissorWithCount, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetShadingRateImageEnableNV, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetStencilCompareMask, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetStencilOp, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetStencilReference, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetStencilTestEnable, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetStencilWriteMask, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetTessellationDomainOriginEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetVertexInputEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetViewport, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetViewportSwizzleNV, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetViewportWScalingEnableNV, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdSetViewportWithCount, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdTraceRaysIndirect2KHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt64TypeDescriptor})                                                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdTraceRaysIndirectKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor})                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdTraceRaysKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor})                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdUpdateBuffer, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdWaitEvents, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor}) //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdWriteAccelerationStructuresPropertiesKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCmdWriteTimestamp, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCopyAccelerationStructureKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkCopyAccelerationStructureToMemoryKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCopyMemoryToAccelerationStructureKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateAccelerationStructureKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateBuffer, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateBufferView, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateCommandPool, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateComputePipelines, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateDebugUtilsMessengerEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateDeferredOperationKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateDescriptorPool, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateDescriptorSetLayout, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateDevice, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateEvent, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateFence, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateFramebuffer, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateGraphicsPipelines, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateImage, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateImageView, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateIndirectCommandsLayoutEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateIndirectExecutionSetEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateInstance, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateMacOSSurfaceMVK, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateMetalSurfaceEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreatePipelineCache, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreatePipelineLayout, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateQueryPool, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateRayTracingPipelinesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateRenderPass, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateRenderPass2, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateSampler, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateSemaphore, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateShaderModule, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateShadersEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateSwapchainKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateWaylandSurfaceKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateWin32SurfaceKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateXcbSurfaceKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkCreateXlibSurfaceKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkDeferredOperationJoinKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyAccelerationStructureKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyBuffer, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyBufferView, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyCommandPool, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyDebugUtilsMessengerEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyDeferredOperationKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyDescriptorPool, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyDescriptorSetLayout, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyDevice, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyEvent, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyFence, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyFramebuffer, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyImage, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyImageView, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyIndirectCommandsLayoutEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyIndirectExecutionSetEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyInstance, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyPipeline, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyPipelineCache, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyPipelineLayout, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyQueryPool, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyRenderPass, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroySampler, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroySemaphore, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyShaderEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroyShaderModule, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroySurfaceKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkDestroySwapchainKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkDeviceWaitIdle, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkEndCommandBuffer, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkEnumerateDeviceExtensionProperties, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkEnumerateDeviceLayerProperties, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkEnumerateInstanceExtensionProperties, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkEnumerateInstanceLayerProperties, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkEnumeratePhysicalDevices, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkFlushMappedMemoryRanges, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkFreeCommandBuffers, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkFreeDescriptorSets, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkFreeMemory, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetAccelerationStructureBuildSizesKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetAccelerationStructureDeviceAddressKHR, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetBufferMemoryRequirements, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetBufferOpaqueCaptureDescriptorDataEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeferredOperationMaxConcurrencyKHR, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeferredOperationResultKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDescriptorEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDescriptorSetLayoutBindingOffsetEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDescriptorSetLayoutSizeEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceAccelerationStructureCompatibilityKHR, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceGroupPresentCapabilitiesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceGroupSurfacePresentModesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceMemoryCommitment, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceProcAddr, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetDeviceQueue, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetEventStatus, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetFenceStatus, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetGeneratedCommandsMemoryRequirementsEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetImageMemoryRequirements, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetImageOpaqueCaptureDescriptorDataEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetImageSparseMemoryRequirements, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetImageSubresourceLayout, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetImageViewOpaqueCaptureDescriptorDataEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetInstanceProcAddr, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceFeatures, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceFormatProperties, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceImageFormatProperties, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceMemoryProperties, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDevicePresentRectanglesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceProperties, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceQueueFamilyProperties, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceSparseImageFormatProperties, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceSurfaceCapabilitiesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceSurfaceFormatsKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceSurfacePresentModesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceSurfaceSupportKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceWaylandPresentationSupportKHR, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceWin32PresentationSupportKHR, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor})                                                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceXcbPresentationSupportKHR, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPhysicalDeviceXlibPresentationSupportKHR, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetPipelineCacheData, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetQueryPoolResults, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor})                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetRayTracingShaderGroupHandlesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetRayTracingShaderGroupStackSizeKHR, types.DefaultCall, types.PointerTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                               //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetRenderAreaGranularity, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetRenderingAreaGranularity, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                       //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetSamplerOpaqueCaptureDescriptorDataEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                        //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetShaderBinaryDataEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkGetSwapchainImagesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkInvalidateMappedMemoryRanges, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkMapMemory, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt64TypeDescriptor, types.UInt64TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkMergePipelineCaches, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkQueueBeginDebugUtilsLabelEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkQueueBindSparse, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkQueueEndDebugUtilsLabelEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkQueueInsertDebugUtilsLabelEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                  //nolint
-	ffi.PrepareCallInterface(&_cif_vkQueuePresentKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                              //nolint
-	ffi.PrepareCallInterface(&_cif_vkQueueSubmit, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                         //nolint
-	ffi.PrepareCallInterface(&_cif_vkQueueWaitIdle, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkResetCommandBuffer, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkResetCommandPool, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                //nolint
-	ffi.PrepareCallInterface(&_cif_vkResetDescriptorPool, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                             //nolint
-	ffi.PrepareCallInterface(&_cif_vkResetEvent, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkResetFences, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkSetDebugUtilsObjectNameEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkSetDebugUtilsObjectTagEXT, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkSetDeviceMemoryPriorityEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.FloatTypeDescriptor})                                                                                                                                                                                                                          //nolint
-	ffi.PrepareCallInterface(&_cif_vkSetEvent, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                     //nolint
-	ffi.PrepareCallInterface(&_cif_vkSubmitDebugUtilsMessageEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                           //nolint
-	ffi.PrepareCallInterface(&_cif_vkUnmapMemory, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                                                                                                    //nolint
-	ffi.PrepareCallInterface(&_cif_vkUpdateDescriptorSets, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                      //nolint
-	ffi.PrepareCallInterface(&_cif_vkUpdateIndirectExecutionSetPipelineEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                 //nolint
-	ffi.PrepareCallInterface(&_cif_vkUpdateIndirectExecutionSetShaderEXT, types.DefaultCall, types.VoidTypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor})                                                                                                                                                                                   //nolint
-	ffi.PrepareCallInterface(&_cif_vkWaitForFences, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.UInt64TypeDescriptor})                                                                                                                                                                            //nolint
-	ffi.PrepareCallInterface(&_cif_vkWriteAccelerationStructuresPropertiesKHR, types.DefaultCall, types.SInt32TypeDescriptor, []*types.TypeDescriptor{types.PointerTypeDescriptor, types.UInt32TypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor, types.PointerTypeDescriptor})                                                                                     //nolint
+	ffi.Prepare(&_cif_vkAcquireNextImage2KHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                            //nolint
+	ffi.Prepare(&_cif_vkAcquireNextImageKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt64, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                       //nolint
+	ffi.Prepare(&_cif_vkAllocateCommandBuffers, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                          //nolint
+	ffi.Prepare(&_cif_vkAllocateDescriptorSets, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                          //nolint
+	ffi.Prepare(&_cif_vkAllocateMemory, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                     //nolint
+	ffi.Prepare(&_cif_vkBeginCommandBuffer, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                           //nolint
+	ffi.Prepare(&_cif_vkBindBufferMemory, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt64})                                                                                    //nolint
+	ffi.Prepare(&_cif_vkBindImageMemory, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt64})                                                                                     //nolint
+	ffi.Prepare(&_cif_vkBuildAccelerationStructuresKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer})                                                         //nolint
+	ffi.Prepare(&_cif_vkCmdBeginDebugUtilsLabelEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                     //nolint
+	ffi.Prepare(&_cif_vkCmdBeginQuery, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                                         //nolint
+	ffi.Prepare(&_cif_vkCmdBeginRenderPass, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                //nolint
+	ffi.Prepare(&_cif_vkCmdBeginRenderPass2, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                               //nolint
+	ffi.Prepare(&_cif_vkCmdBeginRendering, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                              //nolint
+	ffi.Prepare(&_cif_vkCmdBindDescriptorBufferEmbeddedSamplersEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32})                                                            //nolint
+	ffi.Prepare(&_cif_vkCmdBindDescriptorBuffersEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                                        //nolint
+	ffi.Prepare(&_cif_vkCmdBindDescriptorSets, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer, ffi.UInt32, ffi.Pointer})                               //nolint
+	ffi.Prepare(&_cif_vkCmdBindIndexBuffer, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt64, ffi.Pointer})                                                                                    //nolint
+	ffi.Prepare(&_cif_vkCmdBindIndexBuffer2, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt64, ffi.UInt64, ffi.Pointer})                                                                       //nolint
+	ffi.Prepare(&_cif_vkCmdBindPipeline, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                   //nolint
+	ffi.Prepare(&_cif_vkCmdBindShadersEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer})                                                                                     //nolint
+	ffi.Prepare(&_cif_vkCmdBindVertexBuffers, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer, ffi.Pointer})                                                                      //nolint
+	ffi.Prepare(&_cif_vkCmdBindVertexBuffers2, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                           //nolint
+	ffi.Prepare(&_cif_vkCmdBlitImage, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer})                                      //nolint
+	ffi.Prepare(&_cif_vkCmdBlitImage2, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkCmdBuildAccelerationStructuresIndirectKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                   //nolint
+	ffi.Prepare(&_cif_vkCmdBuildAccelerationStructuresKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer})                                                                     //nolint
+	ffi.Prepare(&_cif_vkCmdClearAttachments, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                       //nolint
+	ffi.Prepare(&_cif_vkCmdClearColorImage, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                          //nolint
+	ffi.Prepare(&_cif_vkCmdClearDepthStencilImage, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                   //nolint
+	ffi.Prepare(&_cif_vkCmdCopyAccelerationStructureKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                //nolint
+	ffi.Prepare(&_cif_vkCmdCopyAccelerationStructureToMemoryKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                        //nolint
+	ffi.Prepare(&_cif_vkCmdCopyBuffer, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                            //nolint
+	ffi.Prepare(&_cif_vkCmdCopyBufferToImage, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                        //nolint
+	ffi.Prepare(&_cif_vkCmdCopyImage, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                   //nolint
+	ffi.Prepare(&_cif_vkCmdCopyImageToBuffer, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                        //nolint
+	ffi.Prepare(&_cif_vkCmdCopyMemoryToAccelerationStructureKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                        //nolint
+	ffi.Prepare(&_cif_vkCmdCopyQueryPoolResults, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer, ffi.UInt64, ffi.UInt64, ffi.Pointer})                              //nolint
+	ffi.Prepare(&_cif_vkCmdDispatch, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.UInt32})                                                                                             //nolint
+	ffi.Prepare(&_cif_vkCmdDispatchIndirect, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt64})                                                                                                //nolint
+	ffi.Prepare(&_cif_vkCmdDraw, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.UInt32, ffi.UInt32})                                                                                     //nolint
+	ffi.Prepare(&_cif_vkCmdDrawIndexed, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.UInt32, ffi.SInt32, ffi.UInt32})                                                                  //nolint
+	ffi.Prepare(&_cif_vkCmdDrawIndexedIndirect, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt64, ffi.UInt32, ffi.UInt32})                                                                     //nolint
+	ffi.Prepare(&_cif_vkCmdDrawIndexedIndirectCount, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt64, ffi.Pointer, ffi.UInt64, ffi.UInt32, ffi.UInt32})                                       //nolint
+	ffi.Prepare(&_cif_vkCmdDrawIndirect, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt64, ffi.UInt32, ffi.UInt32})                                                                            //nolint
+	ffi.Prepare(&_cif_vkCmdDrawIndirectCount, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt64, ffi.Pointer, ffi.UInt64, ffi.UInt32, ffi.UInt32})                                              //nolint
+	ffi.Prepare(&_cif_vkCmdDrawMeshTasksEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.UInt32})                                                                                     //nolint
+	ffi.Prepare(&_cif_vkCmdDrawMeshTasksIndirectCountEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt64, ffi.Pointer, ffi.UInt64, ffi.UInt32, ffi.UInt32})                                  //nolint
+	ffi.Prepare(&_cif_vkCmdDrawMeshTasksIndirectEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt64, ffi.UInt32, ffi.UInt32})                                                                //nolint
+	ffi.Prepare(&_cif_vkCmdDrawMultiEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.UInt32})                                                                //nolint
+	ffi.Prepare(&_cif_vkCmdDrawMultiIndexedEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.UInt32, ffi.Pointer})                                            //nolint
+	ffi.Prepare(&_cif_vkCmdEndDebugUtilsLabelEXT, ffi.Void, []ffi.Type{ffi.Pointer})                                                                                                                    //nolint
+	ffi.Prepare(&_cif_vkCmdEndQuery, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32})                                                                                                        //nolint
+	ffi.Prepare(&_cif_vkCmdEndRenderPass, ffi.Void, []ffi.Type{ffi.Pointer})                                                                                                                            //nolint
+	ffi.Prepare(&_cif_vkCmdEndRenderPass2, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                              //nolint
+	ffi.Prepare(&_cif_vkCmdEndRendering, ffi.Void, []ffi.Type{ffi.Pointer})                                                                                                                             //nolint
+	ffi.Prepare(&_cif_vkCmdExecuteCommands, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                                                 //nolint
+	ffi.Prepare(&_cif_vkCmdExecuteGeneratedCommandsEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                                     //nolint
+	ffi.Prepare(&_cif_vkCmdFillBuffer, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt64, ffi.UInt64, ffi.UInt32})                                                                              //nolint
+	ffi.Prepare(&_cif_vkCmdInsertDebugUtilsLabelEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                    //nolint
+	ffi.Prepare(&_cif_vkCmdNextSubpass, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                                 //nolint
+	ffi.Prepare(&_cif_vkCmdNextSubpass2, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                   //nolint
+	ffi.Prepare(&_cif_vkCmdPipelineBarrier, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.UInt32, ffi.Pointer})        //nolint
+	ffi.Prepare(&_cif_vkCmdPreprocessGeneratedCommandsEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                 //nolint
+	ffi.Prepare(&_cif_vkCmdPushConstants, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer})                                                             //nolint
+	ffi.Prepare(&_cif_vkCmdResetEvent, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                     //nolint
+	ffi.Prepare(&_cif_vkCmdResetQueryPool, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.UInt32})                                                                                      //nolint
+	ffi.Prepare(&_cif_vkCmdResolveImage, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                //nolint
+	ffi.Prepare(&_cif_vkCmdResolveImage2, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                               //nolint
+	ffi.Prepare(&_cif_vkCmdSetAlphaToCoverageEnableEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkCmdSetAlphaToOneEnableEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                       //nolint
+	ffi.Prepare(&_cif_vkCmdSetBlendConstants, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                           //nolint
+	ffi.Prepare(&_cif_vkCmdSetColorBlendAdvancedEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer})                                                                            //nolint
+	ffi.Prepare(&_cif_vkCmdSetColorBlendEnableEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer})                                                                              //nolint
+	ffi.Prepare(&_cif_vkCmdSetColorBlendEquationEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer})                                                                            //nolint
+	ffi.Prepare(&_cif_vkCmdSetColorWriteMaskEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer})                                                                                //nolint
+	ffi.Prepare(&_cif_vkCmdSetConservativeRasterizationModeEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                         //nolint
+	ffi.Prepare(&_cif_vkCmdSetCoverageModulationModeNV, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                 //nolint
+	ffi.Prepare(&_cif_vkCmdSetCoverageModulationTableEnableNV, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                           //nolint
+	ffi.Prepare(&_cif_vkCmdSetCoverageModulationTableNV, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                                    //nolint
+	ffi.Prepare(&_cif_vkCmdSetCoverageReductionModeNV, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkCmdSetCoverageToColorEnableNV, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                   //nolint
+	ffi.Prepare(&_cif_vkCmdSetCoverageToColorLocationNV, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                 //nolint
+	ffi.Prepare(&_cif_vkCmdSetCullMode, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                                 //nolint
+	ffi.Prepare(&_cif_vkCmdSetDepthBias, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Float, ffi.Float, ffi.Float})                                                                                            //nolint
+	ffi.Prepare(&_cif_vkCmdSetDepthBiasEnable, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                           //nolint
+	ffi.Prepare(&_cif_vkCmdSetDepthBounds, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Float, ffi.Float})                                                                                                     //nolint
+	ffi.Prepare(&_cif_vkCmdSetDepthBoundsTestEnable, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                     //nolint
+	ffi.Prepare(&_cif_vkCmdSetDepthClampEnableEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                       //nolint
+	ffi.Prepare(&_cif_vkCmdSetDepthClampRangeEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                          //nolint
+	ffi.Prepare(&_cif_vkCmdSetDepthClipEnableEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                        //nolint
+	ffi.Prepare(&_cif_vkCmdSetDepthClipNegativeOneToOneEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                              //nolint
+	ffi.Prepare(&_cif_vkCmdSetDepthCompareOp, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                           //nolint
+	ffi.Prepare(&_cif_vkCmdSetDepthTestEnable, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                           //nolint
+	ffi.Prepare(&_cif_vkCmdSetDepthWriteEnable, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                          //nolint
+	ffi.Prepare(&_cif_vkCmdSetDescriptorBufferOffsetsEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer, ffi.Pointer})                                //nolint
+	ffi.Prepare(&_cif_vkCmdSetEvent, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                       //nolint
+	ffi.Prepare(&_cif_vkCmdSetExtraPrimitiveOverestimationSizeEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Float})                                                                                        //nolint
+	ffi.Prepare(&_cif_vkCmdSetFrontFace, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                                //nolint
+	ffi.Prepare(&_cif_vkCmdSetLineRasterizationModeEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                 //nolint
+	ffi.Prepare(&_cif_vkCmdSetLineStipple, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt16})                                                                                                   //nolint
+	ffi.Prepare(&_cif_vkCmdSetLineStippleEnableEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                      //nolint
+	ffi.Prepare(&_cif_vkCmdSetLineWidth, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Float})                                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkCmdSetLogicOpEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                               //nolint
+	ffi.Prepare(&_cif_vkCmdSetLogicOpEnableEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                          //nolint
+	ffi.Prepare(&_cif_vkCmdSetPatchControlPointsEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                     //nolint
+	ffi.Prepare(&_cif_vkCmdSetPolygonModeEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                           //nolint
+	ffi.Prepare(&_cif_vkCmdSetPrimitiveRestartEnable, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                    //nolint
+	ffi.Prepare(&_cif_vkCmdSetPrimitiveTopology, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                        //nolint
+	ffi.Prepare(&_cif_vkCmdSetProvokingVertexModeEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                   //nolint
+	ffi.Prepare(&_cif_vkCmdSetRasterizationSamplesEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkCmdSetRasterizationStreamEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                    //nolint
+	ffi.Prepare(&_cif_vkCmdSetRasterizerDiscardEnable, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                   //nolint
+	ffi.Prepare(&_cif_vkCmdSetRayTracingPipelineStackSizeKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                            //nolint
+	ffi.Prepare(&_cif_vkCmdSetRenderingAttachmentLocations, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                             //nolint
+	ffi.Prepare(&_cif_vkCmdSetRenderingInputAttachmentIndices, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                          //nolint
+	ffi.Prepare(&_cif_vkCmdSetRepresentativeFragmentTestEnableNV, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                        //nolint
+	ffi.Prepare(&_cif_vkCmdSetSampleLocationsEnableEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkCmdSetSampleMaskEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                               //nolint
+	ffi.Prepare(&_cif_vkCmdSetScissor, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer})                                                                                          //nolint
+	ffi.Prepare(&_cif_vkCmdSetScissorWithCount, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                                             //nolint
+	ffi.Prepare(&_cif_vkCmdSetShadingRateImageEnableNV, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkCmdSetStencilCompareMask, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32})                                                                                           //nolint
+	ffi.Prepare(&_cif_vkCmdSetStencilOp, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                            //nolint
+	ffi.Prepare(&_cif_vkCmdSetStencilReference, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32})                                                                                             //nolint
+	ffi.Prepare(&_cif_vkCmdSetStencilTestEnable, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                         //nolint
+	ffi.Prepare(&_cif_vkCmdSetStencilWriteMask, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32})                                                                                             //nolint
+	ffi.Prepare(&_cif_vkCmdSetTessellationDomainOriginEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                              //nolint
+	ffi.Prepare(&_cif_vkCmdSetVertexInputEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                      //nolint
+	ffi.Prepare(&_cif_vkCmdSetViewport, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer})                                                                                         //nolint
+	ffi.Prepare(&_cif_vkCmdSetViewportSwizzleNV, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer})                                                                                //nolint
+	ffi.Prepare(&_cif_vkCmdSetViewportWScalingEnableNV, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkCmdSetViewportWithCount, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                                            //nolint
+	ffi.Prepare(&_cif_vkCmdTraceRaysIndirect2KHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt64})                                                                                                        //nolint
+	ffi.Prepare(&_cif_vkCmdTraceRaysIndirectKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt64})                                                     //nolint
+	ffi.Prepare(&_cif_vkCmdTraceRaysKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.UInt32})                                     //nolint
+	ffi.Prepare(&_cif_vkCmdUpdateBuffer, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt64, ffi.UInt64, ffi.Pointer})                                                                           //nolint
+	ffi.Prepare(&_cif_vkCmdWaitEvents, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.UInt32, ffi.Pointer}) //nolint
+	ffi.Prepare(&_cif_vkCmdWriteAccelerationStructuresPropertiesKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32})                                  //nolint
+	ffi.Prepare(&_cif_vkCmdWriteTimestamp, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32})                                                                                     //nolint
+	ffi.Prepare(&_cif_vkCopyAccelerationStructureKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                    //nolint
+	ffi.Prepare(&_cif_vkCopyAccelerationStructureToMemoryKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                            //nolint
+	ffi.Prepare(&_cif_vkCopyMemoryToAccelerationStructureKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                            //nolint
+	ffi.Prepare(&_cif_vkCreateAccelerationStructureKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                     //nolint
+	ffi.Prepare(&_cif_vkCreateBuffer, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                       //nolint
+	ffi.Prepare(&_cif_vkCreateBufferView, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                   //nolint
+	ffi.Prepare(&_cif_vkCreateCommandPool, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                  //nolint
+	ffi.Prepare(&_cif_vkCreateComputePipelines, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                    //nolint
+	ffi.Prepare(&_cif_vkCreateDebugUtilsMessengerEXT, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                       //nolint
+	ffi.Prepare(&_cif_vkCreateDeferredOperationKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                      //nolint
+	ffi.Prepare(&_cif_vkCreateDescriptorPool, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                               //nolint
+	ffi.Prepare(&_cif_vkCreateDescriptorSetLayout, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                          //nolint
+	ffi.Prepare(&_cif_vkCreateDevice, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                       //nolint
+	ffi.Prepare(&_cif_vkCreateEvent, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                        //nolint
+	ffi.Prepare(&_cif_vkCreateFence, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                        //nolint
+	ffi.Prepare(&_cif_vkCreateFramebuffer, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                  //nolint
+	ffi.Prepare(&_cif_vkCreateGraphicsPipelines, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                   //nolint
+	ffi.Prepare(&_cif_vkCreateImage, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                        //nolint
+	ffi.Prepare(&_cif_vkCreateImageView, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                    //nolint
+	ffi.Prepare(&_cif_vkCreateIndirectCommandsLayoutEXT, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                    //nolint
+	ffi.Prepare(&_cif_vkCreateIndirectExecutionSetEXT, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                      //nolint
+	ffi.Prepare(&_cif_vkCreateInstance, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkCreateMacOSSurfaceMVK, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                              //nolint
+	ffi.Prepare(&_cif_vkCreateMetalSurfaceEXT, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                              //nolint
+	ffi.Prepare(&_cif_vkCreatePipelineCache, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                //nolint
+	ffi.Prepare(&_cif_vkCreatePipelineLayout, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                               //nolint
+	ffi.Prepare(&_cif_vkCreateQueryPool, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                    //nolint
+	ffi.Prepare(&_cif_vkCreateRayTracingPipelinesKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                 //nolint
+	ffi.Prepare(&_cif_vkCreateRenderPass, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                   //nolint
+	ffi.Prepare(&_cif_vkCreateRenderPass2, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                  //nolint
+	ffi.Prepare(&_cif_vkCreateSampler, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                      //nolint
+	ffi.Prepare(&_cif_vkCreateSemaphore, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                    //nolint
+	ffi.Prepare(&_cif_vkCreateShaderModule, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                 //nolint
+	ffi.Prepare(&_cif_vkCreateShadersEXT, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                       //nolint
+	ffi.Prepare(&_cif_vkCreateSwapchainKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                 //nolint
+	ffi.Prepare(&_cif_vkCreateWaylandSurfaceKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                            //nolint
+	ffi.Prepare(&_cif_vkCreateWin32SurfaceKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                              //nolint
+	ffi.Prepare(&_cif_vkCreateXcbSurfaceKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                //nolint
+	ffi.Prepare(&_cif_vkCreateXlibSurfaceKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                               //nolint
+	ffi.Prepare(&_cif_vkDeferredOperationJoinKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                     //nolint
+	ffi.Prepare(&_cif_vkDestroyAccelerationStructureKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                   //nolint
+	ffi.Prepare(&_cif_vkDestroyBuffer, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                     //nolint
+	ffi.Prepare(&_cif_vkDestroyBufferView, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                 //nolint
+	ffi.Prepare(&_cif_vkDestroyCommandPool, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                //nolint
+	ffi.Prepare(&_cif_vkDestroyDebugUtilsMessengerEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                     //nolint
+	ffi.Prepare(&_cif_vkDestroyDeferredOperationKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                       //nolint
+	ffi.Prepare(&_cif_vkDestroyDescriptorPool, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                             //nolint
+	ffi.Prepare(&_cif_vkDestroyDescriptorSetLayout, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                        //nolint
+	ffi.Prepare(&_cif_vkDestroyDevice, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkDestroyEvent, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                      //nolint
+	ffi.Prepare(&_cif_vkDestroyFence, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                      //nolint
+	ffi.Prepare(&_cif_vkDestroyFramebuffer, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                //nolint
+	ffi.Prepare(&_cif_vkDestroyImage, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                      //nolint
+	ffi.Prepare(&_cif_vkDestroyImageView, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkDestroyIndirectCommandsLayoutEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                  //nolint
+	ffi.Prepare(&_cif_vkDestroyIndirectExecutionSetEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                    //nolint
+	ffi.Prepare(&_cif_vkDestroyInstance, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                                //nolint
+	ffi.Prepare(&_cif_vkDestroyPipeline, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                   //nolint
+	ffi.Prepare(&_cif_vkDestroyPipelineCache, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                              //nolint
+	ffi.Prepare(&_cif_vkDestroyPipelineLayout, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                             //nolint
+	ffi.Prepare(&_cif_vkDestroyQueryPool, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkDestroyRenderPass, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                 //nolint
+	ffi.Prepare(&_cif_vkDestroySampler, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                    //nolint
+	ffi.Prepare(&_cif_vkDestroySemaphore, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkDestroyShaderEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkDestroyShaderModule, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                               //nolint
+	ffi.Prepare(&_cif_vkDestroySurfaceKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                 //nolint
+	ffi.Prepare(&_cif_vkDestroySwapchainKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                               //nolint
+	ffi.Prepare(&_cif_vkDeviceWaitIdle, ffi.SInt32, []ffi.Type{ffi.Pointer})                                                                                                                            //nolint
+	ffi.Prepare(&_cif_vkEndCommandBuffer, ffi.SInt32, []ffi.Type{ffi.Pointer})                                                                                                                          //nolint
+	ffi.Prepare(&_cif_vkEnumerateDeviceExtensionProperties, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                 //nolint
+	ffi.Prepare(&_cif_vkEnumerateDeviceLayerProperties, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                  //nolint
+	ffi.Prepare(&_cif_vkEnumerateInstanceExtensionProperties, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                            //nolint
+	ffi.Prepare(&_cif_vkEnumerateInstanceLayerProperties, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                             //nolint
+	ffi.Prepare(&_cif_vkEnumeratePhysicalDevices, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                        //nolint
+	ffi.Prepare(&_cif_vkFlushMappedMemoryRanges, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                                          //nolint
+	ffi.Prepare(&_cif_vkFreeCommandBuffers, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                                    //nolint
+	ffi.Prepare(&_cif_vkFreeDescriptorSets, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                                  //nolint
+	ffi.Prepare(&_cif_vkFreeMemory, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                        //nolint
+	ffi.Prepare(&_cif_vkGetAccelerationStructureBuildSizesKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                   //nolint
+	ffi.Prepare(&_cif_vkGetAccelerationStructureDeviceAddressKHR, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                    //nolint
+	ffi.Prepare(&_cif_vkGetAccelerationStructureOpaqueCaptureDescriptorDataEXT, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                          //nolint
+	ffi.Prepare(&_cif_vkGetBufferMemoryRequirements, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                       //nolint
+	ffi.Prepare(&_cif_vkGetBufferOpaqueCaptureDescriptorDataEXT, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                         //nolint
+	ffi.Prepare(&_cif_vkGetDeferredOperationMaxConcurrencyKHR, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                       //nolint
+	ffi.Prepare(&_cif_vkGetDeferredOperationResultKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                //nolint
+	ffi.Prepare(&_cif_vkGetDescriptorEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                     //nolint
+	ffi.Prepare(&_cif_vkGetDescriptorSetLayoutBindingOffsetEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                //nolint
+	ffi.Prepare(&_cif_vkGetDescriptorSetLayoutSizeEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                     //nolint
+	ffi.Prepare(&_cif_vkGetDeviceAccelerationStructureCompatibilityKHR, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                    //nolint
+	ffi.Prepare(&_cif_vkGetDeviceGroupPresentCapabilitiesKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                         //nolint
+	ffi.Prepare(&_cif_vkGetDeviceGroupSurfacePresentModesKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                            //nolint
+	ffi.Prepare(&_cif_vkGetDeviceMemoryCommitment, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                         //nolint
+	ffi.Prepare(&_cif_vkGetDeviceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                           //nolint
+	ffi.Prepare(&_cif_vkGetDeviceQueue, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer})                                                                                         //nolint
+	ffi.Prepare(&_cif_vkGetEventStatus, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                               //nolint
+	ffi.Prepare(&_cif_vkGetFenceStatus, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                               //nolint
+	ffi.Prepare(&_cif_vkGetGeneratedCommandsMemoryRequirementsEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                         //nolint
+	ffi.Prepare(&_cif_vkGetImageMemoryRequirements, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                        //nolint
+	ffi.Prepare(&_cif_vkGetImageOpaqueCaptureDescriptorDataEXT, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                          //nolint
+	ffi.Prepare(&_cif_vkGetImageSparseMemoryRequirements, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                     //nolint
+	ffi.Prepare(&_cif_vkGetImageSubresourceLayout, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                            //nolint
+	ffi.Prepare(&_cif_vkGetImageViewOpaqueCaptureDescriptorDataEXT, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                      //nolint
+	ffi.Prepare(&_cif_vkGetInstanceProcAddr, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                         //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceFeatures, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                      //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceFormatProperties, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                 //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceImageFormatProperties, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                      //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceMemoryProperties, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                              //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDevicePresentRectanglesKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                              //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceProperties, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                    //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceQueueFamilyProperties, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                            //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceSparseImageFormatProperties, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})     //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceSurfaceCapabilitiesKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                         //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceSurfaceFormatsKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                 //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceSurfacePresentModesKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                            //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceSurfaceSupportKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer})                                                                  //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceWaylandPresentationSupportKHR, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                  //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceWin32PresentationSupportKHR, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.UInt32})                                                                                 //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceXcbPresentationSupportKHR, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer})                                                         //nolint
+	ffi.Prepare(&_cif_vkGetPhysicalDeviceXlibPresentationSupportKHR, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer})                                                        //nolint
+	ffi.Prepare(&_cif_vkGetPipelineCacheData, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                               //nolint
+	ffi.Prepare(&_cif_vkGetQueryPoolResults, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer, ffi.Pointer, ffi.UInt64, ffi.Pointer})                               //nolint
+	ffi.Prepare(&_cif_vkGetRayTracingCaptureReplayShaderGroupHandlesKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer, ffi.Pointer})                            //nolint
+	ffi.Prepare(&_cif_vkGetRayTracingShaderGroupHandlesKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.UInt32, ffi.Pointer, ffi.Pointer})                                         //nolint
+	ffi.Prepare(&_cif_vkGetRayTracingShaderGroupStackSizeKHR, ffi.Pointer, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                               //nolint
+	ffi.Prepare(&_cif_vkGetRenderAreaGranularity, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                          //nolint
+	ffi.Prepare(&_cif_vkGetRenderingAreaGranularity, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                       //nolint
+	ffi.Prepare(&_cif_vkGetSamplerOpaqueCaptureDescriptorDataEXT, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                        //nolint
+	ffi.Prepare(&_cif_vkGetShaderBinaryDataEXT, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                             //nolint
+	ffi.Prepare(&_cif_vkGetSwapchainImagesKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                              //nolint
+	ffi.Prepare(&_cif_vkInvalidateMappedMemoryRanges, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                                     //nolint
+	ffi.Prepare(&_cif_vkMapMemory, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt64, ffi.UInt64, ffi.Pointer, ffi.Pointer})                                                                  //nolint
+	ffi.Prepare(&_cif_vkMergePipelineCaches, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                                 //nolint
+	ffi.Prepare(&_cif_vkQueueBeginDebugUtilsLabelEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                   //nolint
+	ffi.Prepare(&_cif_vkQueueBindSparse, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer})                                                                                     //nolint
+	ffi.Prepare(&_cif_vkQueueEndDebugUtilsLabelEXT, ffi.Void, []ffi.Type{ffi.Pointer})                                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkQueueInsertDebugUtilsLabelEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                  //nolint
+	ffi.Prepare(&_cif_vkQueuePresentKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                              //nolint
+	ffi.Prepare(&_cif_vkQueueSubmit, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer})                                                                                         //nolint
+	ffi.Prepare(&_cif_vkQueueWaitIdle, ffi.SInt32, []ffi.Type{ffi.Pointer})                                                                                                                             //nolint
+	ffi.Prepare(&_cif_vkResetCommandBuffer, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                           //nolint
+	ffi.Prepare(&_cif_vkResetCommandPool, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                                //nolint
+	ffi.Prepare(&_cif_vkResetDescriptorPool, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                                             //nolint
+	ffi.Prepare(&_cif_vkResetEvent, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                                   //nolint
+	ffi.Prepare(&_cif_vkResetFences, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                                                      //nolint
+	ffi.Prepare(&_cif_vkSetDebugUtilsObjectNameEXT, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                   //nolint
+	ffi.Prepare(&_cif_vkSetDebugUtilsObjectTagEXT, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                    //nolint
+	ffi.Prepare(&_cif_vkSetDeviceMemoryPriorityEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Float})                                                                                          //nolint
+	ffi.Prepare(&_cif_vkSetEvent, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                                     //nolint
+	ffi.Prepare(&_cif_vkSubmitDebugUtilsMessageEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                                                                           //nolint
+	ffi.Prepare(&_cif_vkUnmapMemory, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer})                                                                                                                    //nolint
+	ffi.Prepare(&_cif_vkUpdateDescriptorSets, ffi.Void, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                      //nolint
+	ffi.Prepare(&_cif_vkUpdateIndirectExecutionSetPipelineEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                 //nolint
+	ffi.Prepare(&_cif_vkUpdateIndirectExecutionSetShaderEXT, ffi.Void, []ffi.Type{ffi.Pointer, ffi.Pointer, ffi.UInt32, ffi.Pointer})                                                                   //nolint
+	ffi.Prepare(&_cif_vkWaitForFences, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.UInt32, ffi.UInt64})                                                                            //nolint
+	ffi.Prepare(&_cif_vkWriteAccelerationStructuresPropertiesKHR, ffi.SInt32, []ffi.Type{ffi.Pointer, ffi.UInt32, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer, ffi.Pointer})                     //nolint
 
 	return nil
 }

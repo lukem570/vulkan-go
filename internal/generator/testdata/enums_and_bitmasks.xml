@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Fixture: enum and bitmask value translation.
+
+  Shapes under test:
+    plain values and negative values  - VkResult, including the generated Error()
+    bitpos                            - 1 << n
+    bitpos >= 32                      - widens the enum's base type to uint64
+    VkFlags  / VkFlags64 bitmasks     - uint32 / uint64 wrapper types
+    extension enumerants via offset   - 1000000000 + (extnumber-1)*1000 + offset
+    dir="-"                           - the same arithmetic, negated
+    extension enumerant via alias     - takes the aliased constant's Go name
+    top-level <enums> alias           - same, for the deprecated spellings that
+                                        live outside any extension
+    api= / supported= exclusion       - enumerants belonging only to another API
+                                        variant, or to a disabled extension,
+                                        must not be declared at all: no Vulkan
+                                        header defines them
+
+  VK_EXT_golden_test is extension number 400, so its offset-3 enumerant must
+  come out as 1000000000 + 399*1000 + 3 = 1000399003.
+
+  Nothing named *_EXCLUDED_* may appear in the golden output.
+-->
+<registry>
+    <types>
+        <type requires="VkGoldenFlagBits" category="bitmask"><type>VkFlags</type> <name>VkGoldenFlags</name></type>
+        <type bitvalues="VkGoldenWideFlagBits" category="bitmask"><type>VkFlags64</type> <name>VkGoldenWideFlags</name></type>
+    </types>
+
+    <enums name="VkResult" type="enum">
+        <enum value="0" name="VK_SUCCESS"/>
+        <enum value="1" name="VK_NOT_READY"/>
+        <enum value="-1" name="VK_ERROR_OUT_OF_HOST_MEMORY"/>
+        <enum value="-2" name="VK_ERROR_OUT_OF_DEVICE_MEMORY"/>
+    </enums>
+
+    <enums name="VkGoldenFlagBits" type="bitmask">
+        <enum bitpos="0" name="VK_GOLDEN_FIRST_BIT"/>
+        <enum bitpos="1" name="VK_GOLDEN_SECOND_BIT"/>
+        <enum bitpos="31" name="VK_GOLDEN_LAST_32_BIT"/>
+    </enums>
+
+    <enums name="VkGoldenWideFlagBits" type="bitmask" bitwidth="64">
+        <enum bitpos="0" name="VK_GOLDEN_WIDE_FIRST_BIT"/>
+        <enum bitpos="40" name="VK_GOLDEN_WIDE_HIGH_BIT"/>
+    </enums>
+
+    <enums name="VkGoldenKind" type="enum">
+        <enum value="0" name="VK_GOLDEN_KIND_PLAIN"/>
+        <enum value="1" name="VK_GOLDEN_KIND_FANCY"/>
+        <!-- Deprecated spelling, declared with alias= and no value=. Must come
+             out as a reference to GoldenKindFancy, not as 0. -->
+        <enum name="VK_GOLDEN_KIND_ORNATE" alias="VK_GOLDEN_KIND_FANCY" deprecated="aliased"/>
+        <!-- Belongs to another API variant only. -->
+        <enum value="7" api="vulkansc" name="VK_GOLDEN_KIND_EXCLUDED_BY_API"/>
+    </enums>
+
+    <feature api="vulkan" name="VK_VERSION_1_0" number="1.0" comment="golden fixture">
+        <require>
+            <type name="VkResult"/>
+            <type name="VkGoldenKind"/>
+            <type name="VkGoldenFlagBits"/>
+            <type name="VkGoldenFlags"/>
+            <type name="VkGoldenWideFlagBits"/>
+            <type name="VkGoldenWideFlags"/>
+        </require>
+    </feature>
+
+    <extensions>
+        <extension name="VK_EXT_golden_test" number="400" type="device" supported="vulkan">
+            <require>
+                <enum offset="3" extends="VkGoldenKind" name="VK_GOLDEN_KIND_EXTENDED_EXT"/>
+                <enum offset="4" dir="-" extends="VkResult" name="VK_ERROR_GOLDEN_FAILED_EXT"/>
+                <enum bitpos="5" extends="VkGoldenFlagBits" name="VK_GOLDEN_EXTENDED_BIT_EXT"/>
+                <enum extends="VkGoldenKind" name="VK_GOLDEN_KIND_PLAIN_EXT" alias="VK_GOLDEN_KIND_PLAIN"/>
+            </require>
+        </extension>
+    </extensions>
+</registry>

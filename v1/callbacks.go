@@ -6,7 +6,7 @@ import (
 	"sync"
 	"unsafe"
 
-	"github.com/go-webgpu/goffi/ffi"
+	"github.com/lukem570/vulkan-go/internal/ffi"
 )
 
 type allocationCallbacksCallbacks struct {

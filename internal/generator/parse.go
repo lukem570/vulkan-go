@@ -235,7 +235,7 @@ func (x *XMLRegistry) parseEnums() map[string]*Enum {
 // applyEnumExtensions processes enum values that appear inside <feature> and
 // <extension> require blocks and adds them to already-parsed enums.
 func (x *XMLRegistry) applyEnumExtensions(r *Registry) {
-	apply := func(enums []XMLRequireEnum, extNumber int) {
+	apply := func(enums []XMLRequireEnum, extNumber int, sourceAPIs []string) {
 		for _, e := range enums {
 			if e.Extends == "" {
 				continue
@@ -245,48 +245,76 @@ func (x *XMLRegistry) applyEnumExtensions(r *Registry) {
 			if !ok {
 				continue
 			}
-			el := makeExtendedEnumElement(e, parent, extNumber)
+			el := makeExtendedEnumElement(e, parent, extNumber, sourceAPIs)
 			if el != nil {
 				parent.Elements = append(parent.Elements, el)
 			}
 		}
 	}
 
+	// Elements collect the API constraints of everything that declares them:
+	// the require block's api=, and the enclosing feature's api= or
+	// extension's supported=. Filter prunes against the configured API
+	// afterwards, which is what keeps VKSC_VERSION_1_0, the
+	// supported="disabled" extensions, and the api="vulkansc" require blocks
+	// of otherwise-supported extensions out of the package.
 	for _, f := range x.Features {
 		for _, req := range f.Requires {
-			apply(req.Enums, 0)
+			apply(req.Enums, 0, append(nonEmpty(req.API), nonEmpty(f.API)...))
 		}
 	}
 
 	for _, ext := range x.Extensions.Extensions {
 		for _, req := range ext.Requires {
-			apply(req.Enums, ext.Number)
+			apply(req.Enums, ext.Number, append(nonEmpty(req.API), nonEmpty(ext.Supported)...))
 		}
 	}
+}
+
+// nonEmpty returns s as a one-element slice, or nil when s is empty, so that
+// absent attributes add no constraint.
+func nonEmpty(s string) []string {
+	if s == "" {
+		return nil
+	}
+	return []string{s}
 }
 
 func makeEnumElement(val XMLEnum, parent *Enum) *EnumElement {
 	el := &EnumElement{
-		CName:  val.Name,
-		GoName: UpperSnakeToPascal(val.Name),
-		Parent: parent,
+		CName:          val.Name,
+		GoName:         UpperSnakeToPascal(val.Name),
+		Parent:         parent,
+		APIConstraints: nonEmpty(val.API),
 	}
-	if val.BitPos != "" {
+
+	switch {
+	case val.BitPos != "":
 		bp, err := strconv.Atoi(val.BitPos)
 		if err == nil {
 			el.BitPos = &bp
 		}
-	} else {
+	case val.Value != "":
 		el.Value = val.Value
+	case val.Alias != "":
+		// A deprecated spelling equal to another enumerant: emit it as a
+		// reference to that constant rather than leaving the value unknown.
+		el.Value = UpperSnakeToPascal(val.Alias)
 	}
+
 	return el
 }
 
-func makeExtendedEnumElement(val XMLRequireEnum, parent *Enum, extNumber int) *EnumElement {
+// makeExtendedEnumElement builds an enumerant declared inside a <feature> or
+// <extension> require block. sourceAPIs carries the api=/supported= attributes
+// of the enclosing require block and of the feature or extension around it; the
+// element's own api= joins them, and all must hold.
+func makeExtendedEnumElement(val XMLRequireEnum, parent *Enum, extNumber int, sourceAPIs []string) *EnumElement {
 	el := &EnumElement{
-		CName:  val.Name,
-		GoName: UpperSnakeToPascal(val.Name),
-		Parent: parent,
+		CName:          val.Name,
+		GoName:         UpperSnakeToPascal(val.Name),
+		Parent:         parent,
+		APIConstraints: append(nonEmpty(val.API), sourceAPIs...),
 	}
 
 	switch {
@@ -601,7 +629,12 @@ func parseStruct(
 	seenGoNames := map[string]bool{}
 
 	for _, m := range t.Members {
-		if m.Name == "sType" || m.Name == "pNext" {
+		// sType and pNext are emitted by the struct generator itself, but only
+		// for structs it recognised as sType-bearing. VkBaseInStructure and
+		// VkBaseOutStructure declare both members without the values=
+		// attribute detectSType needs, so for them these are ordinary fields —
+		// skipping them unconditionally produced an empty struct.
+		if s.HasSType && (m.Name == "sType" || m.Name == "pNext") {
 			continue
 		}
 		// Skip duplicate members (e.g. same field with different api= attributes)

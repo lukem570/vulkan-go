@@ -26,13 +26,22 @@ type XMLRegistry struct {
 
 // XMLFeature is a <feature> element (core Vulkan version).
 type XMLFeature struct {
-	Name     string       `xml:"name,attr"`
-	Depends  string       `xml:"depends,attr"`
+	Name    string `xml:"name,attr"`
+	Depends string `xml:"depends,attr"`
+	// API is the comma-separated list of API variants the feature belongs to,
+	// e.g. "vulkan,vulkansc,vulkanbase". VKSC_VERSION_1_0 is "vulkansc" alone,
+	// and its contents must not reach a "vulkan" build.
+	API      string       `xml:"api,attr"`
 	Requires []XMLRequire `xml:"require"`
 }
 
 // XMLRequire is a <require> block inside a feature or extension.
 type XMLRequire struct {
+	// API narrows the block to particular API variants, independently of the
+	// enclosing feature or extension. An extension supported for
+	// "vulkan,vulkansc" can carry a block marked api="vulkansc" whose contents
+	// exist only in the Vulkan SC headers.
+	API      string           `xml:"api,attr"`
 	Commands []XMLRequireCmd  `xml:"command"`
 	Types    []XMLRequireTyp  `xml:"type"`
 	Enums    []XMLRequireEnum `xml:"enum"`
@@ -64,6 +73,13 @@ type XMLEnum struct {
 	Offset    string `xml:"offset,attr"`
 	Dir       string `xml:"dir,attr"`
 	Extnumber string `xml:"extnumber,attr"`
+	// Alias names another enumerant this one is equal to. Top-level <enums>
+	// entries use it for deprecated spellings such as
+	// VK_STENCIL_FRONT_AND_BACK → VK_STENCIL_FACE_FRONT_AND_BACK.
+	Alias string `xml:"alias,attr"`
+	// API restricts the enumerant to particular API variants. Where the same
+	// name exists for both, vk.xml carries one entry per variant.
+	API string `xml:"api,attr"`
 }
 
 // XMLRequireEnum is used inside <feature>/<extension> require blocks.
@@ -77,6 +93,9 @@ type XMLRequireEnum struct {
 	Dir       string `xml:"dir,attr"`
 	Extnumber string `xml:"extnumber,attr"`
 	Alias     string `xml:"alias,attr"`
+	// API restricts the enumerant to particular API variants, overriding the
+	// enclosing feature or extension when present.
+	API string `xml:"api,attr"`
 }
 
 // XMLExtensions is the <extensions> element from vk.xml.

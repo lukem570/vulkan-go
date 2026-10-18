@@ -9,7 +9,7 @@ func (r *ReducedRegistry) GenerateCallbacksFile(pkg string) string {
 	var b strings.Builder
 	b.WriteString(generatedHeader)
 	b.WriteString("package " + pkg + "\n\n")
-	b.WriteString(goffiCallbacksHeader)
+	b.WriteString(abiCallbacksHeader)
 
 	for _, k := range sortedKeys(r.Structs) {
 		s := r.Structs[k]

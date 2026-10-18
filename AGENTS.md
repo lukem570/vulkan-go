@@ -25,20 +25,27 @@ you need a new hand-written helper in `package vk`, emit it from the generator
 `MakeAPIVersion` and `GoString` come from); otherwise put it in a new
 non-generated package.
 
-Hand-written code lives only in `internal/generator/`, `cmd/vkgen/`, and
-`examples/`.
+Hand-written code lives only in `internal/generator/`, `internal/abi/`,
+`internal/ffi/`, `cmd/vkgen/`, and `examples/`.
+
+The generator also emits `v1/abi_data_test.go` (plus one per platform build
+tag). Those are generated like everything else in `v1/` — do not hand-edit
+them; they are the input data for the ABI conformance test described under
+[Tests](#tests).
 
 ## Layout
 
 | Path | Role |
 | --- | --- |
-| `v1/` | **Generated.** `package vk` — bindings, callbacks, per-platform files |
+| `v1/` | **Generated.** `package vk` — bindings, callbacks, per-platform files, ABI test data |
 | `cmd/vkgen/main.go` | Generator entry point; wires the pipeline and writes files |
 | `internal/generator/` | The generator: parse → registry → filter → codegen |
+| `internal/abi/` | Hand-written. Compares the generated layout against the C headers |
+| `internal/ffi/` | Hand-written. The FFI seam: goffi and cgo backends behind five primitives |
 | `config.yml` | API version, extension allow-list, platform list |
 | `mod/Vulkan-Headers` | Submodule; source of `registry/vk.xml` |
 | `examples/compute/` | Runnable headless compute example (doubles as the test) |
-| `docs/` | Prose docs: `api-changes.md` is the C-vs-Go API reference |
+| `docs/` | Prose docs: `api-changes.md` (public API), `backends.md` (FFI seam) |
 
 Generator pipeline, in order (`cmd/vkgen/main.go`):
 
@@ -49,7 +56,9 @@ Generator pipeline, in order (`cmd/vkgen/main.go`):
 4. `GeneratePackage` / `GenerateCallbacksFile` / `GeneratePlatformFiles`
    (`output.go`, `structs.go`, `commands.go`, `enums.go`, `types.go`,
    `handles.go`, `lifetime.go`)
-5. `WriteFile` → gofmt, then write
+5. `GenerateABIDataFiles` (`abidata.go`) — must run after `GeneratePackage`,
+   which decides via `SetReserved` which enumerants the package declares
+6. `WriteFile` → gofmt, then write
 
 `WriteFile` runs `go/format` on the output. **If gofmt fails, the raw text is
 dumped to `<path>.unformatted` and the error names it** — read that file to see
@@ -62,23 +71,58 @@ file per build tag.
 ## Commands
 
 ```sh
-task setup      # init the Vulkan-Headers submodule (required once)
-task generate   # rm -rf v1, then regenerate
-task test       # generate, compile test.comp with glslc, run the compute example
+task setup          # init the Vulkan-Headers submodule (required once)
+task generate       # rm -rf v1, then regenerate
+task test           # generate, then go test ./internal/... ./v1/... (no GPU needed)
+task test:compute   # generate, compile test.comp with glslc, run the compute example
+task golden:update  # rewrite the generator golden files after an intended change
 ```
 
-Environment, non-negotiable:
+Environment:
 
-- `CGO_ENABLED=0` — goffi is incompatible with CGo. Anything pulling in a CGo
-  dependency (e.g. go-gl/glfw) cannot be used here.
+- `CGO_ENABLED` selects the FFI backend and both must keep working: `0` is goffi
+  (pure Go), `1` is libffi through cgo. After touching the generator or
+  `internal/ffi`, run `task test:both`. Details in `docs/backends.md`.
 - `GOWORK=off` — set by every taskfile target; keep it when invoking `go`
   directly so a stray `go.work` does not shadow the module.
 
-`task test` needs `glslc` on PATH and a working Vulkan runtime/driver. In a
-headless or driver-less environment, `go build ./...` and `go vet ./...` are the
-useful checks — expect a runtime failure from the example, not a code error.
-Note that `go build ./...` fails until `examples/compute/test.spv` exists, since
-it is `go:embed`-ed and gitignored; run glslc first.
+`task test:compute` needs `glslc` on PATH and a working Vulkan runtime/driver.
+In a headless or driver-less environment, run `task test` instead — it needs
+neither, only a C compiler. Note that `go build ./...` fails until
+`examples/compute/test.spv` exists, since it is `go:embed`-ed and gitignored;
+that is why `task test` scopes itself to `./internal/... ./v1/...`.
+
+## Tests
+
+Two suites, both driver-free; `task test` runs both.
+
+**ABI conformance** (`internal/abi`, data generated into `v1/abi_data*_test.go`).
+Nothing in the normal build ever checks a `cVkFoo` struct against the C struct
+it stands in for — there is no CGo to do it. A wrong field offset or a missing
+pad byte produces no compile error and no validation message, just corruption at
+the FFI boundary. So the test emits a C program against
+`mod/Vulkan-Headers`, reporting `sizeof`/`_Alignof`/`offsetof` for every
+generated struct and the value of every generated enumerant, and compares the
+answers with Go's `reflect` view. Needs `cc`, `gcc` or `clang`; skips if none is
+present, as does any platform group whose system headers are missing.
+
+Subtests are split per group (`core`, `xlib`, `xcb`, …) and per dimension
+(`structs`, `enums`, `enums_declared_but_absent_from_headers`) so one defect
+leaves the other dimensions usable as a gate.
+
+**Generator goldens** (`internal/generator/golden_test.go`, fixtures in
+`testdata/`). Each fixture is a hand-written registry fragment small enough to
+read, pinning the conventions listed above — handle receivers, output params,
+slice collapsing, union padding, bitfield packing, platform splitting. After an
+intended change run `task golden:update` and read the diff; an unexplained line
+in it is an API break for consumers of `v1`.
+
+Two invariants keep the suites honest, and both are load-bearing:
+`Structured.cLayoutFields` is the single source of truth for C-layout field
+order (shared by the struct emitter and the ABI data), and
+`Enum.generatedElements` is the single source of truth for which enumerants get
+constants (shared by the const-block emitter and the ABI data). Bypass either
+and the test starts checking something other than what ships.
 
 ## Conventions the generator enforces
 
@@ -86,6 +130,17 @@ These are load-bearing; a change in `internal/generator/` that breaks one of
 them is an API break for every consumer of `v1`. They are documented for users
 in `docs/api-changes.md` — keep that file in sync with any change here.
 
+- Generated code must never name `ffi` or `types` directly. Every foreign call
+  goes through `internal/ffi` (`Prepare`, `Call`, `LoadLibrary`, `Symbol`,
+  `NewCallback`), and `ffi.Type` is a plain code rather than a backend
+  descriptor. This is what keeps both backends compilable.
+- Storage the driver writes through — out params, enumerate counts, byte-data
+  sizes — is `new`-allocated and pinned, never a goroutine stack local. A Go
+  callback firing mid-call (a debug messenger under a validation layer) runs Go
+  code on the goroutine that is inside the call; if its stack grows, Go
+  relocates it and any stack address the driver still holds goes stale. The
+  symptom was `EnumeratePhysicalDevices` returning zero devices, no error,
+  under cgo only.
 - Commands whose first parameter is a handle become methods on that handle
   (`vkDestroyInstance` → `instance.Destroy`).
 - Output-pointer parameters become return values; `VkResult` becomes `error`.
@@ -122,9 +177,36 @@ Two independent axes; do not conflate them.
 
 ## CI
 
+`.github/workflows/ci.yml` runs on pull requests and on pushes to `main` and
+`road-to-v1`:
+
+- **test**, on ubuntu, macos and windows. Regenerates, vets, and runs
+  `go test ./internal/... ./v1/...`. The matrix is not redundant — each runner
+  is the only one that can verify its own platform structs against the real
+  system headers, so the win32 and metal/macos ABI groups are checked nowhere
+  else. Ubuntu additionally installs `libx11-dev libxcb1-dev libwayland-dev`,
+  without which those three groups skip instead of verifying.
+- **test** also fails if `git status --porcelain v1/` is non-empty after
+  regenerating, which catches a generator change committed without its
+  regenerated output. Ubuntu only, since the runners disagree on line endings.
+- **cross-compile** builds `./v1` for linux, windows and darwin on both amd64
+  and arm64. The per-platform files are build-tagged, so a regression in one is
+  invisible to a build on any other.
+
 `.github/workflows/update.yml` runs every 6 hours: bumps the submodule, and if
 `vk.xml` moved, regenerates, commits as `github-actions`, tags, and pushes to
 whatever branch it is on.
+
+That update is gated: after regenerating it runs `task test`, then vets and
+cross-compiles, and only then commits and tags. A header change that shifts a
+struct offset, changes an enumerant value, breaks a generator convention, or
+emits uncompilable code now stops the workflow instead of being tagged as a
+release. **A failing suite therefore halts automated header updates** — that is
+the intended trade, but it means a red `task test` needs fixing promptly rather
+than at leisure.
+
+Both workflows take the toolchain from `go-version-file: go.mod` rather than a
+pinned version.
 
 `.github/dependabot.yml` covers Go modules and action versions weekly. The
 submodule is deliberately left to the workflow above. A goffi bump may need
@@ -135,14 +217,39 @@ those diffs and omits them from language stats.
 
 ## Known gaps
 
+- `AllocationCallbacks` does not work. The generated trampolines key the
+  callback registry on the *last* callback parameter, which is `pUserData` for
+  the debug messenger but the allocation scope for the allocator PFNs, so the
+  lookup misses and the trampoline returns NULL. Passing a custom allocator
+  fails with `ErrorOutOfHostMemory` on both backends. Fix: key the registry on
+  whichever parameter actually carries `pUserData`.
+
 - No windowed example. GLFW needs CGo and so cannot be used; a pure-Go
   windowing path is the intended replacement. `SurfaceKHRFromHandle` exists for
   wrapping a surface obtained elsewhere.
-- No CI runs on pull requests — the only workflow is the scheduled
-  regeneration, so a Dependabot PR arrives with nothing actually built.
-- The update workflow installs Go 1.22 while `go.mod` declares `go 1.25`; it
-  currently survives only on toolchain auto-download.
-- No `go test` suite exists — `examples/compute` is a `main` package run by hand.
+- `update.yml` gates on `task test`, which currently fails on the three defects
+  below, so automated header updates are blocked until they are fixed.
+- Nothing runs the compute example in CI. A software Vulkan device (lavapipe)
+  on the ubuntu runner would make `task test:compute` reachable there.
+- `config.yml`'s `api:` key is parsed but never applied, so enumerants belonging
+  to the `vulkansc` variant are emitted into `package vk` even though the
+  headers for the `vulkan` API do not define them. Together with `_RESERVED_`
+  bit placeholders and values for platforms `config.yml` does not enable, that
+  is 117 constants with no C counterpart —
+  `TestABIConformance/core/enums_declared_but_absent_from_headers` lists them.
+- `VkBaseInStructure` and `VkBaseOutStructure` generate as empty structs
+  (`size 0`, against C's 16). `detectSType` needs a `values=` attribute to
+  recognise an sType member and these two have none, so both members are
+  dropped. They are the generic pNext-chain heads, so nothing dispatches
+  through them today.
+- Enumerants aliased in a top-level `<enums>` block generate as
+  `0 // TODO: unknown value`: `XMLEnum` in `xml.go` has no `alias,attr` field,
+  only `XMLRequireEnum` does. Six constants are affected, among them
+  `StencilFrontAndBack` (should be 3) and `PipelineStage2TransferBit`
+  (should be 0x1000). Aliases declared inside an extension's `<require>` block
+  resolve correctly, which is why this went unnoticed.
+- The ABI probe only reports the host architecture. A 32-bit target, where
+  non-dispatchable handles are `uint64` rather than pointer-sized, is unchecked.
 - Count fields collapsed against a fixed-size array are lost:
   `PhysicalDeviceMemoryProperties` exposes `MemoryTypes [32]MemoryType` but not
   `memoryTypeCount`, so callers cannot tell which entries are valid.

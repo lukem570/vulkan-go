@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Fixture: handle receivers, output parameters, and VkResult.
+
+  Shapes under test:
+    vkCreateInstance           - no leading handle, so a package-level function;
+                                 pInstance is an output pointer, so it becomes a
+                                 return value
+    vkDestroyInstance          - leading VkInstance, so a method on Instance
+    vkEnumeratePhysicalDevices - the count+array out-parameter pair that has to
+                                 collapse into one returned slice
+    vkGetInstanceVersion       - a scalar output parameter with a void return
+-->
+<registry>
+    <types>
+        <type category="handle" objtypeenum="VK_OBJECT_TYPE_INSTANCE">VK_DEFINE_HANDLE(<name>VkInstance</name>)</type>
+        <type category="handle" parent="VkInstance" objtypeenum="VK_OBJECT_TYPE_PHYSICAL_DEVICE">VK_DEFINE_HANDLE(<name>VkPhysicalDevice</name>)</type>
+
+        <type category="struct" name="VkInstanceCreateInfo">
+            <member values="VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO"><type>VkStructureType</type> <name>sType</name></member>
+            <member optional="true">const <type>void</type>* <name>pNext</name></member>
+            <member><type>uint32_t</type> <name>flags</name></member>
+        </type>
+    </types>
+
+    <enums name="VkResult" type="enum">
+        <enum value="0" name="VK_SUCCESS"/>
+        <enum value="-1" name="VK_ERROR_OUT_OF_HOST_MEMORY"/>
+    </enums>
+
+    <enums name="VkStructureType" type="enum">
+        <enum value="1" name="VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO"/>
+    </enums>
+
+    <commands>
+        <command successcodes="VK_SUCCESS" errorcodes="VK_ERROR_OUT_OF_HOST_MEMORY">
+            <proto><type>VkResult</type> <name>vkCreateInstance</name></proto>
+            <param>const <type>VkInstanceCreateInfo</type>* <name>pCreateInfo</name></param>
+            <param><type>VkInstance</type>* <name>pInstance</name></param>
+        </command>
+
+        <command>
+            <proto><type>void</type> <name>vkDestroyInstance</name></proto>
+            <param optional="true"><type>VkInstance</type> <name>instance</name></param>
+        </command>
+
+        <command successcodes="VK_SUCCESS" errorcodes="VK_ERROR_OUT_OF_HOST_MEMORY">
+            <proto><type>VkResult</type> <name>vkEnumeratePhysicalDevices</name></proto>
+            <param><type>VkInstance</type> <name>instance</name></param>
+            <param optional="false,true"><type>uint32_t</type>* <name>pPhysicalDeviceCount</name></param>
+            <param optional="true" len="pPhysicalDeviceCount"><type>VkPhysicalDevice</type>* <name>pPhysicalDevices</name></param>
+        </command>
+
+        <command>
+            <proto><type>void</type> <name>vkGetInstanceVersion</name></proto>
+            <param><type>VkInstance</type> <name>instance</name></param>
+            <param><type>uint32_t</type>* <name>pVersion</name></param>
+        </command>
+    </commands>
+
+    <feature api="vulkan" name="VK_VERSION_1_0" number="1.0" comment="golden fixture">
+        <require>
+            <type name="VkResult"/>
+            <type name="VkStructureType"/>
+            <type name="VkInstance"/>
+            <type name="VkPhysicalDevice"/>
+            <type name="VkInstanceCreateInfo"/>
+            <command name="vkCreateInstance"/>
+            <command name="vkDestroyInstance"/>
+            <command name="vkEnumeratePhysicalDevices"/>
+            <command name="vkGetInstanceVersion"/>
+        </require>
+    </feature>
+</registry>
