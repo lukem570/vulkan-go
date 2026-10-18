@@ -131,7 +131,7 @@ func (c *GoCommand) GenerateWrapper(sTypes map[string]string) string {
 
 	// ---- Function signature ------------------------------------------------
 	if c.ReceiverType != "" {
-		b.WriteString(fmt.Sprintf("func (h %s) %s(\n", c.ReceiverType, c.Name))
+		b.WriteString(fmt.Sprintf("func (h *%s) %s(\n", c.ReceiverType, commandName(c)))
 	} else {
 		b.WriteString(fmt.Sprintf("func %s(\n", c.Name))
 	}
@@ -288,10 +288,18 @@ func (c *GoCommand) GenerateWrapper(sTypes map[string]string) string {
 			b.WriteString(outG.String())
 			g.varIndex = outG.varIndex
 			b.WriteString(fmt.Sprintf("\t\t%s[%s] = %s\n", sliceVar, idxVar, goVal))
-			// Propagate dispatch table to array elements that are handles.
+			// Propagate dispatch table to array elements that are handles,
+			// link them to their parent, and hand them to the GC.
 			if ht, ok := op.Type.(*Handle); ok {
 				b.WriteString(fmt.Sprintf("\t\t%s.table = h.table\n", goVal))
-				_ = ht
+				if c.ReceiverType != "" {
+					b.WriteString(fmt.Sprintf("\t\t%s.parent = h\n", goVal))
+				}
+				if isCreateCommand(c) {
+					b.WriteString(generateRetain(c, goVal))
+				}
+				allocParam, createInfoParam := commandParamNames(c)
+				b.WriteString(generateCleanupRegistration(c, ht.Name, goVal, allocParam, createInfoParam))
 			}
 			b.WriteString("\t}\n")
 			retVars = append(retVars, sliceVar)
@@ -333,6 +341,26 @@ func (c *GoCommand) GenerateWrapper(sTypes map[string]string) string {
 	}
 	_ = handleRetCVar
 
+	// Link the returned handle to its parent and register GC-driven
+	// destruction. Both must come after the dispatch table and callback
+	// trampoline are attached, since the cleanup argument copies them.
+	if handleRetVar != "" {
+		if c.ReceiverType != "" {
+			b.WriteString(fmt.Sprintf("\t%s.parent = h\n", handleRetVar))
+		}
+		for _, op := range c.OutParams {
+			ht, ok := op.Type.(*Handle)
+			if !ok || op.IsArray {
+				continue
+			}
+			if isCreateCommand(c) {
+				b.WriteString(generateRetain(c, handleRetVar))
+			}
+			allocParam, createInfoParam := commandParamNames(c)
+			b.WriteString(generateCleanupRegistration(c, ht.Name, handleRetVar, allocParam, createInfoParam))
+		}
+	}
+
 	// Convert non-VkResult return value
 	if c.ReturnType != nil {
 		outG := &CodeGen{varIndex: g.varIndex}
@@ -341,6 +369,8 @@ func (c *GoCommand) GenerateWrapper(sTypes map[string]string) string {
 		g.varIndex = outG.varIndex
 		retVars = append(retVars, goVal)
 	}
+
+	b.WriteString(generateMemoryRetain(c))
 
 	if c.HasError {
 		retVars = append(retVars, "nil")
@@ -373,7 +403,7 @@ func (c *GoCommand) generateEnumerateWrapper() string {
 
 	// Signature
 	if c.ReceiverType != "" {
-		b.WriteString(fmt.Sprintf("func (h %s) %s(\n", c.ReceiverType, c.Name))
+		b.WriteString(fmt.Sprintf("func (h *%s) %s(\n", c.ReceiverType, commandName(c)))
 	} else {
 		b.WriteString(fmt.Sprintf("func %s(\n", c.Name))
 	}
@@ -511,7 +541,7 @@ func (c *GoCommand) generateByteDataWrapper() string {
 
 	// Signature
 	if c.ReceiverType != "" {
-		b.WriteString(fmt.Sprintf("func (h %s) %s(\n", c.ReceiverType, c.Name))
+		b.WriteString(fmt.Sprintf("func (h *%s) %s(\n", c.ReceiverType, commandName(c)))
 	} else {
 		b.WriteString(fmt.Sprintf("func %s(\n", c.Name))
 	}

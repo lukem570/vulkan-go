@@ -5,6 +5,7 @@
 package vk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/go-webgpu/goffi/ffi"
@@ -57,7 +58,7 @@ func (s *Win32SurfaceCreateInfoKHR) fromC(p *cVkWin32SurfaceCreateInfoKHR) {
 	s.Hwnd = unsafe.Pointer(p.hwnd)
 }
 
-func (h Instance) CreateWin32SurfaceKHR(
+func (h *Instance) CreateWin32SurfaceKHR(
 	CreateInfo *Win32SurfaceCreateInfoKHR,
 	Allocator *AllocationCallbacks,
 ) (*SurfaceKHR, error) {
@@ -94,10 +95,18 @@ func (h Instance) CreateWin32SurfaceKHR(
 		return nil, Result(_ret)
 	}
 	h6 := &SurfaceKHR{handle: unsafe.Pointer(surfaceOut)}
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupSurfaceKHR, _cleanupArgsSurfaceKHR{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h PhysicalDevice) GetWin32PresentationSupportKHR(
+func (h *PhysicalDevice) GetWin32PresentationSupportKHR(
 	queueFamilyIndex uint32,
 ) bool {
 	cancels := make([]func(), 0)

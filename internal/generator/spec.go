@@ -76,6 +76,7 @@ const goffiHeader = `import (
 	"fmt"
 	"os"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/go-webgpu/goffi/ffi"
@@ -85,6 +86,7 @@ const goffiHeader = `import (
 
 // goffiPlatformHeader is the import block emitted at the top of platform-specific files.
 const goffiPlatformHeader = `import (
+	"runtime"
 	"unsafe"
 
 	"github.com/go-webgpu/goffi/ffi"
@@ -123,6 +125,17 @@ func GoString(b []byte) string {
 	}
 	return string(b)
 }
+
+// _cleanupMu serializes GC-driven destruction.
+//
+// runtime.AddCleanup runs cleanups concurrently with each other, but most
+// vkDestroy*/vkFree* calls require their object — and vkDestroyDevice and
+// vkDestroyInstance their whole parent — to be externally synchronized. Two
+// cleanups for the same device firing on different goroutines is a data race
+// inside the driver, which validation reports as
+// UNASSIGNED-Threading-MultipleThreads-Write. Destruction is rare, so one
+// package-wide lock is enough.
+var _cleanupMu sync.Mutex
 
 // Structure is the interface implemented by all Vulkan structs that carry
 // an sType / pNext chain.

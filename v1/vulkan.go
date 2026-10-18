@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"sync"
 	"unsafe"
 
 	"github.com/go-webgpu/goffi/ffi"
@@ -30,6 +31,17 @@ func GoString(b []byte) string {
 	}
 	return string(b)
 }
+
+// _cleanupMu serializes GC-driven destruction.
+//
+// runtime.AddCleanup runs cleanups concurrently with each other, but most
+// vkDestroy*/vkFree* calls require their object — and vkDestroyDevice and
+// vkDestroyInstance their whole parent — to be externally synchronized. Two
+// cleanups for the same device firing on different goroutines is a data race
+// inside the driver, which validation reports as
+// UNASSIGNED-Threading-MultipleThreads-Write. Destruction is rare, so one
+// package-wide lock is enough.
+var _cleanupMu sync.Mutex
 
 // Structure is the interface implemented by all Vulkan structs that carry
 // an sType / pNext chain.
@@ -486,6 +498,8 @@ type AccelerationStructureKHR struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *AccelerationStructureKHR) Handle() unsafe.Pointer { return h.handle }
@@ -494,6 +508,8 @@ type AccelerationStructureNV struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *AccelerationStructureNV) Handle() unsafe.Pointer { return h.handle }
@@ -502,6 +518,8 @@ type Buffer struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *Buffer) Handle() unsafe.Pointer { return h.handle }
@@ -510,6 +528,8 @@ type BufferView struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *BufferView) Handle() unsafe.Pointer { return h.handle }
@@ -518,6 +538,8 @@ type CommandBuffer struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *CommandBuffer) Handle() unsafe.Pointer { return h.handle }
@@ -526,6 +548,8 @@ type CommandPool struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *CommandPool) Handle() unsafe.Pointer { return h.handle }
@@ -533,6 +557,8 @@ func (h *CommandPool) Handle() unsafe.Pointer { return h.handle }
 type DebugUtilsMessengerEXT struct {
 	handle  unsafe.Pointer
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *DebugUtilsMessengerEXT) Handle() unsafe.Pointer { return h.handle }
@@ -541,6 +567,8 @@ type DeferredOperationKHR struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *DeferredOperationKHR) Handle() unsafe.Pointer { return h.handle }
@@ -549,6 +577,8 @@ type DescriptorPool struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *DescriptorPool) Handle() unsafe.Pointer { return h.handle }
@@ -557,6 +587,8 @@ type DescriptorSet struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *DescriptorSet) Handle() unsafe.Pointer { return h.handle }
@@ -565,6 +597,8 @@ type DescriptorSetLayout struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *DescriptorSetLayout) Handle() unsafe.Pointer { return h.handle }
@@ -573,6 +607,8 @@ type Device struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *Device) Handle() unsafe.Pointer { return h.handle }
@@ -580,6 +616,8 @@ func (h *Device) Handle() unsafe.Pointer { return h.handle }
 type DeviceMemory struct {
 	handle  unsafe.Pointer
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *DeviceMemory) Handle() unsafe.Pointer { return h.handle }
@@ -588,6 +626,8 @@ type Event struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *Event) Handle() unsafe.Pointer { return h.handle }
@@ -596,6 +636,8 @@ type Fence struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *Fence) Handle() unsafe.Pointer { return h.handle }
@@ -604,6 +646,8 @@ type Framebuffer struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *Framebuffer) Handle() unsafe.Pointer { return h.handle }
@@ -612,6 +656,8 @@ type Image struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *Image) Handle() unsafe.Pointer { return h.handle }
@@ -620,6 +666,8 @@ type ImageView struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *ImageView) Handle() unsafe.Pointer { return h.handle }
@@ -628,6 +676,8 @@ type IndirectCommandsLayoutEXT struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *IndirectCommandsLayoutEXT) Handle() unsafe.Pointer { return h.handle }
@@ -636,6 +686,8 @@ type IndirectExecutionSetEXT struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *IndirectExecutionSetEXT) Handle() unsafe.Pointer { return h.handle }
@@ -644,6 +696,8 @@ type Instance struct {
 	handle  unsafe.Pointer
 	table   *instanceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *Instance) Handle() unsafe.Pointer { return h.handle }
@@ -652,6 +706,8 @@ type PhysicalDevice struct {
 	handle  unsafe.Pointer
 	table   *instanceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *PhysicalDevice) Handle() unsafe.Pointer { return h.handle }
@@ -660,6 +716,8 @@ type Pipeline struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *Pipeline) Handle() unsafe.Pointer { return h.handle }
@@ -668,6 +726,8 @@ type PipelineCache struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *PipelineCache) Handle() unsafe.Pointer { return h.handle }
@@ -676,6 +736,8 @@ type PipelineLayout struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *PipelineLayout) Handle() unsafe.Pointer { return h.handle }
@@ -684,6 +746,8 @@ type QueryPool struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *QueryPool) Handle() unsafe.Pointer { return h.handle }
@@ -692,6 +756,8 @@ type Queue struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *Queue) Handle() unsafe.Pointer { return h.handle }
@@ -700,6 +766,8 @@ type RenderPass struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *RenderPass) Handle() unsafe.Pointer { return h.handle }
@@ -708,6 +776,8 @@ type Sampler struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *Sampler) Handle() unsafe.Pointer { return h.handle }
@@ -716,6 +786,8 @@ type Semaphore struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *Semaphore) Handle() unsafe.Pointer { return h.handle }
@@ -724,6 +796,8 @@ type ShaderEXT struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *ShaderEXT) Handle() unsafe.Pointer { return h.handle }
@@ -732,6 +806,8 @@ type ShaderModule struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *ShaderModule) Handle() unsafe.Pointer { return h.handle }
@@ -739,6 +815,8 @@ func (h *ShaderModule) Handle() unsafe.Pointer { return h.handle }
 type SurfaceKHR struct {
 	handle  unsafe.Pointer
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *SurfaceKHR) Handle() unsafe.Pointer { return h.handle }
@@ -747,6 +825,8 @@ type SwapchainKHR struct {
 	handle  unsafe.Pointer
 	table   *deviceTable
 	cleanup func()
+	parent  any
+	retain  *[]any
 }
 
 func (h *SwapchainKHR) Handle() unsafe.Pointer { return h.handle }
@@ -23044,7 +23124,7 @@ func (s *WriteIndirectExecutionSetShaderEXT) fromC(p *cVkWriteIndirectExecutionS
 	s.Shader = &ShaderEXT{handle: p.shader}
 }
 
-func (h Device) AcquireNextImage2KHR(
+func (h *Device) AcquireNextImage2KHR(
 	AcquireInfo *AcquireNextImageInfoKHR,
 ) (uint32, error) {
 	cancels := make([]func(), 0)
@@ -23076,7 +23156,7 @@ func (h Device) AcquireNextImage2KHR(
 	return val3, nil
 }
 
-func (h Device) AcquireNextImageKHR(
+func (h *Device) AcquireNextImageKHR(
 	swapchain *SwapchainKHR,
 	timeout uint64,
 	semaphore *Semaphore,
@@ -23121,7 +23201,7 @@ func (h Device) AcquireNextImageKHR(
 	return val4, nil
 }
 
-func (h Device) AllocateCommandBuffers(
+func (h *Device) AllocateCommandBuffers(
 	AllocateInfo *CommandBufferAllocateInfo,
 ) ([]*CommandBuffer, error) {
 	cancels := make([]func(), 0)
@@ -23160,11 +23240,19 @@ func (h Device) AllocateCommandBuffers(
 		h5 := &CommandBuffer{handle: unsafe.Pointer((*[1 << 30]unsafe.Pointer)(unsafe.Pointer(_commandBuffersOutPtr))[i4])}
 		out3[i4] = h5
 		h5.table = h.table
+		h5.parent = h
+		h5.retain = new([]any)
+		if AllocateInfo != nil {
+			*h5.retain = append(*h5.retain, AllocateInfo)
+		}
+		if h5 != nil {
+			runtime.AddCleanup(h5, _cleanupCommandBuffer, _cleanupArgsCommandBuffer{parent: h, pool: AllocateInfo.CommandPool, keepAlive: h, retain: h5.retain, handle: h5.handle, trampoline: h5.cleanup})
+		}
 	}
 	return out3, nil
 }
 
-func (h Device) AllocateDescriptorSets(
+func (h *Device) AllocateDescriptorSets(
 	AllocateInfo *DescriptorSetAllocateInfo,
 ) ([]*DescriptorSet, error) {
 	cancels := make([]func(), 0)
@@ -23203,11 +23291,19 @@ func (h Device) AllocateDescriptorSets(
 		h5 := &DescriptorSet{handle: unsafe.Pointer((*[1 << 30]unsafe.Pointer)(unsafe.Pointer(_descriptorSetsOutPtr))[i4])}
 		out3[i4] = h5
 		h5.table = h.table
+		h5.parent = h
+		h5.retain = new([]any)
+		if AllocateInfo != nil {
+			*h5.retain = append(*h5.retain, AllocateInfo)
+		}
+		if h5 != nil {
+			runtime.AddCleanup(h5, _cleanupDescriptorSet, _cleanupArgsDescriptorSet{parent: h, pool: AllocateInfo.DescriptorPool, keepAlive: h, retain: h5.retain, handle: h5.handle, trampoline: h5.cleanup})
+		}
 	}
 	return out3, nil
 }
 
-func (h Device) AllocateMemory(
+func (h *Device) AllocateMemory(
 	AllocateInfo *MemoryAllocateInfo,
 	Allocator *AllocationCallbacks,
 ) (*DeviceMemory, error) {
@@ -23244,10 +23340,18 @@ func (h Device) AllocateMemory(
 		return nil, Result(_ret)
 	}
 	h6 := &DeviceMemory{handle: unsafe.Pointer(memoryOut)}
+	h6.parent = h
+	h6.retain = new([]any)
+	if AllocateInfo != nil {
+		*h6.retain = append(*h6.retain, AllocateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupDeviceMemory, _cleanupArgsDeviceMemory{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h CommandBuffer) Begin(
+func (h *CommandBuffer) Begin(
 	BeginInfo *CommandBufferBeginInfo,
 ) error {
 	cancels := make([]func(), 0)
@@ -23275,7 +23379,7 @@ func (h CommandBuffer) Begin(
 	return nil
 }
 
-func (h Device) BindBufferMemory(
+func (h *Device) BindBufferMemory(
 	buffer *Buffer,
 	memory *DeviceMemory,
 	memoryOffset uint64,
@@ -23307,10 +23411,13 @@ func (h Device) BindBufferMemory(
 	if _ret != int32(Success) {
 		return Result(_ret)
 	}
+	if buffer != nil && memory != nil && buffer.retain != nil {
+		*buffer.retain = append(*buffer.retain, memory)
+	}
 	return nil
 }
 
-func (h Device) BindImageMemory(
+func (h *Device) BindImageMemory(
 	image *Image,
 	memory *DeviceMemory,
 	memoryOffset uint64,
@@ -23342,10 +23449,13 @@ func (h Device) BindImageMemory(
 	if _ret != int32(Success) {
 		return Result(_ret)
 	}
+	if image != nil && memory != nil && image.retain != nil {
+		*image.retain = append(*image.retain, memory)
+	}
 	return nil
 }
 
-func (h Device) BuildAccelerationStructuresKHR(
+func (h *Device) BuildAccelerationStructuresKHR(
 	deferredOperation *DeferredOperationKHR,
 	Infos []AccelerationStructureBuildGeometryInfoKHR,
 	BuildRangeInfos []*AccelerationStructureBuildRangeInfoKHR,
@@ -23406,7 +23516,7 @@ func (h Device) BuildAccelerationStructuresKHR(
 	return nil
 }
 
-func (h CommandBuffer) BeginDebugUtilsLabelEXT(
+func (h *CommandBuffer) BeginDebugUtilsLabelEXT(
 	LabelInfo *DebugUtilsLabelEXT,
 ) {
 	cancels := make([]func(), 0)
@@ -23429,7 +23539,7 @@ func (h CommandBuffer) BeginDebugUtilsLabelEXT(
 	})
 }
 
-func (h CommandBuffer) BeginQuery(
+func (h *CommandBuffer) BeginQuery(
 	queryPool *QueryPool,
 	query uint32,
 	flags QueryControlFlags,
@@ -23456,7 +23566,7 @@ func (h CommandBuffer) BeginQuery(
 	})
 }
 
-func (h CommandBuffer) BeginRenderPass(
+func (h *CommandBuffer) BeginRenderPass(
 	RenderPassBegin *RenderPassBeginInfo,
 	contents SubpassContents,
 ) {
@@ -23482,7 +23592,7 @@ func (h CommandBuffer) BeginRenderPass(
 	})
 }
 
-func (h CommandBuffer) BeginRenderPass2(
+func (h *CommandBuffer) BeginRenderPass2(
 	RenderPassBegin *RenderPassBeginInfo,
 	SubpassBeginInfo *SubpassBeginInfo,
 ) {
@@ -23513,7 +23623,7 @@ func (h CommandBuffer) BeginRenderPass2(
 	})
 }
 
-func (h CommandBuffer) BeginRendering(
+func (h *CommandBuffer) BeginRendering(
 	RenderingInfo *RenderingInfo,
 ) {
 	cancels := make([]func(), 0)
@@ -23536,7 +23646,7 @@ func (h CommandBuffer) BeginRendering(
 	})
 }
 
-func (h CommandBuffer) BindDescriptorBufferEmbeddedSamplersEXT(
+func (h *CommandBuffer) BindDescriptorBufferEmbeddedSamplersEXT(
 	pipelineBindPoint PipelineBindPoint,
 	layout *PipelineLayout,
 	set uint32,
@@ -23563,7 +23673,7 @@ func (h CommandBuffer) BindDescriptorBufferEmbeddedSamplersEXT(
 	})
 }
 
-func (h CommandBuffer) BindDescriptorBuffersEXT(
+func (h *CommandBuffer) BindDescriptorBuffersEXT(
 	BindingInfos []DescriptorBufferBindingInfoEXT,
 ) {
 	cancels := make([]func(), 0)
@@ -23597,7 +23707,7 @@ func (h CommandBuffer) BindDescriptorBuffersEXT(
 	})
 }
 
-func (h CommandBuffer) BindDescriptorSets(
+func (h *CommandBuffer) BindDescriptorSets(
 	pipelineBindPoint PipelineBindPoint,
 	layout *PipelineLayout,
 	firstSet uint32,
@@ -23661,7 +23771,7 @@ func (h CommandBuffer) BindDescriptorSets(
 	})
 }
 
-func (h CommandBuffer) BindIndexBuffer(
+func (h *CommandBuffer) BindIndexBuffer(
 	buffer *Buffer,
 	offset uint64,
 	indexType IndexType,
@@ -23688,7 +23798,7 @@ func (h CommandBuffer) BindIndexBuffer(
 	})
 }
 
-func (h CommandBuffer) BindIndexBuffer2(
+func (h *CommandBuffer) BindIndexBuffer2(
 	buffer *Buffer,
 	offset uint64,
 	size uint64,
@@ -23718,7 +23828,7 @@ func (h CommandBuffer) BindIndexBuffer2(
 	})
 }
 
-func (h CommandBuffer) BindPipeline(
+func (h *CommandBuffer) BindPipeline(
 	pipelineBindPoint PipelineBindPoint,
 	pipeline *Pipeline,
 ) {
@@ -23742,7 +23852,7 @@ func (h CommandBuffer) BindPipeline(
 	})
 }
 
-func (h CommandBuffer) BindShadersEXT(
+func (h *CommandBuffer) BindShadersEXT(
 	Stages []ShaderStageFlagBits,
 	Shaders []*ShaderEXT,
 ) {
@@ -23792,7 +23902,7 @@ func (h CommandBuffer) BindShadersEXT(
 	})
 }
 
-func (h CommandBuffer) BindVertexBuffers(
+func (h *CommandBuffer) BindVertexBuffers(
 	firstBinding uint32,
 	Buffers []*Buffer,
 	Offsets []uint64,
@@ -23845,7 +23955,7 @@ func (h CommandBuffer) BindVertexBuffers(
 	})
 }
 
-func (h CommandBuffer) BindVertexBuffers2(
+func (h *CommandBuffer) BindVertexBuffers2(
 	firstBinding uint32,
 	Buffers []*Buffer,
 	Offsets []uint64,
@@ -23928,7 +24038,7 @@ func (h CommandBuffer) BindVertexBuffers2(
 	})
 }
 
-func (h CommandBuffer) BlitImage(
+func (h *CommandBuffer) BlitImage(
 	srcImage *Image,
 	srcImageLayout ImageLayout,
 	dstImage *Image,
@@ -23983,7 +24093,7 @@ func (h CommandBuffer) BlitImage(
 	})
 }
 
-func (h CommandBuffer) BlitImage2(
+func (h *CommandBuffer) BlitImage2(
 	BlitImageInfo *BlitImageInfo2,
 ) {
 	cancels := make([]func(), 0)
@@ -24006,7 +24116,7 @@ func (h CommandBuffer) BlitImage2(
 	})
 }
 
-func (h CommandBuffer) BuildAccelerationStructuresIndirectKHR(
+func (h *CommandBuffer) BuildAccelerationStructuresIndirectKHR(
 	Infos []AccelerationStructureBuildGeometryInfoKHR,
 	IndirectDeviceAddresses []uint64,
 	IndirectStrides []uint32,
@@ -24072,7 +24182,7 @@ func (h CommandBuffer) BuildAccelerationStructuresIndirectKHR(
 	})
 }
 
-func (h CommandBuffer) BuildAccelerationStructuresKHR(
+func (h *CommandBuffer) BuildAccelerationStructuresKHR(
 	Infos []AccelerationStructureBuildGeometryInfoKHR,
 	BuildRangeInfos []*AccelerationStructureBuildRangeInfoKHR,
 ) {
@@ -24122,7 +24232,7 @@ func (h CommandBuffer) BuildAccelerationStructuresKHR(
 	})
 }
 
-func (h CommandBuffer) ClearAttachments(
+func (h *CommandBuffer) ClearAttachments(
 	Attachments []ClearAttachment,
 	Rects []ClearRect,
 ) {
@@ -24175,7 +24285,7 @@ func (h CommandBuffer) ClearAttachments(
 	})
 }
 
-func (h CommandBuffer) ClearColorImage(
+func (h *CommandBuffer) ClearColorImage(
 	image *Image,
 	imageLayout ImageLayout,
 	Color *ClearColorValue,
@@ -24226,7 +24336,7 @@ func (h CommandBuffer) ClearColorImage(
 	})
 }
 
-func (h CommandBuffer) ClearDepthStencilImage(
+func (h *CommandBuffer) ClearDepthStencilImage(
 	image *Image,
 	imageLayout ImageLayout,
 	DepthStencil *ClearDepthStencilValue,
@@ -24277,7 +24387,7 @@ func (h CommandBuffer) ClearDepthStencilImage(
 	})
 }
 
-func (h CommandBuffer) CopyAccelerationStructureKHR(
+func (h *CommandBuffer) CopyAccelerationStructureKHR(
 	Info *CopyAccelerationStructureInfoKHR,
 ) {
 	cancels := make([]func(), 0)
@@ -24300,7 +24410,7 @@ func (h CommandBuffer) CopyAccelerationStructureKHR(
 	})
 }
 
-func (h CommandBuffer) CopyAccelerationStructureToMemoryKHR(
+func (h *CommandBuffer) CopyAccelerationStructureToMemoryKHR(
 	Info *CopyAccelerationStructureToMemoryInfoKHR,
 ) {
 	cancels := make([]func(), 0)
@@ -24323,7 +24433,7 @@ func (h CommandBuffer) CopyAccelerationStructureToMemoryKHR(
 	})
 }
 
-func (h CommandBuffer) CopyBuffer(
+func (h *CommandBuffer) CopyBuffer(
 	srcBuffer *Buffer,
 	dstBuffer *Buffer,
 	Regions []BufferCopy,
@@ -24369,7 +24479,7 @@ func (h CommandBuffer) CopyBuffer(
 	})
 }
 
-func (h CommandBuffer) CopyBufferToImage(
+func (h *CommandBuffer) CopyBufferToImage(
 	srcBuffer *Buffer,
 	dstImage *Image,
 	dstImageLayout ImageLayout,
@@ -24418,7 +24528,7 @@ func (h CommandBuffer) CopyBufferToImage(
 	})
 }
 
-func (h CommandBuffer) CopyImage(
+func (h *CommandBuffer) CopyImage(
 	srcImage *Image,
 	srcImageLayout ImageLayout,
 	dstImage *Image,
@@ -24470,7 +24580,7 @@ func (h CommandBuffer) CopyImage(
 	})
 }
 
-func (h CommandBuffer) CopyImageToBuffer(
+func (h *CommandBuffer) CopyImageToBuffer(
 	srcImage *Image,
 	srcImageLayout ImageLayout,
 	dstBuffer *Buffer,
@@ -24519,7 +24629,7 @@ func (h CommandBuffer) CopyImageToBuffer(
 	})
 }
 
-func (h CommandBuffer) CopyMemoryToAccelerationStructureKHR(
+func (h *CommandBuffer) CopyMemoryToAccelerationStructureKHR(
 	Info *CopyMemoryToAccelerationStructureInfoKHR,
 ) {
 	cancels := make([]func(), 0)
@@ -24542,7 +24652,7 @@ func (h CommandBuffer) CopyMemoryToAccelerationStructureKHR(
 	})
 }
 
-func (h CommandBuffer) CopyQueryPoolResults(
+func (h *CommandBuffer) CopyQueryPoolResults(
 	queryPool *QueryPool,
 	firstQuery uint32,
 	queryCount uint32,
@@ -24584,7 +24694,7 @@ func (h CommandBuffer) CopyQueryPoolResults(
 	})
 }
 
-func (h CommandBuffer) Dispatch(
+func (h *CommandBuffer) Dispatch(
 	groupCountX uint32,
 	groupCountY uint32,
 	groupCountZ uint32,
@@ -24608,7 +24718,7 @@ func (h CommandBuffer) Dispatch(
 	})
 }
 
-func (h CommandBuffer) DispatchIndirect(
+func (h *CommandBuffer) DispatchIndirect(
 	buffer *Buffer,
 	offset uint64,
 ) {
@@ -24632,7 +24742,7 @@ func (h CommandBuffer) DispatchIndirect(
 	})
 }
 
-func (h CommandBuffer) Draw(
+func (h *CommandBuffer) Draw(
 	vertexCount uint32,
 	instanceCount uint32,
 	firstVertex uint32,
@@ -24659,7 +24769,7 @@ func (h CommandBuffer) Draw(
 	})
 }
 
-func (h CommandBuffer) DrawIndexed(
+func (h *CommandBuffer) DrawIndexed(
 	indexCount uint32,
 	instanceCount uint32,
 	firstIndex uint32,
@@ -24689,7 +24799,7 @@ func (h CommandBuffer) DrawIndexed(
 	})
 }
 
-func (h CommandBuffer) DrawIndexedIndirect(
+func (h *CommandBuffer) DrawIndexedIndirect(
 	buffer *Buffer,
 	offset uint64,
 	drawCount uint32,
@@ -24719,7 +24829,7 @@ func (h CommandBuffer) DrawIndexedIndirect(
 	})
 }
 
-func (h CommandBuffer) DrawIndexedIndirectCount(
+func (h *CommandBuffer) DrawIndexedIndirectCount(
 	buffer *Buffer,
 	offset uint64,
 	countBuffer *Buffer,
@@ -24758,7 +24868,7 @@ func (h CommandBuffer) DrawIndexedIndirectCount(
 	})
 }
 
-func (h CommandBuffer) DrawIndirect(
+func (h *CommandBuffer) DrawIndirect(
 	buffer *Buffer,
 	offset uint64,
 	drawCount uint32,
@@ -24788,7 +24898,7 @@ func (h CommandBuffer) DrawIndirect(
 	})
 }
 
-func (h CommandBuffer) DrawIndirectCount(
+func (h *CommandBuffer) DrawIndirectCount(
 	buffer *Buffer,
 	offset uint64,
 	countBuffer *Buffer,
@@ -24827,7 +24937,7 @@ func (h CommandBuffer) DrawIndirectCount(
 	})
 }
 
-func (h CommandBuffer) DrawMeshTasksEXT(
+func (h *CommandBuffer) DrawMeshTasksEXT(
 	groupCountX uint32,
 	groupCountY uint32,
 	groupCountZ uint32,
@@ -24851,7 +24961,7 @@ func (h CommandBuffer) DrawMeshTasksEXT(
 	})
 }
 
-func (h CommandBuffer) DrawMeshTasksIndirectCountEXT(
+func (h *CommandBuffer) DrawMeshTasksIndirectCountEXT(
 	buffer *Buffer,
 	offset uint64,
 	countBuffer *Buffer,
@@ -24890,7 +25000,7 @@ func (h CommandBuffer) DrawMeshTasksIndirectCountEXT(
 	})
 }
 
-func (h CommandBuffer) DrawMeshTasksIndirectEXT(
+func (h *CommandBuffer) DrawMeshTasksIndirectEXT(
 	buffer *Buffer,
 	offset uint64,
 	drawCount uint32,
@@ -24920,7 +25030,7 @@ func (h CommandBuffer) DrawMeshTasksIndirectEXT(
 	})
 }
 
-func (h CommandBuffer) DrawMultiEXT(
+func (h *CommandBuffer) DrawMultiEXT(
 	VertexInfo []MultiDrawInfoEXT,
 	instanceCount uint32,
 	firstInstance uint32,
@@ -24963,7 +25073,7 @@ func (h CommandBuffer) DrawMultiEXT(
 	})
 }
 
-func (h CommandBuffer) DrawMultiIndexedEXT(
+func (h *CommandBuffer) DrawMultiIndexedEXT(
 	IndexInfo []MultiDrawIndexedInfoEXT,
 	instanceCount uint32,
 	firstInstance uint32,
@@ -25014,7 +25124,7 @@ func (h CommandBuffer) DrawMultiIndexedEXT(
 	})
 }
 
-func (h CommandBuffer) EndDebugUtilsLabelEXT() {
+func (h *CommandBuffer) EndDebugUtilsLabelEXT() {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -25028,7 +25138,7 @@ func (h CommandBuffer) EndDebugUtilsLabelEXT() {
 	})
 }
 
-func (h CommandBuffer) EndQuery(
+func (h *CommandBuffer) EndQuery(
 	queryPool *QueryPool,
 	query uint32,
 ) {
@@ -25052,7 +25162,7 @@ func (h CommandBuffer) EndQuery(
 	})
 }
 
-func (h CommandBuffer) EndRenderPass() {
+func (h *CommandBuffer) EndRenderPass() {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -25066,7 +25176,7 @@ func (h CommandBuffer) EndRenderPass() {
 	})
 }
 
-func (h CommandBuffer) EndRenderPass2(
+func (h *CommandBuffer) EndRenderPass2(
 	SubpassEndInfo *SubpassEndInfo,
 ) {
 	cancels := make([]func(), 0)
@@ -25089,7 +25199,7 @@ func (h CommandBuffer) EndRenderPass2(
 	})
 }
 
-func (h CommandBuffer) EndRendering() {
+func (h *CommandBuffer) EndRendering() {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -25103,7 +25213,7 @@ func (h CommandBuffer) EndRendering() {
 	})
 }
 
-func (h CommandBuffer) ExecuteCommands(
+func (h *CommandBuffer) ExecuteCommands(
 	CommandBuffers []*CommandBuffer,
 ) {
 	cancels := make([]func(), 0)
@@ -25138,7 +25248,7 @@ func (h CommandBuffer) ExecuteCommands(
 	})
 }
 
-func (h CommandBuffer) ExecuteGeneratedCommandsEXT(
+func (h *CommandBuffer) ExecuteGeneratedCommandsEXT(
 	isPreprocessed bool,
 	GeneratedCommandsInfo *GeneratedCommandsInfoEXT,
 ) {
@@ -25167,7 +25277,7 @@ func (h CommandBuffer) ExecuteGeneratedCommandsEXT(
 	})
 }
 
-func (h CommandBuffer) FillBuffer(
+func (h *CommandBuffer) FillBuffer(
 	dstBuffer *Buffer,
 	dstOffset uint64,
 	size uint64,
@@ -25197,7 +25307,7 @@ func (h CommandBuffer) FillBuffer(
 	})
 }
 
-func (h CommandBuffer) InsertDebugUtilsLabelEXT(
+func (h *CommandBuffer) InsertDebugUtilsLabelEXT(
 	LabelInfo *DebugUtilsLabelEXT,
 ) {
 	cancels := make([]func(), 0)
@@ -25220,7 +25330,7 @@ func (h CommandBuffer) InsertDebugUtilsLabelEXT(
 	})
 }
 
-func (h CommandBuffer) NextSubpass(
+func (h *CommandBuffer) NextSubpass(
 	contents SubpassContents,
 ) {
 	cancels := make([]func(), 0)
@@ -25238,7 +25348,7 @@ func (h CommandBuffer) NextSubpass(
 	})
 }
 
-func (h CommandBuffer) NextSubpass2(
+func (h *CommandBuffer) NextSubpass2(
 	SubpassBeginInfo *SubpassBeginInfo,
 	SubpassEndInfo *SubpassEndInfo,
 ) {
@@ -25269,7 +25379,7 @@ func (h CommandBuffer) NextSubpass2(
 	})
 }
 
-func (h CommandBuffer) PipelineBarrier(
+func (h *CommandBuffer) PipelineBarrier(
 	srcStageMask PipelineStageFlags,
 	dstStageMask PipelineStageFlags,
 	dependencyFlags DependencyFlags,
@@ -25350,7 +25460,7 @@ func (h CommandBuffer) PipelineBarrier(
 	})
 }
 
-func (h CommandBuffer) PreprocessGeneratedCommandsEXT(
+func (h *CommandBuffer) PreprocessGeneratedCommandsEXT(
 	GeneratedCommandsInfo *GeneratedCommandsInfoEXT,
 	stateCommandBuffer *CommandBuffer,
 ) {
@@ -25379,7 +25489,7 @@ func (h CommandBuffer) PreprocessGeneratedCommandsEXT(
 	})
 }
 
-func (h CommandBuffer) PushConstants(
+func (h *CommandBuffer) PushConstants(
 	layout *PipelineLayout,
 	stageFlags ShaderStageFlags,
 	offset uint32,
@@ -25415,7 +25525,7 @@ func (h CommandBuffer) PushConstants(
 	})
 }
 
-func (h CommandBuffer) ResetEvent(
+func (h *CommandBuffer) ResetEvent(
 	event *Event,
 	stageMask PipelineStageFlags,
 ) {
@@ -25439,7 +25549,7 @@ func (h CommandBuffer) ResetEvent(
 	})
 }
 
-func (h CommandBuffer) ResetQueryPool(
+func (h *CommandBuffer) ResetQueryPool(
 	queryPool *QueryPool,
 	firstQuery uint32,
 	queryCount uint32,
@@ -25466,7 +25576,7 @@ func (h CommandBuffer) ResetQueryPool(
 	})
 }
 
-func (h CommandBuffer) ResolveImage(
+func (h *CommandBuffer) ResolveImage(
 	srcImage *Image,
 	srcImageLayout ImageLayout,
 	dstImage *Image,
@@ -25518,7 +25628,7 @@ func (h CommandBuffer) ResolveImage(
 	})
 }
 
-func (h CommandBuffer) ResolveImage2(
+func (h *CommandBuffer) ResolveImage2(
 	ResolveImageInfo *ResolveImageInfo2,
 ) {
 	cancels := make([]func(), 0)
@@ -25541,7 +25651,7 @@ func (h CommandBuffer) ResolveImage2(
 	})
 }
 
-func (h CommandBuffer) SetAlphaToCoverageEnableEXT(
+func (h *CommandBuffer) SetAlphaToCoverageEnableEXT(
 	alphaToCoverageEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -25562,7 +25672,7 @@ func (h CommandBuffer) SetAlphaToCoverageEnableEXT(
 	})
 }
 
-func (h CommandBuffer) SetAlphaToOneEnableEXT(
+func (h *CommandBuffer) SetAlphaToOneEnableEXT(
 	alphaToOneEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -25583,7 +25693,7 @@ func (h CommandBuffer) SetAlphaToOneEnableEXT(
 	})
 }
 
-func (h CommandBuffer) SetBlendConstants(
+func (h *CommandBuffer) SetBlendConstants(
 	blendConstants [4]float32,
 ) {
 	cancels := make([]func(), 0)
@@ -25605,7 +25715,7 @@ func (h CommandBuffer) SetBlendConstants(
 	})
 }
 
-func (h CommandBuffer) SetColorBlendAdvancedEXT(
+func (h *CommandBuffer) SetColorBlendAdvancedEXT(
 	firstAttachment uint32,
 	ColorBlendAdvanced []ColorBlendAdvancedEXT,
 ) {
@@ -25642,7 +25752,7 @@ func (h CommandBuffer) SetColorBlendAdvancedEXT(
 	})
 }
 
-func (h CommandBuffer) SetColorBlendEnableEXT(
+func (h *CommandBuffer) SetColorBlendEnableEXT(
 	firstAttachment uint32,
 	ColorBlendEnables []bool,
 ) {
@@ -25680,7 +25790,7 @@ func (h CommandBuffer) SetColorBlendEnableEXT(
 	})
 }
 
-func (h CommandBuffer) SetColorBlendEquationEXT(
+func (h *CommandBuffer) SetColorBlendEquationEXT(
 	firstAttachment uint32,
 	ColorBlendEquations []ColorBlendEquationEXT,
 ) {
@@ -25717,7 +25827,7 @@ func (h CommandBuffer) SetColorBlendEquationEXT(
 	})
 }
 
-func (h CommandBuffer) SetColorWriteMaskEXT(
+func (h *CommandBuffer) SetColorWriteMaskEXT(
 	firstAttachment uint32,
 	ColorWriteMasks []ColorComponentFlags,
 ) {
@@ -25752,7 +25862,7 @@ func (h CommandBuffer) SetColorWriteMaskEXT(
 	})
 }
 
-func (h CommandBuffer) SetConservativeRasterizationModeEXT(
+func (h *CommandBuffer) SetConservativeRasterizationModeEXT(
 	conservativeRasterizationMode ConservativeRasterizationModeEXT,
 ) {
 	cancels := make([]func(), 0)
@@ -25770,7 +25880,7 @@ func (h CommandBuffer) SetConservativeRasterizationModeEXT(
 	})
 }
 
-func (h CommandBuffer) SetCoverageModulationModeNV(
+func (h *CommandBuffer) SetCoverageModulationModeNV(
 	coverageModulationMode CoverageModulationModeNV,
 ) {
 	cancels := make([]func(), 0)
@@ -25788,7 +25898,7 @@ func (h CommandBuffer) SetCoverageModulationModeNV(
 	})
 }
 
-func (h CommandBuffer) SetCoverageModulationTableEnableNV(
+func (h *CommandBuffer) SetCoverageModulationTableEnableNV(
 	coverageModulationTableEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -25809,7 +25919,7 @@ func (h CommandBuffer) SetCoverageModulationTableEnableNV(
 	})
 }
 
-func (h CommandBuffer) SetCoverageModulationTableNV(
+func (h *CommandBuffer) SetCoverageModulationTableNV(
 	CoverageModulationTable []float32,
 ) {
 	cancels := make([]func(), 0)
@@ -25841,7 +25951,7 @@ func (h CommandBuffer) SetCoverageModulationTableNV(
 	})
 }
 
-func (h CommandBuffer) SetCoverageReductionModeNV(
+func (h *CommandBuffer) SetCoverageReductionModeNV(
 	coverageReductionMode CoverageReductionModeNV,
 ) {
 	cancels := make([]func(), 0)
@@ -25859,7 +25969,7 @@ func (h CommandBuffer) SetCoverageReductionModeNV(
 	})
 }
 
-func (h CommandBuffer) SetCoverageToColorEnableNV(
+func (h *CommandBuffer) SetCoverageToColorEnableNV(
 	coverageToColorEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -25880,7 +25990,7 @@ func (h CommandBuffer) SetCoverageToColorEnableNV(
 	})
 }
 
-func (h CommandBuffer) SetCoverageToColorLocationNV(
+func (h *CommandBuffer) SetCoverageToColorLocationNV(
 	coverageToColorLocation uint32,
 ) {
 	cancels := make([]func(), 0)
@@ -25898,7 +26008,7 @@ func (h CommandBuffer) SetCoverageToColorLocationNV(
 	})
 }
 
-func (h CommandBuffer) SetCullMode(
+func (h *CommandBuffer) SetCullMode(
 	cullMode CullModeFlags,
 ) {
 	cancels := make([]func(), 0)
@@ -25916,7 +26026,7 @@ func (h CommandBuffer) SetCullMode(
 	})
 }
 
-func (h CommandBuffer) SetDepthBias(
+func (h *CommandBuffer) SetDepthBias(
 	depthBiasConstantFactor float32,
 	depthBiasClamp float32,
 	depthBiasSlopeFactor float32,
@@ -25940,7 +26050,7 @@ func (h CommandBuffer) SetDepthBias(
 	})
 }
 
-func (h CommandBuffer) SetDepthBiasEnable(
+func (h *CommandBuffer) SetDepthBiasEnable(
 	depthBiasEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -25961,7 +26071,7 @@ func (h CommandBuffer) SetDepthBiasEnable(
 	})
 }
 
-func (h CommandBuffer) SetDepthBounds(
+func (h *CommandBuffer) SetDepthBounds(
 	minDepthBounds float32,
 	maxDepthBounds float32,
 ) {
@@ -25982,7 +26092,7 @@ func (h CommandBuffer) SetDepthBounds(
 	})
 }
 
-func (h CommandBuffer) SetDepthBoundsTestEnable(
+func (h *CommandBuffer) SetDepthBoundsTestEnable(
 	depthBoundsTestEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26003,7 +26113,7 @@ func (h CommandBuffer) SetDepthBoundsTestEnable(
 	})
 }
 
-func (h CommandBuffer) SetDepthClampEnableEXT(
+func (h *CommandBuffer) SetDepthClampEnableEXT(
 	depthClampEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26024,7 +26134,7 @@ func (h CommandBuffer) SetDepthClampEnableEXT(
 	})
 }
 
-func (h CommandBuffer) SetDepthClampRangeEXT(
+func (h *CommandBuffer) SetDepthClampRangeEXT(
 	depthClampMode DepthClampModeEXT,
 	DepthClampRange *DepthClampRangeEXT,
 ) {
@@ -26050,7 +26160,7 @@ func (h CommandBuffer) SetDepthClampRangeEXT(
 	})
 }
 
-func (h CommandBuffer) SetDepthClipEnableEXT(
+func (h *CommandBuffer) SetDepthClipEnableEXT(
 	depthClipEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26071,7 +26181,7 @@ func (h CommandBuffer) SetDepthClipEnableEXT(
 	})
 }
 
-func (h CommandBuffer) SetDepthClipNegativeOneToOneEXT(
+func (h *CommandBuffer) SetDepthClipNegativeOneToOneEXT(
 	negativeOneToOne bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26092,7 +26202,7 @@ func (h CommandBuffer) SetDepthClipNegativeOneToOneEXT(
 	})
 }
 
-func (h CommandBuffer) SetDepthCompareOp(
+func (h *CommandBuffer) SetDepthCompareOp(
 	depthCompareOp CompareOp,
 ) {
 	cancels := make([]func(), 0)
@@ -26110,7 +26220,7 @@ func (h CommandBuffer) SetDepthCompareOp(
 	})
 }
 
-func (h CommandBuffer) SetDepthTestEnable(
+func (h *CommandBuffer) SetDepthTestEnable(
 	depthTestEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26131,7 +26241,7 @@ func (h CommandBuffer) SetDepthTestEnable(
 	})
 }
 
-func (h CommandBuffer) SetDepthWriteEnable(
+func (h *CommandBuffer) SetDepthWriteEnable(
 	depthWriteEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26152,7 +26262,7 @@ func (h CommandBuffer) SetDepthWriteEnable(
 	})
 }
 
-func (h CommandBuffer) SetDescriptorBufferOffsetsEXT(
+func (h *CommandBuffer) SetDescriptorBufferOffsetsEXT(
 	pipelineBindPoint PipelineBindPoint,
 	layout *PipelineLayout,
 	firstSet uint32,
@@ -26211,7 +26321,7 @@ func (h CommandBuffer) SetDescriptorBufferOffsetsEXT(
 	})
 }
 
-func (h CommandBuffer) SetEvent(
+func (h *CommandBuffer) SetEvent(
 	event *Event,
 	stageMask PipelineStageFlags,
 ) {
@@ -26235,7 +26345,7 @@ func (h CommandBuffer) SetEvent(
 	})
 }
 
-func (h CommandBuffer) SetExtraPrimitiveOverestimationSizeEXT(
+func (h *CommandBuffer) SetExtraPrimitiveOverestimationSizeEXT(
 	extraPrimitiveOverestimationSize float32,
 ) {
 	cancels := make([]func(), 0)
@@ -26253,7 +26363,7 @@ func (h CommandBuffer) SetExtraPrimitiveOverestimationSizeEXT(
 	})
 }
 
-func (h CommandBuffer) SetFrontFace(
+func (h *CommandBuffer) SetFrontFace(
 	frontFace FrontFace,
 ) {
 	cancels := make([]func(), 0)
@@ -26271,7 +26381,7 @@ func (h CommandBuffer) SetFrontFace(
 	})
 }
 
-func (h CommandBuffer) SetLineRasterizationModeEXT(
+func (h *CommandBuffer) SetLineRasterizationModeEXT(
 	lineRasterizationMode LineRasterizationModeEXT,
 ) {
 	cancels := make([]func(), 0)
@@ -26289,7 +26399,7 @@ func (h CommandBuffer) SetLineRasterizationModeEXT(
 	})
 }
 
-func (h CommandBuffer) SetLineStipple(
+func (h *CommandBuffer) SetLineStipple(
 	lineStippleFactor uint32,
 	lineStipplePattern uint16,
 ) {
@@ -26310,7 +26420,7 @@ func (h CommandBuffer) SetLineStipple(
 	})
 }
 
-func (h CommandBuffer) SetLineStippleEnableEXT(
+func (h *CommandBuffer) SetLineStippleEnableEXT(
 	stippledLineEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26331,7 +26441,7 @@ func (h CommandBuffer) SetLineStippleEnableEXT(
 	})
 }
 
-func (h CommandBuffer) SetLineWidth(
+func (h *CommandBuffer) SetLineWidth(
 	lineWidth float32,
 ) {
 	cancels := make([]func(), 0)
@@ -26349,7 +26459,7 @@ func (h CommandBuffer) SetLineWidth(
 	})
 }
 
-func (h CommandBuffer) SetLogicOpEXT(
+func (h *CommandBuffer) SetLogicOpEXT(
 	logicOp LogicOp,
 ) {
 	cancels := make([]func(), 0)
@@ -26367,7 +26477,7 @@ func (h CommandBuffer) SetLogicOpEXT(
 	})
 }
 
-func (h CommandBuffer) SetLogicOpEnableEXT(
+func (h *CommandBuffer) SetLogicOpEnableEXT(
 	logicOpEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26388,7 +26498,7 @@ func (h CommandBuffer) SetLogicOpEnableEXT(
 	})
 }
 
-func (h CommandBuffer) SetPatchControlPointsEXT(
+func (h *CommandBuffer) SetPatchControlPointsEXT(
 	patchControlPoints uint32,
 ) {
 	cancels := make([]func(), 0)
@@ -26406,7 +26516,7 @@ func (h CommandBuffer) SetPatchControlPointsEXT(
 	})
 }
 
-func (h CommandBuffer) SetPolygonModeEXT(
+func (h *CommandBuffer) SetPolygonModeEXT(
 	polygonMode PolygonMode,
 ) {
 	cancels := make([]func(), 0)
@@ -26424,7 +26534,7 @@ func (h CommandBuffer) SetPolygonModeEXT(
 	})
 }
 
-func (h CommandBuffer) SetPrimitiveRestartEnable(
+func (h *CommandBuffer) SetPrimitiveRestartEnable(
 	primitiveRestartEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26445,7 +26555,7 @@ func (h CommandBuffer) SetPrimitiveRestartEnable(
 	})
 }
 
-func (h CommandBuffer) SetPrimitiveTopology(
+func (h *CommandBuffer) SetPrimitiveTopology(
 	primitiveTopology PrimitiveTopology,
 ) {
 	cancels := make([]func(), 0)
@@ -26463,7 +26573,7 @@ func (h CommandBuffer) SetPrimitiveTopology(
 	})
 }
 
-func (h CommandBuffer) SetProvokingVertexModeEXT(
+func (h *CommandBuffer) SetProvokingVertexModeEXT(
 	provokingVertexMode ProvokingVertexModeEXT,
 ) {
 	cancels := make([]func(), 0)
@@ -26481,7 +26591,7 @@ func (h CommandBuffer) SetProvokingVertexModeEXT(
 	})
 }
 
-func (h CommandBuffer) SetRasterizationSamplesEXT(
+func (h *CommandBuffer) SetRasterizationSamplesEXT(
 	rasterizationSamples SampleCountFlagBits,
 ) {
 	cancels := make([]func(), 0)
@@ -26499,7 +26609,7 @@ func (h CommandBuffer) SetRasterizationSamplesEXT(
 	})
 }
 
-func (h CommandBuffer) SetRasterizationStreamEXT(
+func (h *CommandBuffer) SetRasterizationStreamEXT(
 	rasterizationStream uint32,
 ) {
 	cancels := make([]func(), 0)
@@ -26517,7 +26627,7 @@ func (h CommandBuffer) SetRasterizationStreamEXT(
 	})
 }
 
-func (h CommandBuffer) SetRasterizerDiscardEnable(
+func (h *CommandBuffer) SetRasterizerDiscardEnable(
 	rasterizerDiscardEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26538,7 +26648,7 @@ func (h CommandBuffer) SetRasterizerDiscardEnable(
 	})
 }
 
-func (h CommandBuffer) SetRayTracingPipelineStackSizeKHR(
+func (h *CommandBuffer) SetRayTracingPipelineStackSizeKHR(
 	pipelineStackSize uint32,
 ) {
 	cancels := make([]func(), 0)
@@ -26556,7 +26666,7 @@ func (h CommandBuffer) SetRayTracingPipelineStackSizeKHR(
 	})
 }
 
-func (h CommandBuffer) SetRenderingAttachmentLocations(
+func (h *CommandBuffer) SetRenderingAttachmentLocations(
 	LocationInfo *RenderingAttachmentLocationInfo,
 ) {
 	cancels := make([]func(), 0)
@@ -26579,7 +26689,7 @@ func (h CommandBuffer) SetRenderingAttachmentLocations(
 	})
 }
 
-func (h CommandBuffer) SetRenderingInputAttachmentIndices(
+func (h *CommandBuffer) SetRenderingInputAttachmentIndices(
 	InputAttachmentIndexInfo *RenderingInputAttachmentIndexInfo,
 ) {
 	cancels := make([]func(), 0)
@@ -26602,7 +26712,7 @@ func (h CommandBuffer) SetRenderingInputAttachmentIndices(
 	})
 }
 
-func (h CommandBuffer) SetRepresentativeFragmentTestEnableNV(
+func (h *CommandBuffer) SetRepresentativeFragmentTestEnableNV(
 	representativeFragmentTestEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26623,7 +26733,7 @@ func (h CommandBuffer) SetRepresentativeFragmentTestEnableNV(
 	})
 }
 
-func (h CommandBuffer) SetSampleLocationsEnableEXT(
+func (h *CommandBuffer) SetSampleLocationsEnableEXT(
 	sampleLocationsEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26644,7 +26754,7 @@ func (h CommandBuffer) SetSampleLocationsEnableEXT(
 	})
 }
 
-func (h CommandBuffer) SetSampleMaskEXT(
+func (h *CommandBuffer) SetSampleMaskEXT(
 	samples SampleCountFlagBits,
 	SampleMask []uint32,
 ) {
@@ -26677,7 +26787,7 @@ func (h CommandBuffer) SetSampleMaskEXT(
 	})
 }
 
-func (h CommandBuffer) SetScissor(
+func (h *CommandBuffer) SetScissor(
 	firstScissor uint32,
 	Scissors []Rect2D,
 ) {
@@ -26714,7 +26824,7 @@ func (h CommandBuffer) SetScissor(
 	})
 }
 
-func (h CommandBuffer) SetScissorWithCount(
+func (h *CommandBuffer) SetScissorWithCount(
 	Scissors []Rect2D,
 ) {
 	cancels := make([]func(), 0)
@@ -26748,7 +26858,7 @@ func (h CommandBuffer) SetScissorWithCount(
 	})
 }
 
-func (h CommandBuffer) SetShadingRateImageEnableNV(
+func (h *CommandBuffer) SetShadingRateImageEnableNV(
 	shadingRateImageEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26769,7 +26879,7 @@ func (h CommandBuffer) SetShadingRateImageEnableNV(
 	})
 }
 
-func (h CommandBuffer) SetStencilCompareMask(
+func (h *CommandBuffer) SetStencilCompareMask(
 	faceMask StencilFaceFlags,
 	compareMask uint32,
 ) {
@@ -26790,7 +26900,7 @@ func (h CommandBuffer) SetStencilCompareMask(
 	})
 }
 
-func (h CommandBuffer) SetStencilOp(
+func (h *CommandBuffer) SetStencilOp(
 	faceMask StencilFaceFlags,
 	failOp StencilOp,
 	passOp StencilOp,
@@ -26820,7 +26930,7 @@ func (h CommandBuffer) SetStencilOp(
 	})
 }
 
-func (h CommandBuffer) SetStencilReference(
+func (h *CommandBuffer) SetStencilReference(
 	faceMask StencilFaceFlags,
 	reference uint32,
 ) {
@@ -26841,7 +26951,7 @@ func (h CommandBuffer) SetStencilReference(
 	})
 }
 
-func (h CommandBuffer) SetStencilTestEnable(
+func (h *CommandBuffer) SetStencilTestEnable(
 	stencilTestEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -26862,7 +26972,7 @@ func (h CommandBuffer) SetStencilTestEnable(
 	})
 }
 
-func (h CommandBuffer) SetStencilWriteMask(
+func (h *CommandBuffer) SetStencilWriteMask(
 	faceMask StencilFaceFlags,
 	writeMask uint32,
 ) {
@@ -26883,7 +26993,7 @@ func (h CommandBuffer) SetStencilWriteMask(
 	})
 }
 
-func (h CommandBuffer) SetTessellationDomainOriginEXT(
+func (h *CommandBuffer) SetTessellationDomainOriginEXT(
 	domainOrigin TessellationDomainOrigin,
 ) {
 	cancels := make([]func(), 0)
@@ -26901,7 +27011,7 @@ func (h CommandBuffer) SetTessellationDomainOriginEXT(
 	})
 }
 
-func (h CommandBuffer) SetVertexInputEXT(
+func (h *CommandBuffer) SetVertexInputEXT(
 	VertexBindingDescriptions []VertexInputBindingDescription2EXT,
 	VertexAttributeDescriptions []VertexInputAttributeDescription2EXT,
 ) {
@@ -26954,7 +27064,7 @@ func (h CommandBuffer) SetVertexInputEXT(
 	})
 }
 
-func (h CommandBuffer) SetViewport(
+func (h *CommandBuffer) SetViewport(
 	firstViewport uint32,
 	Viewports []Viewport,
 ) {
@@ -26991,7 +27101,7 @@ func (h CommandBuffer) SetViewport(
 	})
 }
 
-func (h CommandBuffer) SetViewportSwizzleNV(
+func (h *CommandBuffer) SetViewportSwizzleNV(
 	firstViewport uint32,
 	ViewportSwizzles []ViewportSwizzleNV,
 ) {
@@ -27028,7 +27138,7 @@ func (h CommandBuffer) SetViewportSwizzleNV(
 	})
 }
 
-func (h CommandBuffer) SetViewportWScalingEnableNV(
+func (h *CommandBuffer) SetViewportWScalingEnableNV(
 	viewportWScalingEnable bool,
 ) {
 	cancels := make([]func(), 0)
@@ -27049,7 +27159,7 @@ func (h CommandBuffer) SetViewportWScalingEnableNV(
 	})
 }
 
-func (h CommandBuffer) SetViewportWithCount(
+func (h *CommandBuffer) SetViewportWithCount(
 	Viewports []Viewport,
 ) {
 	cancels := make([]func(), 0)
@@ -27083,7 +27193,7 @@ func (h CommandBuffer) SetViewportWithCount(
 	})
 }
 
-func (h CommandBuffer) TraceRaysIndirect2KHR(
+func (h *CommandBuffer) TraceRaysIndirect2KHR(
 	indirectDeviceAddress uint64,
 ) {
 	cancels := make([]func(), 0)
@@ -27101,7 +27211,7 @@ func (h CommandBuffer) TraceRaysIndirect2KHR(
 	})
 }
 
-func (h CommandBuffer) TraceRaysIndirectKHR(
+func (h *CommandBuffer) TraceRaysIndirectKHR(
 	RaygenShaderBindingTable *StridedDeviceAddressRegionKHR,
 	MissShaderBindingTable *StridedDeviceAddressRegionKHR,
 	HitShaderBindingTable *StridedDeviceAddressRegionKHR,
@@ -27151,7 +27261,7 @@ func (h CommandBuffer) TraceRaysIndirectKHR(
 	})
 }
 
-func (h CommandBuffer) TraceRaysKHR(
+func (h *CommandBuffer) TraceRaysKHR(
 	RaygenShaderBindingTable *StridedDeviceAddressRegionKHR,
 	MissShaderBindingTable *StridedDeviceAddressRegionKHR,
 	HitShaderBindingTable *StridedDeviceAddressRegionKHR,
@@ -27207,7 +27317,7 @@ func (h CommandBuffer) TraceRaysKHR(
 	})
 }
 
-func (h CommandBuffer) UpdateBuffer(
+func (h *CommandBuffer) UpdateBuffer(
 	dstBuffer *Buffer,
 	dstOffset uint64,
 	dataSize uint64,
@@ -27240,7 +27350,7 @@ func (h CommandBuffer) UpdateBuffer(
 	})
 }
 
-func (h CommandBuffer) WaitEvents(
+func (h *CommandBuffer) WaitEvents(
 	Events []*Event,
 	srcStageMask PipelineStageFlags,
 	dstStageMask PipelineStageFlags,
@@ -27338,7 +27448,7 @@ func (h CommandBuffer) WaitEvents(
 	})
 }
 
-func (h CommandBuffer) WriteAccelerationStructuresPropertiesKHR(
+func (h *CommandBuffer) WriteAccelerationStructuresPropertiesKHR(
 	AccelerationStructures []*AccelerationStructureKHR,
 	queryType QueryType,
 	queryPool *QueryPool,
@@ -27385,7 +27495,7 @@ func (h CommandBuffer) WriteAccelerationStructuresPropertiesKHR(
 	})
 }
 
-func (h CommandBuffer) WriteTimestamp(
+func (h *CommandBuffer) WriteTimestamp(
 	pipelineStage PipelineStageFlagBits,
 	queryPool *QueryPool,
 	query uint32,
@@ -27412,7 +27522,7 @@ func (h CommandBuffer) WriteTimestamp(
 	})
 }
 
-func (h Device) CopyAccelerationStructureKHR(
+func (h *Device) CopyAccelerationStructureKHR(
 	deferredOperation *DeferredOperationKHR,
 	Info *CopyAccelerationStructureInfoKHR,
 ) error {
@@ -27446,7 +27556,7 @@ func (h Device) CopyAccelerationStructureKHR(
 	return nil
 }
 
-func (h Device) CopyAccelerationStructureToMemoryKHR(
+func (h *Device) CopyAccelerationStructureToMemoryKHR(
 	deferredOperation *DeferredOperationKHR,
 	Info *CopyAccelerationStructureToMemoryInfoKHR,
 ) error {
@@ -27480,7 +27590,7 @@ func (h Device) CopyAccelerationStructureToMemoryKHR(
 	return nil
 }
 
-func (h Device) CopyMemoryToAccelerationStructureKHR(
+func (h *Device) CopyMemoryToAccelerationStructureKHR(
 	deferredOperation *DeferredOperationKHR,
 	Info *CopyMemoryToAccelerationStructureInfoKHR,
 ) error {
@@ -27514,7 +27624,7 @@ func (h Device) CopyMemoryToAccelerationStructureKHR(
 	return nil
 }
 
-func (h Device) CreateAccelerationStructureKHR(
+func (h *Device) CreateAccelerationStructureKHR(
 	CreateInfo *AccelerationStructureCreateInfoKHR,
 	Allocator *AllocationCallbacks,
 ) (*AccelerationStructureKHR, error) {
@@ -27552,10 +27662,18 @@ func (h Device) CreateAccelerationStructureKHR(
 	}
 	h6 := &AccelerationStructureKHR{handle: unsafe.Pointer(accelerationStructureOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupAccelerationStructureKHR, _cleanupArgsAccelerationStructureKHR{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateBuffer(
+func (h *Device) CreateBuffer(
 	CreateInfo *BufferCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*Buffer, error) {
@@ -27593,10 +27711,18 @@ func (h Device) CreateBuffer(
 	}
 	h6 := &Buffer{handle: unsafe.Pointer(bufferOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupBuffer, _cleanupArgsBuffer{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateBufferView(
+func (h *Device) CreateBufferView(
 	CreateInfo *BufferViewCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*BufferView, error) {
@@ -27634,10 +27760,18 @@ func (h Device) CreateBufferView(
 	}
 	h6 := &BufferView{handle: unsafe.Pointer(viewOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupBufferView, _cleanupArgsBufferView{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateCommandPool(
+func (h *Device) CreateCommandPool(
 	CreateInfo *CommandPoolCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*CommandPool, error) {
@@ -27675,10 +27809,18 @@ func (h Device) CreateCommandPool(
 	}
 	h6 := &CommandPool{handle: unsafe.Pointer(commandPoolOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupCommandPool, _cleanupArgsCommandPool{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateComputePipelines(
+func (h *Device) CreateComputePipelines(
 	pipelineCache *PipelineCache,
 	CreateInfos []ComputePipelineCreateInfo,
 	Allocator *AllocationCallbacks,
@@ -27742,11 +27884,22 @@ func (h Device) CreateComputePipelines(
 		h15 := &Pipeline{handle: unsafe.Pointer((*[1 << 30]unsafe.Pointer)(unsafe.Pointer(_pipelinesOutPtr))[i14])}
 		out13[i14] = h15
 		h15.table = h.table
+		h15.parent = h
+		h15.retain = new([]any)
+		if pipelineCache != nil {
+			*h15.retain = append(*h15.retain, pipelineCache)
+		}
+		if CreateInfos != nil {
+			*h15.retain = append(*h15.retain, CreateInfos)
+		}
+		if h15 != nil {
+			runtime.AddCleanup(h15, _cleanupPipeline, _cleanupArgsPipeline{parent: h, keepAlive: h, retain: h15.retain, handle: h15.handle, allocator: Allocator, trampoline: h15.cleanup})
+		}
 	}
 	return out13, nil
 }
 
-func (h Instance) CreateDebugUtilsMessengerEXT(
+func (h *Instance) CreateDebugUtilsMessengerEXT(
 	CreateInfo *DebugUtilsMessengerCreateInfoEXT,
 	Allocator *AllocationCallbacks,
 ) (*DebugUtilsMessengerEXT, error) {
@@ -27786,10 +27939,18 @@ func (h Instance) CreateDebugUtilsMessengerEXT(
 	if CreateInfo.callbackCleanupFn != nil {
 		h6.cleanup = CreateInfo.callbackCleanupFn
 	}
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupDebugUtilsMessengerEXT, _cleanupArgsDebugUtilsMessengerEXT{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateDeferredOperationKHR(
+func (h *Device) CreateDeferredOperationKHR(
 	Allocator *AllocationCallbacks,
 ) (*DeferredOperationKHR, error) {
 	cancels := make([]func(), 0)
@@ -27819,10 +27980,15 @@ func (h Device) CreateDeferredOperationKHR(
 	}
 	h3 := &DeferredOperationKHR{handle: unsafe.Pointer(deferredOperationOut)}
 	h3.table = h.table
+	h3.parent = h
+	h3.retain = new([]any)
+	if h3 != nil {
+		runtime.AddCleanup(h3, _cleanupDeferredOperationKHR, _cleanupArgsDeferredOperationKHR{parent: h, keepAlive: h, retain: h3.retain, handle: h3.handle, allocator: Allocator, trampoline: h3.cleanup})
+	}
 	return h3, nil
 }
 
-func (h Device) CreateDescriptorPool(
+func (h *Device) CreateDescriptorPool(
 	CreateInfo *DescriptorPoolCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*DescriptorPool, error) {
@@ -27860,10 +28026,18 @@ func (h Device) CreateDescriptorPool(
 	}
 	h6 := &DescriptorPool{handle: unsafe.Pointer(descriptorPoolOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupDescriptorPool, _cleanupArgsDescriptorPool{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateDescriptorSetLayout(
+func (h *Device) CreateDescriptorSetLayout(
 	CreateInfo *DescriptorSetLayoutCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*DescriptorSetLayout, error) {
@@ -27901,10 +28075,18 @@ func (h Device) CreateDescriptorSetLayout(
 	}
 	h6 := &DescriptorSetLayout{handle: unsafe.Pointer(setLayoutOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupDescriptorSetLayout, _cleanupArgsDescriptorSetLayout{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h PhysicalDevice) CreateDevice(
+func (h *PhysicalDevice) CreateDevice(
 	CreateInfo *DeviceCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*Device, error) {
@@ -27942,10 +28124,18 @@ func (h PhysicalDevice) CreateDevice(
 	}
 	h6 := &Device{handle: unsafe.Pointer(deviceOut)}
 	h6.table = _initDeviceTable(deviceOut)
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupDevice, _cleanupArgsDevice{table: h6.table, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateEvent(
+func (h *Device) CreateEvent(
 	CreateInfo *EventCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*Event, error) {
@@ -27983,10 +28173,18 @@ func (h Device) CreateEvent(
 	}
 	h6 := &Event{handle: unsafe.Pointer(eventOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupEvent, _cleanupArgsEvent{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateFence(
+func (h *Device) CreateFence(
 	CreateInfo *FenceCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*Fence, error) {
@@ -28024,10 +28222,18 @@ func (h Device) CreateFence(
 	}
 	h6 := &Fence{handle: unsafe.Pointer(fenceOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupFence, _cleanupArgsFence{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateFramebuffer(
+func (h *Device) CreateFramebuffer(
 	CreateInfo *FramebufferCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*Framebuffer, error) {
@@ -28065,10 +28271,18 @@ func (h Device) CreateFramebuffer(
 	}
 	h6 := &Framebuffer{handle: unsafe.Pointer(framebufferOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupFramebuffer, _cleanupArgsFramebuffer{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateGraphicsPipelines(
+func (h *Device) CreateGraphicsPipelines(
 	pipelineCache *PipelineCache,
 	CreateInfos []GraphicsPipelineCreateInfo,
 	Allocator *AllocationCallbacks,
@@ -28132,11 +28346,22 @@ func (h Device) CreateGraphicsPipelines(
 		h15 := &Pipeline{handle: unsafe.Pointer((*[1 << 30]unsafe.Pointer)(unsafe.Pointer(_pipelinesOutPtr))[i14])}
 		out13[i14] = h15
 		h15.table = h.table
+		h15.parent = h
+		h15.retain = new([]any)
+		if pipelineCache != nil {
+			*h15.retain = append(*h15.retain, pipelineCache)
+		}
+		if CreateInfos != nil {
+			*h15.retain = append(*h15.retain, CreateInfos)
+		}
+		if h15 != nil {
+			runtime.AddCleanup(h15, _cleanupPipeline, _cleanupArgsPipeline{parent: h, keepAlive: h, retain: h15.retain, handle: h15.handle, allocator: Allocator, trampoline: h15.cleanup})
+		}
 	}
 	return out13, nil
 }
 
-func (h Device) CreateImage(
+func (h *Device) CreateImage(
 	CreateInfo *ImageCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*Image, error) {
@@ -28174,10 +28399,18 @@ func (h Device) CreateImage(
 	}
 	h6 := &Image{handle: unsafe.Pointer(imageOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupImage, _cleanupArgsImage{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateImageView(
+func (h *Device) CreateImageView(
 	CreateInfo *ImageViewCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*ImageView, error) {
@@ -28215,10 +28448,18 @@ func (h Device) CreateImageView(
 	}
 	h6 := &ImageView{handle: unsafe.Pointer(viewOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupImageView, _cleanupArgsImageView{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateIndirectCommandsLayoutEXT(
+func (h *Device) CreateIndirectCommandsLayoutEXT(
 	CreateInfo *IndirectCommandsLayoutCreateInfoEXT,
 	Allocator *AllocationCallbacks,
 ) (*IndirectCommandsLayoutEXT, error) {
@@ -28256,10 +28497,18 @@ func (h Device) CreateIndirectCommandsLayoutEXT(
 	}
 	h6 := &IndirectCommandsLayoutEXT{handle: unsafe.Pointer(indirectCommandsLayoutOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupIndirectCommandsLayoutEXT, _cleanupArgsIndirectCommandsLayoutEXT{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateIndirectExecutionSetEXT(
+func (h *Device) CreateIndirectExecutionSetEXT(
 	CreateInfo *IndirectExecutionSetCreateInfoEXT,
 	Allocator *AllocationCallbacks,
 ) (*IndirectExecutionSetEXT, error) {
@@ -28297,6 +28546,14 @@ func (h Device) CreateIndirectExecutionSetEXT(
 	}
 	h6 := &IndirectExecutionSetEXT{handle: unsafe.Pointer(indirectExecutionSetOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupIndirectExecutionSetEXT, _cleanupArgsIndirectExecutionSetEXT{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
@@ -28336,10 +28593,17 @@ func CreateInstance(
 	}
 	h6 := &Instance{handle: unsafe.Pointer(instanceOut)}
 	h6.table = _initInstanceTable(instanceOut)
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupInstance, _cleanupArgsInstance{table: h6.table, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreatePipelineCache(
+func (h *Device) CreatePipelineCache(
 	CreateInfo *PipelineCacheCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*PipelineCache, error) {
@@ -28377,10 +28641,18 @@ func (h Device) CreatePipelineCache(
 	}
 	h6 := &PipelineCache{handle: unsafe.Pointer(pipelineCacheOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupPipelineCache, _cleanupArgsPipelineCache{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreatePipelineLayout(
+func (h *Device) CreatePipelineLayout(
 	CreateInfo *PipelineLayoutCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*PipelineLayout, error) {
@@ -28418,10 +28690,18 @@ func (h Device) CreatePipelineLayout(
 	}
 	h6 := &PipelineLayout{handle: unsafe.Pointer(pipelineLayoutOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupPipelineLayout, _cleanupArgsPipelineLayout{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateQueryPool(
+func (h *Device) CreateQueryPool(
 	CreateInfo *QueryPoolCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*QueryPool, error) {
@@ -28459,10 +28739,18 @@ func (h Device) CreateQueryPool(
 	}
 	h6 := &QueryPool{handle: unsafe.Pointer(queryPoolOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupQueryPool, _cleanupArgsQueryPool{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateRayTracingPipelinesKHR(
+func (h *Device) CreateRayTracingPipelinesKHR(
 	deferredOperation *DeferredOperationKHR,
 	pipelineCache *PipelineCache,
 	CreateInfos []RayTracingPipelineCreateInfoKHR,
@@ -28532,11 +28820,25 @@ func (h Device) CreateRayTracingPipelinesKHR(
 		h16 := &Pipeline{handle: unsafe.Pointer((*[1 << 30]unsafe.Pointer)(unsafe.Pointer(_pipelinesOutPtr))[i15])}
 		out14[i15] = h16
 		h16.table = h.table
+		h16.parent = h
+		h16.retain = new([]any)
+		if deferredOperation != nil {
+			*h16.retain = append(*h16.retain, deferredOperation)
+		}
+		if pipelineCache != nil {
+			*h16.retain = append(*h16.retain, pipelineCache)
+		}
+		if CreateInfos != nil {
+			*h16.retain = append(*h16.retain, CreateInfos)
+		}
+		if h16 != nil {
+			runtime.AddCleanup(h16, _cleanupPipeline, _cleanupArgsPipeline{parent: h, keepAlive: h, retain: h16.retain, handle: h16.handle, allocator: Allocator, trampoline: h16.cleanup})
+		}
 	}
 	return out14, nil
 }
 
-func (h Device) CreateRenderPass(
+func (h *Device) CreateRenderPass(
 	CreateInfo *RenderPassCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*RenderPass, error) {
@@ -28574,10 +28876,18 @@ func (h Device) CreateRenderPass(
 	}
 	h6 := &RenderPass{handle: unsafe.Pointer(renderPassOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupRenderPass, _cleanupArgsRenderPass{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateRenderPass2(
+func (h *Device) CreateRenderPass2(
 	CreateInfo *RenderPassCreateInfo2,
 	Allocator *AllocationCallbacks,
 ) (*RenderPass, error) {
@@ -28615,10 +28925,18 @@ func (h Device) CreateRenderPass2(
 	}
 	h6 := &RenderPass{handle: unsafe.Pointer(renderPassOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupRenderPass, _cleanupArgsRenderPass{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateSampler(
+func (h *Device) CreateSampler(
 	CreateInfo *SamplerCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*Sampler, error) {
@@ -28656,10 +28974,18 @@ func (h Device) CreateSampler(
 	}
 	h6 := &Sampler{handle: unsafe.Pointer(samplerOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupSampler, _cleanupArgsSampler{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateSemaphore(
+func (h *Device) CreateSemaphore(
 	CreateInfo *SemaphoreCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*Semaphore, error) {
@@ -28697,10 +29023,18 @@ func (h Device) CreateSemaphore(
 	}
 	h6 := &Semaphore{handle: unsafe.Pointer(semaphoreOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupSemaphore, _cleanupArgsSemaphore{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateShaderModule(
+func (h *Device) CreateShaderModule(
 	CreateInfo *ShaderModuleCreateInfo,
 	Allocator *AllocationCallbacks,
 ) (*ShaderModule, error) {
@@ -28738,10 +29072,18 @@ func (h Device) CreateShaderModule(
 	}
 	h6 := &ShaderModule{handle: unsafe.Pointer(shaderModuleOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupShaderModule, _cleanupArgsShaderModule{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) CreateShadersEXT(
+func (h *Device) CreateShadersEXT(
 	CreateInfos []ShaderCreateInfoEXT,
 	Allocator *AllocationCallbacks,
 ) ([]*ShaderEXT, error) {
@@ -28799,11 +29141,19 @@ func (h Device) CreateShadersEXT(
 		h14 := &ShaderEXT{handle: unsafe.Pointer((*[1 << 30]unsafe.Pointer)(unsafe.Pointer(_shadersOutPtr))[i13])}
 		out12[i13] = h14
 		h14.table = h.table
+		h14.parent = h
+		h14.retain = new([]any)
+		if CreateInfos != nil {
+			*h14.retain = append(*h14.retain, CreateInfos)
+		}
+		if h14 != nil {
+			runtime.AddCleanup(h14, _cleanupShaderEXT, _cleanupArgsShaderEXT{parent: h, keepAlive: h, retain: h14.retain, handle: h14.handle, allocator: Allocator, trampoline: h14.cleanup})
+		}
 	}
 	return out12, nil
 }
 
-func (h Device) CreateSwapchainKHR(
+func (h *Device) CreateSwapchainKHR(
 	CreateInfo *SwapchainCreateInfoKHR,
 	Allocator *AllocationCallbacks,
 ) (*SwapchainKHR, error) {
@@ -28841,10 +29191,18 @@ func (h Device) CreateSwapchainKHR(
 	}
 	h6 := &SwapchainKHR{handle: unsafe.Pointer(swapchainOut)}
 	h6.table = h.table
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupSwapchainKHR, _cleanupArgsSwapchainKHR{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Device) DeferredOperationJoinKHR(
+func (h *Device) DeferredOperationJoinKHR(
 	operation *DeferredOperationKHR,
 ) error {
 	cancels := make([]func(), 0)
@@ -28870,7 +29228,7 @@ func (h Device) DeferredOperationJoinKHR(
 	return nil
 }
 
-func (h Device) DestroyAccelerationStructureKHR(
+func (h *Device) destroyAccelerationStructureKHR(
 	accelerationStructure *AccelerationStructureKHR,
 	Allocator *AllocationCallbacks,
 ) {
@@ -28902,7 +29260,7 @@ func (h Device) DestroyAccelerationStructureKHR(
 	})
 }
 
-func (h Device) DestroyBuffer(
+func (h *Device) destroyBuffer(
 	buffer *Buffer,
 	Allocator *AllocationCallbacks,
 ) {
@@ -28934,7 +29292,7 @@ func (h Device) DestroyBuffer(
 	})
 }
 
-func (h Device) DestroyBufferView(
+func (h *Device) destroyBufferView(
 	bufferView *BufferView,
 	Allocator *AllocationCallbacks,
 ) {
@@ -28966,7 +29324,7 @@ func (h Device) DestroyBufferView(
 	})
 }
 
-func (h Device) DestroyCommandPool(
+func (h *Device) destroyCommandPool(
 	commandPool *CommandPool,
 	Allocator *AllocationCallbacks,
 ) {
@@ -28998,7 +29356,7 @@ func (h Device) DestroyCommandPool(
 	})
 }
 
-func (h Instance) DestroyDebugUtilsMessengerEXT(
+func (h *Instance) destroyDebugUtilsMessengerEXT(
 	messenger *DebugUtilsMessengerEXT,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29030,7 +29388,7 @@ func (h Instance) DestroyDebugUtilsMessengerEXT(
 	})
 }
 
-func (h Device) DestroyDeferredOperationKHR(
+func (h *Device) destroyDeferredOperationKHR(
 	operation *DeferredOperationKHR,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29062,7 +29420,7 @@ func (h Device) DestroyDeferredOperationKHR(
 	})
 }
 
-func (h Device) DestroyDescriptorPool(
+func (h *Device) destroyDescriptorPool(
 	descriptorPool *DescriptorPool,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29094,7 +29452,7 @@ func (h Device) DestroyDescriptorPool(
 	})
 }
 
-func (h Device) DestroyDescriptorSetLayout(
+func (h *Device) destroyDescriptorSetLayout(
 	descriptorSetLayout *DescriptorSetLayout,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29126,7 +29484,7 @@ func (h Device) DestroyDescriptorSetLayout(
 	})
 }
 
-func (h Device) Destroy(
+func (h *Device) destroy(
 	Allocator *AllocationCallbacks,
 ) {
 	cancels := make([]func(), 0)
@@ -29149,7 +29507,7 @@ func (h Device) Destroy(
 	})
 }
 
-func (h Device) DestroyEvent(
+func (h *Device) destroyEvent(
 	event *Event,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29181,7 +29539,7 @@ func (h Device) DestroyEvent(
 	})
 }
 
-func (h Device) DestroyFence(
+func (h *Device) destroyFence(
 	fence *Fence,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29213,7 +29571,7 @@ func (h Device) DestroyFence(
 	})
 }
 
-func (h Device) DestroyFramebuffer(
+func (h *Device) destroyFramebuffer(
 	framebuffer *Framebuffer,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29245,7 +29603,7 @@ func (h Device) DestroyFramebuffer(
 	})
 }
 
-func (h Device) DestroyImage(
+func (h *Device) destroyImage(
 	image *Image,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29277,7 +29635,7 @@ func (h Device) DestroyImage(
 	})
 }
 
-func (h Device) DestroyImageView(
+func (h *Device) destroyImageView(
 	imageView *ImageView,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29309,7 +29667,7 @@ func (h Device) DestroyImageView(
 	})
 }
 
-func (h Device) DestroyIndirectCommandsLayoutEXT(
+func (h *Device) destroyIndirectCommandsLayoutEXT(
 	indirectCommandsLayout *IndirectCommandsLayoutEXT,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29341,7 +29699,7 @@ func (h Device) DestroyIndirectCommandsLayoutEXT(
 	})
 }
 
-func (h Device) DestroyIndirectExecutionSetEXT(
+func (h *Device) destroyIndirectExecutionSetEXT(
 	indirectExecutionSet *IndirectExecutionSetEXT,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29373,7 +29731,7 @@ func (h Device) DestroyIndirectExecutionSetEXT(
 	})
 }
 
-func (h Instance) Destroy(
+func (h *Instance) destroy(
 	Allocator *AllocationCallbacks,
 ) {
 	cancels := make([]func(), 0)
@@ -29396,7 +29754,7 @@ func (h Instance) Destroy(
 	})
 }
 
-func (h Device) DestroyPipeline(
+func (h *Device) destroyPipeline(
 	pipeline *Pipeline,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29428,7 +29786,7 @@ func (h Device) DestroyPipeline(
 	})
 }
 
-func (h Device) DestroyPipelineCache(
+func (h *Device) destroyPipelineCache(
 	pipelineCache *PipelineCache,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29460,7 +29818,7 @@ func (h Device) DestroyPipelineCache(
 	})
 }
 
-func (h Device) DestroyPipelineLayout(
+func (h *Device) destroyPipelineLayout(
 	pipelineLayout *PipelineLayout,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29492,7 +29850,7 @@ func (h Device) DestroyPipelineLayout(
 	})
 }
 
-func (h Device) DestroyQueryPool(
+func (h *Device) destroyQueryPool(
 	queryPool *QueryPool,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29524,7 +29882,7 @@ func (h Device) DestroyQueryPool(
 	})
 }
 
-func (h Device) DestroyRenderPass(
+func (h *Device) destroyRenderPass(
 	renderPass *RenderPass,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29556,7 +29914,7 @@ func (h Device) DestroyRenderPass(
 	})
 }
 
-func (h Device) DestroySampler(
+func (h *Device) destroySampler(
 	sampler *Sampler,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29588,7 +29946,7 @@ func (h Device) DestroySampler(
 	})
 }
 
-func (h Device) DestroySemaphore(
+func (h *Device) destroySemaphore(
 	semaphore *Semaphore,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29620,7 +29978,7 @@ func (h Device) DestroySemaphore(
 	})
 }
 
-func (h Device) DestroyShaderEXT(
+func (h *Device) destroyShaderEXT(
 	shader *ShaderEXT,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29652,7 +30010,7 @@ func (h Device) DestroyShaderEXT(
 	})
 }
 
-func (h Device) DestroyShaderModule(
+func (h *Device) destroyShaderModule(
 	shaderModule *ShaderModule,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29684,7 +30042,7 @@ func (h Device) DestroyShaderModule(
 	})
 }
 
-func (h Instance) DestroySurfaceKHR(
+func (h *Instance) destroySurfaceKHR(
 	surface *SurfaceKHR,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29716,7 +30074,7 @@ func (h Instance) DestroySurfaceKHR(
 	})
 }
 
-func (h Device) DestroySwapchainKHR(
+func (h *Device) destroySwapchainKHR(
 	swapchain *SwapchainKHR,
 	Allocator *AllocationCallbacks,
 ) {
@@ -29748,7 +30106,7 @@ func (h Device) DestroySwapchainKHR(
 	})
 }
 
-func (h Device) WaitIdle() error {
+func (h *Device) WaitIdle() error {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -29767,7 +30125,7 @@ func (h Device) WaitIdle() error {
 	return nil
 }
 
-func (h CommandBuffer) End() error {
+func (h *CommandBuffer) End() error {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -29786,7 +30144,7 @@ func (h CommandBuffer) End() error {
 	return nil
 }
 
-func (h PhysicalDevice) EnumerateDeviceExtensionProperties(
+func (h *PhysicalDevice) EnumerateDeviceExtensionProperties(
 	LayerName string,
 ) ([]ExtensionProperties, error) {
 	cancels := make([]func(), 0)
@@ -29844,7 +30202,7 @@ func (h PhysicalDevice) EnumerateDeviceExtensionProperties(
 	return out, nil
 }
 
-func (h PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, error) {
+func (h *PhysicalDevice) EnumerateDeviceLayerProperties() ([]LayerProperties, error) {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -29994,7 +30352,7 @@ func EnumerateInstanceLayerProperties() ([]LayerProperties, error) {
 	return out, nil
 }
 
-func (h Instance) EnumeratePhysicalDevices() ([]*PhysicalDevice, error) {
+func (h *Instance) EnumeratePhysicalDevices() ([]*PhysicalDevice, error) {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -30043,7 +30401,7 @@ func (h Instance) EnumeratePhysicalDevices() ([]*PhysicalDevice, error) {
 	return out, nil
 }
 
-func (h Device) FlushMappedMemoryRanges(
+func (h *Device) FlushMappedMemoryRanges(
 	MemoryRanges []MappedMemoryRange,
 ) error {
 	cancels := make([]func(), 0)
@@ -30082,7 +30440,7 @@ func (h Device) FlushMappedMemoryRanges(
 	return nil
 }
 
-func (h Device) FreeCommandBuffers(
+func (h *Device) freeCommandBuffers(
 	commandPool *CommandPool,
 	CommandBuffers []*CommandBuffer,
 ) {
@@ -30126,7 +30484,7 @@ func (h Device) FreeCommandBuffers(
 	})
 }
 
-func (h Device) FreeDescriptorSets(
+func (h *Device) freeDescriptorSets(
 	descriptorPool *DescriptorPool,
 	DescriptorSets []*DescriptorSet,
 ) error {
@@ -30175,7 +30533,7 @@ func (h Device) FreeDescriptorSets(
 	return nil
 }
 
-func (h Device) FreeMemory(
+func (h *Device) freeMemory(
 	memory *DeviceMemory,
 	Allocator *AllocationCallbacks,
 ) {
@@ -30207,7 +30565,7 @@ func (h Device) FreeMemory(
 	})
 }
 
-func (h Device) GetAccelerationStructureBuildSizesKHR(
+func (h *Device) GetAccelerationStructureBuildSizesKHR(
 	buildType AccelerationStructureBuildTypeKHR,
 	BuildInfo *AccelerationStructureBuildGeometryInfoKHR,
 	MaxPrimitiveCounts []uint32,
@@ -30255,7 +30613,7 @@ func (h Device) GetAccelerationStructureBuildSizesKHR(
 	return val11
 }
 
-func (h Device) GetAccelerationStructureAddressKHR(
+func (h *Device) GetAccelerationStructureAddressKHR(
 	Info *AccelerationStructureDeviceAddressInfoKHR,
 ) uint64 {
 	cancels := make([]func(), 0)
@@ -30281,7 +30639,7 @@ func (h Device) GetAccelerationStructureAddressKHR(
 	return val3
 }
 
-func (h Device) GetAccelerationStructureOpaqueCaptureDescriptorDataEXT(
+func (h *Device) GetAccelerationStructureOpaqueCaptureDescriptorDataEXT(
 	Info *AccelerationStructureCaptureDescriptorDataInfoEXT,
 	Data unsafe.Pointer,
 ) error {
@@ -30311,7 +30669,7 @@ func (h Device) GetAccelerationStructureOpaqueCaptureDescriptorDataEXT(
 	return nil
 }
 
-func (h Device) GetBufferMemoryRequirements(
+func (h *Device) GetBufferMemoryRequirements(
 	buffer *Buffer,
 ) MemoryRequirements {
 	cancels := make([]func(), 0)
@@ -30338,7 +30696,7 @@ func (h Device) GetBufferMemoryRequirements(
 	return val1
 }
 
-func (h Device) GetBufferOpaqueCaptureDescriptorDataEXT(
+func (h *Device) GetBufferOpaqueCaptureDescriptorDataEXT(
 	Info *BufferCaptureDescriptorDataInfoEXT,
 	Data unsafe.Pointer,
 ) error {
@@ -30368,7 +30726,7 @@ func (h Device) GetBufferOpaqueCaptureDescriptorDataEXT(
 	return nil
 }
 
-func (h Device) GetDeferredOperationMaxConcurrencyKHR(
+func (h *Device) GetDeferredOperationMaxConcurrencyKHR(
 	operation *DeferredOperationKHR,
 ) uint32 {
 	cancels := make([]func(), 0)
@@ -30392,7 +30750,7 @@ func (h Device) GetDeferredOperationMaxConcurrencyKHR(
 	return val1
 }
 
-func (h Device) GetDeferredOperationResultKHR(
+func (h *Device) GetDeferredOperationResultKHR(
 	operation *DeferredOperationKHR,
 ) error {
 	cancels := make([]func(), 0)
@@ -30418,7 +30776,7 @@ func (h Device) GetDeferredOperationResultKHR(
 	return nil
 }
 
-func (h Device) GetDescriptorEXT(
+func (h *Device) GetDescriptorEXT(
 	DescriptorInfo *DescriptorGetInfoEXT,
 	dataSize uintptr,
 	Descriptor []byte,
@@ -30450,7 +30808,7 @@ func (h Device) GetDescriptorEXT(
 	})
 }
 
-func (h Device) GetDescriptorSetLayoutBindingOffsetEXT(
+func (h *Device) GetDescriptorSetLayoutBindingOffsetEXT(
 	layout *DescriptorSetLayout,
 	binding uint32,
 ) uint64 {
@@ -30479,7 +30837,7 @@ func (h Device) GetDescriptorSetLayoutBindingOffsetEXT(
 	return val2
 }
 
-func (h Device) GetDescriptorSetLayoutSizeEXT(
+func (h *Device) GetDescriptorSetLayoutSizeEXT(
 	layout *DescriptorSetLayout,
 ) uint64 {
 	cancels := make([]func(), 0)
@@ -30505,7 +30863,7 @@ func (h Device) GetDescriptorSetLayoutSizeEXT(
 	return val1
 }
 
-func (h Device) GetAccelerationStructureCompatibilityKHR(
+func (h *Device) GetAccelerationStructureCompatibilityKHR(
 	VersionInfo *AccelerationStructureVersionInfoKHR,
 	Compatibility *AccelerationStructureCompatibilityKHR,
 ) {
@@ -30536,7 +30894,7 @@ func (h Device) GetAccelerationStructureCompatibilityKHR(
 	})
 }
 
-func (h Device) GetGroupPresentCapabilitiesKHR() (DeviceGroupPresentCapabilitiesKHR, error) {
+func (h *Device) GetGroupPresentCapabilitiesKHR() (DeviceGroupPresentCapabilitiesKHR, error) {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -30561,7 +30919,7 @@ func (h Device) GetGroupPresentCapabilitiesKHR() (DeviceGroupPresentCapabilities
 	return val0, nil
 }
 
-func (h Device) GetGroupSurfacePresentModesKHR(
+func (h *Device) GetGroupSurfacePresentModesKHR(
 	surface *SurfaceKHR,
 	Modes *DeviceGroupPresentModeFlagsKHR,
 ) error {
@@ -30595,7 +30953,7 @@ func (h Device) GetGroupSurfacePresentModesKHR(
 	return nil
 }
 
-func (h Device) GetMemoryCommitment(
+func (h *Device) GetMemoryCommitment(
 	memory *DeviceMemory,
 ) uint64 {
 	cancels := make([]func(), 0)
@@ -30621,7 +30979,7 @@ func (h Device) GetMemoryCommitment(
 	return val1
 }
 
-func (h Device) GetProcAddr(
+func (h *Device) GetProcAddr(
 	Name string,
 ) VoidFunction {
 	cancels := make([]func(), 0)
@@ -30647,7 +31005,7 @@ func (h Device) GetProcAddr(
 	return fn3
 }
 
-func (h Device) GetQueue(
+func (h *Device) GetQueue(
 	queueFamilyIndex uint32,
 	queueIndex uint32,
 ) *Queue {
@@ -30671,10 +31029,11 @@ func (h Device) GetQueue(
 	})
 	h2 := &Queue{handle: unsafe.Pointer(queueOut)}
 	h2.table = h.table
+	h2.parent = h
 	return h2
 }
 
-func (h Device) GetEventStatus(
+func (h *Device) GetEventStatus(
 	event *Event,
 ) error {
 	cancels := make([]func(), 0)
@@ -30700,7 +31059,7 @@ func (h Device) GetEventStatus(
 	return nil
 }
 
-func (h Device) GetFenceStatus(
+func (h *Device) GetFenceStatus(
 	fence *Fence,
 ) error {
 	cancels := make([]func(), 0)
@@ -30726,7 +31085,7 @@ func (h Device) GetFenceStatus(
 	return nil
 }
 
-func (h Device) GetGeneratedCommandsMemoryRequirementsEXT(
+func (h *Device) GetGeneratedCommandsMemoryRequirementsEXT(
 	Info *GeneratedCommandsMemoryRequirementsInfoEXT,
 ) MemoryRequirements2 {
 	cancels := make([]func(), 0)
@@ -30756,7 +31115,7 @@ func (h Device) GetGeneratedCommandsMemoryRequirementsEXT(
 	return val3
 }
 
-func (h Device) GetImageMemoryRequirements(
+func (h *Device) GetImageMemoryRequirements(
 	image *Image,
 ) MemoryRequirements {
 	cancels := make([]func(), 0)
@@ -30783,7 +31142,7 @@ func (h Device) GetImageMemoryRequirements(
 	return val1
 }
 
-func (h Device) GetImageOpaqueCaptureDescriptorDataEXT(
+func (h *Device) GetImageOpaqueCaptureDescriptorDataEXT(
 	Info *ImageCaptureDescriptorDataInfoEXT,
 	Data unsafe.Pointer,
 ) error {
@@ -30813,7 +31172,7 @@ func (h Device) GetImageOpaqueCaptureDescriptorDataEXT(
 	return nil
 }
 
-func (h Device) GetImageSparseMemoryRequirements(
+func (h *Device) GetImageSparseMemoryRequirements(
 	image *Image,
 ) []SparseImageMemoryRequirements {
 	cancels := make([]func(), 0)
@@ -30862,7 +31221,7 @@ func (h Device) GetImageSparseMemoryRequirements(
 	return out
 }
 
-func (h Device) GetImageSubresourceLayout(
+func (h *Device) GetImageSubresourceLayout(
 	image *Image,
 	Subresource *ImageSubresource,
 ) SubresourceLayout {
@@ -30897,7 +31256,7 @@ func (h Device) GetImageSubresourceLayout(
 	return val4
 }
 
-func (h Device) GetImageViewOpaqueCaptureDescriptorDataEXT(
+func (h *Device) GetImageViewOpaqueCaptureDescriptorDataEXT(
 	Info *ImageViewCaptureDescriptorDataInfoEXT,
 	Data unsafe.Pointer,
 ) error {
@@ -30927,7 +31286,7 @@ func (h Device) GetImageViewOpaqueCaptureDescriptorDataEXT(
 	return nil
 }
 
-func (h Instance) GetProcAddr(
+func (h *Instance) GetProcAddr(
 	Name string,
 ) VoidFunction {
 	cancels := make([]func(), 0)
@@ -30953,7 +31312,7 @@ func (h Instance) GetProcAddr(
 	return fn3
 }
 
-func (h PhysicalDevice) GetFeatures() PhysicalDeviceFeatures {
+func (h *PhysicalDevice) GetFeatures() PhysicalDeviceFeatures {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -30973,7 +31332,7 @@ func (h PhysicalDevice) GetFeatures() PhysicalDeviceFeatures {
 	return val0
 }
 
-func (h PhysicalDevice) GetFormatProperties(
+func (h *PhysicalDevice) GetFormatProperties(
 	format Format,
 ) FormatProperties {
 	cancels := make([]func(), 0)
@@ -30997,7 +31356,7 @@ func (h PhysicalDevice) GetFormatProperties(
 	return val1
 }
 
-func (h PhysicalDevice) GetImageFormatProperties(
+func (h *PhysicalDevice) GetImageFormatProperties(
 	format Format,
 	typ ImageType,
 	tiling ImageTiling,
@@ -31037,7 +31396,7 @@ func (h PhysicalDevice) GetImageFormatProperties(
 	return val5, nil
 }
 
-func (h PhysicalDevice) GetMemoryProperties() PhysicalDeviceMemoryProperties {
+func (h *PhysicalDevice) GetMemoryProperties() PhysicalDeviceMemoryProperties {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -31057,7 +31416,7 @@ func (h PhysicalDevice) GetMemoryProperties() PhysicalDeviceMemoryProperties {
 	return val0
 }
 
-func (h PhysicalDevice) GetPresentRectanglesKHR(
+func (h *PhysicalDevice) GetPresentRectanglesKHR(
 	surface *SurfaceKHR,
 ) ([]Rect2D, error) {
 	cancels := make([]func(), 0)
@@ -31114,7 +31473,7 @@ func (h PhysicalDevice) GetPresentRectanglesKHR(
 	return out, nil
 }
 
-func (h PhysicalDevice) GetProperties() PhysicalDeviceProperties {
+func (h *PhysicalDevice) GetProperties() PhysicalDeviceProperties {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -31134,7 +31493,7 @@ func (h PhysicalDevice) GetProperties() PhysicalDeviceProperties {
 	return val0
 }
 
-func (h PhysicalDevice) GetQueueFamilyProperties() []QueueFamilyProperties {
+func (h *PhysicalDevice) GetQueueFamilyProperties() []QueueFamilyProperties {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -31175,7 +31534,7 @@ func (h PhysicalDevice) GetQueueFamilyProperties() []QueueFamilyProperties {
 	return out
 }
 
-func (h PhysicalDevice) GetSparseImageFormatProperties(
+func (h *PhysicalDevice) GetSparseImageFormatProperties(
 	format Format,
 	typ ImageType,
 	samples SampleCountFlagBits,
@@ -31237,7 +31596,7 @@ func (h PhysicalDevice) GetSparseImageFormatProperties(
 	return out
 }
 
-func (h PhysicalDevice) GetSurfaceCapabilitiesKHR(
+func (h *PhysicalDevice) GetSurfaceCapabilitiesKHR(
 	surface *SurfaceKHR,
 ) (SurfaceCapabilitiesKHR, error) {
 	cancels := make([]func(), 0)
@@ -31268,7 +31627,7 @@ func (h PhysicalDevice) GetSurfaceCapabilitiesKHR(
 	return val1, nil
 }
 
-func (h PhysicalDevice) GetSurfaceFormatsKHR(
+func (h *PhysicalDevice) GetSurfaceFormatsKHR(
 	surface *SurfaceKHR,
 ) ([]SurfaceFormatKHR, error) {
 	cancels := make([]func(), 0)
@@ -31325,7 +31684,7 @@ func (h PhysicalDevice) GetSurfaceFormatsKHR(
 	return out, nil
 }
 
-func (h PhysicalDevice) GetSurfacePresentModesKHR(
+func (h *PhysicalDevice) GetSurfacePresentModesKHR(
 	surface *SurfaceKHR,
 ) ([]PresentModeKHR, error) {
 	cancels := make([]func(), 0)
@@ -31381,7 +31740,7 @@ func (h PhysicalDevice) GetSurfacePresentModesKHR(
 	return out, nil
 }
 
-func (h PhysicalDevice) GetSurfaceSupportKHR(
+func (h *PhysicalDevice) GetSurfaceSupportKHR(
 	queueFamilyIndex uint32,
 	surface *SurfaceKHR,
 ) (bool, error) {
@@ -31414,7 +31773,7 @@ func (h PhysicalDevice) GetSurfaceSupportKHR(
 	return val2, nil
 }
 
-func (h Device) GetPipelineCacheData(
+func (h *Device) GetPipelineCacheData(
 	pipelineCache *PipelineCache,
 ) ([]byte, error) {
 	cancels := make([]func(), 0)
@@ -31465,7 +31824,7 @@ func (h Device) GetPipelineCacheData(
 	return _buf, nil
 }
 
-func (h Device) GetQueryPoolResults(
+func (h *Device) GetQueryPoolResults(
 	queryPool *QueryPool,
 	firstQuery uint32,
 	queryCount uint32,
@@ -31512,7 +31871,7 @@ func (h Device) GetQueryPoolResults(
 	return nil
 }
 
-func (h Device) GetRayTracingCaptureReplayShaderGroupHandlesKHR(
+func (h *Device) GetRayTracingCaptureReplayShaderGroupHandlesKHR(
 	pipeline *Pipeline,
 	firstGroup uint32,
 	groupCount uint32,
@@ -31553,7 +31912,7 @@ func (h Device) GetRayTracingCaptureReplayShaderGroupHandlesKHR(
 	return nil
 }
 
-func (h Device) GetRayTracingShaderGroupHandlesKHR(
+func (h *Device) GetRayTracingShaderGroupHandlesKHR(
 	pipeline *Pipeline,
 	firstGroup uint32,
 	groupCount uint32,
@@ -31594,7 +31953,7 @@ func (h Device) GetRayTracingShaderGroupHandlesKHR(
 	return nil
 }
 
-func (h Device) GetRayTracingShaderGroupStackSizeKHR(
+func (h *Device) GetRayTracingShaderGroupStackSizeKHR(
 	pipeline *Pipeline,
 	group uint32,
 	groupShader ShaderGroupShaderKHR,
@@ -31624,7 +31983,7 @@ func (h Device) GetRayTracingShaderGroupStackSizeKHR(
 	return val3
 }
 
-func (h Device) GetRenderAreaGranularity(
+func (h *Device) GetRenderAreaGranularity(
 	renderPass *RenderPass,
 ) Extent2D {
 	cancels := make([]func(), 0)
@@ -31651,7 +32010,7 @@ func (h Device) GetRenderAreaGranularity(
 	return val1
 }
 
-func (h Device) GetRenderingAreaGranularity(
+func (h *Device) GetRenderingAreaGranularity(
 	RenderingAreaInfo *RenderingAreaInfo,
 ) Extent2D {
 	cancels := make([]func(), 0)
@@ -31680,7 +32039,7 @@ func (h Device) GetRenderingAreaGranularity(
 	return val3
 }
 
-func (h Device) GetSamplerOpaqueCaptureDescriptorDataEXT(
+func (h *Device) GetSamplerOpaqueCaptureDescriptorDataEXT(
 	Info *SamplerCaptureDescriptorDataInfoEXT,
 	Data unsafe.Pointer,
 ) error {
@@ -31710,7 +32069,7 @@ func (h Device) GetSamplerOpaqueCaptureDescriptorDataEXT(
 	return nil
 }
 
-func (h Device) GetShaderBinaryDataEXT(
+func (h *Device) GetShaderBinaryDataEXT(
 	shader *ShaderEXT,
 ) ([]byte, error) {
 	cancels := make([]func(), 0)
@@ -31761,7 +32120,7 @@ func (h Device) GetShaderBinaryDataEXT(
 	return _buf, nil
 }
 
-func (h Device) GetSwapchainImagesKHR(
+func (h *Device) GetSwapchainImagesKHR(
 	swapchain *SwapchainKHR,
 ) ([]*Image, error) {
 	cancels := make([]func(), 0)
@@ -31818,7 +32177,7 @@ func (h Device) GetSwapchainImagesKHR(
 	return out, nil
 }
 
-func (h Device) InvalidateMappedMemoryRanges(
+func (h *Device) InvalidateMappedMemoryRanges(
 	MemoryRanges []MappedMemoryRange,
 ) error {
 	cancels := make([]func(), 0)
@@ -31857,7 +32216,7 @@ func (h Device) InvalidateMappedMemoryRanges(
 	return nil
 }
 
-func (h Device) MapMemory(
+func (h *Device) MapMemory(
 	memory *DeviceMemory,
 	offset uint64,
 	size uint64,
@@ -31895,7 +32254,7 @@ func (h Device) MapMemory(
 	return unsafe.Pointer(pDataOut), nil
 }
 
-func (h Device) MergePipelineCaches(
+func (h *Device) MergePipelineCaches(
 	dstCache *PipelineCache,
 	SrcCaches []*PipelineCache,
 ) error {
@@ -31941,7 +32300,7 @@ func (h Device) MergePipelineCaches(
 	return nil
 }
 
-func (h Queue) BeginDebugUtilsLabelEXT(
+func (h *Queue) BeginDebugUtilsLabelEXT(
 	LabelInfo *DebugUtilsLabelEXT,
 ) {
 	cancels := make([]func(), 0)
@@ -31964,7 +32323,7 @@ func (h Queue) BeginDebugUtilsLabelEXT(
 	})
 }
 
-func (h Queue) BindSparse(
+func (h *Queue) BindSparse(
 	BindInfo []BindSparseInfo,
 	fence *Fence,
 ) error {
@@ -32009,7 +32368,7 @@ func (h Queue) BindSparse(
 	return nil
 }
 
-func (h Queue) EndDebugUtilsLabelEXT() {
+func (h *Queue) EndDebugUtilsLabelEXT() {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -32023,7 +32382,7 @@ func (h Queue) EndDebugUtilsLabelEXT() {
 	})
 }
 
-func (h Queue) InsertDebugUtilsLabelEXT(
+func (h *Queue) InsertDebugUtilsLabelEXT(
 	LabelInfo *DebugUtilsLabelEXT,
 ) {
 	cancels := make([]func(), 0)
@@ -32046,7 +32405,7 @@ func (h Queue) InsertDebugUtilsLabelEXT(
 	})
 }
 
-func (h Queue) PresentKHR(
+func (h *Queue) PresentKHR(
 	PresentInfo *PresentInfoKHR,
 ) error {
 	cancels := make([]func(), 0)
@@ -32074,7 +32433,7 @@ func (h Queue) PresentKHR(
 	return nil
 }
 
-func (h Queue) Submit(
+func (h *Queue) Submit(
 	Submits []SubmitInfo,
 	fence *Fence,
 ) error {
@@ -32119,7 +32478,7 @@ func (h Queue) Submit(
 	return nil
 }
 
-func (h Queue) WaitIdle() error {
+func (h *Queue) WaitIdle() error {
 	cancels := make([]func(), 0)
 	defer func() {
 		for _, c := range cancels {
@@ -32138,7 +32497,7 @@ func (h Queue) WaitIdle() error {
 	return nil
 }
 
-func (h CommandBuffer) Reset(
+func (h *CommandBuffer) Reset(
 	flags CommandBufferResetFlags,
 ) error {
 	cancels := make([]func(), 0)
@@ -32161,7 +32520,7 @@ func (h CommandBuffer) Reset(
 	return nil
 }
 
-func (h Device) ResetCommandPool(
+func (h *Device) ResetCommandPool(
 	commandPool *CommandPool,
 	flags CommandPoolResetFlags,
 ) error {
@@ -32190,7 +32549,7 @@ func (h Device) ResetCommandPool(
 	return nil
 }
 
-func (h Device) ResetDescriptorPool(
+func (h *Device) ResetDescriptorPool(
 	descriptorPool *DescriptorPool,
 	flags DescriptorPoolResetFlags,
 ) error {
@@ -32219,7 +32578,7 @@ func (h Device) ResetDescriptorPool(
 	return nil
 }
 
-func (h Device) ResetEvent(
+func (h *Device) ResetEvent(
 	event *Event,
 ) error {
 	cancels := make([]func(), 0)
@@ -32245,7 +32604,7 @@ func (h Device) ResetEvent(
 	return nil
 }
 
-func (h Device) ResetFences(
+func (h *Device) ResetFences(
 	Fences []*Fence,
 ) error {
 	cancels := make([]func(), 0)
@@ -32285,7 +32644,7 @@ func (h Device) ResetFences(
 	return nil
 }
 
-func (h Device) SetDebugUtilsObjectNameEXT(
+func (h *Device) SetDebugUtilsObjectNameEXT(
 	NameInfo *DebugUtilsObjectNameInfoEXT,
 ) error {
 	cancels := make([]func(), 0)
@@ -32313,7 +32672,7 @@ func (h Device) SetDebugUtilsObjectNameEXT(
 	return nil
 }
 
-func (h Device) SetDebugUtilsObjectTagEXT(
+func (h *Device) SetDebugUtilsObjectTagEXT(
 	TagInfo *DebugUtilsObjectTagInfoEXT,
 ) error {
 	cancels := make([]func(), 0)
@@ -32341,7 +32700,7 @@ func (h Device) SetDebugUtilsObjectTagEXT(
 	return nil
 }
 
-func (h Device) SetMemoryPriorityEXT(
+func (h *Device) SetMemoryPriorityEXT(
 	memory *DeviceMemory,
 	priority float32,
 ) {
@@ -32365,7 +32724,7 @@ func (h Device) SetMemoryPriorityEXT(
 	})
 }
 
-func (h Device) SetEvent(
+func (h *Device) SetEvent(
 	event *Event,
 ) error {
 	cancels := make([]func(), 0)
@@ -32391,7 +32750,7 @@ func (h Device) SetEvent(
 	return nil
 }
 
-func (h Instance) SubmitDebugUtilsMessageEXT(
+func (h *Instance) SubmitDebugUtilsMessageEXT(
 	messageSeverity DebugUtilsMessageSeverityFlagBitsEXT,
 	messageTypes DebugUtilsMessageTypeFlagsEXT,
 	CallbackData *DebugUtilsMessengerCallbackDataEXT,
@@ -32420,7 +32779,7 @@ func (h Instance) SubmitDebugUtilsMessageEXT(
 	})
 }
 
-func (h Device) UnmapMemory(
+func (h *Device) UnmapMemory(
 	memory *DeviceMemory,
 ) {
 	cancels := make([]func(), 0)
@@ -32441,7 +32800,7 @@ func (h Device) UnmapMemory(
 	})
 }
 
-func (h Device) UpdateDescriptorSets(
+func (h *Device) UpdateDescriptorSets(
 	DescriptorWrites []WriteDescriptorSet,
 	DescriptorCopies []CopyDescriptorSet,
 ) {
@@ -32494,7 +32853,7 @@ func (h Device) UpdateDescriptorSets(
 	})
 }
 
-func (h Device) UpdateIndirectExecutionSetPipelineEXT(
+func (h *Device) UpdateIndirectExecutionSetPipelineEXT(
 	indirectExecutionSet *IndirectExecutionSetEXT,
 	ExecutionSetWrites []WriteIndirectExecutionSetPipelineEXT,
 ) {
@@ -32534,7 +32893,7 @@ func (h Device) UpdateIndirectExecutionSetPipelineEXT(
 	})
 }
 
-func (h Device) UpdateIndirectExecutionSetShaderEXT(
+func (h *Device) UpdateIndirectExecutionSetShaderEXT(
 	indirectExecutionSet *IndirectExecutionSetEXT,
 	ExecutionSetWrites []WriteIndirectExecutionSetShaderEXT,
 ) {
@@ -32574,7 +32933,7 @@ func (h Device) UpdateIndirectExecutionSetShaderEXT(
 	})
 }
 
-func (h Device) WaitForFences(
+func (h *Device) WaitForFences(
 	Fences []*Fence,
 	waitAll bool,
 	timeout uint64,
@@ -32623,7 +32982,7 @@ func (h Device) WaitForFences(
 	return nil
 }
 
-func (h Device) WriteAccelerationStructuresPropertiesKHR(
+func (h *Device) WriteAccelerationStructuresPropertiesKHR(
 	AccelerationStructures []*AccelerationStructureKHR,
 	queryType QueryType,
 	dataSize uintptr,
@@ -32676,6 +33035,667 @@ func (h Device) WriteAccelerationStructuresPropertiesKHR(
 		return Result(_ret)
 	}
 	return nil
+}
+
+// ---------------------------------------------------------------------------
+// Handle cleanups
+//
+// Each handle is destroyed by the garbage collector through a runtime.AddCleanup
+// registered at creation. Cleanup arguments hold the parent handle so parents
+// outlive their children, and never the handle being destroyed.
+// ---------------------------------------------------------------------------
+
+type _cleanupArgsAccelerationStructureKHR struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupAccelerationStructureKHR(a _cleanupArgsAccelerationStructureKHR) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyAccelerationStructureKHR(&AccelerationStructureKHR{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsBuffer struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupBuffer(a _cleanupArgsBuffer) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyBuffer(&Buffer{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsBufferView struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupBufferView(a _cleanupArgsBufferView) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyBufferView(&BufferView{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsCommandBuffer struct {
+	parent     *Device
+	pool       *CommandPool
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	trampoline func()
+}
+
+func _cleanupCommandBuffer(a _cleanupArgsCommandBuffer) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	if a.pool == nil {
+		return
+	}
+	a.parent.freeCommandBuffers(a.pool, []*CommandBuffer{{handle: a.handle, cleanup: a.trampoline}})
+}
+
+type _cleanupArgsCommandPool struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupCommandPool(a _cleanupArgsCommandPool) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyCommandPool(&CommandPool{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsDebugUtilsMessengerEXT struct {
+	parent     *Instance
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupDebugUtilsMessengerEXT(a _cleanupArgsDebugUtilsMessengerEXT) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyDebugUtilsMessengerEXT(&DebugUtilsMessengerEXT{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsDeferredOperationKHR struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupDeferredOperationKHR(a _cleanupArgsDeferredOperationKHR) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyDeferredOperationKHR(&DeferredOperationKHR{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsDescriptorPool struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupDescriptorPool(a _cleanupArgsDescriptorPool) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyDescriptorPool(&DescriptorPool{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsDescriptorSet struct {
+	parent     *Device
+	pool       *DescriptorPool
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	trampoline func()
+}
+
+func _cleanupDescriptorSet(a _cleanupArgsDescriptorSet) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	if a.pool == nil {
+		return
+	}
+	_ = a.parent.freeDescriptorSets(a.pool, []*DescriptorSet{{handle: a.handle, cleanup: a.trampoline}})
+}
+
+type _cleanupArgsDescriptorSetLayout struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupDescriptorSetLayout(a _cleanupArgsDescriptorSetLayout) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyDescriptorSetLayout(&DescriptorSetLayout{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsDevice struct {
+	table      *deviceTable
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupDevice(a _cleanupArgsDevice) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	_self := &Device{handle: a.handle, table: a.table, cleanup: a.trampoline}
+	_self.destroy(a.allocator)
+}
+
+type _cleanupArgsDeviceMemory struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupDeviceMemory(a _cleanupArgsDeviceMemory) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.freeMemory(&DeviceMemory{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsEvent struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupEvent(a _cleanupArgsEvent) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyEvent(&Event{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsFence struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupFence(a _cleanupArgsFence) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyFence(&Fence{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsFramebuffer struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupFramebuffer(a _cleanupArgsFramebuffer) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyFramebuffer(&Framebuffer{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsImage struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupImage(a _cleanupArgsImage) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyImage(&Image{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsImageView struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupImageView(a _cleanupArgsImageView) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyImageView(&ImageView{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsIndirectCommandsLayoutEXT struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupIndirectCommandsLayoutEXT(a _cleanupArgsIndirectCommandsLayoutEXT) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyIndirectCommandsLayoutEXT(&IndirectCommandsLayoutEXT{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsIndirectExecutionSetEXT struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupIndirectExecutionSetEXT(a _cleanupArgsIndirectExecutionSetEXT) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyIndirectExecutionSetEXT(&IndirectExecutionSetEXT{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsInstance struct {
+	table      *instanceTable
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupInstance(a _cleanupArgsInstance) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	_self := &Instance{handle: a.handle, table: a.table, cleanup: a.trampoline}
+	_self.destroy(a.allocator)
+}
+
+type _cleanupArgsPipeline struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupPipeline(a _cleanupArgsPipeline) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyPipeline(&Pipeline{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsPipelineCache struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupPipelineCache(a _cleanupArgsPipelineCache) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyPipelineCache(&PipelineCache{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsPipelineLayout struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupPipelineLayout(a _cleanupArgsPipelineLayout) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyPipelineLayout(&PipelineLayout{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsQueryPool struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupQueryPool(a _cleanupArgsQueryPool) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyQueryPool(&QueryPool{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsRenderPass struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupRenderPass(a _cleanupArgsRenderPass) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyRenderPass(&RenderPass{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsSampler struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupSampler(a _cleanupArgsSampler) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroySampler(&Sampler{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsSemaphore struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupSemaphore(a _cleanupArgsSemaphore) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroySemaphore(&Semaphore{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsShaderEXT struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupShaderEXT(a _cleanupArgsShaderEXT) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyShaderEXT(&ShaderEXT{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsShaderModule struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupShaderModule(a _cleanupArgsShaderModule) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroyShaderModule(&ShaderModule{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsSurfaceKHR struct {
+	parent     *Instance
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupSurfaceKHR(a _cleanupArgsSurfaceKHR) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroySurfaceKHR(&SurfaceKHR{handle: a.handle, cleanup: a.trampoline}, a.allocator)
+}
+
+type _cleanupArgsSwapchainKHR struct {
+	parent     *Device
+	keepAlive  any
+	retain     *[]any
+	handle     unsafe.Pointer
+	allocator  *AllocationCallbacks
+	trampoline func()
+}
+
+func _cleanupSwapchainKHR(a _cleanupArgsSwapchainKHR) {
+	if a.handle == nil {
+		return
+	}
+	_cleanupMu.Lock()
+	defer _cleanupMu.Unlock()
+	if a.parent == nil {
+		return
+	}
+	a.parent.destroySwapchainKHR(&SwapchainKHR{handle: a.handle, cleanup: a.trampoline}, a.allocator)
 }
 
 var _cif_vkAcquireNextImage2KHR types.CallInterface

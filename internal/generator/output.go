@@ -8,6 +8,8 @@ import (
 
 // GeneratePackage generates the main Go source file for the package.
 func (r *ReducedRegistry) GeneratePackage(pkg string) string {
+	buildLifetimes(r)
+
 	var b strings.Builder
 
 	b.WriteString(generatedHeader)
@@ -100,6 +102,8 @@ func (r *ReducedRegistry) GeneratePackage(pkg string) string {
 		b.WriteString(cmd.GenerateWrapper(r.STypes))
 	}
 
+	b.WriteString(r.GenerateCleanups())
+
 	// CIF var declarations (all commands) + fn vars (global commands only).
 	seenDecls := make(map[string]bool)
 	for _, k := range sortedKeys(r.Commands) {
@@ -124,6 +128,8 @@ func (r *ReducedRegistry) GeneratePackage(pkg string) string {
 
 // GeneratePlatformFiles generates separate Go source files for each platform.
 func (r *ReducedRegistry) GeneratePlatformFiles(pkg string) []PlatformFile {
+	buildLifetimes(r)
+
 	type platformContent struct {
 		buildTag  string
 		platforms []string

@@ -5,6 +5,7 @@
 package vk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/go-webgpu/goffi/ffi"
@@ -93,7 +94,7 @@ func (s *MetalSurfaceCreateInfoEXT) fromC(p *cVkMetalSurfaceCreateInfoEXT) {
 	s.Layer = unsafe.Pointer(p.pLayer)
 }
 
-func (h Instance) CreateMacOSSurfaceMVK(
+func (h *Instance) CreateMacOSSurfaceMVK(
 	CreateInfo *MacOSSurfaceCreateInfoMVK,
 	Allocator *AllocationCallbacks,
 ) (*SurfaceKHR, error) {
@@ -130,10 +131,18 @@ func (h Instance) CreateMacOSSurfaceMVK(
 		return nil, Result(_ret)
 	}
 	h6 := &SurfaceKHR{handle: unsafe.Pointer(surfaceOut)}
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupSurfaceKHR, _cleanupArgsSurfaceKHR{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Instance) CreateMetalSurfaceEXT(
+func (h *Instance) CreateMetalSurfaceEXT(
 	CreateInfo *MetalSurfaceCreateInfoEXT,
 	Allocator *AllocationCallbacks,
 ) (*SurfaceKHR, error) {
@@ -170,5 +179,13 @@ func (h Instance) CreateMetalSurfaceEXT(
 		return nil, Result(_ret)
 	}
 	h6 := &SurfaceKHR{handle: unsafe.Pointer(surfaceOut)}
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupSurfaceKHR, _cleanupArgsSurfaceKHR{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }

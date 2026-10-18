@@ -5,6 +5,7 @@
 package vk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/go-webgpu/goffi/ffi"
@@ -151,7 +152,7 @@ func (s *XlibSurfaceCreateInfoKHR) fromC(p *cVkXlibSurfaceCreateInfoKHR) {
 	s.Window = uintptr(p.window)
 }
 
-func (h Instance) CreateWaylandSurfaceKHR(
+func (h *Instance) CreateWaylandSurfaceKHR(
 	CreateInfo *WaylandSurfaceCreateInfoKHR,
 	Allocator *AllocationCallbacks,
 ) (*SurfaceKHR, error) {
@@ -188,10 +189,18 @@ func (h Instance) CreateWaylandSurfaceKHR(
 		return nil, Result(_ret)
 	}
 	h6 := &SurfaceKHR{handle: unsafe.Pointer(surfaceOut)}
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupSurfaceKHR, _cleanupArgsSurfaceKHR{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Instance) CreateXcbSurfaceKHR(
+func (h *Instance) CreateXcbSurfaceKHR(
 	CreateInfo *XcbSurfaceCreateInfoKHR,
 	Allocator *AllocationCallbacks,
 ) (*SurfaceKHR, error) {
@@ -228,10 +237,18 @@ func (h Instance) CreateXcbSurfaceKHR(
 		return nil, Result(_ret)
 	}
 	h6 := &SurfaceKHR{handle: unsafe.Pointer(surfaceOut)}
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupSurfaceKHR, _cleanupArgsSurfaceKHR{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h Instance) CreateXlibSurfaceKHR(
+func (h *Instance) CreateXlibSurfaceKHR(
 	CreateInfo *XlibSurfaceCreateInfoKHR,
 	Allocator *AllocationCallbacks,
 ) (*SurfaceKHR, error) {
@@ -268,10 +285,18 @@ func (h Instance) CreateXlibSurfaceKHR(
 		return nil, Result(_ret)
 	}
 	h6 := &SurfaceKHR{handle: unsafe.Pointer(surfaceOut)}
+	h6.parent = h
+	h6.retain = new([]any)
+	if CreateInfo != nil {
+		*h6.retain = append(*h6.retain, CreateInfo)
+	}
+	if h6 != nil {
+		runtime.AddCleanup(h6, _cleanupSurfaceKHR, _cleanupArgsSurfaceKHR{parent: h, keepAlive: h, retain: h6.retain, handle: h6.handle, allocator: Allocator, trampoline: h6.cleanup})
+	}
 	return h6, nil
 }
 
-func (h PhysicalDevice) GetWaylandPresentationSupportKHR(
+func (h *PhysicalDevice) GetWaylandPresentationSupportKHR(
 	queueFamilyIndex uint32,
 	display unsafe.Pointer,
 ) bool {
@@ -295,7 +320,7 @@ func (h PhysicalDevice) GetWaylandPresentationSupportKHR(
 	return val2
 }
 
-func (h PhysicalDevice) GetXcbPresentationSupportKHR(
+func (h *PhysicalDevice) GetXcbPresentationSupportKHR(
 	queueFamilyIndex uint32,
 	connection unsafe.Pointer,
 	visual_id uint32,
@@ -322,7 +347,7 @@ func (h PhysicalDevice) GetXcbPresentationSupportKHR(
 	return val3
 }
 
-func (h PhysicalDevice) GetXlibPresentationSupportKHR(
+func (h *PhysicalDevice) GetXlibPresentationSupportKHR(
 	queueFamilyIndex uint32,
 	dpy unsafe.Pointer,
 	visualID uintptr,

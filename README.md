@@ -39,11 +39,13 @@ instance, err := vk.CreateInstance(&vk.InstanceCreateInfo{
 if err != nil {
     log.Fatal(err)
 }
-defer instance.Destroy(nil)
 
 // No LoadInstance/LoadDevice calls needed — dispatch tables are populated
 // automatically when CreateInstance and CreateDevice return.
 device, err := physicalDevice.CreateDevice(&vk.DeviceCreateInfo{...}, nil)
+
+// No Destroy calls either: the GC destroys handles once unreachable, children
+// before parents. Keep a handle reachable while the GPU still uses it.
 ```
 
 ## Examples
@@ -59,12 +61,16 @@ library. See [Windowing](./docs/api-changes.md#windowing).
 
 The bindings are idiomatic Go, not a literal translation:
 
-- Commands taking a handle first become methods — `instance.Destroy(nil)`
+- Commands taking a handle first become methods — `physDev.CreateDevice(ci, nil)`
 - Output parameters become return values, `VkResult` becomes `error`
 - `count` + `pFoo` pairs collapse into slices
 - `pNext` becomes a typed `Next` field; `sType` is set for you
 - PFN fields take Go closures
 - Dispatch tables load themselves; there is no `LoadInstance`/`LoadDevice`
+- **No `Destroy`/`Free` methods** — the GC destroys handles once they are
+  unreachable, parents after children. You must still keep a handle reachable
+  while submitted GPU work uses it; see
+  [object lifetimes](./docs/api-changes.md#object-lifetimes)
 
 Full details, with C-vs-Go examples: **[docs/api-changes.md](./docs/api-changes.md)**
 
