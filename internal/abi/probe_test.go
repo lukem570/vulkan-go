@@ -67,6 +67,32 @@ probe.c:14:5: error: 'VK_SECOND' undeclared (first use in this function)`,
 	}
 }
 
+func TestParseReportCRLF(t *testing.T) {
+	// The probe is a C program, so its stdio emits CRLF on Windows.
+	layout, err := parseReport(strings.Join([]string{
+		"s|VkGoldenCreateInfo|24|8",
+		"f|VkGoldenCreateInfo|sType|0|4",
+		"e|VK_SUCCESS|0",
+		"",
+	}, "\r\n"))
+	if err != nil {
+		t.Fatalf("parseReport: %v", err)
+	}
+	s, ok := layout.structs["VkGoldenCreateInfo"]
+	if !ok {
+		t.Fatal("struct record missing")
+	}
+	if s.size != 24 || s.align != 8 {
+		t.Errorf("size/align = %d/%d, want 24/8", s.size, s.align)
+	}
+	if f := s.fields["sType"]; f.offset != 0 || f.size != 4 {
+		t.Errorf("sType offset/size = %d/%d, want 0/4", f.offset, f.size)
+	}
+	if v, ok := layout.enums["VK_SUCCESS"]; !ok || v != 0 {
+		t.Errorf("VK_SUCCESS = %d (present %v), want 0", v, ok)
+	}
+}
+
 func TestParseReport(t *testing.T) {
 	layout, err := parseReport(strings.Join([]string{
 		"s|VkGoldenCreateInfo|24|8",

@@ -220,6 +220,9 @@ func parseReport(out string) (*cLayout, error) {
 	}
 
 	for _, line := range strings.Split(out, "\n") {
+		// The probe's stdio writes CRLF on Windows, which would otherwise end
+		// up inside the last field of every record.
+		line = strings.TrimRight(line, "\r")
 		if line == "" {
 			continue
 		}
