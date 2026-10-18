@@ -6,8 +6,9 @@ Notes for agents working in this repository.
 
 `github.com/lukem570/vulkan-go` — unofficial Go bindings for Vulkan, generated
 from `vk.xml` and dispatched through [goffi](https://github.com/go-webgpu/goffi)
-(libffi), so **no CGo**. See `README.md` for the public API tour; this file
-covers how the repo is built and what not to break.
+(libffi), so **no CGo**. `README.md` is the overview and
+`docs/api-changes.md` is the full public API tour; this file covers how the repo
+is built and what not to break.
 
 ## The one rule
 
@@ -37,6 +38,7 @@ Hand-written code lives only in `internal/generator/`, `cmd/vkgen/`, and
 | `config.yml` | API version, extension allow-list, platform list |
 | `mod/Vulkan-Headers` | Submodule; source of `registry/vk.xml` |
 | `examples/compute/` | Runnable headless compute example (doubles as the test) |
+| `docs/` | Prose docs: `api-changes.md` is the C-vs-Go API reference |
 
 Generator pipeline, in order (`cmd/vkgen/main.go`):
 
@@ -80,7 +82,8 @@ it is `go:embed`-ed and gitignored; run glslc first.
 ## Conventions the generator enforces
 
 These are load-bearing; a change in `internal/generator/` that breaks one of
-them is an API break for every consumer of `v1`.
+them is an API break for every consumer of `v1`. They are documented for users
+in `docs/api-changes.md` — keep that file in sync with any change here.
 
 - Commands whose first parameter is a handle become methods on that handle
   (`vkDestroyInstance` → `instance.Destroy`).
