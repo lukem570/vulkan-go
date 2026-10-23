@@ -5046,6 +5046,9 @@ const (
 	StructureTypePhysicalDeviceBufferDeviceAddressAllocationAlignmentFeaturesVALVE   StructureType = 1000709000
 	StructureTypePhysicalDeviceBufferDeviceAddressAllocationAlignmentPropertiesVALVE StructureType = 1000709001
 	StructureTypeBufferDeviceAddressAlignmentAllocateInfoVALVE                       StructureType = 1000709002
+	StructureTypePhysicalDeviceHdrSmpteSt209450FeaturesGOOGLE                        StructureType = 1000718000
+	StructureTypeHdrSmpteSt209450GOOGLE                                              StructureType = 1000718001
+	StructureTypeSurfaceCapabilitiesHdrSmpteSt209450GOOGLE                           StructureType = 1000718002
 )
 
 type SubpassContents uint32
@@ -5158,6 +5161,7 @@ const (
 	VendorIdPocl     VendorId = 0x10006
 	VendorIdMobileye VendorId = 0x10007
 	VendorIdApe      VendorId = 0x10008
+	VendorIdApex     VendorId = 0x10009
 )
 
 type VertexInputRate uint32
