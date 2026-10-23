@@ -1,6 +1,6 @@
 module github.com/lukem570/vulkan-go
 
-go 1.25
+go 1.26
 
 require (
 	github.com/go-webgpu/goffi v0.6.4
