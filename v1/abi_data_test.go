@@ -3710,6 +3710,8 @@ func init() {
 			{CName: "VK_STRUCTURE_TYPE_DATA_GRAPH_PIPELINE_SESSION_NEURAL_STATISTICS_CREATE_INFO_ARM", GoValue: abi.V(StructureTypeDataGraphPipelineSessionNeuralStatisticsCreateInfoARM)},
 			{CName: "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DATA_GRAPH_NEURAL_ACCELERATOR_STATISTICS_FEATURES_ARM", GoValue: abi.V(StructureTypePhysicalDeviceDataGraphNeuralAcceleratorStatisticsFeaturesARM)},
 			{CName: "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PRIMITIVE_RESTART_INDEX_FEATURES_EXT", GoValue: abi.V(StructureTypePhysicalDevicePrimitiveRestartIndexFeaturesEXT)},
+			{CName: "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAINTENANCE_12_FEATURES_KHR", GoValue: abi.V(StructureTypePhysicalDeviceMaintenance12FeaturesKHR)},
+			{CName: "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MAINTENANCE_12_PROPERTIES_KHR", GoValue: abi.V(StructureTypePhysicalDeviceMaintenance12PropertiesKHR)},
 			{CName: "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_IMAGE_TILING_CONTROL_FEATURES_EXT", GoValue: abi.V(StructureTypePhysicalDeviceImageTilingControlFeaturesEXT)},
 			{CName: "VK_STRUCTURE_TYPE_IMAGE_TILING_CONTROL_CREATE_INFO_EXT", GoValue: abi.V(StructureTypeImageTilingControlCreateInfoEXT)},
 			{CName: "VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_COOPERATIVE_MATRIX_DECODE_VECTOR_FEATURES_NV", GoValue: abi.V(StructureTypePhysicalDeviceCooperativeMatrixDecodeVectorFeaturesNV)},

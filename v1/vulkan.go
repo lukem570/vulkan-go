@@ -5038,6 +5038,8 @@ const (
 	StructureTypeDataGraphPipelineSessionNeuralStatisticsCreateInfoARM               StructureType = 1000676001
 	StructureTypePhysicalDeviceDataGraphNeuralAcceleratorStatisticsFeaturesARM       StructureType = 1000676002
 	StructureTypePhysicalDevicePrimitiveRestartIndexFeaturesEXT                      StructureType = 1000678000
+	StructureTypePhysicalDeviceMaintenance12FeaturesKHR                              StructureType = 1000680000
+	StructureTypePhysicalDeviceMaintenance12PropertiesKHR                            StructureType = 1000680001
 	StructureTypePhysicalDeviceImageTilingControlFeaturesEXT                         StructureType = 1000687000
 	StructureTypeImageTilingControlCreateInfoEXT                                     StructureType = 1000687001
 	StructureTypePhysicalDeviceCooperativeMatrixDecodeVectorFeaturesNV               StructureType = 1000689000
@@ -9782,6 +9784,7 @@ type DeviceQueueCreateInfo struct {
 	Next             Structure
 	Flags            DeviceQueueCreateFlags
 	QueueFamilyIndex uint32
+	QueueCount       uint32
 	QueuePriorities  []float32
 }
 
@@ -9802,21 +9805,22 @@ func (s *DeviceQueueCreateInfo) toC() (unsafe.Pointer, func()) {
 	p.flags = val0
 	val1 := uint32(s.QueueFamilyIndex)
 	p.queueFamilyIndex = val1
-	len2 := len(s.QueuePriorities)
-	var arr3 unsafe.Pointer
-	if len2 > 0 {
-		buf4 := make([]float32, len2)
-		var pin5 runtime.Pinner
-		pin5.Pin(&buf4[0])
-		cancels = append(cancels, func() { pin5.Unpin(); runtime.KeepAlive(buf4) })
-		arr3 = unsafe.Pointer(&buf4[0])
-		for i6, elem7 := range s.QueuePriorities {
-			val8 := float32(elem7)
-			buf4[i6] = val8
+	val2 := uint32(s.QueueCount)
+	p.queueCount = val2
+	len3 := len(s.QueuePriorities)
+	var arr4 unsafe.Pointer
+	if len3 > 0 {
+		buf5 := make([]float32, len3)
+		var pin6 runtime.Pinner
+		pin6.Pin(&buf5[0])
+		cancels = append(cancels, func() { pin6.Unpin(); runtime.KeepAlive(buf5) })
+		arr4 = unsafe.Pointer(&buf5[0])
+		for i7, elem8 := range s.QueuePriorities {
+			val9 := float32(elem8)
+			buf5[i7] = val9
 		}
 	}
-	p.pQueuePriorities = arr3
-	p.queueCount = uint32(len(s.QueuePriorities))
+	p.pQueuePriorities = arr4
 	return unsafe.Pointer(p), func() {
 		for _, cancel := range cancels {
 			cancel()
@@ -9827,6 +9831,7 @@ func (s *DeviceQueueCreateInfo) toC() (unsafe.Pointer, func()) {
 func (s *DeviceQueueCreateInfo) fromC(p *cVkDeviceQueueCreateInfo) {
 	s.Flags = DeviceQueueCreateFlags(p.flags)
 	s.QueueFamilyIndex = uint32(p.queueFamilyIndex)
+	s.QueueCount = uint32(p.queueCount)
 	if p.queueCount > 0 && p.pQueuePriorities != nil {
 		s.QueuePriorities = make([]float32, p.queueCount)
 		for i0 := range s.QueuePriorities {
