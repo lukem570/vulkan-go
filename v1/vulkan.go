@@ -5038,6 +5038,7 @@ const (
 	StructureTypeDataGraphPipelineSessionNeuralStatisticsCreateInfoARM               StructureType = 1000676001
 	StructureTypePhysicalDeviceDataGraphNeuralAcceleratorStatisticsFeaturesARM       StructureType = 1000676002
 	StructureTypePhysicalDevicePrimitiveRestartIndexFeaturesEXT                      StructureType = 1000678000
+	StructureTypePhysicalDeviceVertexAddressBindingUnrestrictedFeaturesEXT           StructureType = 1000679000
 	StructureTypePhysicalDeviceMaintenance12FeaturesKHR                              StructureType = 1000680000
 	StructureTypePhysicalDeviceMaintenance12PropertiesKHR                            StructureType = 1000680001
 	StructureTypePhysicalDeviceImageTilingControlFeaturesEXT                         StructureType = 1000687000
